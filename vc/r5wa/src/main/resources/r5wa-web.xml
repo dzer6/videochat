@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+                           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.4.0.xsd">
+
+  <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="/WEB-INF/classes/r5wa-web.properties" />
+  </bean>
+
+  <bean id="web.context.bayeux" class="org.red5.server.Context">
+    <property name="scopeResolver" ref="red5.scopeResolver" />
+    <property name="clientRegistry" ref="global.clientRegistry" />
+    <property name="serviceInvoker" ref="global.serviceInvoker" />
+    <property name="mappingStrategy" ref="global.mappingStrategy" />
+  </bean>
+
+  <bean id="web.scope.bayeux" class="org.red5.server.WebScope" init-method="register">
+    <property name="server" ref="red5.server" />
+    <property name="parent" ref="global.scope" />
+    <property name="context" ref="web.context.bayeux" />
+    <property name="handler" ref="web.handler.bayeux" />
+    <property name="contextPath" value="${bayeux.webapp.contextPath}" />
+    <property name="virtualHosts" value="${bayeux.webapp.virtualHosts}" />
+  </bean>
+
+  <bean id="web.handler.bayeux" class="com.dzer6.vc.r5wa.BayeuxApplication"/>
+
+  <bean id="web.context.r5wa" class="org.red5.server.Context">
+    <property name="scopeResolver" ref="red5.scopeResolver" />
+    <property name="clientRegistry" ref="global.clientRegistry" />
+    <property name="serviceInvoker" ref="global.serviceInvoker" />
+    <property name="mappingStrategy" ref="global.mappingStrategy" />
+  </bean>
+
+  <bean id="web.scope" class="org.red5.server.WebScope" init-method="register">
+    <property name="server" ref="red5.server" />
+    <property name="parent" ref="global.scope" />
+    <property name="context" ref="web.context.r5wa" />
+    <property name="handler" ref="web.handler.r5wa" />
+    <property name="contextPath" value="${webapp.contextPath}" />
+    <property name="virtualHosts" value="${webapp.virtualHosts}" />
+  </bean>
+
+  <bean id="web.handler.r5wa" class="com.dzer6.vc.r5wa.Application">
+    <property name="userConnectionQueue" ref="userConnectionQueue"/>
+    <property name="frontendServerQueue" ref="frontendServerQueue"/>
+    <property name="resampler" ref="resampler"/>
+    <property name="rtmpServerAddress" value="${rtmp.server.address}"/>
+    <property name="rtmpServerCapacity" value="${rtmp.server.capacity}"/>
+  </bean>
+  
+  <bean id="resampler" class="com.dzer6.vc.r5wa.VideoTranscoder">
+    <property name="x264PresetsPath" value="${resampler.x264PresetsPath}"/>
+    <property name="streamPrefix" value="${resampler.streamPrefix}"/>
+    <property name="audioBitRate" value="${resampler.audioBitRate}"/>
+    <property name="audioChannels" value="${resampler.audioChannels}"/>
+    <property name="audioSampleRate" value="${resampler.audioSampleRate}"/>
+    <property name="fps" value="${resampler.fps}"/>
+    <property name="videoBitRate" value="${resampler.videoBitRate}"/>
+    <property name="videoHeight" value="${resampler.videoHeight}"/>
+    <property name="videoWidth" value="${resampler.videoWidth}"/>
+    <property name="gop" value="${resampler.gop}"/>
+    <property name="audioCodecName" value="${resampler.audioCodecName}"/>
+  </bean>
+
+  <!-- Limits connections on a per-session basis -->
+  <bean id="connectionFilter" class="com.dzer6.vc.r5wa.ConnectionShapeFilter">
+    <property name="maxConnections" value="2"/>
+  </bean>
+
+  <bean id="config" class="org.red5.server.adapter.Config">
+    <property name="filterNames">
+      <list>
+        <value>connectionFilter</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="jms" class="org.apache.activemq.camel.component.ActiveMQComponent">
+    <property name="brokerURL" value="${mq.address}"/>
+  </bean>
+
+  <camel:camelContext id="camel" />
+
+  <camel:proxy id="frontendServerQueue"
+               serviceInterface="com.dzer6.vc.ga.FrontendServerInterface"
+               serviceUrl="jms:queue:com.dzer6.vc.ga.FrontendServer?exchangePattern=InOnly"/>
+
+  <camel:proxy id="userConnectionQueue"
+               serviceInterface="com.dzer6.vc.ga.UserConnectionInterface"
+               serviceUrl="jms:queue:com.dzer6.vc.ga.UserConnection"/>
+
+  <camel:export id="rtmpServerTopicExport"
+                uri="jms:topic:com.dzer6.vc.ga.RtmpServerInterface?exchangePattern=InOnly"
+                serviceRef="web.handler.r5wa"
+                serviceInterface="com.dzer6.vc.ga.RtmpServerInterface"/>
+
+  <camel:export id="flashClient"
+                uri="jms:topic:com.dzer6.vc.ga.FlashClient"
+                serviceRef="web.handler.r5wa"
+                serviceInterface="com.dzer6.vc.ga.FlashClientInterface"/>
+			
+  <camel:export id="bayeuxService"
+                serviceInterface="com.dzer6.vc.ga.BayeuxInterface"
+                serviceRef="web.handler.bayeux"
+                uri="jms:topic:com.dzer6.vc.ga.Bayeux"/>
+
+</beans>
