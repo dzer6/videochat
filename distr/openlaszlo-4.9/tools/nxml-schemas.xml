@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+<!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
+* Copyright 2001-2004 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Use is subject to license terms.                                            *
+* X_LZ_COPYRIGHT_END ****************************************************** -->
+  <namespace ns="http://www.laszlosystems.com/2003/05/lzx" uri="lzx+libraries.rnc"/>
+  <uri pattern="*.lzx" uri="lzx+libraries-nons.rnc"/>
+  <documentElement localName="canvas" typeId="lzx-nonamespace.rnc"/>
+</locatingRules>

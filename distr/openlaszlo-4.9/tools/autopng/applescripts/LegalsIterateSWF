@@ -1,0 +1,154 @@
+-- Priority: lps/components, demos/calendar, lps/*, docs/*, examples/*
+
+property pathListFile : "allSwfLegals.txt"
+property interProcessFile : "pathPass.txt"
+property jsflScriptFile : "convert2pngAuto.jsfl" -- Phill17:Users:papley:Laszlo:swfToPNGConversionScripts:
+property fStart : 1352 --Set this to the starting point (where it last crashed)
+property pathcount : 1 -- Always start at 1
+property pstr : null
+property fref : null
+property str : ""
+property script1 : null
+property force : false -- doesn't do anything yet.
+set pathlistfileref to 0
+
+my runShellScripts(pathListFile, interProcessFile)
+
+tell application "Finder"
+	
+	try
+		set jsflScriptAlias to file jsflScriptFile in home
+		set jsflScriptPath to jsflScriptAlias as string
+		set jsflScriptAlias to null
+		set ipfPath to my getIPFpath(interProcessFile)
+		set pathlistfileref to my openPathListFile(pathListFile)
+		set fileSize to get eof pathlistfileref --Get its length
+		set fileMark to 0 --Keep a count so we know when we're done
+		set pathcount to 1
+		try
+			repeat while fileMark < fileSize
+				set theline to read pathlistfileref before ASCII character (10)
+				set l1 to length of theline
+				set fileMark to fileMark + l1 + (length of return)
+				if (pathcount 
+property pathListFile : "allSwfLegals.txt"
+property interProcessFile : "pathPass.txt"
+property jsflScriptFile : "convert2pngAuto.jsfl" -- Phill17:Users:papley:Laszlo:swfToPNGConversionScripts:
+property fcounter : 1 --Set this to the starting point (where it last crashed)
+property pstr : null
+property fref : null
+property str : ""
+property script1 : null
+"
+		do shell script "touch  ~/" & interProcessFile
+		set ipfAlias to file interProcessFile in home
+		set ipfPath to ipfAlias as string
+		delete file ipfPath
+		set ipfAlias to null
+		return ipfPath
+	end tell
+end getIPFpath
+
+to runShellScripts(pathListFile, interProcessFile)
+	set pathlistfileref to 0
+	do shell script "find ~/src/svn/legals -name \"*.swf\" > ~/tmp.txt"
+	do shell script "mv ~/tmp.txt ~/" & pathListFile
+	--set grepExpr to "grep -v \"/components/\" ~/tmp.txt > ~/" & pathListFile
+	--do shell script grepExpr -- to do: also eliminate /work/
+	--do shell script "find ~/src/svn/legals -name \"*.png\" > ~/allPNGLegals.txt"
+end runShellScripts
+
+on awaitIPFdeletion(ipfPath)
+	try
+		delay 0.2
+		tell application "Finder"
+			repeat while (file ipfPath exists)
+				delay 4
+			end repeat
+		end tell
+	on error errMsg number errNum from errFrom partial result errResult to errTo
+		display dialog "Error checking if ipfPath exists: " & errMsg
+		return
+	end try
+end awaitIPFdeletion
+
+on flashRunningP()
+	tell application "Finder"
+		set procList to the processes
+		repeat with proc in procList
+			set pn to the name of proc as string
+			if pn is "Flash" then
+				return true
+			end if
+		end repeat
+		return false
+	end tell
+end flashRunningP
+
+on awaitFlashQuit()
+	tell application "Flash 8" to quit
+	repeat while (my flashRunningP())
+		delay 2
+	end repeat
+	delay 4
+	--		end if
+end awaitFlashQuit
+--set AppleScript's text item delimiters to old_delimiters
+to writePathInIPFfile(theline, ipfPath)
+	try
+		tell application "Finder"
+			try
+				close access file ipfPath
+			end try
+			--display dialog "writing: " & str buttons {"Cancel", "Skip", "Use"} default button 2 with icon 0
+			--if the button returned of the result is "Use" then
+			if (length of theline is less than 40) then
+				display dialog "bad line: " & theline
+			end if
+			if file ipfPath exists then
+				display dialog "ipfPath already exists"
+			end if
+			set fref to open for access (ipfPath as string) with write permission
+			set eof of fref to 0
+			write theline to fref
+			close access fref
+		end tell
+	on error errMsg number errNum from errFrom partial result errResult to errTo
+		display dialog "writePathInIPFFile ipfpath" & ipfPath & errMsg
+		try
+			close access fref
+		end try
+		return
+	end try
+end writePathInIPFfile
+
+on callFlashOnIPF(jsflScriptPath)
+	tell application "Finder"
+		try
+			--if (not (my flashRunningP())) then
+			--tell application "Finder" to launch application "Flash 8"
+			--delay 5
+			--end if
+			tell application "Flash 8"
+				open file jsflScriptPath
+				--if (script1) and (script1 is not null) then display dialog (script1 as string)
+				--set script1 to null
+			end tell
+		on error errMsg number errNum from errFrom partial result errResult to errTo
+			display dialog "jsfl script path" & errMsg
+			--close file jsflScriptPath
+		end try
+	end tell
+end callFlashOnIPF
+
+on openPathListFile(pathListFile)
+	local myAlias
+	local mypath
+	local fileRef
+	tell application "Finder"
+		set myAlias to file pathListFile in home
+		set mypath to myAlias as string
+		set fileRef to open for access mypath
+		return fileRef as string
+	end tell
+end openPathListFile
