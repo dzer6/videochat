@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+                           http://www.springframework.org/schema/data/jpa 
+                           http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+                           http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+                           http://www.springframework.org/schema/jdbc 
+                           http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd                   
+                           http://camel.apache.org/schema/spring 
+                           http://camel.apache.org/schema/spring/camel-spring-2.4.0.xsd">
+           
+    <bean id="config" class="com.dzer6.ga3.PropertyPlaceholderConfigurer">
+        <property name="location" value="/WEB-INF/classes/config.properties"/>
+    </bean>
+  
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceUnitName" value="spring-jpa"/>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">${HIBERNATE_HBM2DDL_AUTO}</prop>
+            </props>
+        </property>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="${JPA_SHOW_SQL}"/>
+                <property name="generateDdl" value="${JPA_GENERATE_DDL}"/>
+                <property name="databasePlatform" value="${JPA_DATABASE_PLATFORM}" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+  
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${DB_DRIVER_CLASS_NAME}"/>
+        <property name="url" value="${DB_URL}"/>
+        <property name="username" value="${DB_USERNAME}"/>
+        <property name="password" value="${DB_PASSWORD}"/>
+    </bean>
+  
+    <jpa:repositories base-package="com.dzer6.ga3.repository" />
+
+    <context:component-scan base-package="com.dzer6.ga3"/>
+  
+    <bean id="applicationContextProvider" class="com.dzer6.ga3.ApplicationContextProvider"/>
+
+    <bean id="jms" class="org.apache.activemq.camel.component.ActiveMQComponent">
+        <property name="brokerURL" value="${MQ_ADDRESS}"/>
+    </bean>
+
+    <camel:camelContext id="camel" />
+  
+    <camel:export id="frontendServerQueueExport"
+                  uri="jms:queue:com.dzer6.vc.ga.FrontendServer?exchangePattern=InOnly"
+                  serviceRef="rtmpServerEventsListener"
+                  serviceInterface="com.dzer6.vc.ga.FrontendServerInterface"/>
+  
+    <camel:export id="userConnectionQueueExport"
+                  uri="jms:queue:com.dzer6.vc.ga.UserConnection"
+                  serviceRef="userConnectionService"
+                  serviceInterface="com.dzer6.vc.ga.UserConnectionInterface"/>
+                
+    <camel:proxy id="flashClient"
+                 serviceInterface="com.dzer6.vc.ga.FlashClientInterface"
+                 serviceUrl="jms:topic:com.dzer6.vc.ga.FlashClient"/>
+               
+    <camel:proxy id="bayeux"
+                 serviceInterface="com.dzer6.vc.ga.BayeuxInterface"
+                 serviceUrl="jms:topic:com.dzer6.vc.ga.Bayeux"/>
+
+    <camel:proxy id="rtmpServerTopic"
+                 serviceInterface="com.dzer6.vc.ga.RtmpServerInterface"
+                 serviceUrl="jms:topic:com.dzer6.vc.ga.RtmpServerInterface?exchangePattern=InOnly"/>
+
+</beans>

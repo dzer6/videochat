@@ -1,0 +1,10 @@
+Sitemap: http://www.yourdomain.com/sitemap.xml
+User-agent: *
+Disallow: /monitoring
+Disallow: /css/
+Disallow: /evercookie/
+Disallow: /images/
+Disallow: /js/
+Disallow: /lps/
+Disallow: /lzx/
+Disallow: /msdropdown/

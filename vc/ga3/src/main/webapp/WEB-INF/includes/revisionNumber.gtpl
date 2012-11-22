@@ -1,0 +1,1 @@
+<span class="revisionNumberBlock">${applicationContext.config.REVISION_NUMBER}</span>

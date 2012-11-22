@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<canvas width="1" height="1" proxied="false">
+  
+  <rtmpconnection name="rtmpConnection"
+                  autoconnect="true"
+                  src="$once{lz.Browser.getInitArg('rtmpServerUrl')}">
+    <passthrough>
+      import flash.external.ExternalInterface;
+    </passthrough>
+    <method name="init"><![CDATA[
+      super.init();
+
+      _nc.client = this;
+
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] rtmpConnection initialization");
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] rtmpServerUrl = " + lz.Browser.getInitArg('rtmpServerUrl'));
+
+      var rtmpConn = canvas.rtmpConnection;
+      var handlers = {};
+
+      flash.external.ExternalInterface.addCallback("subscribe", function(channel, handler) {
+        flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] subscribe");
+        flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] channel = " + channel);
+        flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] handler = " + handler);
+        Debug.write("subscribe: channel = " + channel + ", handler name: " + handler);
+
+        if (handlers[channel] == null) {
+          handlers[channel] = [];
+        }
+
+        handlers[channel].push(handler);
+        _nc.call("subscribe", null, channel);
+      });
+
+      this.delivery = function(channel, data) {
+        flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] delivery");
+        flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] channel = " + channel);
+        Debug.write("incoming message: channel = " + channel + ", data: " + data);
+        Debug.write("handler name: " + handlers[channel]);
+        
+        var handlersArray = handlers[channel];
+        
+        if (handlersArray != null && handlersArray.length > 0) {
+          for(var i = 0; i < handlersArray.length; i++) {
+            data = data.split("%").join("%25").
+                        split("\\").join("%5c").
+                        split("\"").join("%22").
+                        split("&").join("%26");
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] data = " + data);
+            flash.external.ExternalInterface.call(handlersArray[i], data);
+          }
+        }
+      };
+    ]]>
+    </method>
+    <method name="_onSecurityError" args="value"><![CDATA[
+      super._onSecurityError(value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] rtmpConnection _onSecurityError value = " + value);
+    ]]>
+    </method>
+    <method name="_onStatus" args="value"><![CDATA[
+      super._onStatus(value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] rtmpConnection _onStatus value = " + value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] rtmpConnection _onStatus value.info.description = " + value.info.description);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] rtmpConnection _onStatus value.info.code = " + value.info.code);
+    ]]>
+    </method>
+    <method name="_handleConnectionFailure" args="value"><![CDATA[
+      super._onSecurityError(value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][bayuex-on-flash.lzx] rtmpConnection _handleConnectionFailure value = " + value);
+    ]]>
+    </method>
+  </rtmpconnection>
+</canvas>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<canvas width="320" height="240" proxied="false">
+  <rtmpconnection name="auxRtmpConnection" 
+                  autoconnect="true"
+                  src="$once{lz.Browser.getInitArg('rtmpServerUrl')}"
+                  connectionparams="{cameraId: lz.Browser.getInitArg('cameraId'), sessionId: lz.Browser.getInitArg('sessionId')}">
+    <passthrough>
+      import flash.external.ExternalInterface;
+    </passthrough>
+    <method name="init"><![CDATA[
+      super.init();
+
+      _nc.client = this;
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] auxRtmpConnection initialization");
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] rtmpServerUrl = " + lz.Browser.getInitArg('rtmpServerUrl'));
+            
+      this.cameraOn = function() {
+        flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] cameraOn");
+        Debug.write("cameraOn");
+        spinner.setAttribute("visible", false);
+        videoView.setAttribute("visible", true);
+
+        cam.setAttribute("capturing", true);
+        cam.setAttribute("show", true);
+        videoView.stream.broadcast();
+      };
+      
+      this.cameraOff = function() {
+        flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] cameraOff");
+        Debug.write("cameraOff");
+        cam.setAttribute("capturing", false);
+        cam.setAttribute("show", false);
+	    videoView.stream.stop();
+        
+        videoView.setAttribute("visible", false);
+        spinner.setAttribute("visible", true);
+      };
+      
+    ]]>
+    </method>
+    <method name="_onSecurityError" args="value"><![CDATA[
+      super._onSecurityError(value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] auxRtmpConnection _onSecurityError value = " + value);
+    ]]>
+    </method>
+    <method name="_onStatus" args="value"><![CDATA[
+      super._onStatus(value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] auxRtmpConnection _onStatus value = " + value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] auxRtmpConnection _onStatus value.info.description = " + value.info.description);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] auxRtmpConnection _onStatus value.info.code = " + value.info.code);
+    ]]>
+    </method>
+    <method name="_handleConnectionFailure" args="value"><![CDATA[
+      super._onSecurityError(value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] auxRtmpConnection _handleConnectionFailure value = " + value);
+    ]]>
+    </method>
+  </rtmpconnection>
+ 
+  <view id="spinner" width="16" height="16" align="center" valign="middle" resource="spinner.swf"/>
+
+  <passthrough>
+    import flash.external.ExternalInterface;
+  </passthrough>
+
+  <handler name="oninit" method="initMethod"/>
+  <method name="initMethod" args="e"><![CDATA[        
+    videoView.stream.setAttribute("url", lz.Browser.getInitArg('cameraId'));
+
+    var quality = lz.Browser.getInitArg('quality');
+    var bandwidth = lz.Browser.getInitArg('bandwidth');
+    var isCameraOn = lz.Browser.getInitArg('isCameraOn');
+
+    flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] quality = " + quality);
+    flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] bandwidth = " + bandwidth);
+    flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] isCameraOn = " + isCameraOn);
+    
+    cam.setQuality(bandwidth, quality);
+    cam.setMode(320, 240, 15, true);
+    
+    if (isCameraOn == "true") {
+      spinner.setAttribute("visible", false);
+      videoView.setAttribute("visible", true);
+
+      cam.setAttribute("capturing", true);
+      cam.setAttribute("show", true);
+      videoView.stream.broadcast();
+    } else {
+      cam.setAttribute("capturing", false);
+      cam.setAttribute("show", false);
+      videoView.stream.stop();
+
+      videoView.setAttribute("visible", false);
+      spinner.setAttribute("visible", true);
+    }
+  ]]>
+  </method>
+
+  <rtmpconnection name="rtmpConnection" 
+                  autoconnect="true"
+                  src="$once{lz.Browser.getInitArg('rtmpServerUrl')}">
+    <passthrough>
+      import flash.external.ExternalInterface;
+    </passthrough>
+    <method name="_onSecurityError" args="value"><![CDATA[
+      super._onSecurityError(value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] rtmpConnection _onSecurityError value = " + value);
+    ]]>
+    </method>
+    <method name="_onStatus" args="value"><![CDATA[
+      super._onStatus(value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] rtmpConnection _onStatus value = " + value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] rtmpConnection _onStatus value.info.description = " + value.info.description);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] rtmpConnection _onStatus value.info.code = " + value.info.code);
+    ]]>
+    </method>
+    <method name="_handleConnectionFailure" args="value"><![CDATA[
+      super._onSecurityError(value);
+      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] rtmpConnection _handleConnectionFailure value = " + value);
+    ]]>
+    </method>
+  </rtmpconnection>
+        
+  <videoview id="videoView" type="rtmp" width="320" height="240">
+    <camera id="cam"/>
+    <microphone id="mic" 
+                silencelevel="0"
+                echosuppression="true"
+                rate="22">
+        <passthrough>
+          import flash.external.ExternalInterface;
+        </passthrough>
+        <method name="_updateAllowed"><![CDATA[
+            super._updateAllowed();
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _updateAllowed value");
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _updateAllowed capturing = " + this.capturing);
+        ]]>
+        </method>
+        <method name="_onActivityHandler" args="value"><![CDATA[
+            super._onActivityHandler(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivityHandler value = " + value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivityHandler _dev = " + this._dev);
+        ]]>
+        </method>
+        <method name="startDevice"><![CDATA[
+            super.startDevice();
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone startDevice");
+        ]]>
+        </method>
+        <method name="stopDevice"><![CDATA[
+            super.stopDevice();
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone stopDevice");
+        ]]>
+        </method>
+        <method name="_setDeviceIndex" args="value"><![CDATA[
+            super._setDeviceIndex(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _setDeviceIndex value = " + value);
+        ]]>
+        </method>
+        <method name="_setCapturing" args="value"><![CDATA[
+            super._setCapturing(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _setCapturing value = " + value);
+        ]]>
+        </method>
+        <method name="_onActiveStatic" args="value"><![CDATA[
+            super._onActiveStatic(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActiveStatic value = " + value);
+        ]]>
+        </method>
+        <method name="_onStatusStatic" args="value"><![CDATA[
+            super._onStatusStatic(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onStatusStatic value = " + value);
+        ]]>
+        </method>
+        <method name="_updateAllAllowedStatic" args="value"><![CDATA[
+            super._updateAllAllowedStatic(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _updateAllAllowedStatic value = " + value);
+        ]]>
+        </method>
+        <method name="_onActivity" args="value"><![CDATA[
+            super._onActivity(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity value = " + value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.activityLevel = " + this._dev.activityLevel);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.codec = " + this._dev.codec);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.enableVAD = " + this._dev.enableVAD);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.encodeQuality = " + this._dev.encodeQuality);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.enhancedOptions  = " + this._dev.enhancedOptions );
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.framesPerPacket = " + this._dev.framesPerPacket);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.gain = " + this._dev.gain);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.index = " + this._dev.index);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.isSupported = " + this._dev.isSupported);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.muted = " + this._dev.muted);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.name = " + this._dev.name);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.noiseSuppressionLevel = " + this._dev.noiseSuppressionLevel);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.rate = " + this._dev.rate);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.silenceLevel = " + this._dev.silenceLevel);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.silenceTimeout = " + this._dev.silenceTimeout);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.soundTransform = " + this._dev.soundTransform);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][out3.lzx] microphone _onActivity _dev.useEchoSuppression = " + this._dev.useEchoSuppression);
+        ]]>
+        </method>
+    </microphone>
+  </videoview>
+</canvas>
