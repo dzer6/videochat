@@ -4,3 +4,6 @@
 *.jar
 *.war
 *.ear
+/vc/ga3/target/
+/vc/foundation/target/
+/vc/r5wa/target/
