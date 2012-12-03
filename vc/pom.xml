@@ -30,6 +30,11 @@
     </scm>
   
     <repositories>
+        
+        <repository>
+            <id>codehaus-snapshots</id>
+            <url>http://nexus.codehaus.org/snapshots</url>
+        </repository>
     
         <repository>
             <id>dzer6-releases-repo</id>
