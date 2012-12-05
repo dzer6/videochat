@@ -35,8 +35,6 @@
 <% if (applicationContext.config.DEBUG_WEB_PAGES == "false") { %>
 <script src="/evercookie/swfobject-2.2.min.js" type="text/javascript"></script>
 <script src="/evercookie/evercookie.js" type="text/javascript"></script>
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
-<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=www.yourdomain.com"></script>
 <% } %>
 <% include "/WEB-INF/includes/googleAnalytics.gtpl" %>
 <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
