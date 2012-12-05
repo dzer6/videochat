@@ -9,7 +9,6 @@
     <% include "/WEB-INF/includes/minimalTopbar.gtpl" %>
     <div class="container">
       <div class="content">
-        <% include "/WEB-INF/includes/banner.gtpl" %>
         <div id="out-of-service-message-block">
           <h1 class="out-of-service-message"><%= applicationContext.config.MESSAGE_404 %></h1>
           <% include "/WEB-INF/includes/feedback.gtpl" %>

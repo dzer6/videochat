@@ -9,7 +9,6 @@
     <% include "/WEB-INF/includes/minimalTopbar.gtpl" %>
     <div class="container">
       <div class="content">
-        <% include "/WEB-INF/includes/banner.gtpl" %>
         <div id="user-banned-block">
           <h1 class="user-banned-message"><%= applicationContext.config.BLOCK_USER_MESSAGE %></h1>
           <div id="userBlockedProgressbarMargined">
