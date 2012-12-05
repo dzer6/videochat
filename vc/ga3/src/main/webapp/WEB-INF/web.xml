@@ -35,7 +35,7 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>
         classpath:net/bull/javamelody/monitoring-spring.xml
-        /WEB-INF/applicationContext.xml
+        /WEB-INF/classes/applicationContext.xml
     </param-value>
   </context-param>
   
