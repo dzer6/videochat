@@ -29,7 +29,6 @@
   </div>
 </div>
 <% if (applicationContext.config.DEBUG_WEB_PAGES == "false") { %>
-<%   include "/WEB-INF/includes/feedbackDialog.gtpl" %>
 <% } %>
 <% include "/WEB-INF/includes/about.gtpl" %>
 <% include "/WEB-INF/includes/legal.gtpl" %>

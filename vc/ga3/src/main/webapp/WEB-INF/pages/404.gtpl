@@ -11,7 +11,6 @@
       <div class="content">
         <div id="out-of-service-message-block">
           <h1 class="out-of-service-message"><%= applicationContext.config.MESSAGE_404 %></h1>
-          <% include "/WEB-INF/includes/feedback.gtpl" %>
           <h1 class="centered-block">
             <a href="${applicationContext.config.WEB_SITE_URL}">back to main page</a>
           </h1>

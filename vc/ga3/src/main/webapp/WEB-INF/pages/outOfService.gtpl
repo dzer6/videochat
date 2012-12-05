@@ -11,7 +11,6 @@
       <div class="content">
         <div id="out-of-service-message-block">
           <h1 class="out-of-service-message"><%= request.message %></h1>
-          <% include "/WEB-INF/includes/feedback.gtpl" %>
         </div>
       </div>
       <% include "/WEB-INF/includes/footer.gtpl" %>
