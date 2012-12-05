@@ -18,18 +18,9 @@
           <a href="#" data-controls-modal="chat-with-me-modal-from-dom" data-backdrop="true" data-keyboard="true">Chat with me</a>
         </li>
       </ul>
-      <div class="pull-right">
-        <div class="span">
-          <% if (applicationContext.config.DEBUG_WEB_PAGES == "false") { %>
-          <%   include "/WEB-INF/includes/addThis.gtpl" %>
-          <% } %>
-        </div>
-      </div>
     </div>
   </div>
 </div>
-<% if (applicationContext.config.DEBUG_WEB_PAGES == "false") { %>
-<% } %>
 <% include "/WEB-INF/includes/about.gtpl" %>
 <% include "/WEB-INF/includes/chatWithMe.gtpl" %>
 <% include "/WEB-INF/includes/messageDialog.gtpl" %>
