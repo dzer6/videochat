@@ -29,7 +29,6 @@
 
 <script src="/js/jquery.dateFormat-1.0.js" type="text/javascript"></script>
 <script src="/js/google-code-prettify.js" type="text/javascript"></script>
-<script src="/js/jquery.dd.js" type="text/javascript"></script>
 <script src="/js/jquery.scrollTo-min.js" type="text/javascript"></script>
 <script>\$(function () { prettyPrint() })</script>
 <% if (applicationContext.config.DEBUG_WEB_PAGES == "false") { %>
@@ -40,7 +39,6 @@
 <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
 <link href="http://fonts.googleapis.com/css?family=Leckerli+One" rel="stylesheet" type="text/css"></link>
 <link href="/css/google-code-prettify.css" rel="stylesheet" type="text/css"></link>
-<link href="/msdropdown/dd.css" rel="stylesheet" type="text/css"></link>
 <link href="/css/index.css" rel="stylesheet" type="text/css"></link>
 <link href="/css/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css"/>
 
