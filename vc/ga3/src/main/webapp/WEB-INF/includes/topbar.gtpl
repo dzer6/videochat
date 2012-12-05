@@ -4,14 +4,6 @@
       <a class="brand" href="${applicationContext.config.WEB_SITE_URL}">${applicationContext.config.WEB_SITE_URL}</a>
       <ul class="nav">
         <li>
-          <a href="#" data-controls-modal="legal-modal-from-dom" data-backdrop="true" data-keyboard="true">Legal</a>
-        </li>
-        <% if (applicationContext.config.DEBUG_WEB_PAGES == "false") { %>
-        <li>
-          <a href="#" data-controls-modal="feedback-modal-from-dom" data-backdrop="true" data-keyboard="true">Feedback</a>
-        </li>
-        <% } %>
-        <li>
           <a href="#" data-controls-modal="about-modal-from-dom" data-backdrop="true" data-keyboard="true">About</a>
         </li>
         <li>
