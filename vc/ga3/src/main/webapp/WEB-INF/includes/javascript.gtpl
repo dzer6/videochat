@@ -77,48 +77,6 @@
     
     \$("#sendMessageButton").click(chatMessageEntered);
     
-    var changeUserSelectionParameter = function(usp, value) {
-      \$.post("/home/cusp", {usp: usp, value: value});
-    };
-
-    var myLifePeriodValue;
-    var mySexSelectValue;
-    var opponentLifePeriodValue;
-    var opponentSexSelectValue;
-    
-    \$(".my-block .lifePeriodSelect").click(function(e) {
-      if (myLifePeriodValue != e.target.value) {
-        changeUserSelectionParameter("${applicationContext.config.MY_LIFE_PERIOD_PARAM}", e.target.value);
-      }
-      myLifePeriodValue = e.target.value;
-    });
-
-    \$(".my-block .sexSelect").click(function(e) {
-      if (mySexSelectValue != e.target.value) {
-        changeUserSelectionParameter("${applicationContext.config.MY_SEX_PARAM}", e.target.value);
-      }
-      mySexSelectValue = e.target.value;
-    });
-
-    \$(".opponent-block .lifePeriodSelect").click(function(e) {
-      if (opponentLifePeriodValue != e.target.value) {
-        changeUserSelectionParameter("${applicationContext.config.OPPONENT_LIFE_PERIOD_PARAM}", e.target.value);
-      }
-      opponentLifePeriodValue = e.target.value;
-    });
-
-    \$(".opponent-block .sexSelect").click(function(e) {
-      if (opponentSexSelectValue != e.target.value) {
-        changeUserSelectionParameter("${applicationContext.config.OPPONENT_SEX_PARAM}", e.target.value);
-      }
-      opponentSexSelectValue = e.target.value;
-    });
-
-    \$(".my-block .sexSelect").msDropDown();
-    \$(".opponent-block .sexSelect").msDropDown();
-    \$(".my-block .lifePeriodSelect").msDropDown();
-    \$(".opponent-block .lifePeriodSelect").msDropDown();
-    
     var bayeuxHandlerIdCounter = 0;
     var getBayeuxHandlerId = function() {
       bayeuxHandlerIdCounter+=1;
@@ -294,14 +252,6 @@
     };
 
     var initializeUserParametersUI = function(data) {
-      myLifePeriodValue = data.myLifePeriod;
-      mySexSelectValue = data.mySexType;
-      opponentLifePeriodValue = data.opponentLifePeriod;
-      opponentSexSelectValue = data.opponentSexType;
-      \$("div.myLifePeriodDiv input[value=" + data.myLifePeriod + "]").attr("checked", true);
-      \$("div.mySexDiv input[value=" + data.mySexType + "]").attr("checked", true);
-      \$("div.opponentLifePeriodDiv input[value=" + data.opponentLifePeriod + "]").attr("checked", true);
-      \$("div.opponentSexDiv input[value=" + data.opponentSexType + "]").attr("checked", true); 
       if (data.conversationInProcess) {
     	  onTurnOnChat();
           onTurnOnBlocking();
