@@ -1,4 +1,3 @@
-<% include "/WEB-INF/includes/banner.gtpl" %>
 <div class="well view-block">
   <div class="row">
     <div class="my-block">
