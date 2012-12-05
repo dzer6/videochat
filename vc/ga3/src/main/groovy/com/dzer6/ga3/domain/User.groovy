@@ -18,18 +18,6 @@ class User {
     @Version
     long version = 0
   
-    @OneToOne
-    LifePeriod myLifePeriod
-  
-    @OneToOne
-    SexType mySexType
-  
-    @OneToOne
-    LifePeriod opponentLifePeriod
-  
-    @OneToOne
-    SexType opponentSexType
-  
     @ManyToOne
     RtmpServer rtmpServer
   

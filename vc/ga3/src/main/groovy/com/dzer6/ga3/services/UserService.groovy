@@ -41,13 +41,6 @@ class UserService {
   
     @Autowired
     private PreviousOpponentRepository previousOpponentRepository
-  
-    @Autowired
-    private LifePeriodRepository lifePeriodRepository
-  
-    @Autowired
-    private SexTypeRepository sexTypeRepository
-  
 
     /**
      * Blocks user and returns code of blocking action for UI.
@@ -227,9 +220,6 @@ class UserService {
     User createUser() {
         log.info("createUser()")
     
-        LifePeriod initialLifePeriod = lifePeriodRepository.findByValue(config.LIFE_PERIOD_UNKNOWN) 
-        SexType initialSexType = sexTypeRepository.findByValue(config.SEX_UNKNOWN)
-     
         return invokeAgainIfOptimisticLockingFailureCatched("UserService.createUser") { status ->
             User user = new User()
       
@@ -247,10 +237,6 @@ class UserService {
 
             user.rtmpServer = rtmpServer
             user.playing = false
-            user.myLifePeriod = initialLifePeriod
-            user.mySexType = initialSexType
-            user.opponentLifePeriod = initialLifePeriod
-            user.opponentSexType = initialSexType
       
             userRepository.save(user)
 
@@ -308,14 +294,9 @@ class UserService {
             if (numberOfPreviousOpponents == 0) {    
                 you = findAnyBroadcastingUserNotMe(me)
                 log.info("findAnyBroadcastingUserNotMe you = ${you}")
-            } else {                       
-                you = findFullParametersMatchedUserNotSeenForFiveMinutes(me)
-                log.info("findFullParametersMatchedUserNotSeenForFiveMinutes you = ${you}")
-        
-                if (you == null) {
-                    you = findUserNotSeenForFiveMinutes(me)
-                    log.info("findUserNotSeenForFiveMinutes you = ${you}")
-                }
+            } else {
+                you = findUserNotSeenForFiveMinutes(me)
+                log.info("findUserNotSeenForFiveMinutes you = ${you}")    
         
                 if (you == null) {
                     you = findAnyBroadcastingUserNotMe(me)
@@ -345,28 +326,11 @@ class UserService {
         return result != null && result.size() > 0 ? result.get(0) : null
     }
   
-    private User findBroadcastingUserByLifePeriodAndSexTypeNotSeenSinceDate(User user, LifePeriod lifePeriod, SexType sexType, Date date) {
-        List result = userRepository.findBroadcastingUserByLifePeriodAndSexTypeNotSeenSinceDate(user, lifePeriod, sexType, date)
-        return result != null && result.size() > 0 ? result.get(0) : null
-    }
-  
     private User findUserNotSeenForFiveMinutes(User me) {
         long lastWatchedUserInterval = config.LAST_WATCHED_USER_INTERVAL as long
         Date fiveMinutesAgo = new Date(System.currentTimeMillis() - lastWatchedUserInterval)
         
         User result = findBroadcastingUserNotSeenSinceDate(me, fiveMinutesAgo)
-                                     
-        return result
-    }
-  
-    private User findFullParametersMatchedUserNotSeenForFiveMinutes(User me) {
-        long lastWatchedUserInterval = config.LAST_WATCHED_USER_INTERVAL as long
-        Date fiveMinutesAgo = new Date(System.currentTimeMillis() - lastWatchedUserInterval)
-        
-        User result = findBroadcastingUserByLifePeriodAndSexTypeNotSeenSinceDate(me, 
-            me.opponentLifePeriod, 
-            me.opponentSexType, 
-            fiveMinutesAgo)
                                      
         return result
     }

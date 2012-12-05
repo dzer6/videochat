@@ -33,12 +33,6 @@ class Bootstrap {
     def rtmpServerTopic
   
     @Autowired
-    private LifePeriodRepository lifePeriodRepository
-  
-    @Autowired
-    private SexTypeRepository sexTypeRepository
-  
-    @Autowired
     private RtmpServerRepository rtmpServerRepository
   
     @PostConstruct
@@ -48,25 +42,6 @@ class Bootstrap {
         if (rs == null) {
             rtmpService.createRtmpServer(config.RTMP_SERVER_URL, config.RTMP_SERVER_CAPACITY as int)
             log.info("Create rtmp server = ${rtmpServerRepository.findByUrl(config.RTMP_SERVER_URL)}")
-        }
-    
-        if (lifePeriodRepository.findByValue(config.LIFE_PERIOD_UNKNOWN) == null) {
-            lifePeriodRepository.save(new LifePeriod([value: config.LIFE_PERIOD_UNKNOWN]))
-            lifePeriodRepository.save(new LifePeriod([value: config.LIFE_PERIOD_1]))
-            lifePeriodRepository.save(new LifePeriod([value: config.LIFE_PERIOD_2]))
-            lifePeriodRepository.save(new LifePeriod([value: config.LIFE_PERIOD_3]))
-            lifePeriodRepository.save(new LifePeriod([value: config.LIFE_PERIOD_4]))
-            lifePeriodRepository.save(new LifePeriod([value: config.LIFE_PERIOD_5]))
-            lifePeriodRepository.save(new LifePeriod([value: config.LIFE_PERIOD_6]))
-        }
-
-        if (sexTypeRepository.findByValue(config.SEX_UNKNOWN) == null) {
-            sexTypeRepository.save(new SexType([value: config.SEX_UNKNOWN]))
-            sexTypeRepository.save(new SexType([value: config.SEX_1]))
-            sexTypeRepository.save(new SexType([value: config.SEX_2]))
-            sexTypeRepository.save(new SexType([value: config.SEX_3]))
-            sexTypeRepository.save(new SexType([value: config.SEX_4]))
-            sexTypeRepository.save(new SexType([value: config.SEX_5]))
         }
     }
 }
