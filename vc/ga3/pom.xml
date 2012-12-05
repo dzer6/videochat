@@ -11,7 +11,7 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.dzer6</groupId>
+    <groupId>com.dzer6.vc</groupId>
     <artifactId>ga3</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
