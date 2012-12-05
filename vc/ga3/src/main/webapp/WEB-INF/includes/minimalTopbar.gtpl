@@ -14,4 +14,3 @@
   </div>
 </div>
 <% include "/WEB-INF/includes/about.gtpl" %>
-<% include "/WEB-INF/includes/legal.gtpl" %>

@@ -31,7 +31,6 @@
 <% if (applicationContext.config.DEBUG_WEB_PAGES == "false") { %>
 <% } %>
 <% include "/WEB-INF/includes/about.gtpl" %>
-<% include "/WEB-INF/includes/legal.gtpl" %>
 <% include "/WEB-INF/includes/chatWithMe.gtpl" %>
 <% include "/WEB-INF/includes/messageDialog.gtpl" %>
 <% include "/WEB-INF/includes/progressBarUserBlockedDialog.gtpl" %>
