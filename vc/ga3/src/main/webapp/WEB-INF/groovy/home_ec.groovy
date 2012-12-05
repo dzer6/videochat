@@ -118,10 +118,6 @@ webToolService.renderJson(response, [
         playing: me.playing,
         bannedTill: me.bannedTill == null || me.bannedTill <= new Date() ? 0 : me.bannedTill.time,
         conversationInProcess: webToolService.isConversationInProcess(me),
-        myLifePeriod: UserParametersUtil.convertLifePeriodModelToUI(me.myLifePeriod.value),
-        mySexType: UserParametersUtil.convertSexModelToUI(me.mySexType.value),
-        opponentLifePeriod: UserParametersUtil.convertLifePeriodModelToUI(me.opponentLifePeriod.value),
-        opponentSexType: UserParametersUtil.convertSexModelToUI(me.opponentSexType.value),
         chatWithMeURL: webToolService.getChatWithMeURL(request, myId),
         sessionId: sessionId
     ])
