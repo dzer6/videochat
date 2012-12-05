@@ -39,7 +39,6 @@
 <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
 <link href="http://fonts.googleapis.com/css?family=Leckerli+One" rel="stylesheet" type="text/css"></link>
 <link href="/css/google-code-prettify.css" rel="stylesheet" type="text/css"></link>
-<link href="/css/index.css" rel="stylesheet" type="text/css"></link>
 <link href="/css/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css"/>
-
+<link href="/css/chat.css" rel="stylesheet" type="text/css"></link>
 <link rel="shortcut icon" href="/images/ch.png" type="image/png"></link>
