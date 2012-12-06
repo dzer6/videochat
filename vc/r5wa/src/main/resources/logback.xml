@@ -15,7 +15,7 @@
     </layout>
   </appender>
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <File>/var/log/webapps/red5.log</File>
+    <File>/usr/local/tomcat/logs/red5.log</File>
     <Append>false</Append>
     <Encoding>UTF-8</Encoding>
     <BufferedIO>false</BufferedIO>
@@ -27,7 +27,7 @@
     </layout>
   </appender>
   <appender name="ERRORFILE" class="ch.qos.logback.core.FileAppender">
-    <File>/var/log/webapps/error.log</File>
+    <File>/usr/local/tomcat/logs/error.log</File>
     <Append>false</Append>
     <Encoding>UTF-8</Encoding>
     <BufferedIO>false</BufferedIO>
