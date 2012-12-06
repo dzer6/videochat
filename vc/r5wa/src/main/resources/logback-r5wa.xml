@@ -6,7 +6,7 @@
   <jmxConfigurator contextName="r5wa" />
 
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <File>/var/log/webapps/r5wa.log</File>
+    <File>/usr/local/tomcat/logs/r5wa.log</File>
     <Append>false</Append>
     <Encoding>UTF-8</Encoding>
     <BufferedIO>false</BufferedIO>
