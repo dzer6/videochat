@@ -254,7 +254,6 @@
             <groupId>xuggle-xuggler</groupId>
             <artifactId>xuggle-xuggler</artifactId>
             <version>4.0.896</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
