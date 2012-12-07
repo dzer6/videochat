@@ -5,10 +5,8 @@ Live streaming Red5 based video chat.
 
 # Structure
 
-Common video chat architecture on diagram below:
-
+Default video chat architecture on diagram below:
 ![video chat architecture](https://github.com/dzer6/videochat/raw/master/documents/video-chat-architecture.png)
-
 1) Message Broker -- Apache ActiveMQ.
 
 2) Web Front End App -- caelyf based web app, its name "ga3" (actually there is a little bit hacked [caelyf](https://github.com/dzer6/caelyf)).
