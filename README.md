@@ -27,7 +27,7 @@ Default video chat architecture on diagram below:
 
 # Installation
 
-1) Install Ubuntu Lucid 64bit on machine with not less than 2Gb RAM.
+1) Install Ubuntu Lucid 64bit on machine with not less than 2Gb RAM. This machine should have open ports: 8080 and 1935.
 
 2) Install git client.
 ```bash
