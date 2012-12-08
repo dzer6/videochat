@@ -3,6 +3,11 @@ videochat
 
 Live streaming Red5 based video chat.
 
+# Introduction
+
+Screenshot:
+![video chat screenshot](https://github.com/dzer6/videochat/raw/master/documents/video-chat-screenshot-01.png)
+
 # Structure
 
 Default video chat architecture on diagram below:
