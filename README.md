@@ -119,6 +119,9 @@ $ sudo mv apache-tomcat-7.0.33 /usr/local/tomcat
 ```
 
 12) Configure Tomcat
+```bash
+sudo nano /usr/local/tomcat/bin/catalina.sh
+```
 
 Add next line 
 ```bash
