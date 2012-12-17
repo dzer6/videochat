@@ -20,8 +20,9 @@
         <jpa.version>2.0.0</jpa.version>
         <hibernate.version>4.1.2</hibernate.version>
         <slf4j.version>1.6.1</slf4j.version>
-        <org.apache.activemq.version>5.5.1</org.apache.activemq.version>
-        <org.apache.camel.version>2.4.0</org.apache.camel.version>
+        <org.apache.activemq.version>5.7.0</org.apache.activemq.version>
+        <org.apache.camel.version>2.10.3</org.apache.camel.version>
+        <mina.version>2.0.7</mina.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
   
@@ -32,10 +33,21 @@
     <repositories>
         
         <repository>
-            <id>codehaus-snapshots</id>
-            <url>http://nexus.codehaus.org/snapshots</url>
+            <id>repo1.maven.org</id>
+            <url>http://repo1.maven.org/maven2</url>
         </repository>
-    
+        
+        <repository>
+            <id>springsource-repo</id>
+            <name>SpringSource Repository</name>
+            <url>http://repo.springsource.org/release</url>
+        </repository>
+        
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <url>http://download.java.net/maven/2</url>
+        </repository>
+        
         <repository>
             <id>dzer6-releases-repo</id>
             <url>https://bitbucket.org/dzer6/mvn-repo/raw/master/releases</url>
@@ -45,60 +57,11 @@
             <id>dzer6-snapshotss-repo</id>
             <url>https://bitbucket.org/dzer6/mvn-repo/raw/master/snapshots</url>
         </repository>
-    
-        <repository>
-            <id>apache.snapshots</id>
-            <name>Apache Development Snapshot Repository</name>
-            <url>https://repository.apache.org/content/repositories/snapshots</url>
-        </repository>
-
-        <repository>
-            <id>java.net2</id>
-            <name>Repository hosting the jee6 artifacts</name>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-
+        
         <repository>
             <id>xuggleRepository</id>
             <name>Xuggle Repository</name>
             <url>http://xuggle.googlecode.com/svn/trunk/repo/share/java</url>
-        </repository>
-    
-        <repository>
-            <id>com.springsource.repository.bundles.release</id>
-            <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
-            <url>http://repository.springsource.com/maven/bundles/release</url>
-        </repository>
-
-        <repository>
-            <id>com.springsource.repository.bundles.external</id>
-            <name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
-            <url>http://repository.springsource.com/maven/bundles/external</url>
-        </repository>
-    
-        <!-- repository for javamelody -->
-        <repository>
-            <id>m.g.o-public</id>
-            <url>http://maven.glassfish.org/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    
-        <!-- repository for jrobin -->
-        <repository>
-            <id>opennms-repo</id>
-            <name>OpenNMS Repository</name>
-            <url>http://repo.opennms.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </repository>
   
     </repositories>

@@ -1,30 +1,23 @@
 package com.dzer6.vc.r5wa;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.red5.logging.Red5LoggerFactory;
-
-import org.red5.server.api.IContext;
-import org.red5.server.api.IScope;
-
-import org.red5.server.api.stream.IBroadcastStream;
-
-import org.red5.server.stream.BroadcastScope;
-import org.red5.server.stream.IBroadcastScope;
-import org.red5.server.stream.IProviderService;
-
-import com.xuggle.xuggler.ICodec;
-import com.xuggle.xuggler.ISimpleMediaFile;
-import com.xuggle.xuggler.SimpleMediaFile;
-
 import com.xuggle.red5.io.BroadcastStream;
-
+import com.xuggle.xuggler.ICodec;
 import com.xuggle.xuggler.IPixelFormat;
 import com.xuggle.xuggler.IRational;
-
+import com.xuggle.xuggler.ISimpleMediaFile;
+import com.xuggle.xuggler.SimpleMediaFile;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import org.red5.logging.Red5LoggerFactory;
+import org.red5.server.api.IContext;
+import org.red5.server.api.scope.IBroadcastScope;
+import org.red5.server.api.scope.IScope;
+import org.red5.server.api.stream.IBroadcastStream;
+import org.red5.server.api.stream.IClientBroadcastStream;
+import org.red5.server.scope.BroadcastScope;
+import org.red5.server.stream.IProviderService;
+import org.slf4j.Logger;
 
 public class VideoTranscoder {
 
@@ -152,8 +145,7 @@ public class VideoTranscoder {
         IProviderService providerService = (IProviderService) context.getBean(IProviderService.BEAN_NAME);
         if (providerService.registerBroadcastStream(aScope, outputName, outputStream)) {
             IBroadcastScope bsScope = (BroadcastScope) providerService.getLiveProviderInput(aScope, outputName, true);
-
-            bsScope.setAttribute(IBroadcastScope.STREAM_ATTRIBUTE, outputStream);
+            bsScope.setClientBroadcastStream((IClientBroadcastStream)outputStream);
         } else {
             log.error("Got a fatal error; could not register broadcast stream");
             throw new RuntimeException("fooey!");

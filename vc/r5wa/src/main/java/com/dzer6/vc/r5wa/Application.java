@@ -13,8 +13,8 @@ import etm.core.timer.Java15NanoTimer;
 import java.util.*;
 import org.red5.server.adapter.ApplicationAdapter;
 import org.red5.server.api.IConnection;
-import org.red5.server.api.IScope;
 import org.red5.server.api.Red5;
+import org.red5.server.api.scope.IScope;
 import org.red5.server.api.service.ServiceUtils;
 import org.red5.server.api.stream.IBroadcastStream;
 

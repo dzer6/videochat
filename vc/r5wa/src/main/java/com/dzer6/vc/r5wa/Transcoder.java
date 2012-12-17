@@ -3,48 +3,39 @@ package com.dzer6.vc.r5wa;
 import com.xuggle.red5.IAudioSamplesListener;
 import com.xuggle.red5.IPacketListener;
 import com.xuggle.red5.IVideoPictureListener;
-
-import org.apache.mina.core.buffer.IoBuffer;
-
-import org.red5.logging.Red5LoggerFactory;
-
-import org.red5.server.api.stream.IBroadcastStream;
-import org.red5.server.api.stream.IStreamListener;
-import org.red5.server.api.stream.IStreamPacket;
-
-import org.red5.server.net.rtmp.event.AudioData;
-import org.red5.server.net.rtmp.event.IRTMPEvent;
-import org.red5.server.net.rtmp.event.VideoData;
-
-import org.slf4j.Logger;
-
-import com.xuggle.xuggler.IAudioResampler;
-import com.xuggle.xuggler.IAudioSamples;
-import com.xuggle.xuggler.ICodec;
-import com.xuggle.xuggler.IContainer;
-import com.xuggle.xuggler.IContainerFormat;
-import com.xuggle.xuggler.IVideoPicture;
-import com.xuggle.xuggler.IPacket;
-import com.xuggle.xuggler.IRational;
-import com.xuggle.xuggler.ISimpleMediaFile;
-import com.xuggle.xuggler.IStream;
-import com.xuggle.xuggler.IStreamCoder;
-import com.xuggle.xuggler.IVideoResampler;
-import com.xuggle.xuggler.SimpleMediaFile;
-import com.xuggle.xuggler.Configuration;
-
 import com.xuggle.red5.io.BroadcastStream;
 import com.xuggle.red5.io.IRTMPEventIOHandler;
 import com.xuggle.red5.io.Red5HandlerFactory;
 import com.xuggle.red5.io.Red5Message;
 import com.xuggle.red5.io.Red5StreamingQueue;
-
+import com.xuggle.xuggler.Configuration;
+import com.xuggle.xuggler.IAudioResampler;
+import com.xuggle.xuggler.IAudioSamples;
+import com.xuggle.xuggler.ICodec;
+import com.xuggle.xuggler.IContainer;
+import com.xuggle.xuggler.IContainerFormat;
+import com.xuggle.xuggler.IPacket;
+import com.xuggle.xuggler.IRational;
+import com.xuggle.xuggler.ISimpleMediaFile;
+import com.xuggle.xuggler.IStream;
+import com.xuggle.xuggler.IStreamCoder;
+import com.xuggle.xuggler.IVideoPicture;
+import com.xuggle.xuggler.IVideoResampler;
+import com.xuggle.xuggler.SimpleMediaFile;
 import etm.core.configuration.EtmManager;
-
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 import java.util.Properties;
+import org.apache.mina.core.buffer.IoBuffer;
+import org.red5.logging.Red5LoggerFactory;
+import org.red5.server.api.stream.IBroadcastStream;
+import org.red5.server.api.stream.IStreamListener;
+import org.red5.server.api.stream.IStreamPacket;
+import org.red5.server.net.rtmp.event.AudioData;
+import org.red5.server.net.rtmp.event.IRTMPEvent;
 import org.red5.server.net.rtmp.event.Notify;
+import org.red5.server.net.rtmp.event.VideoData;
+import org.slf4j.Logger;
 
 /**
  * Transcodes video and audio of a particular type from a red5 stream
