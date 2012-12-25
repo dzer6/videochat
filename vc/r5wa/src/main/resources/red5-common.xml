@@ -7,49 +7,23 @@
   <!-- This context is shared between all child contexts. -->
   <!-- Server bean -->
   <bean id="red5.server" class="org.red5.server.Server"/>
-  <!-- JMX server -->
-  <bean id="jmxFactory" class="org.red5.server.jmx.JMXFactory">
-    <property name="domain" value="org.red5.server"/>
-  </bean>
-  <bean id="jmxAgent" class="org.red5.server.jmx.JMXAgent" init-method="init">
-    <!-- The RMI adapter allows remote connections to the MBeanServer -->
-    <property name="enableRmiAdapter" value="false"/>
-    <property name="rmiAdapterPort" value="9999"/>
-    <property name="rmiAdapterRemotePort" value=""/>
-    <property name="rmiAdapterHost" value="127.0.0.1"/>
-    <property name="enableSsl" value="false"/>
-    <!-- Starts a registry if it doesnt exist -->
-    <property name="startRegistry" value="false"/>
-    <!-- Authentication -->
-    <property name="remoteAccessProperties" value="access.properties"/>
-    <property name="remotePasswordProperties" value="password.properties"/>
-    <property name="remoteSSLKeystore" value=""/>
-    <property name="remoteSSLKeystorePass" value=""/>
-    <!-- Mina offers its own Mbeans so you may integrate them here -->
-    <property name="enableMinaMonitor" value="false"/>
-  </bean>	
   <!-- Serializes objects to AMF binary -->
   <bean id="serializer" class="org.red5.io.object.Serializer"/>
   <!-- Deserializes objects from AMF binary -->
   <bean id="deserializer" class="org.red5.io.object.Deserializer"/>
   <!-- Deals with StatusObjects representing statuses like FMS NetConnection.Connect.Success status -->
-  <bean id="statusObjectService" class="org.red5.server.net.rtmp.status.StatusObjectService" autowire="byType" init-method="initialize"/>
+  <bean id="statusObjectService" class="org.red5.server.net.rtmp.status.StatusObjectService" autowire="byType"/>
   <!-- RTMP codec factory -->
-  <bean id="rtmpCodecFactory" class="org.red5.server.net.rtmp.codec.RTMPMinaCodecFactory" autowire="byType" init-method="init">
-    <property name="minaEncoder">
-      <bean class="org.red5.server.net.rtmp.codec.RTMPMinaProtocolEncoder">
-        <property name="serializer">
+  <bean id="rtmpCodecFactory" class="org.red5.server.net.rtmp.codec.RTMPMinaCodecFactory" autowire="byType"/>	 
+  <bean id="minaEncoder" class="org.red5.server.net.rtmp.codec.RTMPMinaProtocolEncoder">
+      <property name="serializer">
           <ref bean="serializer"/>
-        </property>
-      </bean>
-    </property>	
-    <property name="minaDecoder">
-      <bean class="org.red5.server.net.rtmp.codec.RTMPMinaProtocolDecoder">
-        <property name="deserializer">
+      </property>
+  </bean>
+  <bean id="minaDecoder" class="org.red5.server.net.rtmp.codec.RTMPMinaProtocolDecoder">
+      <property name="deserializer">
           <ref bean="deserializer"/>
-        </property>
-      </bean>
-    </property>		 
+      </property>
   </bean>
   <!-- RTMPT codec factory -->
   <bean id="rtmptCodecFactory" class="org.red5.server.net.rtmpt.codec.RTMPTCodecFactory" autowire="byType" init-method="init">

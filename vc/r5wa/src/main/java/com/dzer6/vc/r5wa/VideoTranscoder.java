@@ -16,13 +16,14 @@ import org.red5.server.api.scope.IScope;
 import org.red5.server.api.stream.IBroadcastStream;
 import org.red5.server.api.stream.IClientBroadcastStream;
 import org.red5.server.scope.BroadcastScope;
+import org.red5.server.stream.ClientBroadcastStream;
 import org.red5.server.stream.IProviderService;
 import org.slf4j.Logger;
 
 public class VideoTranscoder {
 
     final private Logger log = Red5LoggerFactory.getLogger(VideoTranscoder.class);
-    final private Map<String, BroadcastStream> mOutputStreams = Collections.synchronizedMap(new HashMap<String, BroadcastStream>());
+    final private Map<String, ClientBroadcastStream> mOutputStreams = Collections.synchronizedMap(new HashMap<String, ClientBroadcastStream>());
     final private Map<String, Transcoder> mTranscoders = Collections.synchronizedMap(new HashMap<String, Transcoder>());
     private int audioBitRate = 16384;
     private int audioChannels = 1;
@@ -136,7 +137,8 @@ public class VideoTranscoder {
          * those.
          */
         String outputName = streamPrefix + aStream.getPublishedName();
-        BroadcastStream outputStream = new BroadcastStream(outputName);
+        ClientBroadcastStream outputStream = new ClientBroadcastStream();
+        outputStream.setName(outputName);
         outputStream.setPublishedName(outputName);
         outputStream.setScope(aScope);
 
@@ -199,7 +201,7 @@ public class VideoTranscoder {
         if (transcoder != null) {
             transcoder.stop();
         }
-        BroadcastStream outputStream = mOutputStreams.get(inputName);
+        ClientBroadcastStream outputStream = mOutputStreams.get(inputName);
         if (outputStream != null) {
             outputStream.stop();
         }

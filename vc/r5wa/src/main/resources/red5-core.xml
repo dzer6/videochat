@@ -29,7 +29,6 @@
   <!-- RTMP Mina IO Handler -->
   <bean id="rtmpMinaIoHandler" class="org.red5.server.net.rtmp.RTMPMinaIoHandler">
     <property name="handler" ref="rtmpHandler" />
-    <property name="codecFactory" ref="rtmpCodecFactory" />
     <property name="rtmpConnManager" ref="rtmpMinaConnManager" />
   </bean>
 	
@@ -52,10 +51,8 @@
     </property>		
     <property name="receiveBufferSize" value="65536" /> <!-- 65536 -->
     <property name="sendBufferSize" value="65536" /> <!-- 271360 -->
-    <property name="connectionThreads" value="16" />
-    <property name="ioThreads" value="100" />
 	<!-- This is the interval at which the sessions are polled for stats. If mina monitoring is not enabled, polling will not occur. -->
-    <property name="jmxPollInterval" value="1000" />
+    <property name="minaPollInterval" value="1000" />
     <property name="tcpNoDelay" value="false" />
   </bean>
 	

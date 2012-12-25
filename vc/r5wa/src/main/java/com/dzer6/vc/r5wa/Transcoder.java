@@ -35,6 +35,7 @@ import org.red5.server.net.rtmp.event.AudioData;
 import org.red5.server.net.rtmp.event.IRTMPEvent;
 import org.red5.server.net.rtmp.event.Notify;
 import org.red5.server.net.rtmp.event.VideoData;
+import org.red5.server.stream.ClientBroadcastStream;
 import org.slf4j.Logger;
 
 /**
@@ -61,7 +62,7 @@ public class Transcoder implements Runnable {
   private final IBroadcastStream mInputStream;
   private final Red5StreamingQueue mInputQueue;
   private final IStreamListener mInputListener;
-  private final BroadcastStream mOutputStream;
+  private final ClientBroadcastStream mOutputStream;
   private final ISimpleMediaFile mOutputInfo;
   private final IRTMPEventIOHandler mOutputHandler;
   private final IPacketListener mPacketListener;
@@ -94,7 +95,7 @@ public class Transcoder implements Runnable {
    */
   public Transcoder(
           IBroadcastStream aInputStream,
-          BroadcastStream aOutputStream,
+          ClientBroadcastStream aOutputStream,
           ISimpleMediaFile aOutputInfo,
           String x264PresetsPath) {
     this(aInputStream, aOutputStream, aOutputInfo, null, null, null, x264PresetsPath);
@@ -114,7 +115,7 @@ public class Transcoder implements Runnable {
    */
   public Transcoder(
           IBroadcastStream aInputStream,
-          BroadcastStream aOutputStream,
+          ClientBroadcastStream aOutputStream,
           ISimpleMediaFile aOutputInfo,
           IPacketListener aPacketListener,
           IAudioSamplesListener aSamplesListener,
