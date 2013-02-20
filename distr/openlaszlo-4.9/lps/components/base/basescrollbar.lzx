@@ -263,9 +263,9 @@
 
         <!---  @keywords private -->
         <method name="mousewheelUpdate" args="d"> <![CDATA[
-            if (this.axis != 'y') return;
-            // check if the mouse is over the view
-            if (this.mousewheelactive || (this.scrolltarget && this.scrolltarget.immediateparent && this.scrolltarget.immediateparent.isMouseOver()) ) {
+            if (!this.scrollable || this.axis != 'y') return;
+            // check if the mouse is over the view (see LPP-10060)
+            if (this.mousewheelactive && (this.scrolltarget && this.scrolltarget.immediateparent && this.scrolltarget.immediateparent.isMouseOver()) ) {
                 this.step(-d);
             }
             ]]>
@@ -658,7 +658,7 @@
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

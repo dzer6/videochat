@@ -62,6 +62,7 @@ If you edit this file, please validate your work using http://validator.w3.org/
     <html>
       <head>
         <xsl:copy-of select="/canvas/wrapperheaders/node()"/> 
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
         <link rel="SHORTCUT ICON" href="http://www.laszlosystems.com/favicon.ico"/>
         <link rel="stylesheet" href="{$lps}/lps/includes/console.css" type="text/css"/>
         <xsl:comment>[if IE]&gt;
@@ -82,7 +83,7 @@ If you edit this file, please validate your work using http://validator.w3.org/
         </title>
         <script src="{/canvas/request/@lps}/lps/includes/embed-compressed.js" type="text/javascript"/>
         <xsl:choose>
-          <xsl:when test="/canvas/@runtime = 'dhtml'">
+          <xsl:when test="(/canvas/@runtime = 'dhtml') or (/canvas/@runtime = 'mobile')">
             <xsl:comment>[if lt IE 9]&gt;&lt;script type="text/javascript" src="<xsl:value-of select="/canvas/request/@lps"/>/lps/includes/excanvas.js"&gt;&lt;/script&gt;&lt;![endif]</xsl:comment>
           </xsl:when>
         </xsl:choose>
@@ -155,7 +156,7 @@ If you edit this file, please validate your work using http://validator.w3.org/
     <div class="info">
       <b>ターゲットランタイム: </b> <xsl:value-of select="$runtime"/><br/>
       <xsl:choose>
-        <xsl:when test="@runtime = 'dhtml'">
+        <xsl:when test="@runtime = 'dhtml' or @runtime = 'mobile'">
             <b>合計サイズ: </b>
             <b><xsl:value-of select="round($gztotalsize div 1024)"/>K</b>
             (<xsl:value-of select="round($totalsize div 1024)"/>K 非圧縮)
@@ -288,7 +289,7 @@ If you edit this file, please validate your work using http://validator.w3.org/
 </xsl:stylesheet>
 
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2006, 2008, 2009, 2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2006, 2008, 2009, 2010, 2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 

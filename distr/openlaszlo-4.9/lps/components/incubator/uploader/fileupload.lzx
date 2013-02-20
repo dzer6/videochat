@@ -3,7 +3,7 @@
     @subtopic Components
 -->
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2007, 2008, 2009, 2010 Laszlo Systems, Inc.  All Rights Reserved. *
+* Copyright 2007-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <library>
@@ -186,11 +186,11 @@
 
 
         <doc>
-            <tag name="shortdesc"><text>A swf8-specific class for uploading a single file to a server</text></tag>
+            <tag name="shortdesc"><text>A swf-specific class for uploading a single file to a server</text></tag>
             <text>
                 <p>
-                A class for uploading a single file using the Flash 8 file upload api. This only works with
-                the swf8 runtime, that is, with lzr=swf8.
+                A class for uploading a single file using the Flash file upload api. This only works with
+                the swf runtime, that is, with lzr=swf10.
                 </p>
                 <p>
                 Using this class requires a service to which to upload. A sample upload jsp is provided, 
@@ -201,14 +201,14 @@
                 by changing the value of saveDirectory. The destination
                 directory is currently /tmp/uploader, which will work for mac and linux servers.
                 Restart tomcat, so it will see the new jar, then visit 
-                <a href="http://localhost:8080/legals/lps/components/incubator/uploader/example/test-fileupload.lzx?lzr=swf8">
-                    http://localhost:8080/legals/lps/components/incubator/uploader/example/test-fileupload.lzx?lzr=swf8</a>
+                <a href="http://localhost:8080/legals/lps/components/incubator/uploader/example/test-fileupload.lzx?lzr=swf10">
+                    http://localhost:8080/legals/lps/components/incubator/uploader/example/test-fileupload.lzx?lzr=swf10</a>
                 </p>
                 <p>
                     To upload multiple files, see <tagname>multiplefileupload</tagname>
                 </p>
                 <p>(The terms of the servlets.com license forbid it from being redistributed 
-                with Open Laszlo.)
+                with OpenLaszlo.)
                 </p>
             </text>
         </doc>

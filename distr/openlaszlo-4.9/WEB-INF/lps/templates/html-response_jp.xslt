@@ -37,7 +37,7 @@ If you edit this file, please validate your work using http://validator.w3.org/
     <html>
       <head>
         <xsl:copy-of select="/canvas/wrapperheaders/node()"/> 
-        <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1; IE=EmulateIE8"/>
         <link rel="SHORTCUT ICON" href="http://www.laszlosystems.com/favicon.ico"/>
         <!-- this tag helps laszlo apps look good on the iPhone. -->
         <meta name="viewport" content="width=device-width; initial-scale=1.0;"/>
@@ -46,7 +46,7 @@ If you edit this file, please validate your work using http://validator.w3.org/
         </title>
         <script type="text/javascript" src="{/canvas/request/@lps}/lps/includes/embed-compressed.js"/>
         <xsl:choose>
-          <xsl:when test="/canvas/@runtime = 'dhtml'">
+          <xsl:when test="(/canvas/@runtime = 'dhtml') or (/canvas/@runtime = 'mobile')">
             <xsl:comment>[if lt IE 9]&gt;&lt;script type="text/javascript" src="<xsl:value-of select="/canvas/request/@lps"/>/lps/includes/excanvas.js"&gt;&lt;/script&gt;&lt;![endif]</xsl:comment>
           </xsl:when>
         </xsl:choose>
@@ -79,6 +79,6 @@ If you edit this file, please validate your work using http://validator.w3.org/
   </xsl:template>
 </xsl:stylesheet>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-     * Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+     * Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
      * Use is subject to license terms.                                            *
      * X_LZ_COPYRIGHT_END ****************************************************** -->

@@ -44,7 +44,7 @@
             this.ssel = this.editor._ssel;
             this.esel = this.editor._esel; 
             this.urlfield.setAttribute('text', "http://");
-            var ntextlength = this.urlfield.getText().length;
+            var ntextlength = this.urlfield.text.length;
             this.urlfield.setSelection(ntextlength,ntextlength);
             this._animShow.doStart();
         </method>
@@ -66,7 +66,7 @@
                 this.esel = this.editor._esel; 
             }
         
-            var url = this.urlfield.getText();
+            var url = this.urlfield.text;
             var fmt = this.editor.getTextFormat(this.ssel, this.esel); 
             fmt.url = url;
             fmt.color = 0x0000FF; 
@@ -112,7 +112,7 @@
     
 </library> 
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2006-2009 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2006-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

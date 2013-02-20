@@ -8,7 +8,6 @@
   <include href="base/library.lzx" />
   <include href="utils/library.lzx" />
   <include href="debugger/library.lzx" />
-  <include href="charts/library.lzx" />
   <include href="lz/library.lzx" />
   <include href="lzunit/library.lzx" />
   <include href="rpc/library.lzx" />
@@ -16,6 +15,6 @@
   <include href="mixins/library.lzx" />
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2007, 2010 Laszlo Systems, Inc.  All Rights Reserved.        *
+* Copyright 2001-2007, 2011 Laszlo Systems, Inc.  All Rights Reserved.        *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->

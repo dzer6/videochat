@@ -18,6 +18,9 @@
         <!--- @keywords private -->
         <attribute name="_currentattachx" value="bottom" type="string"/>
 
+        <!--- The boundary view within which this view must stay. -->
+        <attribute name="bounds" value="null"/>
+
         <!--- The view to which this floatinglist will attach. By default, this
               will be the lexical parent.  The style of the attachtarget will be
               inherited. -->
@@ -39,12 +42,44 @@
               @keywords private -->
         <attribute name="style" value="${attachtarget ? attachtarget['style'] : null}"/>
         
+        <!--- Gets the closest ancestor node of the provided node that has
+              the options "floatingboundary" equal to true. If none is found
+              the canvas will be returned. -->
+        <method name="getFloatingBoundary" allocation="class" args="start:LzNode" returns="LzNode">
+            return lz.basefloatinglist.getMatchingAncestorOrSelf(start, function(n:LzNode) {
+                return n.getOption('floatingboundary') || n == canvas;
+            });
+        </method>
+
+        <!--- Get the closest ancestor of the provided node or the node itself for 
+              which the matcher function returns true.
+              @param obj:LzNode the node to start searching from.
+              @param matcher:Function the function to test for matching nodes with.
+              @returns null if no match is found.
+              @keywords private -->
+        <method name="getMatchingAncestorOrSelf" allocation="class" args="obj:LzNode, matcher:Function" returns="LzNode">
+            if (!obj || !matcher) return null;
+            
+            if (matcher(obj)) {
+                return obj;
+            } else if (obj == canvas) {
+                return null;
+            } else {
+                return lz.basefloatinglist.getMatchingAncestorOrSelf(obj.immediateparent, matcher);
+            }
+        </method>
+
         <!--- Set the target to which the floating list will attach.  Set the
               "attach" attribute for attachment location relative to this attach
               target. Our style will be inherited from this attachtarget.
               @param LzView target: the target to attach the floatinglist. -->
         <method name="setAttachTarget" args="target" >
             this.attachtarget = target;
+            
+            if (!this.bounds) {
+                this.bounds = lz.basefloatinglist.getFloatingBoundary(this.attachtarget);
+            }
+            
             if (visible) updateAttachLocation();
             // track attachtarget position
             var del = this._updateAttachPosDel;
@@ -216,35 +251,39 @@
         <!--- Adjusts the location of the floatinglist relative to its
               attachtarget, taking into account the attach location and the
               canvas bounds. -->
-        <method name="updateAttachLocation" > <![CDATA[
+        <method name="updateAttachLocation"><![CDATA[
             // Adjust x and y relative to the attachtarget as appropriate to adhere to the requested attach location.
             // In the event that the floatinglist intersects the canvas bounds, the attach location
             // will be temporarily changed in order to be fully visible.
             if ( !isinited ) return;
             if (!attachtarget) return;
+            if (!this.bounds) return;
 
+            var boundsXOffset = this.bounds.getAttributeRelative('x', canvas);
+            var boundsYOffset = this.bounds.getAttributeRelative('y', canvas);
+            
             // Adjust X
             var doneonce = false;
             var validattach = attach;
-            var own_x = attachtarget.getAttributeRelative('x',canvas);
+            var own_x = attachtarget.getAttributeRelative('x', canvas) - boundsXOffset;
             while (true) {
                 if (validattach=="bottom" || validattach=="top") {
                     var tmp_x = own_x;
                     if (tmp_x < 0) {
                         //if our left edge isn't visible move list to left edge
                         tmp_x = 0;
-                    } else if (tmp_x + attachtarget.width > canvas.width) {
-                        tmp_x = canvas.width - this.width;
-                    } else if (tmp_x + this.width > canvas.width) {
+                    } else if (tmp_x + attachtarget.width > this.bounds.width) {
+                        tmp_x = this.bounds.width - this.width;
+                    } else if (tmp_x + this.width > this.bounds.width) {
                         tmp_x = (own_x + attachtarget.width) - this.width;
                     }
-                    this.setAttribute( 'x' , tmp_x );
+                    this.setAttribute( 'x' , tmp_x + boundsXOffset);
                     break;
                 } else
                 if (validattach=="left") {
                     var tmp_x = own_x - this.width;
                     if (tmp_x > 0) {
-                        this.setAttribute( 'x' , tmp_x );
+                        this.setAttribute( 'x' , tmp_x + boundsXOffset);
                         this.setAttribute( '_currentattachx', 'left' );
                         break;
                     } else {
@@ -253,8 +292,8 @@
                 }
                 if (validattach=="right") {
                     var tmp_x = own_x + attachtarget.width; // why -1?
-                    if (tmp_x + this.width < canvas.width ) {
-                        this.setAttribute( 'x' , tmp_x );
+                    if (tmp_x + this.width < this.bounds.width ) {
+                        this.setAttribute( 'x' , tmp_x + boundsXOffset);
                         this.setAttribute( '_currentattachx', 'right' );
                         break;
                     } else {
@@ -282,11 +321,11 @@
             //NOTE: we are using calcMyHeight() here because height is returning the wrong value
             var menuCapHeight = getMenuCapHeight();
             var myHeight = this.calcMyHeight() + menuCapHeight;
-            var own_y = attachtarget.getAttributeRelative('y',canvas);
+            var own_y = attachtarget.getAttributeRelative('y', canvas) - boundsYOffset;
             while (true) {
                 if ( validattach=="left" || validattach=="right" ) {
-                    if ( own_y + myHeight < canvas.height ) {
-                        this.setAttribute( 'y' , own_y );
+                    if ( own_y + myHeight < this.bounds.height ) {
+                        this.setAttribute( 'y' , own_y + boundsYOffset);
                         this.setAttribute( '_currentattachy', 'bottom' );
                         break;
                     } else {
@@ -295,8 +334,8 @@
                 } else
                 if ( validattach=="bottom" ) {
                     var tmp_y = own_y + attachtarget.height + attachoffset;
-                    if ( tmp_y + myHeight < canvas.height ) {
-                       this.setAttribute( 'y' , tmp_y );
+                    if ( tmp_y + myHeight < this.bounds.height ) {
+                       this.setAttribute( 'y' , tmp_y + boundsYOffset);
                        this.setAttribute( '_currentattachy', 'bottom' );
                        break;
                     } else {
@@ -310,7 +349,7 @@
                     // of the floatinglist is flush with the bottom of the attachtarget
                     if ( attach == 'right' || attach == 'left' )tmp_y += attachtarget.height;
                     if ( tmp_y > 0 ) {
-                        this.setAttribute( 'y' , tmp_y + menuCapHeight);
+                        this.setAttribute( 'y' , tmp_y + menuCapHeight + boundsYOffset);
                         this.setAttribute( '_currentattachy', 'top' );
                         break;
                     } else {
@@ -406,7 +445,7 @@
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2009 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

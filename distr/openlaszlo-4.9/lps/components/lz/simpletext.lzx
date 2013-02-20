@@ -60,7 +60,7 @@
         <!--- Get the text.
               @return String: input text value. -->
         <method name="getText" >
-            return this.input.getText();
+            return this.input.text;
         </method>
         
         <!--- @keywords private -->
@@ -90,7 +90,7 @@
 
         <!--- @keywords private -->
         <method name="updateData" >
-            return this.input.getText();
+            return this.input.text;
         </method>
         
         <doc>
@@ -108,7 +108,7 @@
         
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2009 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

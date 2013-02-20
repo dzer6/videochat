@@ -1,5 +1,6 @@
 <library>
     <include href="base/baseformitem.lzx" />
+    <include href="mixins/bidi.lzx" />
 
     <class name="_internalinputtext" extends="inputtext">
         <method name="construct" args="parent, args">
@@ -10,6 +11,21 @@
             if ( parent['multiline'] != null ) args.multiline = parent.multiline;
             super.construct(  parent, args );
         </method>
+
+        <!-- If getNextSelection() or getPrevSelection() is defined in the parent,
+             call it. -->
+        <method name="getPrevSelection" >
+            if ( parent['getPrevSelection'] ) {
+               return parent.getPrevSelection();
+            }
+            return null;
+        </method>
+
+        <method name="getNextSelection" >
+            if ( parent['getNextSelection'] )  return parent.getNextSelection()
+            return null; // so that default tab order occurs
+        </method>
+
         <doc>
           <text>Class for use in edittext, takes its parent's arguments
                 when it constructs.</text>
@@ -20,7 +36,7 @@
 
     <!--- This component provides the look and feel for user editable text, data
           binding, and focus events. -->
-    <class name="edittext" extends="baseformitem"
+    <class name="edittext" extends="baseformitem" with="bidi"
            focusable="false" defaultplacement="content">
         <!--- The text that appears in the component. -->
         <attribute name="text" type="text"/>
@@ -210,6 +226,9 @@
 
         <_internalinputtext name="field"
             password="$once{parent.password}"
+            hasdirectionallayout="${parent.hasdirectionallayout}"
+            direction="${parent.direction}"
+            textalign="${parent.textalign}"
             x="3" y="${this.classroot.text_y}"
             width="${parent.width - 4}"
             height="${parent.height - y - 2}" > <!-- -2 to account for border of edittext -->
@@ -237,7 +256,7 @@
             <handler name="ontext">
             <![CDATA[
                 // Don't use parent.updateData() or parent.setAttribute('text') because they call the text setter - which will call this method or clobber _initialtext
-                parent.text = this.getText();
+                parent.text = this.text;
                 if (parent['ontext'] && parent.ontext.ready) parent.ontext.sendEvent(parent.text);
                 parent.setValue(parent.text, false);
             ]]>
@@ -249,7 +268,7 @@
               @return String: the string displayed. -->
         <method name="getText">
             if (this._initcomplete) {
-                 return this.field.getText();
+                 return this.field.text;
             } else {
                 return this._initialtext;
             }
@@ -287,21 +306,24 @@
         <!--- Updates the text property of the component to the text that is
              entered in its input field. -->
         <method name="updateText">
-            this.setAttribute('text', this.field.getText() );
+            this.setAttribute('text', this.field.text );
         </method>
 
-        <!--- Returns string displayed in this component, like getText().
+        <!--- Returns string displayed in this component, like .text.
               @return String: the string displayed. -->
         <method name="getValue">
-            return  this.field.getText();
+            return  this.field.text;
         </method>
         <!--- TODO: [2008-11-14 ptw] There needs to be a simpler way
              to declare simple dependencies like this in LZX
              @access private
         -->
         <method name="$lzc$getValue_dependencies" args="who, self">
-          self = this.field
-          return self.$lzc$getText_dependencies(who, self);
+          // adapted from lztext:
+          //$lzc$getText_dependencies ( who , self){
+          //  return [ self , "text" ];
+          //}
+          return [this.field, "text" ];
         </method>
 
 
@@ -352,7 +374,7 @@
     </class>
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2009 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

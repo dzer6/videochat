@@ -4,8 +4,11 @@
   -->
 <library>
   <include href="boxmodel.lzx"/>
+  <include href="cssfonts.lzx"/>
+  <include href="formatter.lzx"/>
+  <include href="draggable/library.lzx"/>
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2010 Laszlo Systems, Inc.  All Rights Reserved.                   *
+* Copyright 2010-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->

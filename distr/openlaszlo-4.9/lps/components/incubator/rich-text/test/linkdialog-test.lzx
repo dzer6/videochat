@@ -51,8 +51,8 @@
 <TestSuite name="linkdialog_test">
     <TestCase>
         <method name="testTextIsPresent">
-            assertNotNull(grte.getText()); 
-            assertTrue(grte.getText().length > 0); 
+            assertNotNull(grte.text); 
+            assertTrue(grte.text.length > 0); 
         </method>
         <method name="testGetFormat">
             grte.setTextFormat( {font: "Verdana", size: 24, color: "0xAA00FF"}, 0, 40); 
@@ -93,15 +93,15 @@
             grte.setText("012345 abcde mnopqr stuvwx"); 
             grte.setTextFormat( {font: "Verdana", size: 24, color: "0xAA00FF"}, 0, 40); 
             grte.setSelection(7,12); 
-            var txt = grte.getText();
+            var txt = grte.text;
             var sel = txt.substr(7,5); 
             assertEquals("abcde", sel); 
-            var after = grte.getText().substr(12, 1); 
+            var after = grte.text.substr(12, 1); 
             assertEquals(" ", after); 
             ldlg.urlfield.setText("http://openlaszlo.org");
             ldlg.urlfield.setText("http://openlaszlo.org");
             ldlg.makelink();  
-            var shouldBeSpace = grte.getText().substr(12, 1); 
+            var shouldBeSpace = grte.text.substr(12, 1); 
             assertEquals(" ", shouldBeSpace); 
         </method>
         <method name="addTests"> 
@@ -113,13 +113,13 @@
             grte.setText("012345 abcde mnopqr stuvwx"); 
             grte.setTextFormat( {font: "Verdana", size: 24, color: "0xAA00FF"}, 0, 40); 
             grte.setSelection(7,10); 
-            var txt = grte.getText();
+            var txt = grte.text;
             var sel = txt.substr(7,3); 
             assertEquals("abc", sel); 
-            assertEquals("d", grte.getText().substr(10, 1));
+            assertEquals("d", grte.text.substr(10, 1));
             ldlg.urlfield.setText("http://openlaszlo.org");
             ldlg.makelink();  
-            assertEquals("d", grte.getText().substr(10, 1));
+            assertEquals("d", grte.text.substr(10, 1));
         </method>
         <method name="addTests"> 
             this.addTest("testLinkMiddleOfAWord");
@@ -130,7 +130,7 @@
 
 </canvas>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-    * Copyright 2006-2010 Laszlo Systems, Inc. All Rights Reserved.                    *
+    * Copyright 2006-2011 Laszlo Systems, Inc. All Rights Reserved.                    *
     * Use is subject to license terms.                                            *
     * X_LZ_COPYRIGHT_END ****************************************************** -->
     <!-- @LZX_VERSION@                                                         -->

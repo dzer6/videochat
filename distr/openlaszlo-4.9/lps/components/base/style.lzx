@@ -71,7 +71,7 @@
         setter="setStyleAttr( bordersize, 'bordersize')" type="number"/>
 
     <!--- background color for menu items, defaults to the 'textfieldcolor' -->
-    <attribute name="menuitembgcolor" value="textfieldcolor"
+    <attribute name="menuitembgcolor" value="${this.textfieldcolor}"
         when="once" type="color"/>
 
     <!--- if true, this style is the default style for components  -->
@@ -250,7 +250,7 @@
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2009 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

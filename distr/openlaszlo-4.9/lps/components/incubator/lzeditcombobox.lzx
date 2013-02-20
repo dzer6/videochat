@@ -26,7 +26,7 @@
     <method name="setOpen" args="o">
       if (o) {
         // Sync the list to the text
-        this.dSetValue(editbkgnd.textfield.getText());
+        this.dSetValue(editbkgnd.textfield.text);
       }
       super.setOpen(o);
     </method>
@@ -44,7 +44,7 @@
     </method>
 
     <method name="getText">
-        return this.editbkgnd.textfield.getText();
+        return this.editbkgnd.textfield.text;
     </method>
         
     <!-- overlay the text over the middle of the box (have to fudge width)-->
@@ -58,7 +58,7 @@
     </class>
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2009 Laszlo Systems, Inc. All Rights Reserved.                    *
+* Copyright 2009-2011 Laszlo Systems, Inc. All Rights Reserved.                    *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

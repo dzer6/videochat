@@ -1,7 +1,7 @@
-var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $swf8=false;var $svg=false;var $profile=false;try{
+var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $swf11=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $svg=false;var $swf8=false;var $mobile=false;var $profile=false;try{
 if(lz){}}
 catch(e){
-lz={}};lz.embed={options:{cancelkeyboardcontrol:false,serverroot:null,approot:"",usemastersprite:false},__getlzoptions:function(){
+lz={}};lz.ClassAttributeTypes={};lz.ClassAttributeTypes["Object"]={};lz.embed={options:{cancelkeyboardcontrol:false,serverroot:null,approot:"",usemastersprite:false},__getlzoptions:function(){
 var $0=lz.embed.__getqueryurl(document.location.search).options;return $0
 },swf:function(properties,minimumVersion){
 var $0=lz.embed;if(minimumVersion==null)minimumVersion=10.1;if(!properties.id){
@@ -41,7 +41,11 @@ app.callMethod("lz.GlobalMouse.__mouseUpOutsideHandler()")
 document.onkeydown=function($0){
 if(!$0)$0=window.event;if($0.keyCode==9){
 app.callMethod("lz.Keys.__browserTabEvent("+$0.shiftKey+")");return false
-}}}},__swfSetAppAppendDivStyle:function($0,$1,$2){
+};return $0.keyCode!=8
+}}else if($4.browser.isFirefox){
+document.onkeypress=function($0){
+return $0.keyCode!=8
+}}},__swfSetAppAppendDivStyle:function($0,$1,$2){
 var $3=lz.embed.applications[$0].appenddiv;return $3.style[$1]=$2
 },lfc:function($0,$1){
 if($1==""){
@@ -102,14 +106,14 @@ $2[$3]()
 }},loadJSLib:function(url,$0){
 var embed=lz.embed;if($0){
 (embed.jscallbacks[url]||(embed.jscallbacks[url]=[])).push($0)
-};if(embed.jsloaded[url]!==void 0)return;embed.jsloaded[url]=false;var script=document.createElement("script");embed.__setAttr(script,"type","text/javascript");embed.__setAttr(script,"defer","defer");var addto=document.getElementsByTagName("body")[0]||document.getElementsByTagName("head")[0];if(script.readyState){
+};if(embed.jsloaded[url]!==void 0)return;embed.jsloaded[url]=false;var script=document.createElement("script");script.setAttribute("type","text/javascript");script.setAttribute("defer","defer");var addto=document.getElementsByTagName("body")[0]||document.getElementsByTagName("head")[0];if(script.readyState){
 script.onreadystatechange=function(){
 if(script.readyState=="loaded"||script.readyState=="complete"){
 script.onreadystatechange=null;embed.loadJSLibHandler(url);addto.removeChild(script)
 }}}else{
 script.onload=function(){
 script.onload=null;embed.loadJSLibHandler(url)
-}};embed.__setAttr(script,"src",url);addto.appendChild(script)
+}};script.setAttribute("src",url);addto.appendChild(script)
 },getServerRoot:function(){
 if(lz.embed.__serverroot)return lz.embed.__serverroot;var $0=document.getElementsByTagName("script");var $1;for(var $2=0,$3=$0.length;$2<$3;$2++){
 var $4=$0[$2].src;var $5=$4&&$4.indexOf("embed-compressed.js");if($5&&$5>-1){
@@ -161,8 +165,6 @@ $d=$d=="true"
 if($0.indexOf("=")==-1)return;var $1=$0.split("&");var $2={};for(var $3=0;$3<$1.length;$3++){
 var $4=$1[$3].split("=");if($4.length==1)continue;var $5=$4[0];var $6=$4[1];$2[$5]=$6
 };return $2
-},__setAttr:function($0,$1,$2){
-$0.setAttribute($1,$2)
 },_setCanvasAttributeSWF:function($0,$1,$2){
 var $3=lz.embed;if(this.loaded&&$3.dojo.comm[this._id]&&$3.dojo.comm[this._id]["callMethod"]){
 if($2){
@@ -253,7 +255,7 @@ lz.embed._broadcastMethod("setCanvasAttribute",$0,$1,$2)
 lz.embed._broadcastMethod("callMethod",$0)
 },_getAppendDiv:function($0,$1){
 var $2=$1?$1:$0+"Container";var $3=document.getElementById($2);if(!$3){
-$3=document.createElement("div");this.__setAttr($3,"id",$2);var $4=document.body.getElementsByTagName("script");for(var $5=$4.length-1;$5>=0;--$5){
+$3=document.createElement("div");$3.setAttribute("id",$2);var $4=document.body.getElementsByTagName("script");for(var $5=$4.length-1;$5>=0;--$5){
 var $6=$4[$5];if(!$6.defer){
 $6.parentNode.insertBefore($3,$6.nextSibling);break
 }};if(!$3.parentNode){
@@ -267,6 +269,8 @@ return lz.embed.dojo.obj[this._id].get()
 if($0!=null)this.callMethod("lz.Keys.__mousewheelEvent("+$0+")")
 },_gotFocus:function(){
 setTimeout("lz.embed._broadcastMethod('_sendAllKeysUp')",1000)
+},_gotBlur:function(){
+this.callMethod("lz.Focus.clearFocus()")
 },_sendAllKeysUpSWF:function(){
 this.callMethod("lz.Keys.__allKeysUp()")
 },_sendAllKeysUpDHTML:function(){
@@ -370,11 +374,12 @@ window.resizeTo($0?$0+window.outerWidth-window.innerWidth:window.outerWidth,$1?$
 }},resetloaded:function($0){
 if(lz.embed.iframemanager&&lz.embed.iframemanager.__reset){
 lz.embed.iframemanager.__reset($0)
-}}};lz.embed.browser.init();if(lz.embed.browser.isIE){
+}}};lz.embed.browser.init();(function(){
+if(lz.embed.browser.isIE){
 document.writeln('<script language="VBScript" type="text/vbscript">');document.writeln("Function VBGetSwfVer(i)");document.writeln("  on error resume next");document.writeln("  Dim swControl, swVersion");document.writeln("  swVersion = 0");document.writeln('  set swControl = CreateObject("ShockwaveFlash.ShockwaveFlash." + CStr(i))');document.writeln("  if (IsObject(swControl)) then");document.writeln('    swVersion = swControl.GetVariable("$version")');document.writeln("  end if");document.writeln("  VBGetSwfVer = swVersion");document.writeln("End Function");document.writeln("</script>");if(lz.embed.browser.version<9){
 lz.embed.loadJSLib(lz.embed.getServerRoot()+"json2.js")
 };lz.embed.attachEventHandler(window,"beforeunload",lz.embed,"_cleanupHandlers");lz.embed.attachEventHandler(window,"activate",lz.embed,"_gotFocus")
-};lz.embed.attachEventHandler(window,"focus",lz.embed,"_gotFocus");lz.embed.__iframemanager_callbacks=[];lz.embed.iframemanager={create:function($0,$1,$2,$3,$4,$5){
+}})();lz.embed.attachEventHandler(window,"focus",lz.embed,"_gotFocus");lz.embed.__iframemanager_callbacks=[];lz.embed.iframemanager={create:function($0,$1,$2,$3,$4,$5){
 var $6=lz.embed;var frames=$6.__iframemanager_callbacks;frames.push([].slice.call(arguments,0));var $7="__lz"+(frames.length-1);var $8=$6.getServerRoot()+"iframemanager.js";if(!$6.jscallbacks[$8]){
 var $9=function(){
 var $0=lz.embed;for(var $1=0,$2=frames.length;$1<$2;$1++){
@@ -411,7 +416,7 @@ $0._history=top.document.location.lzaddr.history.split(",")
 };if($1!=""){
 $0.set($1)
 }}else if($2.isIE){
-var $1=top.location.hash;if($1)$1=$1.substring(1);var $3=document.createElement("iframe");lz.embed.__setAttr($3,"id","lzHistory");lz.embed.__setAttr($3,"frameborder","no");lz.embed.__setAttr($3,"scrolling","no");lz.embed.__setAttr($3,"width","0");lz.embed.__setAttr($3,"height","0");lz.embed.__setAttr($3,"src",'javascript:""');document.body.appendChild($3);$3=document.getElementById("lzHistory");$0._iframe=$3;$3.style.display="none";$3.style.position="absolute";$3.style.left="-999px";var $5=$3.contentDocument||$3.contentWindow.document;$5.open();$5.close();if($1!=""){
+var $1=top.location.hash;if($1)$1=$1.substring(1);var $3=document.createElement("iframe");$3.setAttribute("id","lzHistory");$3.setAttribute("frameborder","no");$3.setAttribute("scrolling","no");$3.setAttribute("width","0");$3.setAttribute("height","0");$3.setAttribute("src",'javascript:""');document.body.appendChild($3);$3=document.getElementById("lzHistory");$0._iframe=$3;$3.style.display="none";$3.style.position="absolute";$3.style.left="-999px";var $5=$3.contentDocument||$3.contentWindow.document;$5.open();$5.close();if($1!=""){
 $5.location.hash="#"+$1;$0._parse($1)
 }}else{
 if($1!=""){
@@ -482,5 +487,6 @@ var $2=escape($0)+"="+escape($1)
 var $2=lz.embed[$1];if($2&&$2.loaded&&$2.runtime=="swf"){
 var $3=$2._getSWFDiv();if($3){
 var $4=$2.callMethod("lz.History.receiveHistory("+$0+")");$2._lasthash=$0
-}}}};if(lz.embed.browser.isFirefox){
-window.onunload=function(){}}
+}}}};(function(){
+if(lz.embed.browser.isFirefox){
+window.onunload=function(){}}})();

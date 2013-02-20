@@ -1,5 +1,5 @@
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2006-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2006-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <library>
@@ -24,33 +24,33 @@
 
 
         <!--- If true, show camera on immediateparent videoview.  -->
-        <attribute name="show" value="false" setter="this._setShow(show)"/>
+        <attribute name="show" value="false" setter="this._setShow(show)" type="boolean"/>
 
         <!--- The width (resolution) that will be captured by the camera. -->
-        <attribute name="width" value="null"/>
+        <attribute name="width" value="${parent.width}" type="number"/>
 
         <!--- The height (resolution) that will be captured by the camera. -->
-        <attribute name="height" value="null"/>
+        <attribute name="height" value="${parent.height}" type="number"/>
 
         <!--- The number of frames per second that will be captured 
               by the camera. -->
-        <attribute name="fps" value="null"/>
+        <attribute name="fps" value="30" type="number"/>
 
         <!--- Often several capture modes are available per camera device.
               These modes will allow capturing at a specific size (width/height)
               and framerate.  If you specify both fps and width and height for
               this camera, this attribute will control which capturing mode
               for the camera device will be used. -->
-        <attribute name="favorsize" value="false"/>
+        <attribute name="favorsize" value="false" type="boolean"/>
 
         <!--- Camera bandwidth (in bytes per second). -->
-        <attribute name="bandwidth" value="16384"/>
+        <attribute name="bandwidth" value="16384" type="number"/>
 
         <!--- Camera picture quality: a value between 0 and 1, where 1
               represents the highest quality (no compression). When
               0 is passed, this indicates to use highest quality that
               fits into the available bandwidth -->
-        <attribute name="picturequality" value="0"/>
+        <attribute name="picturequality" value="0" type="number"/>
 
 
         <!--- Event sent when show flag changes. 
@@ -68,9 +68,9 @@
         <!--- Make the camera. 
               @keywords private -->
         <method name="_makeDevice"><![CDATA[
+            
             var deviceindex = 
                 this['deviceindex'];
-            //Debug.write('setting up camera device', deviceindex);
 
             var dev = null;
             if ($as3) {
@@ -91,6 +91,8 @@
             if ($debug && this.debug) 
                 Debug.write('%w flash device = %w', this, this._dev);
             this.setQuality(bandwidth,picturequality);
+            
+            this.setMode(width, height, fps, favorsize);
 
             return dev;
           ]]>
@@ -133,8 +135,6 @@
         <!--- Called when the allowed flag changes.
               @keywords private -->
         <method name="_updateAllowed"><![CDATA[
-            //Debug.write("camera _updateAllowed", this, lz.mediadevice.allowed, "show", this.show);
-
             // Call super to send the onallowed event.
             super._updateAllowed();
 
@@ -178,8 +178,6 @@
                     ? immediateparent._getflashvideo()
                     : null;
 
-            //Debug.write("vid", vid, "show", show, "allowed", lz.mediadevice.allowed);
-
             if (vid != null) {
 
                 if ((show == false) ||
@@ -193,7 +191,6 @@
                     // this if it's the first time (_allowedknown is
                     // false).
 
-                    //Debug.write("detaching", this, vid);
                     if ($as3) {
                         vid.attachCamera(null);
                     } else {

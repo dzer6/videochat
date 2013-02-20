@@ -1,4 +1,4 @@
-<!-- Copyright 2001-2008 Laszlo Systems, Inc.  All Rights Reserved. -->
+<!-- Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved. -->
 <library>
     <include href="replicator.lzx"/>
     <!-- A replicator which creates as many clones as are necessary to fill in
@@ -16,6 +16,11 @@
         <attribute name="__emptyArray" value="null"/>
         <!-- @keywords private -->
         <attribute name="clonedel" value="null"/>
+
+        <!-- When true, the clones are destroyed and then recomputed.
+             @keywords private
+        -->
+        <attribute name="redrawclones" type="boolean" value="false"/>
 
         <!-- @keywords private -->
         <method name="construct" args="p,a">
@@ -59,6 +64,13 @@
                 while ( this.clones.length ) this.poolClone( this.clones.pop() );
                 return;
             }
+
+            // Redraw all the clones (needed when a new node is added)
+            if (this.redrawclones) {
+                while ( this.clones.length ) this.poolClone( this.clones.pop() );
+                this.redrawclones = false;
+            }
+
 
             if ( !this.replicatedsize ) this._setSize();
 
@@ -209,6 +221,37 @@
               this.__LZinstantiationDone();
             }
             ]]>
+        </method>
+
+        <!-- Overrides replicator.insertNode(). The clones are recomputed in
+             case the inserted node is visible.
+             @param Number idx: index to insert element
+             @param Object n: node to insert -->
+        <method name="insertNode" args="idx,n">
+            this.redrawclones = true;
+            super.insertNode (idx,n);
+        </method>
+
+        <!-- Overrides replicator.removeNodes().
+                @param Number idx: First index to delete element
+                @param Number n: number of elements to delete.
+                @return [Object]: Array of nodes that were removed.
+        -->
+        <method name="removeNodes" args="idx,n">
+            this.redrawclones = true;
+            return super.removeNodes (idx,n);
+        </method>
+
+
+        <!-- Refresh the displayed nodes. Calling this method will remove all
+             the clones, and regenerate them. If the node list is manually
+             modified, call refresh() when you are finished.
+             Note. It is not advised to manually delete nodes. Please use
+             removeNodes() instead.
+        -->
+        <method name="refresh">
+            this.redrawclones = true;
+            this.__adjustVisibleClones ();
         </method>
 
         <!-- Overrides replicator.getClone()

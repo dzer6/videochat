@@ -1,5 +1,6 @@
-var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $swf8=false;var $svg=false;var $profile=false;if(!this.JSON){
-this.JSON={}};(function(){
+var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $swf11=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $svg=false;var $swf8=false;var $mobile=false;var $profile=false;(function(){
+if(!this.JSON){
+this.JSON={}}})();(function(){
 var f;var quote;var str;f=function($0){
 return $0<10?"0"+$0:$0
 };quote=function($0){
@@ -314,20 +315,24 @@ $3.onload=$2;$3.onreadystatechange=$2
 },loadCSS:function($0,$1){
 var $2=$0.createElement("link");$2.rel="stylesheet";$2.type="text/css";$2.href=$1;$0.getElementsByTagName("head")[0].appendChild($2)
 }};lz.rte.loader={__loading:false,__loaded:false,__callbacks:[],__dojoroot:"http://ajax.googleapis.com/ajax/libs/dojo/1.5/",__csspath:"dijit/themes/",__jspath:"dojo/dojo.xd.js",loadDojoCSS:function($0,$1){
-lz.rte.util.loadCSS($0,lz.rte.loader.__dojoroot+lz.rte.loader.__csspath+$1+"/"+$1+".css");lz.rte.util.loadCSS($0,lz.rte.loader.__dojoroot+"/dojox/editor/plugins/resources/css/Smiley.css");document.body.className+=document.body.className?" "+$1:$1
+if($1!="(local)")lz.rte.util.loadCSS($0,lz.rte.loader.__dojoroot+lz.rte.loader.__csspath+$1+"/"+$1+".css");lz.rte.util.loadCSS($0,lz.rte.loader.__dojoroot+"/dojox/editor/plugins/resources/css/Smiley.css");if($1!="(local)")document.body.className+=document.body.className?" "+$1:$1
 },loadDojo:function($0,$1,$2){
-if(lz.rte.loader.__loading){
+if(typeof modulePaths!="undefined"){
+djConfig.modulePaths=modulePaths;djConfig.baseUrl="./"
+};if(lz.rte.loader.__loading){
 lz.rte.loader.__callbacks.push($1);return
 }else if(lz.rte.loader.__loaded){
 $1.call();return
 }else{
 lz.rte.loader.__loading=true;if($2){
 for(var $3 in $2)djConfig.require.push($2[$3])
-};lz.rte.loader.__callbacks.push($1);lz.rte.util.loadJavascript($0,lz.rte.loader.__dojoroot+lz.rte.loader.__jspath)
+};lz.rte.loader.__callbacks.push($1);if(lz.rte.loader.__jspath!="(local)"){
+lz.rte.util.loadJavascript($0,lz.rte.loader.__dojoroot+lz.rte.loader.__jspath)
+}else lz.rte.loader.editor_loaded()
 }},editor_loaded:function(){
 dojo.parser.parse();lz.rte.loader.__loaded=true;lz.rte.loader.__loading=false;while(lz.rte.loader.__callbacks.length>0){
 var $0=lz.rte.loader.__callbacks.shift();$0.call()
-}}};lz.rte.manager={__id:null,__loading:false,__loaded:false,__text:"",__onclick:null,__editing:false,__editor:null,button_counter:0,__theme:"tundra",__locale:null,__plugins:["undo","redo","|","cut","copy","paste","|","bold","italic","underline","strikethrough","|","insertOrderedList","insertUnorderedList","indent","outdent","|","justifyLeft","justifyRight","justifyCenter","justifyFull","|","foreColor","hiliteColor","|","createLink","unlink","insertImage","|","print","smiley","||","fontName","fontSize"],__extraplugins:[],create:function($0){
+}}};lz.rte.manager={__id:null,__loading:false,__loaded:false,__text:"",__onclick:null,__editing:false,__editor:null,button_counter:0,__theme:"tundra",__locale:null,__editor_class:null,FOCUS_KEYBOARD_PREV:-2,FOCUS_KEYBOARD:-1,FOCUS_MANUAL:0,FOCUS_MOUSE:1,__plugins:["undo","redo","|","cut","copy","paste","|","bold","italic","underline","strikethrough","|","insertOrderedList","insertUnorderedList","indent","outdent","|","justifyLeft","justifyRight","justifyCenter","justifyFull","|","foreColor","hiliteColor","|","createLink","unlink","insertImage","|","print","smiley","||","fontName","fontSize"],__focusonload:false,__extraplugins:[],create:function($0){
 lz.rte.manager.__id=$0
 },__destroy:function(){
 lz.rte.manager.rte_stop();if(lz.rte.manager.__editor){
@@ -336,8 +341,13 @@ lz.rte.manager.__editor.destroyRecursive();lz.rte.manager.__editor=null;lz.rte.m
 lz.rte.manager.initialize();lz.rte.manager.__editing=true;var $1=dojo.byId(lz.rte.manager.__id);if($0&&$1)$1.innerHTML=$0;if(lz.rte.manager.__editor){
 lz.rte.manager.__editor.open()
 }else{
-var $2=lz.rte.manager.__plugins;var $3=lz.rte.manager.__extraplugins;$3.push("dijit._editor.plugins.AlwaysShowToolbar");lz.rte.manager.__editor=new (dijit.Editor)({height:"100%",plugins:$2,extraPlugins:$3},$1);dijit.byId("rte_div").resize()
-};dojo.connect(lz.rte.manager.__editor,"onChange",lz.rte.manager.onchange);dojo.connect(lz.rte.manager.__editor,"onClick",lz.rte.manager.onchange);dojo.connect(lz.rte.manager.__editor,"onKeyUp",lz.rte.manager.onchange)
+var $2=lz.rte.manager.__plugins;var $3=lz.rte.manager.__extraplugins;$3.push("dijit._editor.plugins.AlwaysShowToolbar");var $4=lz.rte.manager.__editor_class;try{
+lz.rte.manager.__editor=new $4({height:"100%",focusOnLoad:lz.rte.manager.__focusonload,plugins:$2,extraPlugins:$3},$1);lz.rte.manager.__editor.onLoadDeferred.addCallback(lz.rte.manager.__rte_complete)
+}
+catch($5){}}},__rte_complete:function(){
+dijit.byId("rte_div").resize();dojo.connect(lz.rte.manager.__editor,"onFocus",lz.rte.manager.onfocus);dojo.connect(lz.rte.manager.__editor,"onfocusin",lz.rte.manager.onfocus);dojo.connect(lz.rte.manager.__editor,"onBlur",lz.rte.manager.onblur);dojo.connect(lz.rte.manager.__editor,"onMouseDown",lz.rte.manager.onmousedown);dojo.connect(lz.rte.manager.__editor,"onClick",lz.rte.manager.onmousedown);dojo.connect(lz.rte.manager.__editor,"onChange",lz.rte.manager.onchange);dojo.connect(lz.rte.manager.__editor,"onClick",lz.rte.manager.onchange);dojo.connect(lz.rte.manager.__editor,"onKeyUp",lz.rte.manager.onchange);if(dojo.isFF&&dojo.isMac){
+dojo.connect(lz.rte.manager.__editor,"onClick",lz.rte.manager.onffmacclick)
+};lz.rte.manager.editor_is_ready()
 },rte_start:function($0){
 if(lz.rte.manager.isEditing()||lz.rte.manager.__loading)return;if(lz.rte.manager.isLoaded()){
 lz.rte.manager.__rte_start($0)
@@ -349,9 +359,7 @@ $0=lz.rte.manager.getText();if(lz.rte.manager.isEditing())lz.rte.manager.__edito
 };return $0
 },setText:function($0){
 if(lz.rte.manager.__editor){
-var $1=lz.rte.manager.__editor.get("value").length==0;if($0.indexOf("<p")!=0&&$0.indexOf("<P")!=0){
-$0="<p>"+$0+"</p>"
-};if($1){
+var $1=lz.rte.manager.__editor.get("value").length==0;if($1){
 lz.rte.manager.__editor.set("value",$0)
 }else{
 if(lz.rte.manager.__editor.window&&lz.rte.manager.__editor.window.getSelection&&lz.rte.manager.__editor.window.getSelection()==null){
@@ -371,24 +379,62 @@ $0=$0.substr(3,$0.length-7)
 },onchange:function($0){
 var $1=lz.rte.manager.getText();if($1!=lz.rte.manager.__text){
 lz.rte.manager.__text=$1;lz.sendEvent("_text",$1)
-}},rte_loaded:function(){
+}},onffmacclick:function($0){
+var $1=lz.rte.manager.__editor;if($1){
+$1.blur();$1.focus()
+}},blurIE:function(){
+if(document.all){
+var $0=window.parent.document.activeElement;if(lz.rte.manager.__editor)lz.rte.manager.__editor.blur();if($0&&$0.focus)$0.focus()
+}},onblur:function($0){
+return;if(document.all){
+setTimeout("lz.rte.manager.blurIE()",0)
+}},onfocus:function($0){
+return;lz.sendEvent("_focus",null)
+},onmousedown:function($0){
+lz.sendEvent("_focus",null)
+},rte_loaded:function(){
 lz.sendEvent("_rte_loaded")
+},editor_initialized:function(){
+dojo.addOnLoad(lz.rte.manager.editor_post_loaded)
 },editor_loaded:function(){
-if(lz.rte.manager.isLoaded())return;lz.rte.manager.__loaded=true;lz.rte.manager.__loading=false;lz.rte.manager.__rte_start(lz.rte.manager.__text);lz.sendEvent("_editorready")
-},isLoaded:function(){
+if(lz.rte.manager.isLoaded())return;lz.rte.manager.__editor_class=dijit.Editor;lz.rte.manager.__loaded=true;lz.rte.manager.__loading=false;if(lz.rtewrapper&&lz.rtewrapper.rte_before_ready){
+lz.rtewrapper.rte_before_ready()
+}else{
+lz.rte.manager.editor_initialized()
+}},editor_post_loaded:function(){
+lz.rte.manager.__rte_start(lz.rte.manager.__text)
+},editor_is_ready:function(){
+lz.sendEvent("_editorready");if(lz.rtewrapper&&lz.rtewrapper.rte_ready){
+setTimeout("lz.rtewrapper.rte_ready ()",5)
+};var $0=window.parent;if($0&&$0.rte_ready){
+setTimeout("window.parent.rte_ready ()",10)
+}},isLoaded:function(){
 return lz.rte.manager.__loaded
 },isEditing:function(){
 return lz.rte.manager.__editing
 },set_onclick:function($0){
 lz.rte.manager.__onclick=$0
-},initialize:function(){
+},editor_focus:function($0){
+return;if(!lz.rte.manager.__editor)return;var $1=lz.rte.manager.__editor;console.log("rtemanager.editor_focus",$0,$1,$1._focused);var $2=dijit.byId("rte");if($0){
+if(!$1._focused){
+setTimeout("lz.rte.manager.__editor.focus()",2)
+};if($1.get("value").length<=7){
+setTimeout("var ed=lz.rte.manager.__editor; dijit.focus(ed.iframe); ed.placeCursorAtStart();",20)
+}else{
+setTimeout("var ed=lz.rte.manager.__editor; dijit.focus(ed.iframe); ed.placeCursorAtEnd();",20)
+}}else{
+if($1._focused){
+dijit.blur($1)
+}}},initialize:function(){
 if(lz.rte.manager.isLoaded())return;lz.rte.loader.loadDojoCSS(document,lz.rte.manager.__theme);lz.rte.loader.loadDojo(document,lz.rte.manager.editor_loaded,lz.rte.manager.__extraplugins)
 },setDojoPath:function($0,$1,$2){
-lz.rte.loader.__dojoroot=$0;lz.rte.loader.__jspath=$1;lz.rte.loader.__csspath=$2;djConfig.debugAtAllCosts=true
+if($0)lz.rte.loader.__dojoroot=$0;if($1)lz.rte.loader.__jspath=$1;if($2)lz.rte.loader.__csspath=$2;djConfig.debugAtAllCosts=true
 },setDojoTheme:function($0){
 lz.rte.manager.__theme=$0
 },setDojoLocale:function($0){
 lz.rte.manager.__locale=$0;djConfig.locale=lz.rte.manager.__locale
+},setFocusOnLoad:function($0){
+lz.rte.manager.__focusonload=$0
 },setExtraPlugins:function($0){
 var $1=$0.split(",");lz.rte.manager.__extraplugins=$1
 },setPlugins:function($0){
@@ -400,5 +446,15 @@ var id=window.name+"_rte_button_"+lz.rte.manager.button_counter++;if(dojo.byId(i
 lz.sendEvent("buttonclick",id)
 }};for(var $2 in $0){
 $1[$2]=$0[$2]
-};dojo.create("input",$1,dojo.byId("rte_buttons"),"last");dijit.byId("rte_div").resize();return id
-}};
+};var $3=dojo.byId("rte_buttons");if($3)$3.style.display="";dojo.create("input",$1,dojo.byId("rte_buttons"),"last");dijit.byId("rte_div").resize();return id
+}};lz.rte.browser={};function startfocus($0,$1){
+lz.rte.browser=$1;if($0==lz.rte.manager.FOCUS_MOUSE){
+if(lz.rte.browser.browser=="Chrome"||lz.rte.browser.browser=="Safari"){
+var $2=lz.rte.manager.__editor;dijit.focus($2.iframe)
+};return
+};var $2=lz.rte.manager.__editor;if($2){
+if($2.get("value").length<=7){
+dijit.focus($2.iframe);$2.placeCursorAtStart()
+}else{
+dijit.focus($2.iframe);$2.placeCursorAtEnd()
+}}}

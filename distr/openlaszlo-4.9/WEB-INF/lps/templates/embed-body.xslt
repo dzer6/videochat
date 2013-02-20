@@ -18,7 +18,7 @@ If you edit this file, please validate your work using http://validator.w3.org/
           </xsl:when>
           <xsl:otherwise>
             <xsl:choose>
-              <xsl:when test="/canvas/@runtime = 'dhtml'">
+              <xsl:when test="(/canvas/@runtime = 'dhtml') or (/canvas/@runtime = 'mobile') ">
                 <div id="appcontainer"></div>
                 <div id="lzsplash" style="z-index: 10000000; top: 0; left: 0; width: {$canvaswidth}; height: {$canvasheight}; position: fixed; display: table"><p style="display: table-cell; vertical-align: middle;"><img src="{/canvas/request/@lps}/lps/includes/spinner.gif" style="display: block; margin: 20% auto" alt="application initializing"/></p></div>
                 <script type="text/javascript" defer="defer">
@@ -71,6 +71,6 @@ If you edit this file, please validate your work using http://validator.w3.org/
 
 </xsl:stylesheet>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->

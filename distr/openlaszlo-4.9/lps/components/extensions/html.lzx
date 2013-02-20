@@ -1,5 +1,5 @@
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2007-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2007-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 
@@ -11,6 +11,7 @@
     <otherwise>
 <script src="rpc/library/json.js"/>
 <script when="immediate">
+
 // proxy object for browser lz.embed.iframemanager
 lz.embed.iframemanager = new LzInheritedHash();
 lz.embed.iframemanager.owners = new LzInheritedHash();
@@ -24,22 +25,25 @@ lz.embed.iframemanager.__setiframeid = function(id) {
         view.__setiframeid(id); 
     }
 }
-lz.embed.iframemanager.create = function(owner, name, scrollbars) {
+lz.embed.iframemanager.create = function(owner, name, scrollbars, width_percent, height_percent) {
     var callback = function(id) {
         lz.embed.iframemanager.owners[id] = owner;
         //Debug.warn('create', id);
     }
-    return lz.Browser.callJS('lz.embed.iframemanager.create', callback, canvas.id, name, scrollbars);
+    return lz.Browser.callJS('lz.embed.iframemanager.create', callback, canvas.id, name, scrollbars, width_percent, height_percent);
 }
-lz.embed.iframemanager.setPosition = function(id, x, y, width, height, v, z) {
+lz.embed.iframemanager.setPosition = function(id, x, y, width, height, v, z, flash_width) {
     // pass false callback arg to avoid queueing calls
-    lz.Browser.callJS('lz.embed.iframemanager.setPosition', false, id, x, y, width, height, v, z);
+    lz.Browser.callJS('lz.embed.iframemanager.setPosition', false, id, x, y, width, height, v, z, flash_width);
 }
 lz.embed.iframemanager.setSrc = function(id, src, history) {
     lz.Browser.callJS('lz.embed.iframemanager.setSrc', null, id, src, history);
 }
 lz.embed.iframemanager.setVisible = function(id, v) {
     lz.Browser.callJS('lz.embed.iframemanager.setVisible', null, id, v);
+}
+lz.embed.iframemanager.forceSWFFocus = function(id) {
+    lz.Browser.callJS('lz.embed.iframemanager.forceSWFFocus', null, id);
 }
 lz.embed.iframemanager.bringToFront = function(id, z) {
     lz.Browser.callJS('lz.embed.iframemanager.bringToFront', null, id, z);
@@ -53,9 +57,27 @@ lz.embed.iframemanager.scrollBy = function(id, x, y) {
 lz.embed.iframemanager.setStyle = function(id, elementid, property, value) {
     lz.Browser.callJS('lz.embed.iframemanager.setStyle', null, id, elementid, property, value);
 }
+lz.embed.iframemanager.setFocus = function(id, focusmethod) {
+    lz.Browser.callJS('lz.embed.iframemanager.setFocus', null, id, focusmethod);
+}
+lz.embed.iframemanager.setBlur = function(id) {
+    lz.Browser.callJS('lz.embed.iframemanager.setBlur', null, id);
+}
 lz.embed.iframemanager.__iframecallback = function(id, name, value=null, callbackid=null) {
-    if (value != null) {
-        value = JSON.parse(value) || value;
+    <![CDATA[
+    // LPP-9983 The previous code was not handling naked strings (which is everything this sees)
+    if (value != null && value.length > 0) {
+        if (value.charAt(0) == "{" || value.charAt(0) == "[") {
+            // Looks like a json object
+            value = JSON.parse(value) || value;
+        }
+        else {
+            // Assume it is a stand-alone string. Make it look like an array
+            var arr = JSON.parse("[\"" + value + "\"]");
+            if (arr != undefined && arr.length > 0) {
+                value = arr[0];
+            }
+        }
     }
     //Debug.warn('__iframecallback', id, name, value, callbackid);
     if (name === '__lzcallback') {
@@ -71,6 +93,7 @@ lz.embed.iframemanager.__iframecallback = function(id, name, value=null, callbac
     // receives calls from the iframe
     var view = lz.embed.iframemanager.owners[id];
     if (view) view.__iframecallback(name, value);
+    ]]>
 }
 lz.embed.iframemanager.__destroy = function(id) {
     lz.Browser.callJS('lz.embed.iframemanager.__destroy', null, id);
@@ -152,6 +175,10 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
       </text>
     </doc>
 
+    <passthrough toplevel="true" when="$as3">
+          import flash.events.Event;
+    </passthrough>
+
     <!--- If true, the html tag will have scrollbars.
           @type Boolean
           @access public
@@ -184,11 +211,21 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
           @access public
     -->
     <attribute name="minimumwidth" type="number" value="0"/>
+    <!--- (SWF only) If true, the browser zoom is measured to keep the
+          html window of constant size. Setting this attribute to true is
+          useful when the canvas has an unspecified size (or set to 100%).
+          @type Boolean
+          @access public
+    -->
+    <attribute name="trackbrowserzoom" type="boolean" value="false"/>
     <!--- If true, attempt to listen for mouse events on the iframe.  Cross-domain security restrictions apply, so if the content loaded in the iframe is from a different domain, mouse events won't be sent.
           @type Boolean
           @access public
     -->
     <attribute name="mouseevents" type="boolean" value="true"/>
+    <!--- @keywords private -->
+    <event name="onmouseevents"/>
+    <!--- @keywords private -->
     <setter name="mouseevents" args="send">
     <![CDATA[
         this.mouseevents = send;
@@ -197,7 +234,7 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
         } else {
             this.__mouseevents = send;
         }
-        if (this['onmouseevents'] && this.onmouseevents.ready) this.onmouseevents.sendEvent(send);
+        if (this.onmouseevents.ready) this.onmouseevents.sendEvent(send);
     ]]>
     </setter>
     <!--- If true, show native context menus in the iframe.  Otherwise, show OpenLaszlo context menus.  Note that this only works in DHTML because it's not possible to programatically display a context menu in Flash.
@@ -205,6 +242,9 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
           @access public
     -->
     <attribute name="shownativecontextmenu" type="boolean" value="true"/>
+    <!--- @keywords private -->
+    <event name="onshownativecontextmenu"/>
+    <!--- @keywords private -->
     <setter name="shownativecontextmenu" args="show">
     <![CDATA[
         this.shownativecontextmenu = show;
@@ -213,7 +253,7 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
         } else {
             this.__shownativecontextmenu = show;
         }
-        if (this['onshownativecontextmenu'] && this.onshownativecontextmenu.ready) this.onshownativecontextmenu.sendEvent(show);
+        if (this.onshownativecontextmenu.ready) this.onshownativecontextmenu.sendEvent(show);
     ]]>
     </setter>
     <attribute name="iframeid" value="null"/>
@@ -230,8 +270,10 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
     <attribute name="focusable" value="true" type="boolean"/>
     <event name="onload"/>
     <event name="onready"/>
+    <!--- @keywords private -->
     <event name="ontarget"/>
-    <setter name="target" args="t">
+    <!--- @keywords private -->
+    <setter name="target" args="t"><![CDATA[
         if (t == null) return;
         this.target = t;
         if (this['_posdel']) {
@@ -248,23 +290,35 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
         if ($dhtml) {
             // x and y are implicit
         } else {
-            this._posdel.register(this.target, 'onx');
-            this._posdel.register(this.target, 'ony');
+            // x and y depend on this.getAttributeRelative("x/y", canvas)
+            // TODO: There needs to be a better API for this!
+            var deps = this.$lzc$getAttributeRelative_dependencies(this, this, 'x', canvas);
+            for (var i = 0, l = deps.length; i < l; i += 2) {
+              this._posdel.register(deps[i], "on" + deps[i + 1]);
+            }
+            var deps = this.$lzc$getAttributeRelative_dependencies(this, this, 'y', canvas);
+            for (var i = 0, l = deps.length; i < l; i += 2) {
+              this._posdel.register(deps[i], "on" + deps[i + 1]);
+            }
         }
         //Debug.write(t);
         this.__updatepos();
         if (this.ontarget.ready) this.ontarget.sendEvent(t);
-    </setter>
-    <!--- The HTML that the iframe starts out containing.
+    ]]></setter>
+    <!--- The HTML that the iframe starts out containing.  Be sure to XML-escape any &lt; &gt; and &amp; characters in the HTML.
           @type String
           @access public
     -->
     <attribute name="html" type="html" value=""/>
+    <!--- @keywords private -->
+    <event name="onhtml"/>
+    <!--- @keywords private -->
     <setter name="html" args="t"><![CDATA[
         this.html = t;
         if (this.iframeid) {
             lz.embed.iframemanager.setHTML(this.iframeid, t);
         }
+        if (this.onhtml.ready) this.onhtml.sendEvent(t);
     ]]></setter>
 
     <!--- Sets the visibility of the html tag
@@ -272,6 +326,7 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
           @access public
     -->
     <attribute name="visible" type="boolean" value="true"/>
+    <!--- @keywords private -->
     <setter name="visible" args="v">
         this.visible = v;
         if (this.iframeid) lz.embed.iframemanager.setVisible(this.iframeid, v);
@@ -283,7 +338,9 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
           @access public
     -->
     <attribute name="src" type="text"/>
+    <!--- @keywords private -->
     <event name="onsrc"/>
+    <!--- @keywords private -->
     <setter name="src" args="s">
         this.src = s;
         this.setAttribute('loading', true);
@@ -300,37 +357,173 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
     -->
     <attribute name="rpcmethods" value="null"/>
 
+    <!--- @keywords private -->
+    <setter name="bgcolor" args="c"><![CDATA[
+        this.bgcolor = c;
+        if (this.iframeid) {
+            this.setStyle(null, 'backgroundColor', c);
+        }
+        if (this.onbgcolor.ready) this.onbgcolor.sendEvent(c);
+    ]]></setter>
+
+    <!--- @access private -->
+    <attribute name="refreshdel" />
+
+    <!--- When the component gets focus, give focus to the iframe.
+          lz.Focus keeps track of how the component got focus.
+          @access private
+    -->
+    <handler name="onfocus">
+        var focusmethod = lz.Focus.focusmethod;
+        //Debug.warn('html onfocus', focusmethod, this);
+        lz.embed.iframemanager.setFocus(this.iframeid, focusmethod);
+    </handler>
+
+    <!--- When the component loses focus, make sure the iframe loses focus.
+          Most browsers handle this properly, but there are issues with IE7
+          and Chrome. It is important the you do not blur an iframe because in
+          IE/FF3.6 the browser window will move to the back.
+          @access private
+    -->
+    <handler name="onblur" args="newsel=null">
+        //Debug.warn('html onblur ', this, newsel);
+        lz.embed.iframemanager.setBlur(this.iframeid);
+    </handler>
+
+    <!--- Track down the effective percentage width (or '' if specific size)
+          for this component. If any parent has a specified width, including
+          the canvas, return an emptystring.
+          @access private
+     -->
+    <method name="getWidthPercentage">
+        //DEBUG
+        return '';
+
+        var fraction = 1.0;
+        var v = this;
+        var size;
+        while (v) {
+            //DEBUG
+            if (v === canvas) {
+                size = '100';
+            }
+            else {
+            if (!v['_source_width']) {
+                // Debug.write("_source_width missing", v);
+                return ''; // A view or parent has a specified size
+            }
+            size = v._source_width.substr(0, v._source_width.length-1);
+            }
+            var scale = parseFloat(size) / 100.0;
+            fraction = fraction * scale;
+
+            if (v === canvas)
+                break;
+            v = v.parent;
+        }        
+        size = (fraction * 100).toString() + '%';
+        return size;
+    </method>
+
+    <!--- Track down the effective percentage height (or '' if specific size)
+          for this component. If any parent has a specified height, including
+          the canvas, return an empty string.
+          @access private
+     -->
+    <method name="getHeightPercentage">
+        //DEBUG
+        return '';
+
+        var fraction = 1.0;
+        var v = this;
+        var size;
+        while (v) {
+            //DEBUG
+            if (v === canvas) {
+                size = '100';
+            }
+            else {
+            if (!v['_source_height']) {
+                // Debug.write("_source_height missing", v);
+                return ''; // A view or parent has a specified size
+            }
+            size = v._source_height.substr(0, v._source_height.length-1);
+            }
+            var scale = parseFloat(size) / 100.0;
+            fraction = fraction * scale;
+Debug.write(scale, fraction, v);
+
+            if (v === canvas)
+                break;
+            v = v.parent;
+        }        
+        size = (fraction * 100).toString() + '%';
+        return size;
+    </method>
+
     <!--- @access private -->
     <method name="init">
         this.rpcmethods = [];
         super.init();
+
+        var width_percent = this.getWidthPercentage ();
+        var height_percent = this.getHeightPercentage ();
+
         if ($dhtml) {
-            lz.embed.iframemanager.create(this, this.framename, this.scrollbars, this.sprite.__LZdiv, 0, canvas);
+            lz.embed.iframemanager.create(this, this.framename, this.scrollbars, width_percent, height_percent, this.sprite.__LZdiv, 0, canvas);
         } else {
-            lz.embed.iframemanager.create(this, this.framename, this.scrollbars);
+            lz.embed.iframemanager.create(this, this.framename, this.scrollbars, width_percent, height_percent);
+            this.refreshdel = new LzDelegate(this, '__refresh');
         }
     </method>
 
+    <!--- @access private -->
+    <attribute name="__updating" type="boolean" value="false" />
     <!--- @access private -->
     <method name="__updatepos" args="ignore=null">
-        if (! this.iframeid) return;
-
+        if ((! this.inited) || (! this.iframeid)) return;
         if ($dhtml) {
-            // pass in null x/y to skip positioning
-            var x = null;
-            var y = null;
-            var z = this.sprite.getZ();
-        } else {
-            var x = this.getAttributeRelative("x", canvas);
-            var y = this.getAttributeRelative("y", canvas);
-            var z = this.target.sprite.getZ();
+          // pass in null x/y to skip positioning
+          var x = null;
+          var y = null;
+          var z = this.sprite.getZ();
+          var width = Math.max(this.width, this.minimumwidth);
+          var height = Math.max(this.height, this.minimumheight);
+          lz.embed.iframemanager.setPosition(this.iframeid, x, y, width, height, this.visible, z, 0);
+         } else {
+           if (! this.__updating) {
+             this.__refresh(); // Do an initial refresh to set the position correctly.
+             this.sprite.stage.addEventListener(Event.EXIT_FRAME, __refresh);
+             lz.Idle.callOnIdle(this.refreshdel);
+             this.__updating = true;
+           }
+         }
+    </method>
+
+    <!--- @access private -->
+    <method name="__refresh" args="ignore=null">
+        var flash_width = 0;
+        if (!$dhtml) {
+            if (this.trackbrowserzoom) {
+                // Zoom is the actual browser width / canvas width. This works
+                // fine when the canvas width is not specified, or is 100%.
+                flash_width = canvas.width;
+            }
         }
+
+        this.__updating = false;
+        var x = this.getAttributeRelative("x", canvas);
+        var y = this.getAttributeRelative("y", canvas);
+        var z = this.target.sprite.getZ();
         var width = Math.max(this.width, this.minimumwidth);
         var height = Math.max(this.height, this.minimumheight);
-        lz.embed.iframemanager.setPosition(this.iframeid, x, y, width, height, this.visible, z);
+
+        lz.embed.iframemanager.setPosition(this.iframeid, x, y, width, height, this.visible, z, flash_width);
     </method>
+
     <!--- @access private -->
     <method name="__setiframeid" args="id">
+        <![CDATA[
         //Debug.write('__setiframeid', id, this)
         this.iframeid = id;
         if (this['__srcset']) {
@@ -345,6 +538,12 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
         if (this['__shownativecontextmenu']) lz.embed.iframemanager.setShowNativeContextMenu(id, this.__shownativecontextmenu);
 
         this.setAttribute('ready', true);
+
+        if (this.html && ! this.src) {
+            var html = this.html;
+            LzTimeKernel.setTimeout(function () {lz.embed.iframemanager.setHTML(id, html)}, 500);
+        }
+        ]]>
     </method>
     <!--- @access private -->
     <method name="__iframecallback" args="name, value"><![CDATA[
@@ -371,6 +570,10 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
             // Delegate mouse events
             this.__handleMouseEvent(value);
             return;
+        } else if (name === '__focusevent') {
+            // Delegate focus events
+            this.__handleFocusEvent(value);
+            return;
         } else if (name === '__rpcmethods') {
             //Debug.warn('__rpcmethods', value);
             this.setAttribute('rpcmethods', value);
@@ -381,6 +584,17 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
         //Debug.warn('__iframecallback', name, value, evt);
         if (evt && evt.ready) evt.sendEvent(value);
     ]]></method>
+    <!--- @access private -->
+    <method name="forceSWFFocus">
+        if ($dhtml) {
+        }
+        else {
+            if (! this.iframeid) {
+                return;
+            }
+            lz.embed.iframemanager.forceSWFFocus (this.iframeid);
+        }
+    </method>
     <method name="bringToFront">
         super.bringToFront();
         if (! this.iframeid) {
@@ -406,8 +620,14 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
         }
     </method>
 
-    <method name="setStyle" args="element, property, value">
-        if (this.iframeid) lz.embed.iframemanager.setStyle(this.iframeid, element, property, value);
+    <!---
+      Sets the CSS style of an iframe, or an element in the HTML loaded in the iframe.
+      @param String elementid: Specifies the ID of an element in the HTML loaded in the iframe. If null, the CSS is applied directly to the iframe.
+      @param String property: The CSS property name to change, e.g. 'backgroundColor'
+      @param String value: The CSS value to use, e.g. '#ff0000'
+    -->
+    <method name="setStyle" args="elementid, property, value">
+        if (this.iframeid) lz.embed.iframemanager.setStyle(this.iframeid, elementid, property, value);
     </method>
 
     <!---
@@ -470,8 +690,85 @@ lz.embed.iframemanager.__getRPCMethods = function(id) {
         if ($dhtml) {
             // currently handled by iframemanager.js
         } else {
-            //Flash
-            LzMouseKernel.handleMouseEvent(this, eventname);
+            //Debug.write("__handleMouseEvent", eventname, "focus", lz.Focus.getFocus());
+            if (eventname == 'onmousedown') {
+                // Give focus to this component if it isn't already here
+                if (lz.Focus.getFocus() != this) {
+                    this.__startfocus = false; // Don't change any focus in the iframe
+                    lz.Focus.setFocus (this, lz.Focus.FOCUS_MOUSE);
+                }
+            }
+            //Flash. Call LzMouseKernel.__mouseHandler rather than
+            // LzMouseKernel.handleMouseEvent to address LPP-9977.
+            var event:flash.events.MouseEvent = new flash.events.MouseEvent(eventname.substr(2));
+            LzMouseKernel.__mouseHandler (event);
+        }
+    </method>
+
+    <!--- Move focus relative to this component.
+          direction 1 = Move next, -1 = Move previous
+          @access private
+    -->
+    <method name="__reFocus" args="direction">
+        if (lz.Focus.getFocus() == null) {
+            // No focus set
+            var v = (direction == -1) ? lz.Focus.getPrev(this) : lz.Focus.getNext(this);
+            lz.Focus.setFocus (v, (direction == 1) ? lz.Focus.FOCUS_KEYBOARD : lz.Focus.FOCUS_KEYBOARD_PREV);
+        }
+        else if (lz.Focus.getFocus() == this) {
+            // Focus is already on this component
+            (direction == -1) ? lz.Focus.prev() : lz.Focus.next();
+        }
+        else {
+            // Focus is elsewhere. Do not touch
+            if ($debug) Debug.write('Not touching focus. It is  ', lz.Focus.getFocus());
+        }
+    </method>
+
+    <!--- @access private -->
+    <method name="__handleFocusEvent" args="eventname">
+        if ($dhtml) {
+            // currently handled by iframemanager.js
+        } else {
+            //Debug.write('__handleFocusEvent', eventname);
+            if (eventname == '+move') {
+                // Move focus to the element after this one
+                this.__reFocus (1);
+            }
+            else if (eventname == '-move') {
+                // Move focus to the element before this one
+                this.__reFocus (-1);
+            }
+
+            if (eventname == 'focus') {
+                if (lz.Focus.getFocus() != this) {
+                    //Debug.write('changing focus from', lz.Focus.getFocus(), ' to ', this);
+                    lz.Focus.setFocus (this, lz.Focus.FOCUS_MOUSE); // Must have been mouse
+                }
+            }
+            else if (eventname == 'blur') {
+// Make sure our div has focus
+Debug.write('blur event', lz.Focus.getFocus());
+if (lz.Focus.getFocus() == null) {
+    Debug.write('changing focus to ', lz.Focus.getNext(this));
+    lz.Focus.setFocus (lz.Focus.getNext(this));
+//LzKeyboardKernel.__allKeysUp();
+}
+else if (lz.Focus.getFocus() == this) {
+//lz.Focus.setFocus(this);
+Debug.write("Moving focus to next entry:", lz.Focus.getNext());
+LzKeyboardKernel.__allKeysUp();
+lz.Focus.next();
+Debug.write('focus was moved to ', lz.Focus.getFocus());
+}
+else {
+Debug.write('Not touching focus. It is  ', lz.Focus.getFocus());
+}
+//                if (lz.Focus.getFocus() == this) {
+//                      LzKeyboardKernel.__browserTabEvent (false);
+//                    lz.Focus.next();
+//                }
+            }
         }
     </method>
     <!--- @access private -->

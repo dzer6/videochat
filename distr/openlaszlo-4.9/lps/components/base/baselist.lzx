@@ -206,7 +206,7 @@
               select, or an array of values if multiselect. -->
         <method name="getValue">
             <![CDATA[
-            return _selector.getValue();
+            return (_selector != null) ? _selector.getValue() : null; 
             ]]>
         </method>
 
@@ -526,7 +526,7 @@
     </class>
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

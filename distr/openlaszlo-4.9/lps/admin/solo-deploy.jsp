@@ -8,9 +8,10 @@
 <%@ page import="org.openlaszlo.utils.FileUtils.*" %>
 <%@ page import="org.openlaszlo.server.LPS" %>
 <%@ page import="org.openlaszlo.utils.DeployUtils" %>
-    
+<%@ page import="org.openlaszlo.utils.StringUtils" %>
+
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->
@@ -19,6 +20,8 @@
 <html>
     <head>
     <title>OpenLaszlo Widget Application Deployment Wizard</title>
+     <link href="solodeploy.css" rel="stylesheet" type="text/css" />
+      <script src="solo-deploy.js" type="text/javascript"></script>
     </head>
     <body>
 
@@ -59,11 +62,30 @@ if (appUrl == null) {
 
 appUrl = appUrl.trim();
 
+// List of files to exclude from the zip archive
+HashMap mFileExcludes = new HashMap();
+String pExcludes[] = request.getParameterValues("excludes");
+if (pExcludes != null) {
+    for (int k = 0 ; k < pExcludes.length; k++) {
+        mFileExcludes.put(pExcludes[k], "exclude");
+    }
+}
 
-// Get the application target runtime, default to swf8
+// add in all the files in the app directory
+ServletContext ctx = getServletContext();
+// The absolute path to the base directory of the server web root
+File basedir = new File(ctx.getRealPath(request.getContextPath().toString())).getParentFile();
+basedir = basedir.getCanonicalFile();
+
+// The absolute path to the application directory we are packaging
+// e.g., demos/amazon
+File appdir = new File(ctx.getRealPath(appUrl)).getParentFile();
+appdir = appdir.getCanonicalFile();
+
+// Get the application target runtime, default to swf11
 String appRuntime = request.getParameter("runtime");
 if (appRuntime == null) {
-    appRuntime = "swf8";
+    appRuntime = "swf11";
 }
 
 String title = request.getParameter("apptitle");
@@ -107,10 +129,10 @@ if (appUrl != null && appUrl.length() > 0) {
         <h3><font color="red">Error, do not use '..' or '//' in your app pathname:  <%= appUrl %></font></h3>
              <%
     }
-   try 
+   try
     {
         // okee dokee. Now we have to adjust the app path to be relative to
-        // the server document root. 
+        // the server document root.
 
         // say that appUrl == demos/vacation-survey/vacation-survey.lzx
 
@@ -137,7 +159,7 @@ is in the servlet root container, this tool will create a zip that
 contains all the files inside the root directory.  This directory
 contains the entire OpenLaszlo binary distribution, so this is almost
 certainly not what you want.
-       <%        
+       <%
           return;
         }
 
@@ -153,7 +175,7 @@ certainly not what you want.
         // Grab a copy of the html-object wrapper
         String str;
         BufferedReader in = new BufferedReader(new InputStreamReader(wrapperUrl.openStream()));
-        while ((str = in.readLine()) != null) 
+        while ((str = in.readLine()) != null)
         {
             wrapperbuf.append(str+"\n");
         }
@@ -161,7 +183,7 @@ certainly not what you want.
 
         // load a copy of the lzhistory HTML wrapper
         in = new BufferedReader(new InputStreamReader(lzhistUrl.openStream()));
-        while ((str = in.readLine()) != null) 
+        while ((str = in.readLine()) != null)
         {
             lzhistbuf.append(str+"\n");
         }
@@ -169,7 +191,7 @@ certainly not what you want.
 
         // Load a copy of the app url , causing the compiler to run
         in = new BufferedReader(new InputStreamReader(swfUrl.openStream()));
-        while ((str = in.readLine()) != null) 
+        while ((str = in.readLine()) != null)
         {
         }
         in.close();
@@ -177,13 +199,13 @@ certainly not what you want.
         lzhistwrapper = lzhistbuf.toString();
         // We need to adjust the lzhistory wrapper, to make the path to lps/includes/embed.js
         // be relative rather than absolute.
-        
+
         // remove the servlet prefix and leading slash
         lzhistwrapper = lzhistwrapper.replaceAll(request.getContextPath()+"/", "");
         lzhistwrapper = lzhistwrapper.replaceAll(request.getContextPath(), "");
         lzhistwrapper = lzhistwrapper.replaceAll("[.]lzx[?]lzt=swf", ".lzx."+appRuntime+".swf?");
 
-    } 
+    }
     catch (MalformedURLException e) { %>
 
  <h3><font color="red">Error retrieving URL <%= appUrl %>: <%= e.toString() %></h3>
@@ -191,12 +213,12 @@ certainly not what you want.
     catch (IOException e) { %>
 
  <h3><font color="red">Error retrieving URL <%= appUrl %>: <%= e.toString() %></h3>
-      <% } 
+      <% }
 } else {
 
     appUrl = "examples/animation/animation.lzx";
 }
-        
+
 String wrapper = wrapperbuf.toString();
 
 // replace title
@@ -237,19 +259,21 @@ try {
 
 
     // if no form vars, we are at page #0
-    if (whatpage.equals("configure")) { 
+    if (whatpage.equals("configure")) {
 %>
 <font face="helvetica,arial"> <b> <i> Setup Widget Application Deployment</i> </b> </font>
 <hr align="left" width="420" height="2"/>
 
 
 <br>
-     
+
 <table><tr><td width=600>
      This wizard will generate a zip file containing all the resources you need to deploy a serverless SOLO widget application. For deployments which do not require browser the Javscript browser integration support files, it  will also generate some simple HTML wrappers which can be cut and pasted into HTML pages.
 </td></tr><table>
 
 <form  method="POST" action="<%= sUrl %>">
+
+
 <input type="hidden" name="runtime" value="<%= appRuntime %>">
 <input type="hidden" name="whatpage" value="preview">
 <table border=0 width=800>
@@ -264,17 +288,31 @@ try {
   <tr>
      <td align="right">Widget Type (config.xml file):</td><td>
 <select name="widgettype">
-<option value="opera" selected>Opera</option>
+<option value="opera">Opera</option>
 <option value="jil">Android</option>
+<option value="osx">Apple Dashboard Widget</option>
+<option value="w3c" selected>W3C Widget</option>
 </select>
 </td>
   </tr>
   <tr><td/><td/></tr>
-                                        
+
 </table>
 <p>
+<input type="hidden" name="runtime" value="<%= appRuntime %>">
+
 <input type=submit value="Continue...">
 
+<%
+    // User sees list of files that will be included, can mark files for exclusion
+     out.println("<p><h3>The files listed below will be included in the wgt/zip archive</h3>");
+     out.println("Application directory is <tt>"+ appdir+"</tt><br>Check the boxes to exclude files or subdirectories<br>");
+
+     String prefix = appdir.getParent();
+     DeployUtils.listFilesAndDirs(appdir, prefix, appdir,out, "&nbsp;&nbsp;&nbsp;&nbsp;");
+
+
+%>
 
 </form>
 <p>
@@ -282,7 +320,7 @@ try {
 } else if  (whatpage.equals("preview")){
 
 
-    
+
 
 %>
 <font face="helvetica,arial"> <b> <i> Preview Widget Application in Browser</i> </b> </font>
@@ -300,18 +338,29 @@ String soloURL = (request.getContextPath()+"/" + appUrl + "."+appRuntime+".swf?l
 
 <tt>Size = <%= appwidth %> x  <%= appheight %></tt>
     <p>
-    
+
 <iframe width="<%= nwidth +20 %>" height="<%= nheight +20 %>" src="<%= lzhistUrl %>"></iframe>
      <p>
 <form  method="POST">
-<input type=radio name="whatpage" value="download" checked> OK, give me the HTML wrapper code
-<p> 
+
+<%
+
+if (pExcludes != null) {
+    for (int k = 0 ; k < pExcludes.length; k++) {
+         out.println("<input type=\"hidden\" name=\"excludes\" value=\""+pExcludes[k]+"\">");
+    }
+}
+%>
+
+<input type=radio name="whatpage" value="download" checked> Generate deployment archive file
+<p>
 <input type=radio name="whatpage" value="configure">Go back to change</td>
 <input type="hidden" name="appurl" value="<%= appUrl %>">
 <input type="hidden" name="apptitle" value="<%= title %>">
-<input type="hidden" name="runtime" value="<%= appRuntime %>">     
-<input type="hidden" name="widgettype" value="<%= widgetType %>">     
+<input type="hidden" name="runtime" value="<%= appRuntime %>">
+<input type="hidden" name="widgettype" value="<%= widgetType %>">
 
+<input type="hidden" name="runtime" value="<%= appRuntime %>">
 <p>
 <input type=submit value="Continue...">
 
@@ -332,31 +381,34 @@ String soloURL = (request.getContextPath()+"/" + appUrl + "."+appRuntime+".swf?l
     File tmpdir = new File(outdir);
 
     // Create the ZIP file
-    SimpleDateFormat format = 
+    SimpleDateFormat format =
         new SimpleDateFormat("MMM_dd_yyyy_HH_mm_ss");
     String datestamp = format.format(new Date());
     String outFilename = "solo_deploy_" + datestamp + ".wgt";
+
+    // We want to name Dashboard widgets with ".zip" suffix, so user knows to unzip them
+    if ("osx".equals(widgetType)) {
+        outFilename = "OL_Dashboard_Widget_"+datestamp+".zip";
+    }
+
+
     zipfilename = outFilename;
     ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(tmpdir+"/"+outFilename));
 
-    // add in all the files in the app directory
-    ServletContext ctx = getServletContext();
-    // The absolute path to the base directory of the server web root 
-    File basedir = new File(ctx.getRealPath(request.getContextPath().toString())).getParentFile();
-    basedir = basedir.getCanonicalFile();
+    // For most widget types, Place all files in top level directory
+    String prefix = "";
 
-    // The absolute path to the application directory we are packaging
-    // e.g., demos/amazon
-    File appdir = new File(ctx.getRealPath(appUrl)).getParentFile();
-    appdir = appdir.getCanonicalFile();
+    // Except for OSX, we name the directory "appname.wdgt/" for OSX Dashboard apps
+    if ("osx".equals(widgetType)) {
+        prefix = appdir.getName() + ".wdgt/";
+    }
 
-
-    DeployUtils.buildZipFile(appRuntime, zout, basedir, appdir, new PrintWriter(out), null, lzhistwrapper,  widgetType, appUrl,  title,  appheight,  appwidth);
+    DeployUtils.buildZipFile(prefix, appRuntime, zout, basedir, appdir, new PrintWriter(out), mFileExcludes, lzhistwrapper,  widgetType, appUrl,  title,  appheight,  appwidth);
     if (whatpage.equals("emulator")) {
         // unpack to working dir
         // redirect to config.xml in working dir
         //out.println("<br>zipfilename: "+zipfilename);
-        DeployUtils.unpackZipfile(workdir + File.separator + zipfilename, workdir.getCanonicalPath(), new PrintWriter(out));
+        DeployUtils.unpackZipfile(prefix, workdir + File.separator + zipfilename, workdir.getCanonicalPath(), new PrintWriter(out));
         String redirectURL = (request.getContextPath()+ "/" + WGT_WORKING_DIR);
         response.sendRedirect(redirectURL);
     } else {
@@ -365,10 +417,22 @@ String soloURL = (request.getContextPath()+"/" + appUrl + "."+appRuntime+".swf?l
      <font face="helvetica,arial"> <b> <i> Zip file containing application deployment files</i> </b> </font>
 <hr align="left" width="420" height="2"/>
 <p>
-Click here to download zip-archived file <a href="<%= request.getContextPath() + File.separator + WGT_WORKING_DIR + File.separator + zipfilename%>"><tt><%=zipfilename%></tt></a>.
+Click here to download zip-archived file <a href="<%= request.getContextPath() + "/" + WGT_WORKING_DIR + "/" + zipfilename%>"><tt><%=zipfilename%></tt></a>.
 <p>
 Note: the file may take a moment to generate and save to disk, please be patient.
   <p>
+
+
+   <%     if (widgetType.equals("osx")) { %>
+                                          To install as an OSX Dashboard Widget: <p>
+
+                                          If the downloaded .zip file does not automatically expand, double-click on the .zip file to extract the Widget, then double-click on the Widget to install it in your dashboard.
+
+   <%    }    %>
+
+
+
+
 <font face="helvetica,arial"> <b> <i> Widget Application Deployment: Wrapper HTML</i> </b> </font>
 <hr align="left" width="420" height="2"/>
 <p>
@@ -415,7 +479,7 @@ Paste this wrapper into a browser to deploy your app:
      <font face="helvetica,arial"> <b> <i> HTML code to pop up a new window with the app</i> </b> </font>
 <hr align="left" width="420" height="2"/>
 <p>
-     
+
 <textarea rows="20" cols="80">
 <a href="<%= appUrl %>" target=_blank
     onClick="
@@ -448,7 +512,7 @@ swin.document.write('</html>');
 </textarea>
 <p>
 
-    
+
 
 <%
 
@@ -460,12 +524,12 @@ swin.document.write('</html>');
 </body>
     </html>
 
-<%! 
+<%!
     // utility methods
 
 
     public void listFiles(ArrayList fnames, File dir) {
-    if (dir.isDirectory()) {   
+    if (dir.isDirectory()) {
         if (!(dir.getName().startsWith(".svn"))) {
             String[] children = dir.list();
             for (int i=0; i<children.length; i++) {

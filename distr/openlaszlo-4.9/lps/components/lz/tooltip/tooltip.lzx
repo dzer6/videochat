@@ -11,8 +11,16 @@
     <!---
         The text that will be displayed by the tooltip.  If the text
         is <code>null</code> or empty, no tooltip will be displayed.
+        You can use the CSS property <code>content</code> to set the
+        text of a tooltip from a <code>stylesheet</code>
     -->
-    <attribute name="text" type="text" />
+    <attribute name="text" type="text" style="content" />
+    <!---
+        Called just before the tooltip might be displayed so that the
+        <code>text</code> attribute can be updated (or set to the empty string, to
+        inhibit displaying the tooltip).
+    -->
+    <method name="update" />
     <!---
         The vertical offset of tooltip from the mouse position.
     -->
@@ -35,6 +43,7 @@
 
     <!--- @keywords private -->
     <handler name="onmouseover" args="ignore" reference="this.parent"><![CDATA[
+        this.update();
         if (this.text && (this.text != "")) {
           canvas.tooltipview.setAttribute('tooltip', this);
         }
@@ -51,12 +60,61 @@
         </p>
 
         <example title="Tooltip"><![CDATA[
-          <canvas height="60" layout="axis:y; spacing: 10">
-            <text>Mouse over the button to see the tip</text>
-            <button text="Button, button">
-              <tooltip>Click or mouse out to hide tip</tooltip>
-            </button>
-          </canvas>
+<canvas height="60" layout="axis:y; spacing: 10">
+  <text>Mouse over the button to see the tip</text>
+  <button text="Button, button">
+    <tooltip>Click or mouse out to hide tip</tooltip>
+  </button>
+</canvas>
+        ]]></example>
+
+        <p>
+          You can subclass <classname>tooltip</classname> and override
+          the <code>update</code> method to create dynamic tooltips
+        </p>
+
+        <example class="program" title="Dynamic Tooltip"><![CDATA[
+<canvas height="180">
+  <class name="timetip" extends="tooltip" with="formatter">
+    <attribute name="formats" value="{us: '%2$d/%3$d/%1$d %4$02d:%02d:%02d', eu: '%1$4d-%2$02d-%3$02d %4$02d:%02d:%02d'}" />
+    <method name="update">
+      var now = new Date;
+      this.setAttribute('text',
+        this.formatToString(
+          this.formats[locale.text],
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDay(),
+          now.getHours(),
+          now.getMinutes(),
+          now.getSeconds()));
+    </method>
+  </class>
+
+  <stylesheet>
+    boxmodel { padding: 10 }
+    tooltip { content: "Traditional tooltip" }
+  </stylesheet>
+
+  <view layout="axis:y; spacing: 25" with="boxmodel">
+    <view layout="axis: x; spacing: 20">
+      <button id="locale" onclick="this.setAttribute('text', this.text == 'us' ? 'eu' : 'us')">us</button>
+      <text multiline="true" width="250">
+        Click on the eu/us button to change locale.  Hover over the blue box to see a locale-dependent tooltip
+      </text>
+    </view>
+    <view layout="axis: x; spacing: 20">
+      <view width="75" height="75" bgcolor="blue" clickable="true">
+        <timetip />
+        <text fgcolor="white" valign="middle" align="center">Dynamic</text>
+      </view>
+      <view width="75" height="75" bgcolor="lime" clickable="true">
+        <tooltip />
+        <text fgcolor="white" valign="middle" align="center">Static</text>
+      </view>
+    </view>
+  </view>
+</canvas>
         ]]></example>
 
         <p>
@@ -69,7 +127,7 @@
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2006-2010 Laszlo Systems, Inc. All Rights Reserved.               *
+* Copyright 2006-2011 Laszlo Systems, Inc. All Rights Reserved.               *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

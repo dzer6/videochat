@@ -1,5 +1,7 @@
 <library>
 
+<include href="../basefloatinglist.lzx"/>
+
 <resource name="tooltip_ptr_rsc" >
     <frame src="resources/tooltip_pointer_up.png" />
     <frame src="resources/tooltip_pointer_dn.png" />
@@ -126,78 +128,108 @@
     </method>
 
     <!--- @access private -->
-    <method name="showTip"> <![CDATA[
+    <method name="showTip">
         var tt = this.tooltip;
-        var ttp = tt.parent;
-
+        var ttp:LzView = tt.parent;
+        var tp:LzView = this.pointer;
+        
         // Set up to hide...
-        if (! this.outdel) { this.outdel = new lz.Delegate(this, "checkOut"); }
+        tp.setAttribute('y', 0); // Ensure height doesn't count pointer
+        if (!this.outdel) {
+            this.outdel = new lz.Delegate(this, "checkOut");
+        }
         this.outdel.register(lz.GlobalMouse, "onmousemove");
-        if (! this.clickdel) { this.clickdel = new lz.Delegate(this, "hideTip"); }
-        this.clickdel.register(ttp, "onclick");
+        if (!this.clickdel) {
+            this.clickdel = new lz.Delegate(this, "hideTip");
+        }
+        this.clickdel.register(ttp, "onmousedown");
+        this.clickdel.register(ttp, "onmouseup");
 
+        // Set tip text
         tiptext.setAttribute('text', tt.text);
 
-        var tipx = canvas.width;
-        if ( tt.tipalign == 'right' ) {
-            tipx = ttp.getAttributeRelative( 'x', canvas ) + ttp.width;
+        // Get floating boundary
+        var bounds = lz.basefloatinglist.getFloatingBoundary(ttp);
+        var boundsXOffset = bounds.getAttributeRelative('x', canvas);
+        var boundsYOffset = bounds.getAttributeRelative('y', canvas);
+        
+        // Determine X position
+        var tipX:Number = ttp.getAttributeRelative('x', canvas) - boundsXOffset;
+        var pointerX:Number = 5;
+        if (tt.tipalign == 'right') {
+            tipX += ttp.width - this.width;
+            pointerX = this.width - tp.width - 5;
+        }
+        
+        // Ensure inside bounds in X dimension
+        if (0 > tipX) {
+            pointerX += tipX;
+            tipX = 0;
+        }
+        var xOverage:Number = tipX + this.width - bounds.width;
+        if (xOverage > 0) {
+            tipX -= xOverage;
+            pointerX += xOverage;
+        }
+        // Happens if ttp has an x less than the bounds
+        if (5 > pointerX) {
+            pointerX = 5;
+        }
+        // Happens if ttp has an x greater than the bounds and align is right
+        if ((pointerX + tp.width) > this.width - 5) {
+            pointerX = this.width - tp.width - 5;
         }
 
-        tipx = Math.min(tipx - this.width - 10, this.lastmousex - 5);
-
-        var yoff = tt.yoffset;
-        var tipy = this.lastmousey + yoff;
-        var pointerontop;
+        // Determine Y position
+        var tipY:Number = ttp.getAttributeRelative('y', canvas) - boundsYOffset;
+        var pointerOnTop:Boolean = false;
+        var adj:Number;
         switch (tt.tipvalign) {
-          case "above":
-            tipy = this.lastmousey - yoff;
-            pointerontop = false;
-            break;
-
-          case "below":
-            tipy = this.lastmousey + yoff;
-            pointerontop = true;
-            break;
-
-
-          default:
-            if (tipy > canvas.height - (yoff + 5)) {
-                tipy = this.lastmousey - yoff;
-                pointerontop = false;
-            } else {
-                tipy = this.lastmousey + yoff;
-                pointerontop = true;
-            }
-
+            case "below":
+                adj = ttp.height + tp.height;
+                
+                var yOverage:Number = tipY + adj + this.height - bounds.height;
+                if (yOverage > 0) {
+                    tipY -= this.height + tp.height;
+                } else {
+                    tipY += adj;
+                    pointerOnTop = true;
+                }
+                break;
+            
+            case "above":
+            default:
+                adj = this.height + tp.height;
+                if (0 > tipY - adj) {
+                    tipY += ttp.height + tp.height;
+                    pointerOnTop = true;
+                } else {
+                    tipY -= adj;
+                }
         }
-
-        this.setAttribute('x', tipx );
-        this.setAttribute('y', tipy );
-        this.setPointerX( this.lastmousex, pointerontop );
-        this.bringToFront( );
-        this.setAttribute('visible',  true );
-    ]]></method>
-
-    <!--- @access private -->
-    <method name="setPointerX" args="mx, isontop ">
-        var nx = Math.min( mx - x, width - 12)
-        var tp = this.pointer;
-        tp.setAttribute('x', nx );
-
-        if ( isontop ) {
-            tp.setAttribute( 'frame', 1 );
+        
+        // Apply values
+        this.setAttribute('x', Math.round(boundsXOffset + tipX));
+        this.setAttribute('y', Math.round(boundsYOffset + tipY));
+        
+        // Position the pointer view
+        tp.setAttribute('x', pointerX);
+        if (pointerOnTop) {
+            tp.setAttribute('frame', 1);
             tp.setAttribute('y', 1 - tp.height);
         } else {
-            tp.setAttribute( 'frame', 2 );
-            tp.setAttribute('y', height - 1);
+            tp.setAttribute('frame', 2);
+            tp.setAttribute('y', this.height - 1);
         }
+        
+        this.bringToFront();
+        this.setAttribute('visible', true);
     </method>
-
 </view>
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2006-2010 Laszlo Systems, Inc. All Rights Reserved.               *
+* Copyright 2006-2011 Laszlo Systems, Inc. All Rights Reserved.               *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

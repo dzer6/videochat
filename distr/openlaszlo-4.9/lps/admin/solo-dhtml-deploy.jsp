@@ -9,6 +9,8 @@
 <%@ page import="org.openlaszlo.xml.internal.XMLUtils.*" %>
 <%@ page import="org.openlaszlo.server.LPS" %>
 <%@ page import="org.openlaszlo.utils.DeployUtils" %>
+<%@ page import="org.openlaszlo.utils.StringUtils" %>
+<%@ page import="org.openlaszlo.utils.LZHttpUtils" %>
 
 
 <%@ page import="org.w3c.dom.*" %>
@@ -19,15 +21,16 @@
 
     
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->
 
-
 <html>
     <head>
     <title>W3C Widget HTML5 Application Deployment Wizard</title>
+     <link href="solodeploy.css" rel="stylesheet" type="text/css" />
+      <script src="solo-deploy.js" type="text/javascript"></script>
     </head>
     <body>
 
@@ -66,6 +69,32 @@ if (appUrl == null) {
 }
 
 appUrl = appUrl.trim();
+
+// add in all the files in the app directory
+ServletContext ctx = getServletContext();
+// The absolute path to the base directory of the server web root 
+File basedir = new File(ctx.getRealPath(request.getContextPath().toString())).getParentFile();
+basedir = basedir.getCanonicalFile();
+
+// The absolute path to the application directory we are packaging
+// e.g., demos/amazon
+File appdir = new File(ctx.getRealPath(appUrl)).getParentFile();
+appdir = appdir.getCanonicalFile();
+
+// List of files to exclude from the zip archive
+HashMap mFileExcludes = new HashMap();
+String pExcludes[] = request.getParameterValues("excludes");
+if (pExcludes != null) {
+    for (int k = 0 ; k < pExcludes.length; k++) {
+        mFileExcludes.put(pExcludes[k], "exclude");
+    }
+}
+
+// Get the application target runtime, default to dhtml
+String appRuntime =  request.getParameter("runtime");
+if (appRuntime == null) {
+    appRuntime = "dhtml";
+}
 
 // Directory on server where generated widget files are stored
 String WGT_WORKING_DIR = "tmpwgt";
@@ -158,10 +187,10 @@ probably not what you want.
         }
 
         wrapperUrl = new URL(new URL(baseUrl),
-                             appUrl + "?lzr=dhtml&lzt=html&lzproxied=false&lzcopyresources=true");
+                             appUrl + "?lzr="+appRuntime+"&lzt=html&lzproxied=false&lzcopyresources=true");
 
         canvasUrl = new URL(new URL(baseUrl),
-                             appUrl + "?lzr=dhtml&lzt=canvas&lzproxied=false&lzcopyresources=true");
+                             appUrl + "?lzr="+appRuntime+"&lzt=canvas&lzproxied=false&lzcopyresources=true");
 
 
         // load the app's canvas descriptor from the compiler
@@ -203,7 +232,7 @@ probably not what you want.
 
         // We need to adjust the  wrapper, to make the path to lps/includes/dhtml-embed.js
         // be relative rather than absolute.
-        wrapper = DeployUtils.adjustDHTMLWrapper(wrapper, request.getContextPath());
+        wrapper = DeployUtils.adjustDHTMLWrapper(wrapper, request.getContextPath(), appRuntime, canvasdebug);
 
         // debugging print
         if (false) {
@@ -285,7 +314,7 @@ if (whatpage.equals("configure")) {
   <tr>
      <td align="right">Widget Type (config.xml file):</td><td>
 <select name="widgettype">
-<option value="opera" selected>Opera</option>
+<option value="opera">Opera</option>
 <option value="jil">Android</option>
 <option value="osx">Apple Dashboard Widget</option>
 <option value="w3c" selected>W3C Widget</option>
@@ -297,6 +326,7 @@ if (whatpage.equals("configure")) {
                                         
 </table>
 <p>
+<input type="hidden" name="runtime" value="<%= appRuntime %>">
 <input type=submit value="Continue...">
 
 
@@ -330,8 +360,8 @@ all of those apps and their assets (and subdirectories) into the Zip file. That 
 <p>
 
 <%
-String soloURL = (request.getContextPath()+"/" + appUrl + ".html?lzr=dhtml&lzproxied=false");
-String exampleURL = (request.getContextPath()+"/" + appUrl + "?lzr=dhtml&lzproxied=false");
+String soloURL = (request.getContextPath()+"/" + appUrl + ".html?lzr="+appRuntime+"&lzproxied=false");
+String exampleURL = (request.getContextPath()+"/" + appUrl + "?lzr="+appRuntime+"&lzproxied=false");
 
 %>
 
@@ -346,15 +376,40 @@ String exampleURL = (request.getContextPath()+"/" + appUrl + "?lzr=dhtml&lzproxi
 <iframe width="<%= nwidth +20 %>" height="<%= nheight +20 %>" src="<%= wrapperUrl %>"></iframe>
      <p>
 <form  method="POST">
-<input type=radio name="whatpage" value="download" checked> OK, give me the HTML wrapper code
+
+<%
+
+if (pExcludes != null) {
+    for (int k = 0 ; k < pExcludes.length; k++) {
+         out.println("<input type=\"hidden\" name=\"excludes\" value=\""+pExcludes[k]+"\">");
+    }
+}
+%>
+
+<input type=radio name="whatpage" value="download" checked> Generate deployment archive file
 <p> 
 <input type=radio name="whatpage" value="configure">Go back to change</td>
 <input type="hidden" name="appurl" value="<%= appUrl %>">
 <input type="hidden" name="widgettype" value="<%= widgetType %>">     
 <input type="hidden" name="apptitle" value="<%= title %>">
+<input type="hidden" name="runtime" value="<%= appRuntime %>">
 
 <p>
 <input type=submit value="Continue...">
+
+<%
+    // User sees list of files that will be included, can mark files for exclusion
+     out.println("<p><h3>The files listed below will be included in the wgt/zip archive</h3>");
+     out.println("Application directory is <tt>"+ appdir+"</tt><br>Check the boxes to exclude files or subdirectories<br>");
+
+     String prefix = appdir.getParent();
+     DeployUtils.listFilesAndDirs(appdir, prefix, appdir,out, "&nbsp;&nbsp;&nbsp;&nbsp;");
+
+
+%>
+
+
+</form>
 
 <%
 
@@ -377,26 +432,29 @@ String exampleURL = (request.getContextPath()+"/" + appUrl + "?lzr=dhtml&lzproxi
         new SimpleDateFormat("MMM_dd_yyyy_HH_mm_ss");
     String datestamp = format.format(new Date());
     String outFilename = "solo_deploy_" + datestamp + ".wgt";
+
+    // We want to name Dashboard widgets with ".zip" suffix, so user knows to unzip them
+    if ("osx".equals(widgetType)) {
+        outFilename = "OL_Dashboard_Widget_"+datestamp+".zip";
+    }
+
     zipfilename = outFilename;
     ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(tmpdir+"/"+outFilename));
 
-    // add in all the files in the app directory
-    ServletContext ctx = getServletContext();
-    // The absolute path to the base directory of the server web root 
-    File basedir = new File(ctx.getRealPath(request.getContextPath().toString())).getParentFile();
-    basedir = basedir.getCanonicalFile();
+    // For most widget types, Place all files in top level directory
+    String prefix = "";
 
-    // The absolute path to the application directory we are packaging
-    // e.g., demos/amazon
-    File appdir = new File(ctx.getRealPath(appUrl)).getParentFile();
-    appdir = appdir.getCanonicalFile();
+    // Except for OSX, we name the directory "appname.wdgt/" for OSX Dashboard apps
+    if ("osx".equals(widgetType)) {
+        prefix = appdir.getName() + ".wdgt/";
+    }
 
-    DeployUtils.buildZipFile("dhtml", zout, basedir, appdir, new PrintWriter(out), null, wrapper,  widgetType, appUrl,  title,  appheight,  appwidth);
+    DeployUtils.buildZipFile(prefix, appRuntime, zout, basedir, appdir, new PrintWriter(out), mFileExcludes, wrapper,  widgetType, appUrl,  title,  appheight,  appwidth);
     if (whatpage.equals("emulator")) {
         // unpack to working dir
         // redirect to config.xml in working dir
-        //out.println("<br>zipfilename: "+zipfilename);
-        DeployUtils.unpackZipfile(workdir + File.separator + zipfilename, workdir.getCanonicalPath(), new PrintWriter(out));
+        out.println("<br>zipfilename: "+zipfilename);
+        DeployUtils.unpackZipfile(prefix, workdir + File.separator + zipfilename, workdir.getCanonicalPath(), new PrintWriter(out));
         String redirectURL = (request.getContextPath()+ "/" + WGT_WORKING_DIR);
         response.sendRedirect(redirectURL);
     } else {
@@ -405,11 +463,20 @@ String exampleURL = (request.getContextPath()+"/" + appUrl + "?lzr=dhtml&lzproxi
    <font face="helvetica,arial"> <b> <i> Zip file containing application deployment files</i> </b> </font>
    <hr align="left" width="420" height="2"/>
    <p>
-Click here to download zip-archived file <a href="<%= request.getContextPath() + File.separator + WGT_WORKING_DIR + File.separator + zipfilename%>"><tt><%=zipfilename%></tt></a>.
+Click here to download zip-archived file <a href="<%= request.getContextPath() + "/" + WGT_WORKING_DIR + "/" + zipfilename%>"><tt><%=zipfilename%></tt></a>.
 
    <p/>
    Note: the file may take a moment to generate and save to disk, please be patient.
   <p/>
+
+   <%     if (widgetType.equals("osx")) { %>
+                                          To install as an OSX Dashboard Widget: <p>
+
+                                          If the downloaded .zip file does not automatically expand, double-click on the .zip file to extract the Widget, then double-click on the Widget to install it in your dashboard.
+
+   <%    }    %>
+
+
   <hr align="left" width="420" height="2"/>
   <p>
 <%

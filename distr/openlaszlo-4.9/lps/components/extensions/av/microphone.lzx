@@ -187,9 +187,26 @@
             if ($as3) {
                 if (deviceindex == null) {
                     dev = flash.media.Microphone.getMicrophone();
+                    if (dev == null) {
+                        if ($debug) {
+                            if (Microphone.names.length) {
+                                Debug.warn('The default microphone is in use.');
+                            } else {
+                                Debug.warn('No microphones are available.');
+                            }
+                        }
+                        return;
+                    }
                 } else {
                     dev = flash.media.Microphone.getMicrophone(deviceindex);
+                    if (dev == null) {
+                        if ($debug) {
+                            Debug.warn('The microphone at device index %w is in use or there are no microphones on this system. %w', deviceindex, Microphone.names);
+                        }
+                        return;
+                    }
                 }
+
                 // This is done to supress pesky feedback. 
                 dev.soundTransform = this._sound;
 

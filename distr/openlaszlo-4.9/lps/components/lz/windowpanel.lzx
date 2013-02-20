@@ -215,7 +215,7 @@
                     var padding = 4;
                     var iconwidth = (parent.icon.width > 0) ? parent.icon.width + padding : parent.icon.width;
                     var twidth=0;
-                    if (parent.title.getText() == "") {
+                    if (parent.title.text == "") {
                         parent.gripper_left.setAttribute('width', parent.width - parent.controls.x);
                         parent.gripper_right.setAttribute('width', 0);
                         return;
@@ -326,7 +326,7 @@
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2009 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

@@ -10,13 +10,13 @@
 <canvas width="100%"  height="370" proxied="false" bgcolor="#858599">
  <!-- Make sure there is a copyright in the Javascript 'binary' -->
  <attribute name="copyright" type="string"
-            value="Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.  Use is subject to license terms." />
+            value="Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.  Use is subject to license terms." />
  <switch>
-    <when runtime="dhtml">
+    <when property="$dhtml">
     </when>
     <otherwise>
         <debug options="ignorelayout"
-            fontsize="12" 
+            fontsize="12"
             x="800"
             y="0"
             width="600"
@@ -26,9 +26,10 @@
 
   <attribute name="app_runtime"/>
   <attribute name="runtime_dhtml_enabled" value="false"/>
-  <attribute name="runtime_swf8_enabled"  value="false"/>
+  <attribute name="runtime_mobile_enabled"  value="false"/>
   <attribute name="runtime_swf9_enabled"  value="false"/>
   <attribute name="runtime_swf10_enabled" value="false"/>
+  <attribute name="runtime_swf11_enabled" value="false"/>
   <attribute name="app_debug" />
   <attribute name="app_backtrace" />
   <attribute name="app_console_debug" />
@@ -44,6 +45,7 @@
   <attribute name="app_uid" />
   <attribute name="app_lzoptions" />
   <attribute name="app_isproxied" />
+  <attribute name="app_incremental_compile" />
   <attribute name="app_usemastersprite" />
 
   <handler name="oninit">
@@ -52,6 +54,7 @@
 
        //       lz.Browser.callJS('console.log("'+ escape(lz.Browser.getInitArg('appinfo'))+'")');
        setAttribute('app_runtime', appdata.getPointer().xpathQuery("/info/@runtime"));
+       setAttribute('app_incremental_compile', appdata.getPointer().xpathQuery("/request/param[@name = 'incremental']/@value"));
        this.setupRuntimes();
        if (app_runtime == null) {
            setAttribute('app_runtime', appdata.getPointer().xpathQuery("/request/param[@name = 'runtime']/@value"));
@@ -59,10 +62,10 @@
        setAttribute('app_lzoptions', appdata.getPointer().xpathQuery("/request/param[@name = 'lzoptions']/@value"));
 
        setAttribute('app_debug', appdata.getPointer().xpathQuery("/request/param[@name = 'debug']/@value"));
-       if (app_debug == 'y') app_debug = 'true';
+       if (app_debug == 'y') { setAttribute('app_debug', 'true'); }
 
        setAttribute('app_backtrace', appdata.getPointer().xpathQuery("/request/param[@name = 'backtrace']/@value"));
-       setAttribute('app_console_debug', 
+       setAttribute('app_console_debug',
                     appdata.getPointer().xpathQuery("/request/@console-remote-debug") == 'true');
        setAttribute('app_isproxied', lz.Browser.getInitArg('appproxied'));
        setAttribute('app_floating_window',
@@ -80,9 +83,9 @@
        setAttribute('app_uid', app_fullpath);
 
        if ($dhtml) {
-           setAttribute('lzr', 'dhtml');
+           setAttribute('lzr', $mobile ? 'mobile' : 'dhtml');
            setAttribute('app_usemastersprite',
-                        appdata.getPointer().xpathQuery("/request/param[@name = 'usemastersprite']/@value") || 
+                        appdata.getPointer().xpathQuery("/request/param[@name = 'usemastersprite']/@value") ||
                         appdata.getPointer().xpathQuery("/request/param[@name = 'lzusemastersprite']/@value"));
            canvas.width = document.body.clientWidth;
        }
@@ -91,31 +94,39 @@
 
   <!-- create a table listing which runtimes are enabled -->
   <method name="setupRuntimes">
+    <![CDATA[
      // default set of runtimes
-     var runtimes = ['dhtml', 'swf8', 'swf9', 'swf10'];
+     var runtimes = ['dhtml', 'mobile', 'swf9', 'swf10', 'swf11'];
      // server can tell us if only some are available
      var runtimes_arg = lz.Browser.getInitArg('runtimes');
-     if (runtimes_arg != null) {
+     // In the case where the compiler gets an error creating the
+     // canvas, the runtimes arg may be empty. In that case, we don't
+     // know what runtimes are present, so show all runtimes as
+     // choices to the user.
+     if (runtimes_arg != null && runtimes_arg.length > 0) {
         runtimes = runtimes_arg.split(",");
-    }
+     }
+
      for (var r in runtimes) {
          if (runtimes[r] == 'dhtml')  canvas.setAttribute('runtime_dhtml_enabled', true);
-         if (runtimes[r] == 'swf8')   canvas.setAttribute('runtime_swf8_enabled', true);
+         if (runtimes[r] == 'mobile')   canvas.setAttribute('runtime_mobile_enabled', true);
          if (runtimes[r] == 'swf9')   canvas.setAttribute('runtime_swf9_enabled', true);
          if (runtimes[r] == 'swf10')  canvas.setAttribute('runtime_swf10_enabled', true);
+         if (runtimes[r] == 'swf11')  canvas.setAttribute('runtime_swf11_enabled', true);
      }
+   ]]>
   </method>
 
-  <!-- info we get is of the form 
+  <!-- info we get is of the form
   <appdata>
-    <request opt-exists="false" 
-             windows="true" 
-             pocketpc="false" 
-             query_args="&amp;debug=true&amp;lzr=swf7" 
-             unopt-url="animation.lzx" 
-             opt-url="animation.lzo" 
-             fullpath="/lps-dev/examples/animation/animation.lzx" 
-             url="animation.lzx" 
+    <request opt-exists="false"
+             windows="true"
+             pocketpc="false"
+             query_args="&amp;debug=true&amp;lzr=swf7"
+             unopt-url="animation.lzx"
+             opt-url="animation.lzo"
+             fullpath="/lps-dev/examples/animation/animation.lzx"
+             url="animation.lzx"
              opt-exists="true"
              appuid="2222222"
              console-remote-debug="true"
@@ -123,12 +134,12 @@
     <param value="true" name="debug"/>
     <param value="swf7" name="lzr"/>
    </request>
-   <info runtime="swf7" 
-         nondebug-up-to-date="false" 
-         nondebug-exists="true" 
-         debug-up-to-date="true" 
-         debug-exists="true" 
-         encoding="" 
+   <info runtime="swf7"
+         nondebug-up-to-date="false"
+         nondebug-exists="true"
+         debug-up-to-date="true"
+         debug-exists="true"
+         encoding=""
          debug="true" gz-size="0" size="256968"/>
 </appdata>
 
@@ -140,24 +151,24 @@
   <method name="deploySOLO">
     <![CDATA[
      var path = escape(app_fullpath.substring(app_lps_root.length));
-     if (app_runtime == 'dhtml') {
-        var url = app_lps_root + "/lps/admin/solo-dhtml-deploy.jsp?appurl="+path;
+     if (app_runtime == 'dhtml' || app_runtime == 'mobile') {
+        var url = app_lps_root + "/lps/admin/solo-dhtml-deploy.jsp?runtime="+app_runtime+"&appurl="+path;
      } else {
-        var url = app_lps_root + "/lps/admin/solo-deploy.jsp?appurl="+path+"&runtime="+app_runtime;
+        var url = app_lps_root + "/lps/admin/solo-deploy.jsp?runtime="+app_runtime+"&appurl="+path;
      }
 
      this.loadURL(url, '_blank');
      ]]>
   </method>
 
-  <!-- generates an exploded widget file to tmp working dir, and redirects to it's config.xml -->
+  <!-- generates an exploded widget file to tmp working dir, and redirects to it's config.xml '-->
   <method name="runWidget">
     <![CDATA[
      var path = escape(app_fullpath.substring(app_lps_root.length));
-     if (app_runtime == 'dhtml') {
-        var url = app_lps_root + "/lps/admin/solo-dhtml-deploy.jsp?appurl="+path+"&whatpage=emulator";
+     if (app_runtime == 'dhtml' || app_runtime == 'mobile') {
+        var url = app_lps_root + "/lps/admin/solo-dhtml-deploy.jsp?runtime="+app_runtime+"&appurl="+path+"&whatpage=emulator";
      } else {
-        var url = app_lps_root + "/lps/admin/solo-deploy.jsp?appurl="+path+"&runtime="+app_runtime+"&whatpage=emulator";
+        var url = app_lps_root + "/lps/admin/solo-deploy.jsp?runtime="+app_runtime+"&appurl="+path+"&whatpage=emulator";
      }
 
      this.loadURL(url, '_blank');
@@ -167,7 +178,7 @@
 
 
    <method name="debugApp">
-     cb_debug.setValue(true); 
+     cb_debug.setValue(true);
      canvas.reloadApp();
    </method>
 
@@ -185,12 +196,12 @@
      var url = app_lps_root + "/index.html";
      this.loadURL(url);
    </method>
-   
+
    <method name="viewDev">
      var url = "http://www.openlaszlo.org/community";
      this.loadURL(url);
    </method>
-   
+
    <method name="viewForums">
      var url = "http://forum.openlaszlo.org/";
      this.loadURL(url);
@@ -199,7 +210,7 @@
    <method name="loadURL" args="url, target='_top'">
      lz.Browser.loadURL(url, target);
    </method>
-   
+
   <resource name="footer_logo" src="../assets/logo_laszlo_footer.gif"/>
 
   <view name="main" width="${parent.width}">
@@ -212,10 +223,12 @@
             </view>
             <view x="125" name="compilecontrols">
                 <radiogroup id="rg_runtime" layout="class: simplelayout; axis: x; spacing:12" x="10" y="9">
-                    <radiobutton id="rb8" value="'swf8'" enabled="${canvas.runtime_swf8_enabled}"
-                                 selected="${canvas.app_runtime == 'swf8'}">swf8</radiobutton >
+                    <radiobutton id="rb8" value="'mobile'" enabled="${canvas.runtime_mobile_enabled}"
+                                 selected="${canvas.app_runtime == 'mobile'}">mobile</radiobutton >
                     <radiobutton id="rb10" value="'swf10'" enabled="${canvas.runtime_swf10_enabled}"
                                  selected="${canvas.app_runtime == 'swf10'}">swf10</radiobutton >
+                    <radiobutton id="rb11" value="'swf11'" enabled="${canvas.runtime_swf11_enabled}"
+                                 selected="${canvas.app_runtime == 'swf11'}">swf11</radiobutton >
                     <radiobutton id="rbdhtml" value="'dhtml'" enabled="${canvas.runtime_dhtml_enabled}"
                                  selected="${canvas.app_runtime == 'dhtml'}">HTML5</radiobutton >
                 </radiogroup>
@@ -223,17 +236,21 @@
                     <view height="14" width="1" bgcolor="black" y="9" />
                     <checkbox id="cb_debug" value="${canvas.app_debug == 'true'}"
                             x="16" y="8">Debug</checkbox>
-                    <checkbox id="cb_backtrace" 
+                    <checkbox id="cb_backtrace"
                             value="${canvas.app_backtrace == 'true'}" x="82" y="8">Backtrace</checkbox>
-                    <checkbox id="cb_proxied" 
+                    <checkbox id="cb_proxied"
                             value="${canvas.app_isproxied == 'true'}" x="168" y="8">Proxied</checkbox>
+<!--
+                    <checkbox id="cb_incremental"
+                                    value="${canvas.app_incremental_compile == 'true'}" x="240" y="8">Incremental</checkbox>
+-->
                     <switch>
                         <when runtime="dhtml">
-                            <checkbox id="cb_usemastersprite" 
-                                    value="${canvas.app_usemastersprite == 'true'}" x="240" y="8">Use master sprite</checkbox>
+                            <checkbox id="cb_usemastersprite"
+                                    value="${canvas.app_usemastersprite == 'true'}" x="335" y="8">Use master sprite</checkbox>
                         </when>
                     </switch>
-                    <button onclick="canvas.gotoApp()" x="${canvas.app_runtime == 'dhtml' ? 382 : 248}" y="3">Compile</button>
+                    <button onclick="canvas.gotoApp()" x="${(canvas.app_runtime == 'dhtml' || canvas.app_runtime == 'mobile') ? 465 : 370}" y="3">Compile</button>
                     <handler name="onvalue" reference="cb_backtrace">
                     if (cb_backtrace.value) {
                         cb_debug.setAttribute('value', true);
@@ -252,19 +269,19 @@
         </view>
 
         <view bgcolor="black" width="${canvas.width - 70}" height="1" y="39"/>
-          
-        <view width="${parent.firstrow.width}" y="43">
+
+        <view width="${parent.firstrow.width}" y="43" layout="axis: x; spacing: 5">
           <text fontsize="11" x="8" y="4"><b>Deploy:</b></text>
-          <button x="65" onclick="canvas.viewWrapper()">Server</button>
-          <button x="134" onclick="canvas.deploySOLO()">SOLO</button>
-          <button x="200" onclick="canvas.runWidget()">Widget Emulator</button>
+          <button  onclick="canvas.viewWrapper()">Server</button>
+          <button  onclick="canvas.deploySOLO()">Widget (SOLO)</button>
+          <button  onclick="canvas.runWidget()">Widget Emulator</button>
 
           <view fgcolor="0x15159b" y="3" options="ignorelayout" align="right" layout="axis: x; spacing: 3">
             <text onclick="canvas.viewDocs()"><u>Documentation</u></text>
             <text onclick="canvas.viewDev()"><u>Developer Community</u></text>
             <text onclick="canvas.viewForums()"><u>Developer Forums</u></text>
           </view>
-          
+
         </view>
 
           <!--
@@ -280,7 +297,7 @@
           -->
 
           <checkbox y="10" x="${parent.firstrow.width + 20}" id="cb_remotedebug"
-                    visible="${canvas.app_runtime != 'dhtml'}"
+                    visible="${! (canvas.app_runtime == 'dhtml' ||  canvas.app_runtime == 'mobile')  }"
                     value="${canvas.app_console_debug}">Console Remote Debug</checkbox>
 
 
@@ -301,13 +318,14 @@
             <text resize="true" text="${'Evaluate in '+canvas.app_url}"/>
             <edittext  doesenter="true" id="expr2" width="300">
                 <method name="doEnterDown">
-                canvas.remoteEval(expr2.getText());
+                canvas.remoteEval(expr2.text);
                 </method>
             </edittext>
             <button enabled="false" bgcolor="white" id="app_eval_btn"
-                    onclick="canvas.remoteEval(expr2.getText())">Eval</button>
+                    onclick="canvas.remoteEval(expr2.text)">Eval</button>
             <button onclick="app_eval_btn.setAttribute('enabled', true);
                              canvas.sendConsoleAlive()">Connect To App</button>
+            <button onclick="console.clear();">Clear</button>
             </view>
 
             <window title="console" id="console"
@@ -326,6 +344,11 @@
                 ]]>
             </method>
 
+            <method name="clear">
+                <![CDATA[
+                this.output.setAttribute('text', '');
+                ]]>
+            </method>
             <method name="writeRaw" args="str">
                 <![CDATA[
                 // Funky thing that Henry discovered you have to do to make newlines
@@ -336,7 +359,7 @@
             </method>
             <text name="output" multiline='true' resize="true" selectable="true"
                     width="${parent.width}">
-         
+
              <handler name="ontextlink" args="oid:String">
                 canvas.displayObjectByID(oid);
              </handler>
@@ -352,13 +375,13 @@
   </view>
 
 
-  <method name="gotoApp">              
+  <method name="gotoApp">
     // reload the page with the .lzx path
     var p = app_fullpath.substring(0,app_fullpath.length -4)+".lzx";
     setAttribute('app_fullpath', p);
     this.reloadApp();
   </method>
-  
+
   <method name="reloadApp" >
     <![CDATA[
     var qruntime = rg_runtime.value;
@@ -370,7 +393,7 @@
     // parse original app query string, override with user settings
     // for debug, runtime, etc
     var params = new LzParam();
-    
+
     var lzoptions = {};
     var qitems = LzParam.parseQueryString(app_query);
     var rawlzoptstring = qitems['lzoptions'];
@@ -389,15 +412,27 @@
         }
     }
 
-    // override debug,runtime args
+    // remove old-style option from query args, and add new lzoptions-style arg value
     lzoptions['debug'] = qdebug;
+    delete qitems['debug'];
+
+    // remove old-style option from query args, and add new lzoptions-style arg value
     lzoptions['backtrace'] = qbacktrace;
+    delete qitems['backtrace'];
+
+    // remove old-style option from query args, and add new lzoptions-style arg value
     lzoptions['proxied'] = qproxied;
+    delete qitems['lzproxied'];
+
+    // remove old-style option from query args, and add new lzoptions-style arg value
+    delete qitems['lzr'];
     lzoptions['runtime'] = qruntime;
+
+
     if ($dhtml) {
         lzoptions['usemastersprite'] = cb_usemastersprite.value;
     }
-    if (qruntime != 'dhtml') {
+    if (qruntime != 'dhtml' && qruntime != 'mobile' ) {
         delete lzoptions['usemastersprite'];
     }
 
@@ -503,7 +538,7 @@
   </method>
 
   <method name="sendConsoleAlive">
-    <![CDATA[                
+    <![CDATA[
       // sets up the LocalConnection
      if (receivingLC == null) {
       var rcl = new remoteConnectionListener();
@@ -533,7 +568,7 @@
   <attribute name="appListenerName" />
 
  <switch>
-    <when runtime="swf10">
+    <when property="$as3">
       <!-- create an object to handle our LocalConnection listener requests -->
       <script when="immediate"><![CDATA[
         public class remoteConnectionListener {
@@ -582,7 +617,7 @@
 
 
 
-            // returns the LocalConnection which talks to the app 
+            // returns the LocalConnection which talks to the app
             public function setupConnection() {
                 var conn = new flash.net.LocalConnection();
                 this.lc = conn;
@@ -606,7 +641,7 @@
 
 </canvas>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2012 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

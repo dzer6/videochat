@@ -65,10 +65,10 @@
    
         <method name="deleteSelected">
           var csel = this.selector.getSelection();
+          this.selector.clearSelection();
           for (var i = csel.length - 1; i >= 0; i = i - 1) {
             csel[i].destroy();
           }
-          this.selector.clearSelection();
         </method>
       </view>
       <button onclick="fruitlist.deleteSelected();">Delete selection</button>

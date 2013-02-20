@@ -18,14 +18,14 @@
         <method name="testInitialConditions">
             assertEquals("", gbet.getValue()); 
             assertFalse(gbet.multiline); 
-            assertEquals(gbet.getValue(), gbet.getText()); 
+            assertEquals(gbet.getValue(), gbet.text); 
         </method>
     </TextTestCase>
 </TestSuite>
 
 </canvas>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2007 Laszlo Systems, Inc. All Rights Reserved.                    *
+* Copyright 2007-2011 Laszlo Systems, Inc. All Rights Reserved.                    *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

@@ -1,5 +1,5 @@
 <!-- X_LZ_COPYRIGHT_BEGIN ************************************************
-* Copyright 2007-2010 Laszlo Systems, Inc.  All Rights Reserved.         *
+* Copyright 2007-2011 Laszlo Systems, Inc.  All Rights Reserved.         *
 * Use is subject to license terms.                                       *
 * X_LZ_COPYRIGHT_END ************************************************** -->
 <library>
@@ -49,7 +49,7 @@
 
         <state applied="${parent.editing}" pooling="true"
                onapply="parent.editbox.setAttribute('text', parent.text)"
-               onremove="parent.setAttribute('text', parent.editbox.getText())">
+               onremove="parent.setAttribute('text', parent.editbox.text)">
             <edittext name="editbox" width="${parent.t.width + 10}">
                 <method name="init">
                     this.globalMouseDel = new LzDelegate( this,

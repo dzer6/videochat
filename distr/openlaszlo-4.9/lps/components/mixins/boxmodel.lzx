@@ -1,5 +1,5 @@
 <!---
-    @copyright Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.
+    @copyright Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.
                Use is subject to license terms.
 
     @access public
@@ -7,6 +7,76 @@
     @subtopic Views
   -->
 <library>
+    <script when="immediate"><![CDATA[
+      /** @access private */
+      class boxmodelSupport {
+        static const CAPABILITY_BOX_DIMENSION_OFFSET = {capability: 'css2boxmodel', isdimension: true, affectsoffset: true};
+        static const CAPABILITY_BOX = {capability: 'css2boxmodel'};
+
+        static const SIDE_DIMENSION_MAP = {top: 0, right: 1, bottom: 2, left: 3};
+        static const DIMENSION_SIDE_MAP = ['top', 'right', 'bottom', 'left'];
+        static const SPACE = new RegExp('\\s+');
+        static const DIMENSION_PATTERN = RegExp("^\\s*(\\d+(?:\\.\\d*)?|\\.\\d+)\\s*$");
+
+        static function camelCase(...parts) {
+          var str:String = parts[0];
+          for (var i = 1, l = parts.length; i < l; i++) {
+            var part:String = parts[i];
+            str += part.substring(0, 1).toUpperCase();
+            str += part.substring(1);
+          }
+          return str;
+        }
+
+        static function parseSideDimensions (value, node:LzNode, attribute:String) {
+          var dimensionmap = boxmodelSupport.SIDE_DIMENSION_MAP
+          // default dimensions per CSS.
+          var dimensions = value.split(boxmodelSupport.SPACE);
+          // Compute defaults
+          var l = dimensions.length;
+          // If right is omitted it is the same as top.
+          if (l <= dimensionmap.right) dimensions[dimensionmap.right] = dimensions[dimensionmap.top];
+          // If bottom is omitted it is the same as top.
+          if (l <= dimensionmap.bottom) dimensions[dimensionmap.bottom] = dimensions[dimensionmap.top];
+          // If left is omitted it is the same as right.
+          if (l <= dimensionmap.left) dimensions[dimensionmap.left] = dimensions[dimensionmap.right];
+          for (var i = 0, l = dimensions.length; i < l; i++) {
+            // TODO:  accept a CSS dimension
+            dimensions[i] = parseFloat(dimensions[i]);
+          }
+          return dimensions;
+        }
+
+        static function unparseSideDimensions(value, node:LzNode, attribute:String) {
+          var dimensionmap = boxmodelSupport.SIDE_DIMENSION_MAP;
+          var str = '' + value[dimensionmap.top];
+          var needright = (value[dimensionmap.right] != value[dimensionmap.top]);
+          var needbottom = (value[dimensionmap.bottom] != value[dimensionmap.top]);
+          var needleft = (value[dimensionmap.left] != value[dimensionmap.right]);
+          if (needright || needbottom || needleft) {
+            str += ' ' + value[dimensionmap.right];
+          }
+          if (needbottom || needleft) {
+            str += ' ' + value[dimensionmap.bottom];
+          }
+          if (needleft) {
+            str += ' ' + value[dimensionmap.left];
+          }
+          return str;
+        }
+      };
+    ]]></script>
+
+    <type name="boxsidedimensions">
+        <accept args="value, node:LzNode, attribute:String">
+          return boxmodelSupport.parseSideDimensions(value, node, attribute);
+        </accept>
+
+        <present args="value, node:LzNode, attribute:String">
+          return boxmodelSupport.unparseSideDimensions(value, node, attribute);
+        </present>
+    </type>
+
 <mixin name="boxmodel">
     <doc>
       <tag name="shortdesc"><text>A mixin that adds CSS2 box model support to view.</text></tag>
@@ -17,11 +87,76 @@
         <a href="http://www.w3.org/TR/CSS2/box.html">http://www.w3.org/TR/CSS2/box.html</a>
         </p>
         <example title="Simple view with boxmodel" query-parameters="lzr=swf10"><programlisting><![CDATA[
-<canvas>
-    <include href="mixins/boxmodel.lzx"/>
-    <view with="boxmodel" bgcolor="yellow" margin="20" borderwidth="2" padding="5">
-        <text>text</text>
-    </view>
+<canvas height="200" bgcolor="antiquewhite">
+  <stylesheet>
+    #thebox {
+      padding: 1 3 5 7;
+      border-width: 2 4 6 8;
+      border-color: cornflowerblue;
+      margin: 3 7 11 15;
+    }
+    text { color: navy; }
+    .margin { background-color: aliceblue; }
+    .borderwidth { color: white; background-color: cornflowerblue; }
+    .padding { background-color: skyblue; }
+    .content { background-color: white; }
+    colortext { border-width: 1; }
+    colortext.margin, colortext.borderwidth { border-bottom-width: 0 }
+  </stylesheet>
+
+  <class name="colorview" extends="view">
+    <attribute name="bgcolor" style="background-color" value="transparent" />
+    <attribute name="fgcolor" style="color" value="black" />
+  </class>
+  <class name="colortext" extends="text" with="boxmodel" width="100%" multiline="true">
+    <attribute name="bgcolor" style="background-color" value="transparent" />
+    <attribute name="fgcolor" style="color" value="black" />
+  </class>
+
+  <colorview styleclass="margin" x="5" y="5" >
+    <colorview id="thebox" with="boxmodel" styleclass="padding" width="250">
+      <colorview styleclass="content" layout="axis: y; spacing:0" width="100%">
+        <text>Click me to demonstrate updating:</text>
+        <text name="op" />
+        <colortext styleclass="margin">
+          <handler name="onmargin" reference="thebox" method="display" />
+          <handler name="oninit" method="display" />
+          <method name="display" args="ignore">
+            this.format("margin: %s", thebox.presentAttribute('margin'));
+          </method>
+        </colortext>
+        <colortext styleclass="borderwidth">
+          <handler name="onborderwidth" reference="thebox" method="display" />
+          <handler name="oninit" method="display" />
+          <method name="display" args="ignore">
+            this.format("borderwidth: %s", thebox.presentAttribute('borderwidth'));
+          </method>
+        </colortext>
+        <colortext styleclass="padding">
+          <handler name="onpadding" reference="thebox" method="display" />
+          <handler name="oninit" method="display" />
+          <method name="display" args="ignore">
+            this.format("padding: %s", thebox.presentAttribute('padding'));
+          </method>
+        </colortext>
+        <attribute name="attribute" type="string" />
+        <attribute name="amount" type="number" />
+        <handler name="onclick" method="doit" />
+        <handler name="oninit" method="doit" />
+        <method name="doit" args="ignore">
+          if (this.attribute) {
+            thebox.setAttribute(this.attribute, thebox[this.attribute] + amount);
+          }
+          var r = Math.floor(Math.random()*3);
+          var prefix = ['margin', 'border', 'padding'][r];
+          var suffix = ['','width',''][r];
+          this.attribute = prefix+['top','right','bottom','left'][Math.floor(Math.random()*4)]+suffix;
+          this.amount = Math.round(Math.random()*10);
+          op.format("%s += %w", attribute, amount);
+        </method>
+       </colorview>
+    </colorview>
+  </colorview>
 </canvas>
         ]]></programlisting></example>
 
@@ -32,61 +167,265 @@
 
     <!--- @access private -->
     <method name="construct" args="p, a">
-        super.construct(p,a);
+      super.construct(p,a);
 
-        // set these lz.view.setCSS() knows how to process these attributes
-        var style = this.__styleinfo;
-        style.margin = {capability: 'css2boxmodel', isdimension: true, affectsoffset: true}
-        style.borderWidth = {capability: 'css2boxmodel', isdimension: true, affectsoffset: true} 
-        style.borderColor = {capability: 'css2boxmodel'} 
-        style.padding = {capability: 'css2boxmodel', isdimension: true, affectsoffset: true}
+      // set these lz.view.setCSS() knows how to process these attributes
+      var style = this.__styleinfo;
+      style.marginTop = style.marginRight = style.marginBottom = style.marginLeft =
+        boxmodelSupport.CAPABILITY_BOX_DIMENSION_OFFSET;
+      style.paddingTop = style.paddingRight = style.paddingBottom = style.paddingLeft =
+        boxmodelSupport.CAPABILITY_BOX_DIMENSION_OFFSET;
+      style.borderTopWidth = style.borderRightWidth = style.borderBottomWidth = style.borderLeftWidth =
+        boxmodelSupport.CAPABILITY_BOX_DIMENSION_OFFSET;
+      style.borderColor = boxmodelSupport.CAPABILITY_BOX;
+      // initialize default values
+      // @devnote [2010-12-30 ptw] Because the style bindings and
+      // initializations can happen in any order, we set the default
+      // values here, then set the fallback values for each styled
+      // attribute to `null`, which tells us the attribute was not
+      // styled so we should do nothing.  If the attribute _is_
+      // styled, the setter will be called and the value will
+      // propagate to both the array (abbreviated value) and the
+      // individual value
+      this.margin = [0,0,0,0];
+      this.margintop = 0;
+      this.marginright = 0;
+      this.marginbottom = 0;
+      this.marginleft = 0;
+      this.borderwidth = [0,0,0,0];
+      this.bordertopwidth = 0;
+      this.borderrightwidth = 0;
+      this.borderbottomwidth = 0;
+      this.borderleftwidth = 0;
+      this.padding = [0,0,0,0];
+      this.paddingtop = 0;
+      this.paddingright = 0;
+      this.paddingbottom = 0;
+      this.paddingleft = 0;
     </method>
 
-    <!--- The margin of the view, in pixels -->
-    <attribute name="margin" type="number" value="0" style="margin"/>
-    <event name="onmargin"/>
-    <setter name="margin" args="margin">
-        if (this.margin != margin) {
-            this.margin = margin;
-            this.__widthoffset = this.__heightoffset = (margin * 2) + (this.borderwidth * 2) + (this.padding * 2);
-            this.setCSS('margin', margin);
+    <!--- @access private -->
+    <method name="_expandBoxSideDimensionProperty" args="property, value:String"><![CDATA[
+      var parts = property.split('-');
+      var prefix = parts[0];
+      var suffix = (parts.length == 2 ? parts[1] : '');
+      var attr = prefix + suffix;
+      var dimensions = lz.Type.acceptTypeValue('boxsidedimensions', value, this, attr);
+      var dsm = boxmodelSupport.DIMENSION_SIDE_MAP;
+      var result = {};
+      for (var index = 0, l = dsm.length; index < l; index++) {
+        var side = dsm[index];
+        var attr = prefix + side + suffix;
+        var prop = prefix + '-' + side;
+        if (suffix) { prop += '-' + suffix; }
+        result[prop] = lz.Type.presentTypeValue('number', dimensions[index], this, attr);
+      }
+      return result;
+    ]]></method>
+
+    <!--- @access private -->
+    <method name="_setAttributeDimensionArray" args="prefix:String, suffix:String, value:Array"><![CDATA[
+      if (value == null) { return false; }
+      var attr = prefix + suffix;
+      var current = this[attr];
+      var changed = false;
+      var dsm = boxmodelSupport.DIMENSION_SIDE_MAP;
+      for (var index = 0, l = dsm.length; index < l; index++) {
+        var side = dsm[index];
+        if (current[index] != value[index]) {
+          changed |= this._setAttributeDimensionInternal(prefix, suffix, side, value[index]);
         }
-        if (this.onmargin.ready) this.onmargin.sendEvent(margin);
+      }
+      if (! changed) { return false; }
+      var event = 'on' + attr;
+      if (this[event] && this[event].ready) { this[event].sendEvent(value); }
+      return true;
+    ]]></method>
+
+    <!--- @access private -->
+    <method name="_setAttributeDimensionInternal" args="prefix:String, suffix:String, side:String, value"><![CDATA[
+      var attr = prefix + side + suffix;
+      if (this[attr] == value) { return false; }
+      this[attr] = value;
+      // Update dimension array
+      var attrs = prefix + suffix;
+      var dimensions = this[attrs];
+      var sdm = boxmodelSupport.SIDE_DIMENSION_MAP;
+      dimensions[sdm[side]] = value;
+      // Update view dimensions before you make the call to setCSS
+      this.__xoffset = this.marginleft + this.borderleftwidth + this.paddingleft;
+      this.__widthoffset =  this.__xoffset + this.paddingright + this.borderrightwidth + this.marginright;
+      this.__yoffset = this.margintop + this.bordertopwidth + this.paddingtop;
+      this.__heightoffset = this.__yoffset + this.paddingbottom + this.borderbottomwidth + this.marginbottom;
+      // Update CSS
+      this.setCSS(boxmodelSupport.camelCase(prefix, side, suffix), this.presentAttribute(attr));
+      var event = 'on' + attr;
+      if (this[event] && this[event].ready) { this[event].sendEvent(value); }
+      return true;
+    ]]></method>
+
+    <!--- @access private -->
+    <method name="_setAttributeDimension" args="prefix:String, suffix:String, side:String, value"><![CDATA[
+      if (value == null) { return false; }
+      var changed = this._setAttributeDimensionInternal(prefix, suffix, side, value);
+      if (changed) {
+        var attrs = prefix + suffix;
+        // Send the array event
+        var event = 'on' + attrs;
+        if (this[event] && this[event].ready) { this[event].sendEvent(this[attrs]); }
+      }
+      return changed;
+    ]]></method>
+
+    <!--- The margin of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="margin" type="boxsidedimensions" value="${null}" style="margin" expander="_expandBoxSideDimensionProperty" />
+    <!--- @access private -->
+    <event name="onmargin"/>
+    <!--- @access private -->
+    <setter name="margin" args="value">
+      this._setAttributeDimensionArray('margin', '', value);
+    </setter>
+    <!--- The top margin of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="margintop" type="number" value="${null}" style="margin-top"/>
+    <!--- @access private -->
+    <event name="onmargintop"/>
+    <!--- @access private -->
+    <setter name="margintop" args="value">
+      this._setAttributeDimension('margin', '', 'top', value)
+    </setter>
+    <!--- The right margin of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="marginright" type="number" value="${null}" style="margin-right"/>
+    <!--- @access private -->
+    <event name="onmarginright"/>
+    <!--- @access private -->
+    <setter name="marginright" args="value">
+      this._setAttributeDimension('margin', '', 'right', value);
+    </setter>
+    <!--- The bottom margin of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="marginbottom" type="number" value="${null}" style="margin-bottom"/>
+    <!--- @access private -->
+    <event name="onmarginbottom"/>
+    <!--- @access private -->
+    <setter name="marginbottom" args="value">
+      this._setAttributeDimension('margin', '', 'bottom', value);
+    </setter>
+    <!--- The left margin of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="marginleft" type="number" value="${null}" style="margin-left"/>
+    <!--- @access private -->
+    <event name="onmarginleft"/>
+    <!--- @access private -->
+    <setter name="marginleft" args="value">
+      this._setAttributeDimension('margin', '', 'left', value);
     </setter>
 
-    <!--- The borderwidth of the view, in pixels -->
-    <attribute name="borderwidth" type="number" value="0" style="border-width"/>
+    <!--- The border width of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="borderwidth" type="boxsidedimensions" value="${null}" style="border-width" expander="_expandBoxSideDimensionProperty" />
+    <!--- @access private -->
     <event name="onborderwidth"/>
+    <!--- @access private -->
     <setter name="borderwidth" args="borderwidth">
-        if (this.borderwidth != borderwidth) {
-            this.borderwidth = borderwidth;
-            this.__widthoffset = this.__heightoffset = (this.margin * 2) + (borderwidth * 2) + (this.padding * 2);
-            this.setCSS('borderWidth', borderwidth);
-        }
-        if (this.onborderwidth.ready) this.onborderwidth.sendEvent(borderwidth);
+      this._setAttributeDimensionArray('border', 'width', borderwidth);
+    </setter>
+    <!--- The top border width of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="bordertopwidth" type="number" value="${null}" style="border-top-width"/>
+    <!--- @access private -->
+    <event name="onbordertopwidth"/>
+    <!--- @access private -->
+    <setter name="bordertopwidth" args="value">
+      this._setAttributeDimension('border', 'width', 'top', value);
+    </setter>
+    <!--- The right border width of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="borderrightwidth" type="number" value="${null}" style="border-right-width"/>
+    <!--- @access private -->
+    <event name="onborderrightwidth"/>
+    <!--- @access private -->
+    <setter name="borderrightwidth" args="value">
+      this._setAttributeDimension('border', 'width', 'right', value);
+    </setter>
+    <!--- The bottom border width of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="borderbottomwidth" type="number" value="${null}" style="border-bottom-width"/>
+    <!--- @access private -->
+    <event name="onborderbottomwidth"/>
+    <!--- @access private -->
+    <setter name="borderbottomwidth" args="value">
+      this._setAttributeDimension('border', 'width', 'bottom', value);
+    </setter>
+    <!--- The left border width of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="borderleftwidth" type="number" value="${null}" style="border-left-width"/>
+    <!--- @access private -->
+    <event name="onborderleftwidth"/>
+    <!--- @access private -->
+    <setter name="borderleftwidth" args="value">
+      this._setAttributeDimension('border', 'width', 'left', value);
+    </setter>
+
+    <!--- The padding of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="padding" type="boxsidedimensions" value="${null}" style="padding" expander="_expandBoxSideDimensionProperty" />
+    <!--- @access private -->
+    <event name="onpadding"/>
+    <!--- @access private -->
+    <setter name="padding" args="value">
+      this._setAttributeDimensionArray('padding', '', value);
+    </setter>
+    <!--- The top padding of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="paddingtop" type="number" value="${null}" style="padding-top"/>
+    <!--- @access private -->
+    <event name="onpaddingtop"/>
+    <!--- @access private -->
+    <setter name="paddingtop" args="value">
+      this._setAttributeDimension('padding', '', 'top', value);
+    </setter>
+    <!--- The right padding of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="paddingright" type="number" value="${null}" style="padding-right"/>
+    <!--- @access private -->
+    <event name="onpaddingright"/>
+    <!--- @access private -->
+    <setter name="paddingright" args="value">
+      this._setAttributeDimension('padding', '', 'right', value);
+    </setter>
+    <!--- The bottom padding of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="paddingbottom" type="number" value="${null}" style="padding-bottom"/>
+    <!--- @access private -->
+    <event name="onpaddingbottom"/>
+    <!--- @access private -->
+    <setter name="paddingbottom" args="value">
+      this._setAttributeDimension('padding', '', 'bottom', value);
+    </setter>
+    <!--- The left padding of the view, in pixels
+        @lzxdefault 0 -->
+    <attribute name="paddingleft" type="number" value="${null}" style="padding-left"/>
+    <!--- @access private -->
+    <event name="onpaddingleft"/>
+    <!--- @access private -->
+    <setter name="paddingleft" args="value">
+      this._setAttributeDimension('padding', '', 'left', value);
     </setter>
 
     <!--- The bordercolor of the view -->
     <attribute name="bordercolor" type="color" value="black" style="border-color"/>
+    <!--- @access private -->
     <event name="onbordercolor"/>
+    <!--- @access private -->
     <setter name="bordercolor" args="bordercolor">
-        if (this.bordercolor != bordercolor) {
-            this.bordercolor = bordercolor;
-            this.setCSS('borderColor', LzColorUtils.torgb(bordercolor));
-        }
-        if (this.onbordercolor.ready) this.onbordercolor.sendEvent(bordercolor);
-    </setter>
-
-    <!--- The padding of the view, in pixels-->
-    <attribute name="padding" type="number" value="0" style="padding"/>
-    <event name="onpadding"/>
-    <setter name="padding" args="padding">
-        if (this.padding != padding) {
-            this.padding = padding;
-            this.__widthoffset = this.__heightoffset = (this.margin * 2) + (this.borderwidth * 2) + (padding * 2);
-            this.setCSS('padding', padding);
-        }
-        if (this.onpadding.ready) this.onpadding.sendEvent(padding);
+      if (this.bordercolor != bordercolor) {
+        this.bordercolor = bordercolor;
+        this.setCSS('borderColor', this.presentAttribute('bordercolor'));
+      }
+      if (this.onbordercolor.ready) this.onbordercolor.sendEvent(bordercolor);
     </setter>
 </mixin>
 </library>

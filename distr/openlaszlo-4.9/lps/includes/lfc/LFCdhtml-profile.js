@@ -3,14 +3,16 @@ var $dhtml = true;
 var $as3 = false;
 var $as2 = false;
 var $swf10 = false;
+var $swf11 = false;
 var $j2me = false;
 var $debug = false;
 var $js1 = true;
 var $backtrace = false;
 var $swf7 = false;
 var $swf9 = false;
-var $swf8 = false;
 var $svg = false;
+var $swf8 = false;
+var $mobile = false;
 var $profile = true;
 var _Copyright = "Portions of this file are copyright (c) 2001-2010 by Laszlo Systems, Inc.  All rights reserved.";
 var $lzprofiler = null;
@@ -420,7 +422,7 @@ $lzsc$temp["displayName"] = "profiler/LzProfile.lzs#556/11";
 return $lzsc$temp
 })()};
 var Debug = {backtraceStack: [], uncaughtBacktraceStack: null, FUNCTION_NAME: "displayName", FUNCTION_FILENAME: "_dbg_filename", FUNCTION_LINENO: "_dbg_lineno"};
-Debug.backtraceStack.maxDepth = 100;
+Debug.backtraceStack.maxDepth = 250;
 var $modules = {};
 $modules.runtime = this;
 $modules.lz = $modules.runtime;
@@ -464,7 +466,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#95/19";
+$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#109/19";
 return $lzsc$temp
 })();
 var $lzsc$issubclassof = (function () {
@@ -495,7 +497,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#148/26";
+$lzsc$temp["displayName"] = "$lzc$issubclassof";
 return $lzsc$temp
 })();
 var $lzc$getFunctionDependencies = (function () {
@@ -542,7 +544,7 @@ $8.returns[$9] = $a
 };
 $8.last = $9
 }}};
-$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#194/36";
+$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#204/36";
 return $lzsc$temp
 })();
 var Instance = (function () {
@@ -813,6 +815,20 @@ $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })());
 Instance.prototype.$lzsc$initialize[Debug.FUNCTION_NAME] = "Instance";
+(function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
 if (lz.embed.browser.isSafari && lz.embed.browser.version >= "531.21" && lz.embed.browser.version < "533.16") {
 Instance.prototype.addProperty("$lzsc$safarikludge", (function () {
 var $lzsc$temp = function () {
@@ -843,7 +859,22 @@ $0.last = $1
 $lzsc$temp["displayName"] = "$lzsc$safarikludge";
 return $lzsc$temp
 })())
+}}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
 };
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "compiler/Class.lzs#205/5";
+return $lzsc$temp
+})()();
 var Class = {prototype: new Instance(), addProperty: Instance.prototype.addProperty, addProperties: (function () {
 var $lzsc$temp = function (plist_$0) {
 try {
@@ -1407,6 +1438,205 @@ Mixin.addProperty._profile_name = Mixin.addProperty[Debug.FUNCTION_NAME] = "Mixi
 Mixin.addStaticProperty._profile_name = Mixin.addStaticProperty[Debug.FUNCTION_NAME] = "Mixin.addStaticProperty";
 Mixin.makeInterstitial._profile_name = Mixin.makeInterstitial[Debug.FUNCTION_NAME] = "Mixin.makeInterstitial";
 Mixin.make._profile_name = Mixin.make[Debug.FUNCTION_NAME] = "Mixin.make";
+Class.make("LzCache", ["size", void 0, "slots", void 0, "destroyable", void 0, "capacity", void 0, "curslot", void 0, "data", null, "$lzsc$initialize", (function () {
+var $lzsc$temp = function (size_$0, slots_$1, destroyable_$2) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+switch (arguments.length) {
+case 0:
+size_$0 = 16;;case 1:
+slots_$1 = 2;;case 2:
+destroyable_$2 = true
+};
+this.size = size_$0;
+this.slots = slots_$1;
+this.destroyable = destroyable_$2;
+this.clear()
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "$lzsc$initialize";
+return $lzsc$temp
+})(), "clear", (function () {
+var $lzsc$temp = function () {
+try {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
+} else {
+$5.calls[$6] = $7
+};
+$5.last = $6
+};
+this.curslot = 0;
+this.capacity = 0;
+var sl_$0 = this.slots;
+if (!this.data) this.data = new Array(sl_$0);
+var d_$1 = this.data;
+for (var i_$2 = 0;i_$2 < sl_$0;++i_$2) {
+if (this.destroyable) {
+var dobj_$3 = d_$1[i_$2];
+for (var k_$4 in dobj_$3) {
+dobj_$3[k_$4].destroy()
+}};
+d_$1[i_$2] = {}}}
+finally {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
+} else {
+$5.returns[$6] = $7
+};
+$5.last = $6
+}}};
+$lzsc$temp["displayName"] = "clear";
+return $lzsc$temp
+})(), "ensureSlot", (function () {
+var $lzsc$temp = function () {
+try {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
+} else {
+$4.calls[$5] = $6
+};
+$4.last = $5
+};
+if (++this.capacity > this.size) {
+var nexts_$0 = (this.curslot + 1) % this.slots;
+var d_$1 = this.data;
+if (this.destroyable) {
+var dobj_$2 = d_$1[nexts_$0];
+for (var k_$3 in dobj_$2) {
+dobj_$2[k_$3].destroy()
+}};
+d_$1[nexts_$0] = {};
+this.curslot = nexts_$0;
+this.capacity = 1
+}}
+finally {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
+} else {
+$4.returns[$5] = $6
+};
+$4.last = $5
+}}};
+$lzsc$temp["displayName"] = "ensureSlot";
+return $lzsc$temp
+})(), "put", (function () {
+var $lzsc$temp = function (key_$0, val_$1) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+var old_$2 = this.get(key_$0);
+if (old_$2 === void 0) {
+this.ensureSlot()
+};
+this.data[this.curslot][key_$0] = val_$1;
+return old_$2
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "put";
+return $lzsc$temp
+})(), "get", (function () {
+var $lzsc$temp = function (key_$0) {
+try {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
+} else {
+$7.calls[$8] = $9
+};
+$7.last = $8
+};
+var sl_$1 = this.slots;
+var cs_$2 = this.curslot;
+var d_$3 = this.data;
+for (var i_$4 = 0;i_$4 < sl_$1;++i_$4) {
+var idx_$5 = (cs_$2 + i_$4) % sl_$1;
+var val_$6 = d_$3[idx_$5][key_$0];
+if (val_$6 !== void 0) {
+if (idx_$5 != cs_$2) {
+delete d_$3[idx_$5][key_$0];
+this.ensureSlot();
+d_$3[this.curslot][key_$0] = val_$6
+};
+return val_$6
+}};
+return void 0
+}
+finally {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
+} else {
+$7.returns[$8] = $9
+};
+$7.last = $8
+}}};
+$lzsc$temp["displayName"] = "get";
+return $lzsc$temp
+})()]);
 Class.make("LzBootstrapMessage", ["message", "", "length", 0, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (message_$0) {
 try {
@@ -1443,37 +1673,38 @@ $1.last = $2
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })(), "appendInternal", (function () {
-var $lzsc$temp = function (str_$0, obj_$1) {
+var $lzsc$temp = function (str_$0, obj_$1, attrs_$2) {
 try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
 } else {
-$2.calls[$3] = $4
+$3.calls[$4] = $5
 };
-$2.last = $3
+$3.last = $4
 };
 switch (arguments.length) {
 case 1:
-obj_$1 = null
+obj_$1 = null;;case 2:
+attrs_$2 = null
 };
 this.message += str_$0;
 this.length = this.message.length
 }
 finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
 } else {
-$2.returns[$3] = $4
+$3.returns[$4] = $5
 };
-$2.last = $3
+$3.last = $4
 }}};
 $lzsc$temp["displayName"] = "appendInternal";
 return $lzsc$temp
@@ -2041,33 +2272,34 @@ $0.last = $1
 $lzsc$temp["displayName"] = "compiler/LzMessage.lzs#177/27";
 return $lzsc$temp
 })();
-Class.make("LzFormatCallback", ["callback", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (callback_$0) {
+Class.make("LzFormatCallback", ["callback", void 0, "argument", void 0, "$lzsc$initialize", (function () {
+var $lzsc$temp = function (callback_$0, argument_$1) {
 try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
 } else {
-$1.calls[$2] = $3
+$2.calls[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 };
-this.callback = callback_$0
+this.callback = callback_$0;
+this.argument = argument_$1
 }
 finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
 } else {
-$1.returns[$2] = $3
+$2.returns[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
@@ -2085,7 +2317,7 @@ $0.calls[$1] = $2
 };
 $0.last = $1
 };
-return this.callback.call(null)
+return this.callback.call(this.argument)
 }
 finally {
 var $0 = global["$lzprofiler"];
@@ -2333,20 +2565,67 @@ return $lzsc$temp
 })(), "formatToString", (function () {
 var $lzsc$temp = function (control_$0) {
 try {
-var getarg_$8;
-var consumearg_$9;
-var $u = global["$lzprofiler"];
-if ($u) {
-var $v = "" + (new Date().getTime() - $u.base);
-var $w = arguments.callee["displayName"];
-if ($u.last == $v) {
-$u.events[$v] += ",calls:" + $w
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
 } else {
-$u.calls[$v] = $w
+$7.calls[$8] = $9
 };
-$u.last = $v
+$7.last = $8
 };
-getarg_$8 = (function () {
+switch (arguments.length) {
+case 0:
+control_$0 = ""
+};
+var args_$1 = Array.prototype.slice.call(arguments, 1);
+var out_$2 = new LzMessage();
+if (!(typeof control_$0 == "string" || (String["$lzsc$isa"] ? String.$lzsc$isa(control_$0) : control_$0 instanceof String)) || args_$1.length > 0 != control_$0.indexOf("%") >= 0) {
+args_$1 = [control_$0].concat(args_$1);
+for (var i_$3 = 0, al_$4 = args_$1.length;i_$3 < al_$4;i_$3++) {
+var arg_$5 = args_$1[i_$3];
+var sep_$6 = i_$3 == al_$4 - 1 ? "\n" : " ";
+out_$2.append(arg_$5);
+out_$2.appendInternal(sep_$6)
+};
+return out_$2
+};
+this.formatToMessage.apply(this, [out_$2, control_$0].concat(args_$1));
+return out_$2
+}
+finally {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
+} else {
+$7.returns[$8] = $9
+};
+$7.last = $8
+}}};
+$lzsc$temp["displayName"] = "formatToString";
+return $lzsc$temp
+})(), "formatToMessage", (function () {
+var $lzsc$temp = function (out_$0, control_$1) {
+try {
+var getarg_$5;
+var consumearg_$6;
+var $w = global["$lzprofiler"];
+if ($w) {
+var $x = "" + (new Date().getTime() - $w.base);
+var $y = arguments.callee["displayName"];
+if ($w.last == $x) {
+$w.events[$x] += ",calls:" + $y
+} else {
+$w.calls[$x] = $y
+};
+$w.last = $x
+};
+getarg_$5 = (function () {
 var $lzsc$temp = function (i_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -2380,7 +2659,7 @@ $1.last = $2
 $lzsc$temp["displayName"] = "getarg";
 return $lzsc$temp
 })();
-consumearg_$9 = (function () {
+consumearg_$6 = (function () {
 var $lzsc$temp = function (i_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -2410,57 +2689,46 @@ $lzsc$temp["displayName"] = "consumearg";
 return $lzsc$temp
 })();
 switch (arguments.length) {
-case 0:
-control_$0 = ""
+case 1:
+control_$1 = ""
 };
-var args = Array.prototype.slice.call(arguments, 1);
+var args = Array.prototype.slice.call(arguments, 2);
 var al = args.length;
-if (!(typeof control_$0 == "string" || (String["$lzsc$isa"] ? String.$lzsc$isa(control_$0) : control_$0 instanceof String)) || al > 0 != control_$0.indexOf("%") >= 0) {
-args = [control_$0].concat(args);
-al++;
-var out_$1 = new LzMessage();
-for (var i_$2 = 0;i_$2 < al;i_$2++) {
-var arg_$3 = args[i_$2];
-var sep_$4 = i_$2 == al - 1 ? "\n" : " ";
-out_$1.append(arg_$3);
-out_$1.appendInternal(sep_$4)
-};
-return out_$1
-};
-var ctrl_$5 = "" + control_$0;
-var argno_$6 = 0;
-var maxarg_$7 = 0;
-var base_$a = 0, limit_$b = ctrl_$5.length;
-var start_$c = 0, end_$d = 0;
-var out_$1 = new LzMessage();
-while (start_$c < limit_$b) {
-end_$d = ctrl_$5.indexOf("%");
-if (end_$d == -1) {
-out_$1.append(ctrl_$5.substring(start_$c, limit_$b));
+var ctrl_$2 = "" + control_$1;
+var argno_$3 = 0;
+var maxarg_$4 = 0;
+var base_$7 = 0, limit_$8 = ctrl_$2.length;
+var start_$9 = 0, end_$a = 0;
+while (start_$9 < limit_$8) {
+end_$a = ctrl_$2.indexOf("%");
+if (end_$a == -1) {
+out_$0.append(ctrl_$2.substring(start_$9, limit_$8));
 break
 };
-out_$1.append(ctrl_$5.substring(start_$c, end_$d));
-base_$a = end_$d;
-start_$c = end_$d + 1;
-end_$d = end_$d + 2;
-var sign_$e = "-";
-var pad_$f = " ";
-var alternate_$g = false;
-var length_$h = "";
-var precision_$i = null;
-var directive_$j = null;
-var object_$k = null;
-while (start_$c < limit_$b && directive_$j == null) {
-var char_$l = ctrl_$5.substring(start_$c, end_$d);
-start_$c = end_$d++;
-switch (char_$l) {
+out_$0.append(ctrl_$2.substring(start_$9, end_$a));
+base_$7 = end_$a;
+start_$9 = end_$a + 1;
+end_$a = end_$a + 2;
+var sign_$b = "-";
+var pad_$c = " ";
+var alternate_$d = false;
+var length_$e = "";
+var precision_$f = null;
+var directive_$g = null;
+var object_$h = null;
+var callback_$i = null;
+var attrs_$j = null;
+while (start_$9 < limit_$8 && directive_$g == null) {
+var char_$k = ctrl_$2.substring(start_$9, end_$a);
+start_$9 = end_$a++;
+switch (char_$k) {
 case "-":
-length_$h = char_$l;break;;case "+":
+length_$e = char_$k;break;;case "+":
 case " ":
-sign_$e = char_$l;break;;case "#":
-alternate_$g = true;break;;case "0":
-if (length_$h === "" && precision_$i === null) {
-pad_$f = char_$l;
+sign_$b = char_$k;break;;case "#":
+alternate_$d = true;break;;case "0":
+if (length_$e === "" && precision_$f === null) {
+pad_$c = char_$k;
 break
 };case "1":
 case "2":
@@ -2471,61 +2739,72 @@ case "6":
 case "7":
 case "8":
 case "9":
-if (precision_$i !== null) {
-precision_$i += char_$l
+if (precision_$f !== null) {
+precision_$f += char_$k
 } else {
-length_$h += char_$l
+length_$e += char_$k
 }break;;case "$":
-argno_$6 = length_$h - 1;length_$h = "";break;;case "*":
-if (precision_$i !== null) {
-precision_$i = getarg_$8(argno_$6);
-consumearg_$9(argno_$6++)
+argno_$3 = length_$e - 1;length_$e = "";break;;case "*":
+if (precision_$f !== null) {
+precision_$f = getarg_$5(argno_$3);
+consumearg_$6(argno_$3++)
 } else {
-length_$h = getarg_$8(argno_$6);
-consumearg_$9(argno_$6++)
+length_$e = getarg_$5(argno_$3);
+consumearg_$6(argno_$3++)
 }break;;case ".":
-precision_$i = "";break;;case "h":
+precision_$f = "";break;;case "h":
 case "l":
 break;;case "=":
-object_$k = getarg_$8(argno_$6);consumearg_$9(argno_$6++);break;;case "^":
-object_$k = new LzFormatCallback(getarg_$8(argno_$6));consumearg_$9(argno_$6++);break;;default:
-directive_$j = char_$l;break
+object_$h = getarg_$5(argno_$3);consumearg_$6(argno_$3++);break;;case "^":
+callback_$i = getarg_$5(argno_$3);consumearg_$6(argno_$3++);break;;case "{":
+var close_$l = ctrl_$2.indexOf("}", start_$9);if (close_$l > start_$9) {
+if (attrs_$j == null) {
+attrs_$j = {}};
+attrs_$j.style = ctrl_$2.substring(start_$9, close_$l);
+start_$9 = close_$l + 1;
+end_$a = start_$9 + 1;
+break
+}directive_$g = char_$k;break;;default:
+directive_$g = char_$k;break
 }};
-var value_$m = getarg_$8(argno_$6);
-if (object_$k == null) {
-object_$k = value_$m
+var value_$m = getarg_$5(argno_$3);
+if (object_$h == null) {
+object_$h = value_$m
+};
+if (callback_$i != null) {
+object_$h = new LzFormatCallback(callback_$i, object_$h)
 };
 var decimals_$n = null;
 var force_$o = false;
-if (precision_$i !== null) {
-decimals_$n = 1 * precision_$i
+if (precision_$f !== null) {
+decimals_$n = 1 * precision_$f
 } else {
-switch (directive_$j) {
+switch (directive_$g) {
 case "F":
 case "E":
 case "G":
 case "f":
 case "e":
 case "g":
-decimals_$n = 6;force_$o = alternate_$g;break;;case "O":
+decimals_$n = 6;force_$o = alternate_$d;break;;case "O":
 case "o":
-if (alternate_$g && value_$m != 0) {
-out_$1.append("0")
+if (alternate_$d && value_$m != 0) {
+out_$0.append("0")
 }break;;case "X":
 case "x":
-if (alternate_$g && value_$m != 0) {
-out_$1.append("0" + directive_$j)
+if (alternate_$d && value_$m != 0) {
+out_$0.append("0" + directive_$g)
 }break
 }};
 var radix_$p = 10;
-switch (directive_$j) {
+switch (directive_$g) {
 case "o":
 case "O":
 radix_$p = 8;break;;case "x":
 case "X":
 radix_$p = 16;break
 };
-switch (directive_$j) {
+switch (directive_$g) {
 case "U":
 case "O":
 case "X":
@@ -2534,7 +2813,7 @@ case "o":
 case "x":
 if (value_$m < 0) {
 value_$m = -value_$m;
-var wid_$q = Math.abs(parseInt(length_$h, 10));
+var wid_$q = Math.abs(parseInt(length_$e, 10));
 if (isNaN(wid_$q)) {
 wid_$q = this.toNumber(value_$m).toString(radix_$p).length
 };
@@ -2542,7 +2821,7 @@ var max_$r = Math.pow(radix_$p, wid_$q);
 value_$m = max_$r - value_$m
 }break
 };
-switch (directive_$j) {
+switch (directive_$g) {
 case "D":
 case "U":
 case "I":
@@ -2551,24 +2830,27 @@ case "X":
 case "F":
 case "E":
 case "G":
-value_$m = this.toNumber(value_$m);out_$1.appendInternal(this.pad(value_$m, length_$h, decimals_$n, pad_$f, sign_$e, radix_$p, force_$o).toUpperCase(), object_$k);consumearg_$9(argno_$6++);break;;case "c":
+value_$m = this.toNumber(value_$m);out_$0.appendInternal(this.pad(value_$m, length_$e, decimals_$n, pad_$c, sign_$b, radix_$p, force_$o).toUpperCase(), object_$h, attrs_$j);consumearg_$6(argno_$3++);break;;case "c":
 value_$m = String.fromCharCode(value_$m);;case "w":
 ;case "s":
-var str_$s;if (Function["$lzsc$isa"] ? Function.$lzsc$isa(value_$m) : value_$m instanceof Function) {
+var str_$s = null;if (Function["$lzsc$isa"] ? Function.$lzsc$isa(value_$m) : value_$m instanceof Function) {
 if (!str_$s) {
 str_$s = "function () {\u2026}"
 }} else if (typeof value_$m == "number") {
 str_$s = Number(value_$m).toString(radix_$p)
-} else if (directive_$j == "w" && typeof value_$m == "string") {
+} else if (directive_$g == "w") {
+if (typeof value_$m == "string") {
 str_$s = this.stringEscape(value_$m, true)
-} else {
+} else if (LzNode["$lzsc$isa"] ? LzNode.$lzsc$isa(value_$m) : value_$m instanceof LzNode) {
+str_$s = value_$m.nodePath(value_$m, decimals_$n)
+}}if (!str_$s) {
 str_$s = "" + value_$m
-}if (alternate_$g) {
+}if (alternate_$d) {
 var width_$t = decimals_$n;
 if (width_$t) {
 str_$s = this.abbreviate(str_$s, width_$t);
 decimals_$n = null
-}}out_$1.appendInternal(this.pad(str_$s, length_$h, decimals_$n, pad_$f, sign_$e, radix_$p, force_$o), object_$k);consumearg_$9(argno_$6++);break;;case "d":
+}}out_$0.appendInternal(this.pad(str_$s, length_$e, decimals_$n, pad_$c, sign_$b, radix_$p, force_$o), object_$h, attrs_$j);consumearg_$6(argno_$3++);break;;case "d":
 case "u":
 case "i":
 case "o":
@@ -2576,39 +2858,39 @@ case "x":
 case "f":
 case "e":
 case "g":
-value_$m = this.toNumber(value_$m);out_$1.appendInternal(this.pad(value_$m, length_$h, decimals_$n, pad_$f, sign_$e, radix_$p, force_$o), object_$k);consumearg_$9(argno_$6++);break;;case "%":
-out_$1.append("%");break;;default:
-out_$1.append(ctrl_$5.substring(base_$a, start_$c));break
+value_$m = this.toNumber(value_$m);out_$0.appendInternal(this.pad(value_$m, length_$e, decimals_$n, pad_$c, sign_$b, radix_$p, force_$o), object_$h, attrs_$j);consumearg_$6(argno_$3++);break;;case "%":
+out_$0.append("%");break;;default:
+out_$0.append(ctrl_$2.substring(base_$7, start_$9));break
 };
-ctrl_$5 = ctrl_$5.substring(start_$c, limit_$b);
-base_$a = 0, limit_$b = ctrl_$5.length;
-start_$c = 0, end_$d = 0;
-if (argno_$6 > maxarg_$7) {
-maxarg_$7 = argno_$6
+ctrl_$2 = ctrl_$2.substring(start_$9, limit_$8);
+base_$7 = 0, limit_$8 = ctrl_$2.length;
+start_$9 = 0, end_$a = 0;
+if (argno_$3 > maxarg_$4) {
+maxarg_$4 = argno_$3
 }};
-if (maxarg_$7 < al) {
-out_$1.appendInternal(" ");
-for (;maxarg_$7 < al;maxarg_$7++) {
-var arg_$3 = getarg_$8(maxarg_$7);
-var sep_$4 = maxarg_$7 == al - 1 ? "\n" : " ";
-out_$1.append(arg_$3);
-out_$1.appendInternal(sep_$4)
+if (maxarg_$4 < al) {
+out_$0.appendInternal(" ");
+for (;maxarg_$4 < al;maxarg_$4++) {
+var arg_$u = getarg_$5(maxarg_$4);
+var sep_$v = maxarg_$4 == al - 1 ? "\n" : " ";
+out_$0.append(arg_$u);
+out_$0.appendInternal(sep_$v)
 }};
-return out_$1
+return out_$0
 }
 finally {
-var $u = global["$lzprofiler"];
-if ($u) {
-var $v = "" + (new Date().getTime() - $u.base);
-var $w = arguments.callee["displayName"];
-if ($u.last == $v) {
-$u.events[$v] += ",returns:" + $w
+var $w = global["$lzprofiler"];
+if ($w) {
+var $x = "" + (new Date().getTime() - $w.base);
+var $y = arguments.callee["displayName"];
+if ($w.last == $x) {
+$w.events[$x] += ",returns:" + $y
 } else {
-$u.returns[$v] = $w
+$w.returns[$x] = $y
 };
-$u.last = $v
+$w.last = $x
 }}};
-$lzsc$temp["displayName"] = "formatToString";
+$lzsc$temp["displayName"] = "formatToMessage";
 return $lzsc$temp
 })()], null, ["singleEscapeCharacters", (function () {
 var $lzsc$temp = function (np_$0) {
@@ -2644,7 +2926,7 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "compiler/LzFormatter.lzs#269/40";
+$lzsc$temp["displayName"] = "compiler/LzFormatter.lzs#281/40";
 return $lzsc$temp
 })()(["\\b", "\b", "\\t", "\t", "\\n", "\n", "\\v", String.fromCharCode(11), "\\f", "\f", "\\r", "\r", '\\"', '"', "\\'", "'", "\\\\", "\\"])]);
 (function () {
@@ -2674,7 +2956,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "compiler/LzFormatter.lzs#118/1";
+$lzsc$temp["displayName"] = "compiler/LzFormatter.lzs#130/1";
 return $lzsc$temp
 })()(LzFormatter);
 Debug = global["Debug"] || {};
@@ -2780,223 +3062,207 @@ return $lzsc$temp
 })();
 Profiler.start();
 Class.make("LzValueExpr");
-Class.make("LzAttributeDescriptor", ["attribute", void 0, "type", void 0, "value", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, value_$2) {
+Class.make("LzInitExpr", ["$lzsc$initialize", (function () {
+var $lzsc$temp = function () {
 try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
 } else {
-$3.calls[$4] = $5
+$0.calls[$1] = $2
 };
-$3.last = $4
-};
-switch (arguments.length) {
-case 2:
-value_$2 = null
-};
-this.attribute = attribute_$0;
-this.type = type_$1;
-this.value = value_$2
-}
+$0.last = $1
+}}
 finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
 } else {
-$3.returns[$4] = $5
+$0.returns[$1] = $2
 };
-$3.last = $4
+$0.last = $1
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzValueExpr);
-Class.make("LzInitExpr", ["$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, value_$2) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-switch (arguments.length) {
-case 2:
-value_$2 = null
-};
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1, value_$2)
-}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})()], LzAttributeDescriptor);
 Class.make("LzOnceExpr", ["methodName", void 0, "_dbg_name", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, initMethod_$2, description_$3) {
+var $lzsc$temp = function (initMethod_$0, description_$1) {
 try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
 } else {
-$4.calls[$5] = $6
+$2.calls[$3] = $4
 };
-$4.last = $5
+$2.last = $3
 };
 switch (arguments.length) {
-case 3:
-description_$3 = null
+case 1:
+description_$1 = null
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1);
-this.methodName = initMethod_$2;
-this._dbg_name = description_$3
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
+this.methodName = initMethod_$0;
+this._dbg_name = description_$1
 }
 finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
 } else {
-$4.returns[$5] = $6
+$2.returns[$3] = $4
 };
-$4.last = $5
+$2.last = $3
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzInitExpr);
 Class.make("LzConstraintExpr", ["$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, constraintMethod_$2, description_$3) {
+var $lzsc$temp = function (constraintMethod_$0, description_$1) {
 try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
 } else {
-$4.calls[$5] = $6
+$2.calls[$3] = $4
 };
-$4.last = $5
+$2.last = $3
 };
 switch (arguments.length) {
-case 3:
-description_$3 = null
+case 1:
+description_$1 = null
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1, constraintMethod_$2, description_$3)
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, constraintMethod_$0, description_$1)
 }
 finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
 } else {
-$4.returns[$5] = $6
+$2.returns[$3] = $4
 };
-$4.last = $5
+$2.last = $3
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzOnceExpr);
-Class.make("LzStyleConstraintExpr", ["property", void 0, "fallback", void 0, "warn", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, property_$2, fallback_$3, warn_$4) {
+Class.make("LzStyleConstraintExpr", ["$lzsc$initialize", (function () {
+var $lzsc$temp = function (description_$0) {
 try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
 } else {
-$5.calls[$6] = $7
+$1.calls[$2] = $3
 };
-$5.last = $6
+$1.last = $2
 };
 switch (arguments.length) {
-case 3:
-fallback_$3 = void 0;;case 4:
-warn_$4 = true
+case 0:
+description_$0 = "=\"$style{'...'}\""
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1, null);
-this.property = property_$2;
-this.type = type_$1;
-this.fallback = fallback_$3;
-this.warn = warn_$4;
-this._dbg_name = attribute_$0 + "\"=$style{'" + property_$2 + "'}\""
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, null, description_$0)
 }
 finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
 } else {
-$5.returns[$6] = $7
+$1.returns[$2] = $3
 };
-$5.last = $6
+$1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})()], LzConstraintExpr);
-Class.make("LzAlwaysExpr", ["dependenciesName", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, constraintMethod_$2, dependenciesMethod_$3, description_$4) {
+})()], LzConstraintExpr, ["StyleConstraintExpr", void 0]);
+(function () {
+var $lzsc$temp = function ($0) {
 try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
 } else {
-$5.calls[$6] = $7
+$1.calls[$2] = $3
 };
-$5.last = $6
+$1.last = $2
+};
+with ($0) with ($0.prototype) {
+{
+LzStyleConstraintExpr.StyleConstraintExpr = new LzStyleConstraintExpr()
+}}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "core/LzDefs.lzs#61/1";
+return $lzsc$temp
+})()(LzStyleConstraintExpr);
+Class.make("LzAlwaysExpr", ["dependenciesName", void 0, "$lzsc$initialize", (function () {
+var $lzsc$temp = function (constraintMethod_$0, dependenciesMethod_$1, description_$2) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
 };
 switch (arguments.length) {
-case 4:
-description_$4 = null
+case 2:
+description_$2 = null
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1, constraintMethod_$2, description_$4);
-this.dependenciesName = dependenciesMethod_$3
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, constraintMethod_$0, description_$2);
+this.dependenciesName = dependenciesMethod_$1
 }
 finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
 } else {
-$5.returns[$6] = $7
+$3.returns[$4] = $5
 };
-$5.last = $6
+$3.last = $4
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
@@ -3063,39 +3329,6 @@ $1.last = $2
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzStyleExpr);
-Class.make("LzStyleIdent", ["sourceValueID", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (sourceValueID_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
-this.sourceValueID = sourceValueID_$0;
-this._dbg_name = sourceValueID_$0
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})()], LzStyleExpr);
 function LzInheritedHash (parent_$0) {
 try {
 var $2 = global["$lzprofiler"];
@@ -3144,8 +3377,9 @@ $0.last = $1
 if (Object["$lzsc$isa"] ? Object.$lzsc$isa(lz) : lz instanceof Object) {
 
 } else if (!lz) {
-lz = new LzInheritedHash()
-}}
+lz = new LzInheritedHash();
+lz["ClassAttributeTypes"] = new LzInheritedHash();
+lz.ClassAttributeTypes["Object"] = {}}}
 finally {
 var $0 = global["$lzprofiler"];
 if ($0) {
@@ -3158,10 +3392,9 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "core/LzDefs.lzs#225/3";
+$lzsc$temp["displayName"] = "core/LzDefs.lzs#158/3";
 return $lzsc$temp
 })()();
-lz.Formatter = LzFormatter;
 Class.make("LzDeclaredEventClass", ["actual", void 0, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (actual_$0) {
 try {
@@ -3383,205 +3616,6 @@ return $lzsc$temp
 lz.DeclaredEventClass = LzDeclaredEventClass;
 var LzDeclaredEvent = new LzDeclaredEventClass();
 lz.colors = {aliceblue: 15792383, antiquewhite: 16444375, aqua: 65535, aquamarine: 8388564, azure: 15794175, beige: 16119260, bisque: 16770244, black: 0, blanchedalmond: 16772045, blue: 255, blueviolet: 9055202, brown: 10824234, burlywood: 14596231, cadetblue: 6266528, chartreuse: 8388352, chocolate: 13789470, coral: 16744272, cornflowerblue: 6591981, cornsilk: 16775388, crimson: 14423100, cyan: 65535, darkblue: 139, darkcyan: 35723, darkgoldenrod: 12092939, darkgray: 11119017, darkgreen: 25600, darkgrey: 11119017, darkkhaki: 12433259, darkmagenta: 9109643, darkolivegreen: 5597999, darkorange: 16747520, darkorchid: 10040012, darkred: 9109504, darksalmon: 15308410, darkseagreen: 9419919, darkslateblue: 4734347, darkslategray: 3100495, darkslategrey: 3100495, darkturquoise: 52945, darkviolet: 9699539, deeppink: 16716947, deepskyblue: 49151, dimgray: 6908265, dimgrey: 6908265, dodgerblue: 2003199, firebrick: 11674146, floralwhite: 16775920, forestgreen: 2263842, fuchsia: 16711935, gainsboro: 14474460, ghostwhite: 16316671, gold: 16766720, goldenrod: 14329120, gray: 8421504, green: 32768, greenyellow: 11403055, grey: 8421504, honeydew: 15794160, hotpink: 16738740, indianred: 13458524, indigo: 4915330, ivory: 16777200, khaki: 15787660, lavender: 15132410, lavenderblush: 16773365, lawngreen: 8190976, lemonchiffon: 16775885, lightblue: 11393254, lightcoral: 15761536, lightcyan: 14745599, lightgoldenrodyellow: 16448210, lightgray: 13882323, lightgreen: 9498256, lightgrey: 13882323, lightpink: 16758465, lightsalmon: 16752762, lightseagreen: 2142890, lightskyblue: 8900346, lightslategray: 7833753, lightslategrey: 7833753, lightsteelblue: 11584734, lightyellow: 16777184, lime: 65280, limegreen: 3329330, linen: 16445670, magenta: 16711935, maroon: 8388608, mediumaquamarine: 6737322, mediumblue: 205, mediumorchid: 12211667, mediumpurple: 9662683, mediumseagreen: 3978097, mediumslateblue: 8087790, mediumspringgreen: 64154, mediumturquoise: 4772300, mediumvioletred: 13047173, midnightblue: 1644912, mintcream: 16121850, mistyrose: 16770273, moccasin: 16770229, navajowhite: 16768685, navy: 128, oldlace: 16643558, olive: 8421376, olivedrab: 7048739, orange: 16753920, orangered: 16729344, orchid: 14315734, palegoldenrod: 15657130, palegreen: 10025880, paleturquoise: 11529966, palevioletred: 14381203, papayawhip: 16773077, peachpuff: 16767673, peru: 13468991, pink: 16761035, plum: 14524637, powderblue: 11591910, purple: 8388736, red: 16711680, rosybrown: 12357519, royalblue: 4286945, saddlebrown: 9127187, salmon: 16416882, sandybrown: 16032864, seagreen: 3050327, seashell: 16774638, sienna: 10506797, silver: 12632256, skyblue: 8900331, slateblue: 6970061, slategray: 7372944, slategrey: 7372944, snow: 16775930, springgreen: 65407, steelblue: 4620980, tan: 13808780, teal: 32896, thistle: 14204888, tomato: 16737095, turquoise: 4251856, violet: 15631086, wheat: 16113331, white: 16777215, whitesmoke: 16119285, yellow: 16776960, yellowgreen: 10145074, transparent: null};
-Class.make("LzCache", ["size", void 0, "slots", void 0, "destroyable", void 0, "capacity", void 0, "curslot", void 0, "data", null, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (size_$0, slots_$1, destroyable_$2) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-switch (arguments.length) {
-case 0:
-size_$0 = 16;;case 1:
-slots_$1 = 2;;case 2:
-destroyable_$2 = true
-};
-this.size = size_$0;
-this.slots = slots_$1;
-this.destroyable = destroyable_$2;
-this.clear()
-}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})(), "clear", (function () {
-var $lzsc$temp = function () {
-try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
-} else {
-$5.calls[$6] = $7
-};
-$5.last = $6
-};
-this.curslot = 0;
-this.capacity = 0;
-var sl_$0 = this.slots;
-if (!this.data) this.data = new Array(sl_$0);
-var d_$1 = this.data;
-for (var i_$2 = 0;i_$2 < sl_$0;++i_$2) {
-if (this.destroyable) {
-var dobj_$3 = d_$1[i_$2];
-for (var k_$4 in dobj_$3) {
-dobj_$3[k_$4].destroy()
-}};
-d_$1[i_$2] = {}}}
-finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
-} else {
-$5.returns[$6] = $7
-};
-$5.last = $6
-}}};
-$lzsc$temp["displayName"] = "clear";
-return $lzsc$temp
-})(), "ensureSlot", (function () {
-var $lzsc$temp = function () {
-try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
-} else {
-$4.calls[$5] = $6
-};
-$4.last = $5
-};
-if (++this.capacity > this.size) {
-var nexts_$0 = (this.curslot + 1) % this.slots;
-var d_$1 = this.data;
-if (this.destroyable) {
-var dobj_$2 = d_$1[nexts_$0];
-for (var k_$3 in dobj_$2) {
-dobj_$2[k_$3].destroy()
-}};
-d_$1[nexts_$0] = {};
-this.curslot = nexts_$0;
-this.capacity = 1
-}}
-finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
-} else {
-$4.returns[$5] = $6
-};
-$4.last = $5
-}}};
-$lzsc$temp["displayName"] = "ensureSlot";
-return $lzsc$temp
-})(), "put", (function () {
-var $lzsc$temp = function (key_$0, val_$1) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-var old_$2 = this.get(key_$0);
-if (old_$2 === void 0) {
-this.ensureSlot()
-};
-this.data[this.curslot][key_$0] = val_$1;
-return old_$2
-}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "put";
-return $lzsc$temp
-})(), "get", (function () {
-var $lzsc$temp = function (key_$0) {
-try {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",calls:" + $9
-} else {
-$7.calls[$8] = $9
-};
-$7.last = $8
-};
-var sl_$1 = this.slots;
-var cs_$2 = this.curslot;
-var d_$3 = this.data;
-for (var i_$4 = 0;i_$4 < sl_$1;++i_$4) {
-var idx_$5 = (cs_$2 + i_$4) % sl_$1;
-var val_$6 = d_$3[idx_$5][key_$0];
-if (val_$6 !== void 0) {
-if (idx_$5 != cs_$2) {
-delete d_$3[idx_$5][key_$0];
-this.ensureSlot();
-d_$3[this.curslot][key_$0] = val_$6
-};
-return val_$6
-}};
-return void 0
-}
-finally {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",returns:" + $9
-} else {
-$7.returns[$8] = $9
-};
-$7.last = $8
-}}};
-$lzsc$temp["displayName"] = "get";
-return $lzsc$temp
-})()]);
 Class.make("LzEventable", ["$lzsc$initialize", (function () {
 var $lzsc$temp = function () {
 try {
@@ -3668,7 +3702,7 @@ if (this.__delegates != null) {
 for (var i_$0 = this.__delegates.length - 1;i_$0 >= 0;i_$0--) {
 var del_$1 = this.__delegates[i_$0];
 if (del_$1.__LZdeleted != true) {
-del_$1.destroy()
+del_$1.destroy(false)
 }};
 this.__delegates = null
 }}
@@ -3751,22 +3785,18 @@ $2.last = $3
 $lzsc$temp["displayName"] = "__invokeCustomSetter";
 return $lzsc$temp
 })(), "setAttribute", (function () {
-var $lzsc$temp = function (prop_$0, val_$1, ifchanged_$2) {
+var $lzsc$temp = function (prop_$0, val_$1) {
 try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
 } else {
-$5.calls[$6] = $7
+$4.calls[$5] = $6
 };
-$5.last = $6
-};
-switch (arguments.length) {
-case 2:
-ifchanged_$2 = null
+$4.last = $5
 };
 if (this.__LZdeleted) {
 return
@@ -3775,28 +3805,68 @@ if (this.customSetters[prop_$0]) {
 if (this.__invokeCustomSetter(prop_$0, val_$1) == true) {
 return
 }};
-var s_$3 = "$lzc$set_" + prop_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[s_$3]) : this[s_$3] instanceof Function) {
-this[s_$3](val_$1)
+var s_$2 = "$lzc$set_" + prop_$0;
+if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[s_$2]) : this[s_$2] instanceof Function) {
+this[s_$2](val_$1)
 } else {
 this[prop_$0] = val_$1;
-var evt_$4 = this["on" + prop_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa(evt_$4) : evt_$4 instanceof LzEvent) {
-if (evt_$4.ready) evt_$4.sendEvent(val_$1)
+var evt_$3 = this["on" + prop_$0];
+if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa(evt_$3) : evt_$3 instanceof LzEvent) {
+if (evt_$3.ready) evt_$3.sendEvent(val_$1)
 }}}
 finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
 } else {
-$5.returns[$6] = $7
+$4.returns[$5] = $6
 };
-$5.last = $6
+$4.last = $5
 }}};
 $lzsc$temp["displayName"] = "setAttribute";
+return $lzsc$temp
+})(), "__setAttr", (function () {
+var $lzsc$temp = function (prop_$0, val_$1) {
+try {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
+} else {
+$4.calls[$5] = $6
+};
+$4.last = $5
+};
+if (this.__LZdeleted) {
+return
+};
+var s_$2 = "$lzc$set_" + prop_$0;
+if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[s_$2]) : this[s_$2] instanceof Function) {
+this[s_$2](val_$1)
+} else {
+this[prop_$0] = val_$1;
+var evt_$3 = this["on" + prop_$0];
+if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa(evt_$3) : evt_$3 instanceof LzEvent) {
+if (evt_$3.ready) evt_$3.sendEvent(val_$1)
+}}}
+finally {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
+} else {
+$4.returns[$5] = $6
+};
+$4.last = $5
+}}};
+$lzsc$temp["displayName"] = "__setAttr";
 return $lzsc$temp
 })()]);
 lz.Eventable = LzEventable;
@@ -3856,18 +3926,8 @@ var dest_$2 = this.dest;
 var oldvalue_$3 = target_$1[dest_$2];
 var newvalue_$4 = target_$1[this.source];
 if (newvalue_$4 !== oldvalue_$3 || !target_$1.inited) {
-{
-if (!target_$1.__LZdeleted) {
-var $lzsc$y7uggs = "$lzc$set_" + dest_$2;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(target_$1[$lzsc$y7uggs]) : target_$1[$lzsc$y7uggs] instanceof Function) {
-target_$1[$lzsc$y7uggs](newvalue_$4)
-} else {
-target_$1[dest_$2] = newvalue_$4;
-var $lzsc$r204pt = target_$1["on" + dest_$2];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$r204pt) : $lzsc$r204pt instanceof LzEvent) {
-if ($lzsc$r204pt.ready) {
-$lzsc$r204pt.sendEvent(newvalue_$4)
-}}}}}}}
+target_$1.setAttribute(dest_$2, newvalue_$4)
+}}
 finally {
 var $5 = global["$lzprofiler"];
 if ($5) {
@@ -4110,7 +4170,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#157/19";
+$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#157/21";
 return $lzsc$temp
 })(), "accept", (function () {
 var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
@@ -4203,8 +4263,11 @@ $lzsc$temp["displayName"] = "accept";
 return $lzsc$temp
 })()], $lz$class_PresentationType, ["lzxtype", "string", "nullValue", ""]);
 lz.Type.addType("string", new $lz$class_StringPresentationType());
+lz.Type.addTypeAlias("ID", "string");
+lz.Type.addTypeAlias("token", "string");
 lz.Type.addTypeAlias("html", "string");
-Class.make("$lz$class_TextPresentationType", ["accept", (function () {
+lz.Type.addTypeAlias("text", "string");
+Class.make("$lz$class_CDATAPresentationType", ["accept", (function () {
 var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
 try {
 var $8 = global["$lzprofiler"];
@@ -4218,7 +4281,7 @@ $8.calls[$9] = $a
 };
 $8.last = $9
 };
-var escChars_$3 = $lz$class_TextPresentationType.xmlEscapes;
+var escChars_$3 = $lz$class_CDATAPresentationType.xmlEscapes;
 var result_$4 = "";
 for (var i_$5 = 0, l_$6 = value_$0.length;i_$5 < l_$6;i_$5++) {
 var c_$7 = value_$0.charAt(i_$5);
@@ -4260,7 +4323,7 @@ var c_$6 = value_$0.charAt(i_$4);
 if (c_$6 == "&") {
 var e_$7 = value_$0.indexOf(";", i_$4);
 if (e_$7 > i_$4) {
-var p_$8 = value_$0.substring(i_$4, e_$7);
+var p_$8 = value_$0.substring(i_$4 + 1, e_$7);
 switch (p_$8) {
 case "amp":
 break;;case "lt":
@@ -4290,8 +4353,8 @@ $9.last = $a
 }}};
 $lzsc$temp["displayName"] = "present";
 return $lzsc$temp
-})()], $lz$class_PresentationType, ["lzxtype", "text", "nullValue", "", "xmlEscapes", {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;"}]);
-lz.Type.addTypeAlias("text", "string");
+})()], $lz$class_PresentationType, ["lzxtype", "cdata", "nullValue", "", "xmlEscapes", {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;"}]);
+lz.Type.addType("cdata", new $lz$class_CDATAPresentationType());
 Class.make("$lz$class_BooleanPresentationType", ["accept", (function () {
 var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
 try {
@@ -4514,7 +4577,7 @@ $lzsc$temp["displayName"] = "accept";
 return $lzsc$temp
 })()], $lz$class_PresentationType, ["nullValue", null, "lzxtype", "size"]);
 lz.Type.addType("size", new $lz$class_SizePresentationType());
-Class.make("$lz$class_CSSDeclarationPresentationType", ["PropRE", new RegExp("^\\s*(\\S*)\\s*:\\s*(\\S*)\\s*$"), "HyphenRE", new RegExp("-(\\w)", "g"), "CapitalRE", new RegExp("[:upper:]", "g"), "accept", (function () {
+Class.make("$lz$class_CSSDeclarationPresentationType", ["PropRE", new RegExp("^\\s*(\\S*)\\s*:\\s*(\\S*)\\s*$"), "HyphenRE", new RegExp("-(\\w)", "g"), "CapitalRE", new RegExp("[A-Z]", "g"), "accept", (function () {
 var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
 try {
 var $a = global["$lzprofiler"];
@@ -4528,14 +4591,14 @@ $a.calls[$b] = $c
 };
 $a.last = $b
 };
-var props_$3 = value_$0.split(",");
+var props_$3 = value_$0.split(";");
 var result_$4 = {};
 for (var i_$5 = 0, len_$6 = props_$3.length;i_$5 < len_$6;i_$5++) {
 var prop_$7 = props_$3[i_$5];
 var parts_$8 = prop_$7.match(this.PropRE);
 if (parts_$8.length = 3) {
 var attr_$9 = parts_$8[1].replace(this.HyphenRE, (function () {
-var $lzsc$temp = function (m_$0, p_$1) {
+var $lzsc$temp = function (m_$0, p1_$1) {
 try {
 var $2 = global["$lzprofiler"];
 if ($2) {
@@ -4548,7 +4611,7 @@ $2.calls[$3] = $4
 };
 $2.last = $3
 };
-return p_$1[1].toUpperCase()
+return p1_$1.toUpperCase()
 }
 finally {
 var $2 = global["$lzprofiler"];
@@ -4562,7 +4625,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#417/52";
+$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#481/52";
 return $lzsc$temp
 })());
 result_$4[attr_$9] = parts_$8[2]
@@ -4600,34 +4663,34 @@ $6.last = $7
 var props_$3 = [];
 for (var attr_$4 in value_$0) {
 var prop_$5 = attr_$4.replace(this.CapitalRE, (function () {
-var $lzsc$temp = function (m_$0, p_$1) {
+var $lzsc$temp = function (m_$0) {
 try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
 } else {
-$2.calls[$3] = $4
+$1.calls[$2] = $3
 };
-$2.last = $3
+$1.last = $2
 };
-return "-" + p_$1[1].toLowerCase()
+return "-" + m_$0.toLowerCase()
 }
 finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
 } else {
-$2.returns[$3] = $4
+$1.returns[$2] = $3
 };
-$2.last = $3
+$1.last = $2
 }}};
-$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#426/47";
+$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#490/47";
 return $lzsc$temp
 })());
 props_$3.push(prop_$5 + ": " + value_$0[attr_$4])
@@ -4680,19 +4743,19 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "__LZhasConstraint";
 return $lzsc$temp
-})(), "$lzsc$initialize", (function () {
+})(), "$attributeDescriptor", {}, "$CSSDescriptor", {}, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (parent_$0, attrs_$1, children_$2, instcall_$3) {
 try {
-var $f = global["$lzprofiler"];
-if ($f) {
-var $g = "" + (new Date().getTime() - $f.base);
-var $h = arguments.callee["displayName"];
-if ($f.last == $g) {
-$f.events[$g] += ",calls:" + $h
+var $j = global["$lzprofiler"];
+if ($j) {
+var $k = "" + (new Date().getTime() - $j.base);
+var $l = arguments.callee["displayName"];
+if ($j.last == $k) {
+$j.events[$k] += ",calls:" + $l
 } else {
-$f.calls[$g] = $h
+$j.calls[$k] = $l
 };
-$f.last = $g
+$j.last = $k
 };
 switch (arguments.length) {
 case 0:
@@ -4704,91 +4767,95 @@ instcall_$3 = false
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
 this.__LZUID = "__U" + ++LzNode.__UIDs;
 this.__LZdeferDelegates = true;
+var handled_$4 = [];
 if (attrs_$1) {
 if (attrs_$1["$lzc$bind_id"]) {
+handled_$4.push("$lzc$bind_id");
 this.$lzc$bind_id = attrs_$1.$lzc$bind_id
 };
 if (attrs_$1["$lzc$bind_name"]) {
+handled_$4.push("$lzc$bind_name");
 this.$lzc$bind_name = attrs_$1.$lzc$bind_name
 }};
-var bindid_$4 = this.$lzc$bind_id;
-if (bindid_$4) {
-bindid_$4.call(null, this)
+var bindid_$5 = this.$lzc$bind_id;
+if (bindid_$5) {
+bindid_$5.call(null, this)
 };
-var bindname_$5 = this.$lzc$bind_name;
-if (bindname_$5) {
-bindname_$5.call(null, this)
+var bindname_$6 = this.$lzc$bind_name;
+if (bindname_$6) {
+bindname_$6.call(null, this)
 };
 this._instanceAttrs = attrs_$1;
 this._instanceChildren = children_$2;
-var iargs_$6 = new LzInheritedHash(this["constructor"].attributes);
+var iargs_$7 = new LzInheritedHash(this["constructor"].attributes);
 if (!(LzState["$lzsc$isa"] ? LzState.$lzsc$isa(this) : this instanceof LzState)) {
-for (var key_$7 in iargs_$6) {
-var expr_$8 = iargs_$6[key_$7];
-if (expr_$8 && (LzAttributeDescriptor["$lzsc$isa"] ? LzAttributeDescriptor.$lzsc$isa(expr_$8) : expr_$8 instanceof LzAttributeDescriptor)) {
-var val_$9 = expr_$8.value
-} else {
-var val_$9 = expr_$8
-};
-if (!(expr_$8 && (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(expr_$8) : expr_$8 instanceof LzInitExpr))) {
-var setr_$a = "$lzc$set_" + key_$7;
+for (var key_$8 in iargs_$7) {
+var expr_$9 = iargs_$7[key_$8];
+if (!(expr_$9 && (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(expr_$9) : expr_$9 instanceof LzInitExpr))) {
+var setr_$a = "$lzc$set_" + key_$8;
 if (!this[setr_$a]) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(val_$9) : val_$9 instanceof Function) {
-this.addProperty(key_$7, val_$9)
-} else if (val_$9 !== void 0) {
-this[key_$7] = val_$9
+if (Function["$lzsc$isa"] ? Function.$lzsc$isa(expr_$9) : expr_$9 instanceof Function) {
+this.addProperty(key_$8, expr_$9)
+} else if (expr_$9 !== void 0) {
+this[key_$8] = expr_$9
 };
-delete iargs_$6[key_$7];
+delete iargs_$7[key_$8];
 continue
 }};
-if (this[key_$7] === void 0) {
-this[key_$7] = null
+if (this[key_$8] === void 0) {
+this[key_$8] = null
 }}};
 if (attrs_$1) {
-LzNode.mergeAttributes(attrs_$1, iargs_$6)
+LzNode.mergeAttributes(attrs_$1, iargs_$7)
 };
-if (bindid_$4) {
-iargs_$6.$lzc$bind_id = LzNode._ignoreAttribute
+if (iargs_$7["$attributeDescriptor"]) {
+handled_$4.push("$attributeDescriptor");
+this.$attributeDescriptor = iargs_$7.$attributeDescriptor
 };
-if (bindname_$5) {
-iargs_$6.$lzc$bind_name = LzNode._ignoreAttribute
+if (iargs_$7["$CSSDescriptor"]) {
+handled_$4.push("$CSSDescriptor");
+this.$CSSDescriptor = iargs_$7.$CSSDescriptor
+};
+var ignore_$b = LzNode._ignoreAttribute;
+for (var i_$c = 0, l_$d = handled_$4.length;i_$c < l_$d;i_$c++) {
+iargs_$7[handled_$4[i_$c]] = ignore_$b
 };
 this.__LZisnew = !instcall_$3;
-var classChildren_$b = this["constructor"]["children"];
-if (Array["$lzsc$isa"] ? Array.$lzsc$isa(classChildren_$b) : classChildren_$b instanceof Array) {
-children_$2 = LzNode.mergeChildren(children_$2, classChildren_$b)
+var classChildren_$e = this["constructor"]["children"];
+if (Array["$lzsc$isa"] ? Array.$lzsc$isa(classChildren_$e) : classChildren_$e instanceof Array) {
+children_$2 = LzNode.mergeChildren(children_$2, classChildren_$e)
 };
-if (iargs_$6["datapath"] != null) {
-delete iargs_$6["$datapath"]
+if (iargs_$7["datapath"] != null) {
+delete iargs_$7["$datapath"]
 };
-var cargs_$c = this.__LzValueExprs = {};
-for (var key_$7 in iargs_$6) {
-var val_$9 = iargs_$6[key_$7];
-if (LzValueExpr["$lzsc$isa"] ? LzValueExpr.$lzsc$isa(val_$9) : val_$9 instanceof LzValueExpr) {
-cargs_$c[key_$7] = val_$9;
-delete iargs_$6[key_$7]
+var cargs_$f = this.__LzValueExprs = {};
+for (var key_$8 in iargs_$7) {
+var val_$g = iargs_$7[key_$8];
+if (LzValueExpr["$lzsc$isa"] ? LzValueExpr.$lzsc$isa(val_$g) : val_$g instanceof LzValueExpr) {
+cargs_$f[key_$8] = val_$g;
+delete iargs_$7[key_$8]
 }};
 try {
-this.construct(parent_$0, iargs_$6)
+this.construct(parent_$0, iargs_$7)
 }
-catch (e_$d) {
-if (e_$d === LzNode.__LzEarlyAbort) {
+catch (e_$h) {
+if (e_$h === LzNode.__LzEarlyAbort) {
 return
 } else {
-throw e_$d
+throw e_$h
 }};
-for (var key_$7 in cargs_$c) {
-iargs_$6[key_$7] = cargs_$c[key_$7]
+for (var key_$8 in cargs_$f) {
+iargs_$7[key_$8] = cargs_$f[key_$8]
 };
 this.__LzValueExprs = null;
-this.__LZapplyArgs(iargs_$6, true);
+this.__LZapplyArgs(iargs_$7, true);
 if (this.__LZdeleted) {
 return
 };
 this.__LZdeferDelegates = false;
-var evq_$e = this.__LZdelegatesQueue;
-if (evq_$e) {
-LzDelegate.__LZdrainDelegatesQueue(evq_$e);
+var evq_$i = this.__LZdelegatesQueue;
+if (evq_$i) {
+LzDelegate.__LZdrainDelegatesQueue(evq_$i);
 this.__LZdelegatesQueue = null
 };
 if (this.onconstruct.ready) this.onconstruct.sendEvent(this);
@@ -4798,20 +4865,20 @@ this.createChildren(children_$2)
 this.__LZinstantiationDone()
 }}
 finally {
-var $f = global["$lzprofiler"];
-if ($f) {
-var $g = "" + (new Date().getTime() - $f.base);
-var $h = arguments.callee["displayName"];
-if ($f.last == $g) {
-$f.events[$g] += ",returns:" + $h
+var $j = global["$lzprofiler"];
+if ($j) {
+var $k = "" + (new Date().getTime() - $j.base);
+var $l = arguments.callee["displayName"];
+if ($j.last == $k) {
+$j.events[$k] += ",returns:" + $l
 } else {
-$f.returns[$g] = $h
+$j.returns[$k] = $l
 };
-$f.last = $g
+$j.last = $k
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "oninit", LzDeclaredEvent, "onconstruct", LzDeclaredEvent, "ondata", LzDeclaredEvent, "clonenumber", null, "onclonenumber", LzDeclaredEvent, "__LZinstantiated", false, "__LZpreventSubInit", null, "__LZresolveDict", null, "__LZsourceLocation", null, "__LZUID", void 0, "__LZPropertyCache", null, "__LZCSSProp", null, "__LZCSSType", null, "__LZCSSFallback", null, "__LZRuleCache", null, "__LZconstraintdelegates", null, "isinited", false, "inited", false, "oninited", LzDeclaredEvent, "subnodes", null, "datapath", null, "$lzc$set_datapath", (function () {
+})(), "oninit", LzDeclaredEvent, "onconstruct", LzDeclaredEvent, "ondata", LzDeclaredEvent, "clonenumber", null, "onclonenumber", LzDeclaredEvent, "__LZinstantiated", false, "__LZpreventSubInit", null, "__LZresolveDict", null, "__LZsourceLocation", null, "__LZUID", void 0, "__LZPropertyCache", null, "__LZInheritedPropertyCache", null, "on__LZInheritedPropertyCache", LzDeclaredEvent, "__LZRuleCache", null, "__LZconstraintdelegates", null, "isinited", false, "inited", false, "oninited", LzDeclaredEvent, "subnodes", null, "datapath", null, "$lzc$set_datapath", (function () {
 var $lzsc$temp = function (dp_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -4881,8 +4948,38 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_styleclass";
 return $lzsc$temp
+})(), "_hasStyleClass", (function () {
+var $lzsc$temp = function (name_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+return this.__LZCSSStyleclass == null ? this.styleclass == name_$0 : this.__LZCSSStyleclass.indexOf(" " + name_$0 + " ") >= 0
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "_hasStyleClass";
+return $lzsc$temp
 })(), "__LZCSSDependencies", null, "__applyCSSConstraints", (function () {
-var $lzsc$temp = function () {
+var $lzsc$temp = function (dependencies_$0) {
 try {
 var $8 = global["$lzprofiler"];
 if ($8) {
@@ -4895,9 +4992,7 @@ $8.calls[$9] = $a
 };
 $8.last = $9
 };
-var dependencies_$0 = this.__LZCSSDependencies;
 if (dependencies_$0) {
-this.__LZCSSDependencies = null;
 var cdel_$1 = this.__applyCSSConstraintDel;
 if (cdel_$1) {
 cdel_$1.unregisterAll()
@@ -4932,137 +5027,121 @@ return $lzsc$temp
 })(), "__reapplyCSS", (function () {
 var $lzsc$temp = function (ignore_$0) {
 try {
-var $8 = global["$lzprofiler"];
-if ($8) {
-var $9 = "" + (new Date().getTime() - $8.base);
-var $a = arguments.callee["displayName"];
-if ($8.last == $9) {
-$8.events[$9] += ",calls:" + $a
+var $a = global["$lzprofiler"];
+if ($a) {
+var $b = "" + (new Date().getTime() - $a.base);
+var $c = arguments.callee["displayName"];
+if ($a.last == $b) {
+$a.events[$b] += ",calls:" + $c
 } else {
-$8.calls[$9] = $a
+$a.calls[$b] = $c
 };
-$8.last = $9
+$a.last = $b
 };
 switch (arguments.length) {
 case 0:
 ignore_$0 = null
 };
-var oldpropmap_$1 = LzCSSStyle.getPropertyCache(this);
-this.__LZRuleCache = null;
+var oldpropmap_$1 = this.__LZPropertyCache;
 this.__LZPropertyCache = null;
 var newpropmap_$2 = LzCSSStyle.getPropertyCache(this);
-var attrmap_$3 = this.__LZCSSProp;
-var typemap_$4 = this.__LZCSSType;
-var fallbackmap_$5 = this.__LZCSSFallback;
-for (var attr_$6 in attrmap_$3) {
-var prop_$7 = attrmap_$3[attr_$6];
-if (oldpropmap_$1[prop_$7] != newpropmap_$2[prop_$7]) {
-this.__LZstyleBindAttribute(attr_$6, prop_$7, typemap_$4[attr_$6], fallbackmap_$5[attr_$6])
-}};
-this.__applyCSSConstraints()
-}
-finally {
-var $8 = global["$lzprofiler"];
-if ($8) {
-var $9 = "" + (new Date().getTime() - $8.base);
-var $a = arguments.callee["displayName"];
-if ($8.last == $9) {
-$8.events[$9] += ",returns:" + $a
-} else {
-$8.returns[$9] = $a
+var attrs_$3 = this.__LZCSSStyledAttrs;
+if (attrs_$3) {
+if (oldpropmap_$1) {
+var attrprop_$4 = this.$attributeDescriptor.properties;
+var restyles_$5 = null;
+for (var i_$6 = 0, l_$7 = attrs_$3.length;i_$6 < l_$7;i_$6++) {
+var attr_$8 = attrs_$3[i_$6];
+var prop_$9 = attrprop_$4[attr_$8];
+if (oldpropmap_$1[prop_$9] != newpropmap_$2[prop_$9]) {
+if (!restyles_$5) {
+restyles_$5 = []
 };
-$8.last = $9
+restyles_$5.push(attr_$8)
+}};
+if (restyles_$5) {
+this.applyStyleConstraints(restyles_$5, true)
+}} else {
+this.applyStyleConstraints(attrs_$3, true)
+}}}
+finally {
+var $a = global["$lzprofiler"];
+if ($a) {
+var $b = "" + (new Date().getTime() - $a.base);
+var $c = arguments.callee["displayName"];
+if ($a.last == $b) {
+$a.events[$b] += ",returns:" + $c
+} else {
+$a.returns[$b] = $c
+};
+$a.last = $b
 }}};
 $lzsc$temp["displayName"] = "__reapplyCSS";
 return $lzsc$temp
-})(), "__LZstyleBindAttribute", (function () {
-var $lzsc$temp = function (attr_$0, prop_$1, type_$2, fallback_$3, warn_$4) {
+})(), "__LZCSSStyledAttrs", null, "applyStyleConstraints", (function () {
+var $lzsc$temp = function (attrs_$0, reapply_$1) {
 try {
-var $b = global["$lzprofiler"];
-if ($b) {
-var $c = "" + (new Date().getTime() - $b.base);
-var $d = arguments.callee["displayName"];
-if ($b.last == $c) {
-$b.events[$c] += ",calls:" + $d
+var $i = global["$lzprofiler"];
+if ($i) {
+var $j = "" + (new Date().getTime() - $i.base);
+var $k = arguments.callee["displayName"];
+if ($i.last == $j) {
+$i.events[$j] += ",calls:" + $k
 } else {
-$b.calls[$c] = $d
+$i.calls[$j] = $k
 };
-$b.last = $c
+$i.last = $j
 };
 switch (arguments.length) {
-case 3:
-fallback_$3 = void 0;;case 4:
-warn_$4 = true
+case 1:
+reapply_$1 = false
 };
-var pc_$5 = this["__LZPropertyCache"] || LzCSSStyle.getPropertyCache(this);
-if (!this.__LZCSSProp) {
-this.__LZCSSProp = {}};
-this.__LZCSSProp[attr_$0] = prop_$1;
-if (!this.__LZCSSType) {
-this.__LZCSSType = {}};
-this.__LZCSSType[attr_$0] = type_$2;
-if (!this.__LZCSSFallback) {
-this.__LZCSSFallback = {}};
-this.__LZCSSFallback[attr_$0] = fallback_$3;
-var styleValue_$6 = pc_$5[prop_$1];
-if (typeof styleValue_$6 == "string" && styleValue_$6.length > 2 && styleValue_$6.indexOf("0x") == 0 && !isNaN(styleValue_$6)) {
-styleValue_$6 = Number(styleValue_$6)
+if (!reapply_$1) {
+this.__LZCSSStyledAttrs = attrs_$0
 };
-if (LzStyleExpr["$lzsc$isa"] ? LzStyleExpr.$lzsc$isa(styleValue_$6) : styleValue_$6 instanceof LzStyleExpr) {
-if (LzStyleAttr["$lzsc$isa"] ? LzStyleAttr.$lzsc$isa(styleValue_$6) : styleValue_$6 instanceof LzStyleAttr) {
-var sa_$7 = styleValue_$6;
-var source_$8 = sa_$7.sourceAttributeName;
-var binder_$9 = new LzStyleAttrBinder(this, attr_$0, source_$8);
+var pc_$2 = this["__LZPropertyCache"] || LzCSSStyle.getPropertyCache(this);
+var desc_$3 = this.$attributeDescriptor;
+var props_$4 = desc_$3.properties;
+var types_$5 = desc_$3.types;
+var fallbacks_$6 = desc_$3.fallbacks;
+for (var i_$7 = 0, l_$8 = attrs_$0.length;i_$7 < l_$8;i_$7++) {
+var attr_$9 = attrs_$0[i_$7];
+var prop_$a = props_$4[attr_$9];
+var type_$b = types_$5 && types_$5[attr_$9] || "expression";
+var fallback_$c = fallbacks_$6 && fallbacks_$6[attr_$9];
+var warn_$d = !(fallbacks_$6 && fallbacks_$6.hasOwnProperty(attr_$9));
+var styleValue_$e = pc_$2[prop_$a];
+if (LzStyleExpr["$lzsc$isa"] ? LzStyleExpr.$lzsc$isa(styleValue_$e) : styleValue_$e instanceof LzStyleExpr) {
+if (LzStyleAttr["$lzsc$isa"] ? LzStyleAttr.$lzsc$isa(styleValue_$e) : styleValue_$e instanceof LzStyleAttr) {
+var sa_$f = styleValue_$e;
+var source_$g = sa_$f.sourceAttributeName;
+var binder_$h = new LzStyleAttrBinder(this, attr_$9, source_$g);
 if (!this.__LZconstraintdelegates) {
 this.__LZconstraintdelegates = []
 };
-this.__LZconstraintdelegates.push(new LzDelegate(binder_$9, "bind", this, "on" + source_$8));
-binder_$9.bind()
-} else if (LzStyleIdent["$lzsc$isa"] ? LzStyleIdent.$lzsc$isa(styleValue_$6) : styleValue_$6 instanceof LzStyleIdent) {
-var si_$a = styleValue_$6;
-this.acceptAttribute(attr_$0, type_$2, si_$a.sourceValueID)
-}} else if (styleValue_$6 !== void 0) {
-if (this[attr_$0] !== styleValue_$6) {
-{
-if (!this.__LZdeleted) {
-var $lzsc$5dxtvz = "$lzc$set_" + attr_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$5dxtvz]) : this[$lzsc$5dxtvz] instanceof Function) {
-this[$lzsc$5dxtvz](styleValue_$6)
+this.__LZconstraintdelegates.push(new LzDelegate(binder_$h, "bind", this, "on" + source_$g));
+binder_$h.bind()
+}} else if (styleValue_$e !== void 0) {
+this.acceptAttribute(attr_$9, type_$b, styleValue_$e)
+} else if (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(fallback_$c) : fallback_$c instanceof LzInitExpr) {
+this.applyConstraintExpr(fallback_$c)
 } else {
-this[attr_$0] = styleValue_$6;
-var $lzsc$h3sjsf = this["on" + attr_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$h3sjsf) : $lzsc$h3sjsf instanceof LzEvent) {
-if ($lzsc$h3sjsf.ready) {
-$lzsc$h3sjsf.sendEvent(styleValue_$6)
-}}}}}}} else if (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(fallback_$3) : fallback_$3 instanceof LzInitExpr) {
-this.applyConstraintExpr(fallback_$3)
-} else {
-if (this[attr_$0] !== fallback_$3) {
-{
-if (!this.__LZdeleted) {
-var $lzsc$cohcyr = "$lzc$set_" + attr_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$cohcyr]) : this[$lzsc$cohcyr] instanceof Function) {
-this[$lzsc$cohcyr](fallback_$3)
-} else {
-this[attr_$0] = fallback_$3;
-var $lzsc$9t9c7k = this["on" + attr_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$9t9c7k) : $lzsc$9t9c7k instanceof LzEvent) {
-if ($lzsc$9t9c7k.ready) {
-$lzsc$9t9c7k.sendEvent(fallback_$3)
-}}}}}}}}
+if (this[attr_$9] !== fallback_$c) {
+this.setAttribute(attr_$9, fallback_$c)
+}}}}
 finally {
-var $b = global["$lzprofiler"];
-if ($b) {
-var $c = "" + (new Date().getTime() - $b.base);
-var $d = arguments.callee["displayName"];
-if ($b.last == $c) {
-$b.events[$c] += ",returns:" + $d
+var $i = global["$lzprofiler"];
+if ($i) {
+var $j = "" + (new Date().getTime() - $i.base);
+var $k = arguments.callee["displayName"];
+if ($i.last == $j) {
+$i.events[$j] += ",returns:" + $k
 } else {
-$b.returns[$c] = $d
+$i.returns[$j] = $k
 };
-$b.last = $c
+$i.last = $j
 }}};
-$lzsc$temp["displayName"] = "__LZstyleBindAttribute";
+$lzsc$temp["displayName"] = "applyStyleConstraints";
 return $lzsc$temp
 })(), "construct", (function () {
 var $lzsc$temp = function (parent_$0, args_$1) {
@@ -5353,127 +5432,133 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "completeInstantiation";
 return $lzsc$temp
-})(), "ignoreplacement", false, "$lzc$set_$delegates", -1, "$lzc$set_$classrootdepth", -1, "$lzc$set_$datapath", -1, "__LZapplyArgs", (function () {
+})(), "ignoreplacement", false, "$lzc$set_$delegates", -1, "$lzc$set_$classrootdepth", -1, "$lzc$set_$datapath", -1, "$lzc$set_$CSSDescriptor", -1, "$lzc$set_$attributeDescriptor", -1, "__LZapplyArgs", (function () {
 var $lzsc$temp = function (args_$0, constcall_$1) {
 try {
-var $l = global["$lzprofiler"];
-if ($l) {
-var $m = "" + (new Date().getTime() - $l.base);
-var $n = arguments.callee["displayName"];
-if ($l.last == $m) {
-$l.events[$m] += ",calls:" + $n
+var $m = global["$lzprofiler"];
+if ($m) {
+var $n = "" + (new Date().getTime() - $m.base);
+var $o = arguments.callee["displayName"];
+if ($m.last == $n) {
+$m.events[$n] += ",calls:" + $o
 } else {
-$l.calls[$m] = $n
+$m.calls[$n] = $o
 };
-$l.last = $m
+$m.last = $n
 };
 var ignore_$2 = LzNode._ignoreAttribute;
-var oset_$3 = {};
-var hasset_$4 = null;
-var inits_$5 = null;
-var constraints_$6 = null;
+var styleconstraint_$3 = LzStyleConstraintExpr.StyleConstraintExpr;
+var oset_$4 = {};
+var hasset_$5 = null;
+var inits_$6 = null;
+var constraints_$7 = null;
+var styles_$8 = null;
 if ("name" in args_$0) {
 this.$lzc$set_name(args_$0.name);
 delete args_$0.name
 };
-for (var key_$7 in args_$0) {
-var expr_$8 = args_$0[key_$7];
-if (expr_$8 && (LzAttributeDescriptor["$lzsc$isa"] ? LzAttributeDescriptor.$lzsc$isa(expr_$8) : expr_$8 instanceof LzAttributeDescriptor)) {
-var val_$9 = expr_$8.value
+for (var key_$9 in args_$0) {
+var expr_$a = args_$0[key_$9];
+if (oset_$4[key_$9] || expr_$a === ignore_$2) continue;
+oset_$4[key_$9] = true;
+var setr_$b = "$lzc$set_" + key_$9;
+if (expr_$a && (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(expr_$a) : expr_$a instanceof LzInitExpr)) {
+if (expr_$a instanceof LzConstraintExpr) {
+if (expr_$a === styleconstraint_$3) {
+if (styles_$8 == null) {
+styles_$8 = []
+};
+styles_$8.push(key_$9)
 } else {
-var val_$9 = expr_$8
+if (constraints_$7 == null) {
+constraints_$7 = []
 };
-if (oset_$3[key_$7] || val_$9 === ignore_$2) continue;
-oset_$3[key_$7] = true;
-var setr_$a = "$lzc$set_" + key_$7;
-if (expr_$8 && (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(expr_$8) : expr_$8 instanceof LzInitExpr)) {
-if (expr_$8 instanceof LzConstraintExpr) {
-if (constraints_$6 == null) {
-constraints_$6 = []
+constraints_$7.push(expr_$a)
+}} else if (expr_$a instanceof LzOnceExpr) {
+if (inits_$6 == null) {
+inits_$6 = []
 };
-constraints_$6.push(expr_$8)
-} else if (expr_$8 instanceof LzOnceExpr) {
-if (inits_$5 == null) {
-inits_$5 = []
+inits_$6.push(expr_$a)
 };
-inits_$5.push(expr_$8)
-};
-if (this[key_$7] === void 0) {
-this[key_$7] = null
-}} else if (!this[setr_$a]) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(val_$9) : val_$9 instanceof Function) {
-this.addProperty(key_$7, val_$9)
-} else if (val_$9 !== void 0) {
-this[key_$7] = val_$9
+if (this[key_$9] === void 0) {
+this[key_$9] = null
+}} else if (!this[setr_$b]) {
+if (Function["$lzsc$isa"] ? Function.$lzsc$isa(expr_$a) : expr_$a instanceof Function) {
+this.addProperty(key_$9, expr_$a)
+} else if (expr_$a !== void 0) {
+this[key_$9] = expr_$a
 };
 if (!constcall_$1) {
-var thisevent_$b = this["on" + key_$7];
-if (thisevent_$b) {
-if (thisevent_$b.ready) {
-thisevent_$b.sendEvent(args_$0[key_$7])
-}}}} else if (this[setr_$a] != -1) {
-if (hasset_$4 == null) {
-hasset_$4 = []
+var thisevent_$c = this["on" + key_$9];
+if (thisevent_$c) {
+if (thisevent_$c.ready) {
+thisevent_$c.sendEvent(args_$0[key_$9])
+}}}} else if (this[setr_$b] != -1) {
+if (hasset_$5 == null) {
+hasset_$5 = []
 };
-hasset_$4.push(setr_$a, val_$9);
-if (this[key_$7] === void 0) {
-this[key_$7] = null
+hasset_$5.push(setr_$b, expr_$a);
+if (this[key_$9] === void 0) {
+this[key_$9] = null
 }}};
 if ("$delegates" in args_$0) {
-var $c = args_$0.$delegates;
-var cdels_$d = this.__LZconstraintdelegates;
-var resarray_$e;
-for (var i_$f = 0, l_$g = $c.length;i_$f < l_$g;i_$f += 3) {
-if ($c[i_$f + 2]) {
-if (resarray_$e == null) {
-resarray_$e = []
+var $d = args_$0.$delegates;
+var cdels_$e = this.__LZconstraintdelegates;
+var resarray_$f;
+for (var i_$g = 0, l_$h = $d.length;i_$g < l_$h;i_$g += 3) {
+if ($d[i_$g + 2]) {
+if (resarray_$f == null) {
+resarray_$f = []
 };
-resarray_$e.push($c[i_$f], $c[i_$f + 1], $c[i_$f + 2])
+resarray_$f.push($d[i_$g], $d[i_$g + 1], $d[i_$g + 2])
 } else {
-var m_$h = $c[i_$f + 1];
-if (!cdels_$d) {
-cdels_$d = this.__LZconstraintdelegates = []
+var m_$i = $d[i_$g + 1];
+if (!cdels_$e) {
+cdels_$e = this.__LZconstraintdelegates = []
 };
-cdels_$d.push(new LzDelegate(this, m_$h, this, $c[i_$f]))
+cdels_$e.push(new LzDelegate(this, m_$i, this, $d[i_$g]))
 }};
-if (resarray_$e != null) {
-this.__LZstoreAttr(resarray_$e, "$delegates")
+if (resarray_$f != null) {
+this.__LZstoreAttr(resarray_$f, "$delegates")
 }};
 if ("$classrootdepth" in args_$0) {
-var $i = args_$0.$classrootdepth;
-if ($i) {
-var p_$j = this.parent;
-while (--$i > 0) {
-p_$j = p_$j.parent
+var $j = args_$0.$classrootdepth;
+if ($j) {
+var p_$k = this.parent;
+while (--$j > 0) {
+p_$k = p_$k.parent
 };
-this.classroot = p_$j
+this.classroot = p_$k
 }};
 if (("$datapath" in args_$0) && args_$0.$datapath !== ignore_$2) {
-var $k = args_$0.$datapath;
-this.makeChild($k, true)
+var $l = args_$0.$datapath;
+this.makeChild($l, true)
 };
-if (hasset_$4) {
-for (var i_$f = 0, l_$g = hasset_$4.length;i_$f < l_$g;i_$f += 2) {
+if (hasset_$5) {
+for (var i_$g = 0, l_$h = hasset_$5.length;i_$g < l_$h;i_$g += 2) {
 if (this.__LZdeleted) return;
-this[hasset_$4[i_$f]](hasset_$4[i_$f + 1])
+this[hasset_$5[i_$g]](hasset_$5[i_$g + 1])
 }};
-if (inits_$5 != null) {
-this.__LZstoreAttr(inits_$5, "$inits")
+if (inits_$6 != null) {
+this.__LZstoreAttr(inits_$6, "$inits")
 };
-if (constraints_$6 != null) {
-this.__LZstoreAttr(constraints_$6, "$constraints")
+if (constraints_$7 != null) {
+this.__LZstoreAttr(constraints_$7, "$constraints")
+};
+if (styles_$8 != null) {
+this.__LZstoreAttr(styles_$8, "$styles")
 }}
 finally {
-var $l = global["$lzprofiler"];
-if ($l) {
-var $m = "" + (new Date().getTime() - $l.base);
-var $n = arguments.callee["displayName"];
-if ($l.last == $m) {
-$l.events[$m] += ",returns:" + $n
+var $m = global["$lzprofiler"];
+if ($m) {
+var $n = "" + (new Date().getTime() - $m.base);
+var $o = arguments.callee["displayName"];
+if ($m.last == $n) {
+$m.events[$n] += ",returns:" + $o
 } else {
-$l.returns[$m] = $n
+$m.returns[$n] = $o
 };
-$l.last = $m
+$m.last = $n
 }}};
 $lzsc$temp["displayName"] = "__LZapplyArgs";
 return $lzsc$temp
@@ -5660,16 +5745,16 @@ return $lzsc$temp
 })(), "__LZresolveReferences", (function () {
 var $lzsc$temp = function () {
 try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",calls:" + $8
 } else {
-$5.calls[$6] = $7
+$6.calls[$7] = $8
 };
-$5.last = $6
+$6.last = $7
 };
 var rdict_$0 = this.__LZresolveDict;
 if (rdict_$0 != null) {
@@ -5680,47 +5765,48 @@ for (var i_$2 = 0, l_$3 = inits_$1.length;i_$2 < l_$3;i_$2++) {
 this[inits_$1[i_$2].methodName](null);
 if (this.__LZdeleted) return
 }};
-var constraints_$4 = rdict_$0["$constraints"];
-if (constraints_$4 != null) {
-for (var i_$2 = 0, l_$3 = constraints_$4.length;i_$2 < l_$3;i_$2++) {
-this.applyConstraintExpr(constraints_$4[i_$2]);
+var styles_$4 = rdict_$0["$styles"];
+if (styles_$4 != null) {
+this.applyStyleConstraints(styles_$4)
+};
+var constraints_$5 = rdict_$0["$constraints"];
+if (constraints_$5 != null) {
+for (var i_$2 = 0, l_$3 = constraints_$5.length;i_$2 < l_$3;i_$2++) {
+this.applyConstraintExpr(constraints_$5[i_$2]);
 if (this.__LZdeleted) return
 }};
-if (this.__LZCSSDependencies != null) {
-this.__applyCSSConstraints()
-};
 if (this["__LZresolveOtherReferences"]) {
 this.__LZresolveOtherReferences(rdict_$0)
 };
 if (rdict_$0["$delegates"]) this.__LZsetDelegates(rdict_$0.$delegates)
 }}
 finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",returns:" + $8
 } else {
-$5.returns[$6] = $7
+$6.returns[$7] = $8
 };
-$5.last = $6
+$6.last = $7
 }}};
 $lzsc$temp["displayName"] = "__LZresolveReferences";
 return $lzsc$temp
 })(), "__LZsetDelegates", (function () {
 var $lzsc$temp = function (delarr_$0) {
 try {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",calls:" + $9
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",calls:" + $a
 } else {
-$7.calls[$8] = $9
+$8.calls[$9] = $a
 };
-$7.last = $8
+$8.last = $9
 };
 if (delarr_$0.length < 1) {
 return
@@ -5731,57 +5817,28 @@ cdels_$1 = this.__LZconstraintdelegates = []
 };
 var l_$2 = delarr_$0.length;
 for (var i_$3 = 0;i_$3 < l_$2;i_$3 += 3) {
-var sendermethodname_$4 = delarr_$0[i_$3 + 2];
-var sender_$5 = sendermethodname_$4 != null ? this[sendermethodname_$4]() : null;
-if (sender_$5 == null) sender_$5 = this;
-var meth_$6 = delarr_$0[i_$3 + 1];
-cdels_$1.push(new LzDelegate(this, meth_$6, sender_$5, delarr_$0[i_$3]))
+var sendergetter_$4 = delarr_$0[i_$3 + 2];
+var sender_$5 = sendergetter_$4 != null ? this[sendergetter_$4]() : null;
+var evt_$6 = delarr_$0[i_$3];
+var meth_$7 = delarr_$0[i_$3 + 1];
+if (sender_$5 == null) {
+continue
+};
+cdels_$1.push(new LzDelegate(this, meth_$7, sender_$5, evt_$6))
 }}
 finally {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",returns:" + $9
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",returns:" + $a
 } else {
-$7.returns[$8] = $9
+$8.returns[$9] = $a
 };
-$7.last = $8
+$8.last = $9
 }}};
 $lzsc$temp["displayName"] = "__LZsetDelegates";
-return $lzsc$temp
-})(), "applyConstraint", (function () {
-var $lzsc$temp = function (attribute_$0, constraint_$1, dependencies_$2) {
-try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
-} else {
-$4.calls[$5] = $6
-};
-$4.last = $5
-};
-var constraintMethodName_$3 = "$cf" + this.$cfn++;
-this.addProperty(constraintMethodName_$3, constraint_$1);
-return this.applyConstraintMethod(constraintMethodName_$3, dependencies_$2)
-}
-finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
-} else {
-$4.returns[$5] = $6
-};
-$4.last = $5
-}}};
-$lzsc$temp["displayName"] = "applyConstraint";
 return $lzsc$temp
 })(), "applyConstraintMethod", (function () {
 var $lzsc$temp = function (constraintMethodName_$0, dependencies_$1) {
@@ -5827,54 +5884,49 @@ return $lzsc$temp
 })(), "applyConstraintExpr", (function () {
 var $lzsc$temp = function (expr_$0) {
 try {
-var $a = global["$lzprofiler"];
-if ($a) {
-var $b = "" + (new Date().getTime() - $a.base);
-var $c = arguments.callee["displayName"];
-if ($a.last == $b) {
-$a.events[$b] += ",calls:" + $c
+var $9 = global["$lzprofiler"];
+if ($9) {
+var $a = "" + (new Date().getTime() - $9.base);
+var $b = arguments.callee["displayName"];
+if ($9.last == $a) {
+$9.events[$a] += ",calls:" + $b
 } else {
-$a.calls[$b] = $c
+$9.calls[$a] = $b
 };
-$a.last = $b
+$9.last = $a
 };
-if (expr_$0 instanceof LzStyleConstraintExpr) {
-var se_$1 = expr_$0;
-this.__LZstyleBindAttribute(se_$1.attribute, se_$1.property, se_$1.type, se_$1.fallback, se_$1.warn);
+var constraintMethodName_$1 = expr_$0.methodName;
+if (!(Function["$lzsc$isa"] ? Function.$lzsc$isa(this[constraintMethodName_$1]) : this[constraintMethodName_$1] instanceof Function)) {
 return
 };
-var constraintMethodName_$2 = expr_$0.methodName;
-if (!(Function["$lzsc$isa"] ? Function.$lzsc$isa(this[constraintMethodName_$2]) : this[constraintMethodName_$2] instanceof Function)) {
-return
-};
-var dependencies_$3 = null;
+var dependencies_$2 = null;
 if (expr_$0 instanceof LzAlwaysExpr) {
-var c_$4 = expr_$0;
-var dependenciesMethodName_$5 = c_$4.dependenciesName;
-if (!(Function["$lzsc$isa"] ? Function.$lzsc$isa(this[dependenciesMethodName_$5]) : this[dependenciesMethodName_$5] instanceof Function)) {
+var c_$3 = expr_$0;
+var dependenciesMethodName_$4 = c_$3.dependenciesName;
+if (!(Function["$lzsc$isa"] ? Function.$lzsc$isa(this[dependenciesMethodName_$4]) : this[dependenciesMethodName_$4] instanceof Function)) {
 
 } else {
 try {
-dependencies_$3 = this[dependenciesMethodName_$5]();
-for (var i_$6 = 0, l_$7 = dependencies_$3.length;i_$6 < l_$7;i_$6 += 2) {
-var dp_$8 = dependencies_$3[i_$6];
-if (dp_$8 != null && !(LzEventable["$lzsc$isa"] ? LzEventable.$lzsc$isa(dp_$8) : dp_$8 instanceof LzEventable)) {
-dependencies_$3[i_$6] = null
+dependencies_$2 = this[dependenciesMethodName_$4]();
+for (var i_$5 = 0, l_$6 = dependencies_$2.length;i_$5 < l_$6;i_$5 += 2) {
+var dp_$7 = dependencies_$2[i_$5];
+if (dp_$7 != null && !(LzEventable["$lzsc$isa"] ? LzEventable.$lzsc$isa(dp_$7) : dp_$7 instanceof LzEventable)) {
+dependencies_$2[i_$5] = null
 }}}
-catch (e_$9) {}}};
-this.applyConstraintMethod(constraintMethodName_$2, dependencies_$3)
+catch (e_$8) {}}};
+this.applyConstraintMethod(constraintMethodName_$1, dependencies_$2)
 }
 finally {
-var $a = global["$lzprofiler"];
-if ($a) {
-var $b = "" + (new Date().getTime() - $a.base);
-var $c = arguments.callee["displayName"];
-if ($a.last == $b) {
-$a.events[$b] += ",returns:" + $c
+var $9 = global["$lzprofiler"];
+if ($9) {
+var $a = "" + (new Date().getTime() - $9.base);
+var $b = arguments.callee["displayName"];
+if ($9.last == $a) {
+$9.events[$a] += ",returns:" + $b
 } else {
-$a.returns[$b] = $c
+$9.returns[$a] = $b
 };
-$a.last = $b
+$9.last = $a
 }}};
 $lzsc$temp["displayName"] = "applyConstraintExpr";
 return $lzsc$temp
@@ -6014,36 +6066,6 @@ $4.last = $5
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_name";
 return $lzsc$temp
-})(), "setDatapath", (function () {
-var $lzsc$temp = function (dp_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_datapath(dp_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setDatapath";
-return $lzsc$temp
 })(), "data", null, "$lzc$set_data", (function () {
 var $lzsc$temp = function (data_$0) {
 try {
@@ -6078,40 +6100,6 @@ $2.returns[$3] = $4
 $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_data";
-return $lzsc$temp
-})(), "setData", (function () {
-var $lzsc$temp = function (data_$0, ignore_$1) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-switch (arguments.length) {
-case 1:
-ignore_$1 = null
-};
-this.$lzc$set_data(data_$0)
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "setData";
 return $lzsc$temp
 })(), "applyData", (function () {
 var $lzsc$temp = function (data_$0) {
@@ -6652,18 +6640,7 @@ moreargs_$4 = null
 };
 if (duration_$2 == 0) {
 var val_$5 = isRelative_$3 ? this[prop_$0] + to_$1 : to_$1;
-{
-if (!this.__LZdeleted) {
-var $lzsc$biipwp = "$lzc$set_" + prop_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$biipwp]) : this[$lzsc$biipwp] instanceof Function) {
-this[$lzsc$biipwp](val_$5)
-} else {
-this[prop_$0] = val_$5;
-var $lzsc$a81agt = this["on" + prop_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$a81agt) : $lzsc$a81agt instanceof LzEvent) {
-if ($lzsc$a81agt.ready) {
-$lzsc$a81agt.sendEvent(val_$5)
-}}}}};
+this.__setAttr(prop_$0, val_$5);
 return null
 };
 var args_$6 = {attribute: prop_$0, to: to_$1, duration: duration_$2, relative: isRelative_$3, target: this};
@@ -6717,60 +6694,61 @@ return $lzsc$temp
 })(), "getDebugIdentification", (function () {
 var $lzsc$temp = function () {
 try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
 } else {
-$1.calls[$2] = $3
+$2.calls[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 };
-var s_$0 = this["constructor"].tagname;
+var c_$0 = this["constructor"];
+var s_$1 = c_$0 && c_$0.hasOwnProperty("tagname") ? c_$0.tagname : "anonymous";
 if (this["name"] != null) {
-s_$0 += " name: " + this.name
+s_$1 += " name: " + this.name
 };
 if (this["id"] != null) {
-s_$0 += " id: " + this.id
+s_$1 += " id: " + this.id
 };
-return s_$0
+return s_$1
 }
 finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
 } else {
-$1.returns[$2] = $3
+$2.returns[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 }}};
 $lzsc$temp["displayName"] = "getDebugIdentification";
 return $lzsc$temp
 })(), "nodePath", (function () {
 var $lzsc$temp = function (node_$0, limit_$1) {
 try {
-var $e = global["$lzprofiler"];
-if ($e) {
-var $f = "" + (new Date().getTime() - $e.base);
-var $g = arguments.callee["displayName"];
-if ($e.last == $f) {
-$e.events[$f] += ",calls:" + $g
+var $g = global["$lzprofiler"];
+if ($g) {
+var $h = "" + (new Date().getTime() - $g.base);
+var $i = arguments.callee["displayName"];
+if ($g.last == $h) {
+$g.events[$h] += ",calls:" + $i
 } else {
-$e.calls[$f] = $g
+$g.calls[$h] = $i
 };
-$e.last = $f
+$g.last = $h
 };
 switch (arguments.length) {
 case 1:
 limit_$1 = Infinity
 };
 if (node_$0 === canvas) {
-return ""
+return "#canvas"
 };
 var nid_$2 = node_$0.id;
 if (typeof nid_$2 == "string" && globalValue(nid_$2) === node_$0) {
@@ -6782,83 +6760,56 @@ return "#" + nn_$3
 };
 var parent_$4 = node_$0.immediateparent || node_$0.parent;
 var path_$5 = "";
-if (parent_$4 != null) {
-if (typeof nn_$3 == "string" && parent_$4[nn_$3] === node_$0) {
+if (typeof nn_$3 == "string" && (parent_$4 == null || parent_$4[nn_$3] === node_$0)) {
 path_$5 = "@" + nn_$3
 } else {
 var nct_$6 = node_$0.constructor.tagname;
-if (!nct_$6) {
-path_$5 = "anonymous"
-} else {
-path_$5 = nct_$6;
-var sn_$7 = parent_$4.subnodes;
-var index_$8, count_$9 = 0;
-for (var i_$a = 0, len_$b = sn_$7.length;i_$a < len_$b;i_$a++) {
-var sibling_$c = sn_$7[i_$a];
-if (nct_$6 == sibling_$c.constructor.tagname) {
-count_$9++;
-if (index_$8) break
-};
-if (node_$0 === sibling_$c) {
-index_$8 = count_$9
+path_$5 = nct_$6 || "anonymous";
+var cn_$7 = node_$0.styleclass;
+if (cn_$7) {
+var more_$8 = cn_$7.indexOf(" ");
+if (more_$8 != -1) {
+cn_$7 = cn_$7.substring(0, more_$8)
 }};
-if (count_$9 > 1) {
-path_$5 += "[" + index_$8 + "]"
-}}};
+var index_$9, count_$a = 0;
+if (parent_$4 != null) {
+var sn_$b = parent_$4.subnodes;
+for (var i_$c = 0, len_$d = sn_$b.length;i_$c < len_$d;i_$c++) {
+var sibling_$e = sn_$b[i_$c];
+if (nct_$6 == sibling_$e.constructor.tagname) {
+count_$a++;
+if (index_$9) break;
+if (node_$0 === sibling_$e) {
+index_$9 = count_$a
+}}}};
+if (cn_$7) {
+path_$5 += "." + cn_$7
+};
+if (count_$a > 1) {
+path_$5 += "[" + index_$9 + "]"
+}};
 if (path_$5.length >= limit_$1) {
 return "\u2026"
 };
 try {
-return this.nodePath(parent_$4, limit_$1 - path_$5.length - 1) + "/" + path_$5
+return (parent_$4 == null ? "?" : (parent_$4 === canvas ? "" : this.nodePath(parent_$4, limit_$1 - path_$5.length - 1))) + "/" + path_$5
 }
-catch (e_$d) {
+catch (e_$f) {};
 return "\u2026/" + path_$5
-}};
-return path_$5
 }
 finally {
-var $e = global["$lzprofiler"];
-if ($e) {
-var $f = "" + (new Date().getTime() - $e.base);
-var $g = arguments.callee["displayName"];
-if ($e.last == $f) {
-$e.events[$f] += ",returns:" + $g
+var $g = global["$lzprofiler"];
+if ($g) {
+var $h = "" + (new Date().getTime() - $g.base);
+var $i = arguments.callee["displayName"];
+if ($g.last == $h) {
+$g.events[$h] += ",returns:" + $i
 } else {
-$e.returns[$f] = $g
+$g.returns[$h] = $i
 };
-$e.last = $f
+$g.last = $h
 }}};
 $lzsc$temp["displayName"] = "nodePath";
-return $lzsc$temp
-})(), "acceptTypeValue", (function () {
-var $lzsc$temp = function (type_$0, value_$1, node_$2, attribute_$3) {
-try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
-} else {
-$4.calls[$5] = $6
-};
-$4.last = $5
-};
-return lz.Type.acceptTypeValue(type_$0, value_$1, node_$2, attribute_$3)
-}
-finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
-} else {
-$4.returns[$5] = $6
-};
-$4.last = $5
-}}};
-$lzsc$temp["displayName"] = "acceptTypeValue";
 return $lzsc$temp
 })(), "acceptAttribute", (function () {
 var $lzsc$temp = function (name_$0, type_$1, value_$2) {
@@ -6876,18 +6827,8 @@ $3.last = $4
 };
 value_$2 = lz.Type.acceptTypeValue(type_$1, value_$2, this, name_$0);
 if (this[name_$0] !== value_$2) {
-{
-if (!this.__LZdeleted) {
-var $lzsc$lg48ah = "$lzc$set_" + name_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$lg48ah]) : this[$lzsc$lg48ah] instanceof Function) {
-this[$lzsc$lg48ah](value_$2)
-} else {
-this[name_$0] = value_$2;
-var $lzsc$2taua7 = this["on" + name_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$2taua7) : $lzsc$2taua7 instanceof LzEvent) {
-if ($lzsc$2taua7.ready) {
-$lzsc$2taua7.sendEvent(value_$2)
-}}}}}}}
+this.setAttribute(name_$0, value_$2)
+}}
 finally {
 var $3 = global["$lzprofiler"];
 if ($3) {
@@ -6902,63 +6843,41 @@ $3.last = $4
 }}};
 $lzsc$temp["displayName"] = "acceptAttribute";
 return $lzsc$temp
-})(), "presentTypeValue", (function () {
-var $lzsc$temp = function (type_$0, value_$1, node_$2, attribute_$3) {
-try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
-} else {
-$4.calls[$5] = $6
-};
-$4.last = $5
-};
-return lz.Type.presentTypeValue(type_$0, value_$1, node_$2, attribute_$3)
-}
-finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
-} else {
-$4.returns[$5] = $6
-};
-$4.last = $5
-}}};
-$lzsc$temp["displayName"] = "presentTypeValue";
-return $lzsc$temp
 })(), "presentAttribute", (function () {
 var $lzsc$temp = function (name_$0, type_$1) {
 try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
 } else {
-$2.calls[$3] = $4
+$3.calls[$4] = $5
 };
-$2.last = $3
+$3.last = $4
+};
+switch (arguments.length) {
+case 1:
+type_$1 = null
+};
+if (!type_$1) {
+var types_$2 = this.$attributeDescriptor.types;
+type_$1 = types_$2 && types_$2[name_$0] || "expression"
 };
 return lz.Type.presentTypeValue(type_$1, this[name_$0], this, name_$0)
 }
 finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
 } else {
-$2.returns[$3] = $4
+$3.returns[$4] = $5
 };
-$2.last = $3
+$3.last = $4
 }}};
 $lzsc$temp["displayName"] = "presentAttribute";
 return $lzsc$temp
@@ -7083,56 +7002,92 @@ $3.last = $4
 }}};
 $lzsc$temp["displayName"] = "__invokeCustomSetter";
 return $lzsc$temp
-})()], LzEventable, ["tagname", "node", "attributes", new LzInheritedHash(), "mergeAttributes", (function () {
+})()], LzEventable, ["tagname", "node", "__LZCSSTagSelectors", ["node"], "attributes", new LzInheritedHash(), "mergeAttributes", (function () {
 var $lzsc$temp = function (attrs_$0, dattrs_$1) {
 try {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",calls:" + $9
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",calls:" + $a
 } else {
-$7.calls[$8] = $9
+$8.calls[$9] = $a
 };
-$7.last = $8
+$8.last = $9
 };
-for (var k_$2 in attrs_$0) {
-var attrk_$3 = attrs_$0[k_$2];
-if (attrk_$3 === LzNode._ignoreAttribute) {
-delete dattrs_$1[k_$2]
-} else if (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(attrk_$3) : attrk_$3 instanceof LzInitExpr) {
-dattrs_$1[k_$2] = attrk_$3
+var ignore_$2 = LzNode._ignoreAttribute;
+for (var k_$3 in attrs_$0) {
+var attrk_$4 = attrs_$0[k_$3];
+if (attrk_$4 === ignore_$2) {
+delete dattrs_$1[k_$3]
+} else if (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(attrk_$4) : attrk_$4 instanceof LzInitExpr) {
+dattrs_$1[k_$3] = attrk_$4
 } else {
-if (Object["$lzsc$isa"] ? Object.$lzsc$isa(attrk_$3) : attrk_$3 instanceof Object) {
-var dattrk_$4 = dattrs_$1[k_$2];
-if (Object["$lzsc$isa"] ? Object.$lzsc$isa(dattrk_$4) : dattrk_$4 instanceof Object) {
-if ((Array["$lzsc$isa"] ? Array.$lzsc$isa(attrk_$3) : attrk_$3 instanceof Array) && (Array["$lzsc$isa"] ? Array.$lzsc$isa(dattrk_$4) : dattrk_$4 instanceof Array)) {
-dattrs_$1[k_$2] = attrk_$3.concat(dattrk_$4);
+if (Object["$lzsc$isa"] ? Object.$lzsc$isa(attrk_$4) : attrk_$4 instanceof Object) {
+var dattrk_$5 = dattrs_$1[k_$3];
+if (Object["$lzsc$isa"] ? Object.$lzsc$isa(dattrk_$5) : dattrk_$5 instanceof Object) {
+if ((Array["$lzsc$isa"] ? Array.$lzsc$isa(attrk_$4) : attrk_$4 instanceof Array) && (Array["$lzsc$isa"] ? Array.$lzsc$isa(dattrk_$5) : dattrk_$5 instanceof Array)) {
+dattrs_$1[k_$3] = attrk_$4.concat(dattrk_$5);
 continue
-} else if ((attrk_$3.constructor === Object || (LzInheritedHash["$lzsc$isa"] ? LzInheritedHash.$lzsc$isa(attrk_$3) : attrk_$3 instanceof LzInheritedHash)) && (dattrk_$4.constructor === Object || (LzInheritedHash["$lzsc$isa"] ? LzInheritedHash.$lzsc$isa(dattrk_$4) : dattrk_$4 instanceof LzInheritedHash))) {
-var tmp_$5 = new LzInheritedHash(dattrk_$4);
-for (var j_$6 in attrk_$3) {
-tmp_$5[j_$6] = attrk_$3[j_$6]
+} else if ((attrk_$4.constructor === Object || (LzInheritedHash["$lzsc$isa"] ? LzInheritedHash.$lzsc$isa(attrk_$4) : attrk_$4 instanceof LzInheritedHash)) && (dattrk_$5.constructor === Object || (LzInheritedHash["$lzsc$isa"] ? LzInheritedHash.$lzsc$isa(dattrk_$5) : dattrk_$5 instanceof LzInheritedHash))) {
+var tmp_$6 = new LzInheritedHash(dattrk_$5);
+for (var j_$7 in attrk_$4) {
+tmp_$6[j_$7] = attrk_$4[j_$7]
 };
-dattrs_$1[k_$2] = tmp_$5;
+dattrs_$1[k_$3] = tmp_$6;
 continue
 }}};
-dattrs_$1[k_$2] = attrk_$3
-}}}
+dattrs_$1[k_$3] = attrk_$4
+}};
+return dattrs_$1
+}
 finally {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",returns:" + $9
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",returns:" + $a
 } else {
-$7.returns[$8] = $9
+$8.returns[$9] = $a
 };
-$7.last = $8
+$8.last = $9
 }}};
 $lzsc$temp["displayName"] = "mergeAttributes";
+return $lzsc$temp
+})(), "mergeAttributeTypes", (function () {
+var $lzsc$temp = function (attrs_$0, dattrs_$1) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+for (var k_$2 in attrs_$0) {
+dattrs_$1[k_$2] = attrs_$0[k_$2]
+};
+return dattrs_$1
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "mergeAttributeTypes";
 return $lzsc$temp
 })(), "mergeChildren", (function () {
 var $lzsc$temp = function (children_$0, superclasschildren_$1) {
@@ -7195,7 +7150,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "core/LzNode.lzs#362/43";
+$lzsc$temp["displayName"] = "core/LzNode.lzs#382/43";
 return $lzsc$temp
 })()}, "_ignoreAttribute", {toString: (function () {
 var $lzsc$temp = function () {
@@ -7225,7 +7180,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "core/LzNode.lzs#1173/44";
+$lzsc$temp["displayName"] = "core/LzNode.lzs#1224/44";
 return $lzsc$temp
 })()}, "__UIDs", 0]);
 (function () {
@@ -7608,38 +7563,50 @@ $0.last = $1
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
 })(), "__tracked", false, "__LZdeleted", false, "destroy", (function () {
-var $lzsc$temp = function () {
+var $lzsc$temp = function (checktracked_$0) {
 try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
 } else {
-$0.calls[$1] = $2
+$3.calls[$4] = $5
 };
-$0.last = $1
+$3.last = $4
+};
+switch (arguments.length) {
+case 0:
+checktracked_$0 = true
 };
 if (this.__LZdeleted == true) return;
 this.__LZdeleted = true;
 if (this.hasevents) this.unregisterAll();
 this.hasevents = false;
 this.__events = null;
+if (checktracked_$0 && this.__tracked) {
+this.__tracked = false;
+var _dels_$1 = this.c.__delegates;
+for (var i_$2 = _dels_$1.length - 1;i_$2 >= 0;i_$2--) {
+if (_dels_$1[i_$2] === this) {
+_dels_$1.splice(i_$2, 1);
+break
+}}};
 this.c = null;
 this.m = null
 }
 finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
 } else {
-$0.returns[$1] = $2
+$3.returns[$4] = $5
 };
-$0.last = $1
+$3.last = $4
 }}};
 $lzsc$temp["displayName"] = "destroy";
 return $lzsc$temp
@@ -8246,16 +8213,16 @@ return $lzsc$temp
 })(), "rect", (function () {
 var $lzsc$temp = function (context_$0, x_$1, y_$2, width_$3, height_$4, topleftradius_$5, toprightradius_$6, bottomrightradius_$7, bottomleftradius_$8) {
 try {
-var $b = global["$lzprofiler"];
-if ($b) {
-var $c = "" + (new Date().getTime() - $b.base);
-var $d = arguments.callee["displayName"];
-if ($b.last == $c) {
-$b.events[$c] += ",calls:" + $d
+var $9 = global["$lzprofiler"];
+if ($9) {
+var $a = "" + (new Date().getTime() - $9.base);
+var $b = arguments.callee["displayName"];
+if ($9.last == $a) {
+$9.events[$a] += ",calls:" + $b
 } else {
-$b.calls[$c] = $d
+$9.calls[$a] = $b
 };
-$b.last = $c
+$9.last = $a
 };
 switch (arguments.length) {
 case 5:
@@ -8264,46 +8231,79 @@ toprightradius_$6 = null;;case 7:
 bottomrightradius_$7 = null;;case 8:
 bottomleftradius_$8 = null
 };
-var maxsize_$9 = Math.min(width_$3, height_$4) * 0.5;
-topleftradius_$5 = LzKernelUtils.range(topleftradius_$5 || 0, maxsize_$9, 0);
-if (bottomleftradius_$8 == null) {
-bottomleftradius_$8 = bottomrightradius_$7 = toprightradius_$6 = topleftradius_$5
-} else {
-bottomleftradius_$8 = LzKernelUtils.range(bottomleftradius_$8 || 0, maxsize_$9, 0);
-bottomrightradius_$7 = LzKernelUtils.range(bottomrightradius_$7 || 0, maxsize_$9, 0);
-toprightradius_$6 = LzKernelUtils.range(toprightradius_$6 || 0, maxsize_$9, 0)
-};
-var curvemethod_$a = context_$0["curveTo"] ? "curveTo" : "quadraticCurveTo";
-context_$0.moveTo(x_$1, y_$2 + topleftradius_$5);
-context_$0.lineTo(x_$1, y_$2 + height_$4 - bottomleftradius_$8);
-if (bottomleftradius_$8 != 0) {
-context_$0[curvemethod_$a](x_$1, y_$2 + height_$4, x_$1 + bottomleftradius_$8, y_$2 + height_$4)
-};
-context_$0.lineTo(x_$1 + width_$3 - bottomrightradius_$7, y_$2 + height_$4);
-if (bottomrightradius_$7 != 0) {
-context_$0[curvemethod_$a](x_$1 + width_$3, y_$2 + height_$4, x_$1 + width_$3, y_$2 + height_$4 - bottomrightradius_$7)
-};
-context_$0.lineTo(x_$1 + width_$3, y_$2 + toprightradius_$6);
-if (toprightradius_$6 != 0) {
-context_$0[curvemethod_$a](x_$1 + width_$3, y_$2, x_$1 + width_$3 - toprightradius_$6, y_$2)
-};
-context_$0.lineTo(x_$1 + topleftradius_$5, y_$2);
-if (topleftradius_$5 != 0) {
-context_$0[curvemethod_$a](x_$1, y_$2, x_$1, y_$2 + topleftradius_$5)
-}}
+if (isNaN(topleftradius_$5)) topleftradius_$5 = 0;
+if (toprightradius_$6 == null || isNaN(toprightradius_$6)) toprightradius_$6 = topleftradius_$5;
+if (bottomleftradius_$8 == null || isNaN(bottomleftradius_$8)) bottomleftradius_$8 = toprightradius_$6;
+if (bottomrightradius_$7 == null || isNaN(bottomrightradius_$7)) bottomrightradius_$7 = topleftradius_$5;
+LzKernelUtils.roundrect(context_$0, x_$1, y_$2, width_$3, height_$4, topleftradius_$5, toprightradius_$6, bottomrightradius_$7, bottomleftradius_$8, topleftradius_$5, toprightradius_$6, bottomrightradius_$7, bottomleftradius_$8)
+}
 finally {
-var $b = global["$lzprofiler"];
-if ($b) {
-var $c = "" + (new Date().getTime() - $b.base);
-var $d = arguments.callee["displayName"];
-if ($b.last == $c) {
-$b.events[$c] += ",returns:" + $d
+var $9 = global["$lzprofiler"];
+if ($9) {
+var $a = "" + (new Date().getTime() - $9.base);
+var $b = arguments.callee["displayName"];
+if ($9.last == $a) {
+$9.events[$a] += ",returns:" + $b
 } else {
-$b.returns[$c] = $d
+$9.returns[$a] = $b
 };
-$b.last = $c
+$9.last = $a
 }}};
 $lzsc$temp["displayName"] = "rect";
+return $lzsc$temp
+})(), "roundrect", (function () {
+var $lzsc$temp = function (context_$0, x_$1, y_$2, width_$3, height_$4, tlh_$5, trh_$6, brh_$7, blh_$8, tlv_$9, trv_$a, brv_$b, blv_$c) {
+try {
+var $h = global["$lzprofiler"];
+if ($h) {
+var $i = "" + (new Date().getTime() - $h.base);
+var $j = arguments.callee["displayName"];
+if ($h.last == $i) {
+$h.events[$i] += ",calls:" + $j
+} else {
+$h.calls[$i] = $j
+};
+$h.last = $i
+};
+var max_$d = Math.max, min_$e = Math.min;
+var f_$f = min_$e(width_$3 / max_$d(tlh_$5 + trh_$6, blh_$8 + brh_$7), height_$4 / max_$d(tlv_$9 + trv_$a, blv_$c + brv_$b));
+if (f_$f > 1) {
+f_$f = 1
+};
+if (f_$f < -1) {
+f_$f = -1
+};
+var curvemethod_$g = context_$0["curveTo"] ? "curveTo" : "quadraticCurveTo";
+context_$0.moveTo(x_$1, y_$2 + tlv_$9 * f_$f);
+context_$0.lineTo(x_$1, y_$2 + height_$4 - blv_$c * f_$f);
+if (blv_$c || blh_$8) {
+context_$0[curvemethod_$g](x_$1, y_$2 + height_$4, x_$1 + blh_$8 * f_$f, y_$2 + height_$4)
+};
+context_$0.lineTo(x_$1 + width_$3 - brh_$7 * f_$f, y_$2 + height_$4);
+if (brh_$7 || brv_$b) {
+context_$0[curvemethod_$g](x_$1 + width_$3, y_$2 + height_$4, x_$1 + width_$3, y_$2 + height_$4 - brv_$b * f_$f)
+};
+context_$0.lineTo(x_$1 + width_$3, y_$2 + trv_$a * f_$f);
+if (trv_$a || trh_$6) {
+context_$0[curvemethod_$g](x_$1 + width_$3, y_$2, x_$1 + width_$3 - trh_$6 * f_$f, y_$2)
+};
+context_$0.lineTo(x_$1 + tlh_$5 * f_$f, y_$2);
+if (tlh_$5 || tlv_$9) {
+context_$0[curvemethod_$g](x_$1, y_$2, x_$1, y_$2 + tlv_$9 * f_$f)
+}}
+finally {
+var $h = global["$lzprofiler"];
+if ($h) {
+var $i = "" + (new Date().getTime() - $h.base);
+var $j = arguments.callee["displayName"];
+if ($h.last == $i) {
+$h.events[$i] += ",returns:" + $j
+} else {
+$h.returns[$i] = $j
+};
+$h.last = $i
+}}};
+$lzsc$temp["displayName"] = "roundrect";
 return $lzsc$temp
 })(), "parselzoptions", (function () {
 var $lzsc$temp = function (lzopts_$0) {
@@ -8408,7 +8408,7 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#15/16";
+$lzsc$temp["displayName"] = "handle idle";
 return $lzsc$temp
 })(), __intervalID: null, addCallback: (function () {
 var $lzsc$temp = function (scope_$0, funcname_$1) {
@@ -8446,7 +8446,7 @@ $5.returns[$6] = $7
 };
 $5.last = $6
 }}};
-$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#29/19";
+$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#30/19";
 return $lzsc$temp
 })(), removeCallback: (function () {
 var $lzsc$temp = function (scope_$0, funcname_$1) {
@@ -8486,7 +8486,7 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#45/22";
+$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#46/22";
 return $lzsc$temp
 })(), __fps: 30, setFrameRate: (function () {
 var $lzsc$temp = function (fps_$0) {
@@ -8519,7 +8519,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#67/20";
+$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#68/20";
 return $lzsc$temp
 })()};
 Class.make("LzLibraryCleanup", ["lib", null, "$lzsc$initialize", (function () {
@@ -8964,7 +8964,7 @@ if (k_$3 >= 0) {
 if (k_$3 == 9) {
 e_$0.cancelBubble = true;
 return false
-} else if (LzKeyboardKernel.__cancelKeys && (k_$3 == 13 || k_$3 == 0 || k_$3 == 37 || k_$3 == 38 || k_$3 == 39 || k_$3 == 40 || k_$3 == 8)) {
+} else if (LzKeyboardKernel.__cancelKeys && (k_$3 == 13 || k_$3 == 32 || k_$3 == 0 || k_$3 == 37 || k_$3 == 38 || k_$3 == 39 || k_$3 == 40 || k_$3 == 8)) {
 e_$0.cancelBubble = true;
 return false
 }}}
@@ -9259,19 +9259,19 @@ $2.last = $3
 $lzsc$temp["displayName"] = "kernel/dhtml/LzKeyboardKernel.js#210/26";
 return $lzsc$temp
 })()};
-var LzMouseKernel = {__lastMouseDown: null, __lastMouseOver: null, __x: 0, __y: 0, owner: null, __showncontextmenu: null, __mouseEvent: (function () {
+var LzMouseKernel = {__lastMouseDown: null, __lastMouseOver: null, __lastMouseOut: null, __x: 0, __y: 0, owner: null, __showncontextmenu: null, __mouseEvent: (function () {
 var $lzsc$temp = function (e_$0) {
 try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
 } else {
-$5.calls[$6] = $7
+$4.calls[$5] = $6
 };
-$5.last = $6
+$4.last = $5
 };
 e_$0 = e_$0 || window.event;
 var target_$1 = e_$0.target || e_$0.srcElement;
@@ -9280,83 +9280,77 @@ if (window["LzKeyboardKernel"] && LzKeyboardKernel["__updateControlKeys"]) {
 LzKeyboardKernel.__updateControlKeys(e_$0)
 };
 if (LzSprite.prototype.capabilities.touchevents) {
-var maxfingers_$3 = 1;
-if (eventname_$2 === "ontouchstart") {
-eventname_$2 = "onmousedown"
-} else if (eventname_$2 === "ontouchmove") {
+if (eventname_$2 === "ontouchmove") {
 eventname_$2 = "onmousemove"
-} else if (eventname_$2 === "ontouchend") {
-eventname_$2 = "onmouseup";
-maxfingers_$3 = 0
 };
-if (e_$0.touches.length != maxfingers_$3) {
+if (e_$0.touches.length != 1) {
 return true
 }};
-var lzinputproto_$4 = window["LzInputTextSprite"] && LzInputTextSprite.prototype;
-if (lzinputproto_$4 && lzinputproto_$4.__lastshown != null) {
+var lzinputproto_$3 = window["LzInputTextSprite"] && LzInputTextSprite.prototype;
+if (lzinputproto_$3 && lzinputproto_$3.__lastshown != null) {
 if (LzSprite.quirks.fix_ie_clickable) {
-lzinputproto_$4.__hideIfNotFocused(eventname_$2)
+lzinputproto_$3.__hideIfNotFocused(eventname_$2)
 } else if (eventname_$2 != "onmousemove") {
-lzinputproto_$4.__hideIfNotFocused()
+lzinputproto_$3.__hideIfNotFocused()
 }};
 if (eventname_$2 === "onmousemove") {
 LzMouseKernel.__sendMouseMove(e_$0);
-if (lzinputproto_$4 && lzinputproto_$4.__lastshown != null) {
+if (lzinputproto_$3 && lzinputproto_$3.__lastshown != null) {
 if (target_$1 && target_$1.owner && !(target_$1.owner instanceof LzInputTextSprite)) {
-if (!lzinputproto_$4.__lastshown.__isMouseOver()) {
-lzinputproto_$4.__lastshown.__hide()
+if (!lzinputproto_$3.__lastshown.__isMouseOver()) {
+lzinputproto_$3.__lastshown.__hide()
 }}}} else if (eventname_$2 === "oncontextmenu" || e_$0.button == 2) {
 return LzMouseKernel.__handleContextMenu(e_$0)
 } else {
 LzMouseKernel.__sendEvent(eventname_$2)
 }}
 finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
 } else {
-$5.returns[$6] = $7
+$4.returns[$5] = $6
 };
-$5.last = $6
+$4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#23/20";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#25/20";
 return $lzsc$temp
 })(), __sendEvent: (function () {
-var $lzsc$temp = function (eventname_$0, view_$1) {
+var $lzsc$temp = function (eventname_$0, view_$1, value_$2) {
 try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
 } else {
-$2.calls[$3] = $4
+$3.calls[$4] = $5
 };
-$2.last = $3
+$3.last = $4
 };
 if (eventname_$0 === "onclick" && view_$1 == null) {
 return
 };
 if (LzMouseKernel.__callback) {
-LzMouseKernel.__scope[LzMouseKernel.__callback](eventname_$0, view_$1)
+LzMouseKernel.__scope[LzMouseKernel.__callback](eventname_$0, view_$1, value_$2)
 }}
 finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
 } else {
-$2.returns[$3] = $4
+$3.returns[$4] = $5
 };
-$2.last = $3
+$3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#82/19";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#86/19";
 return $lzsc$temp
 })(), __callback: null, __scope: null, setCallback: (function () {
 var $lzsc$temp = function (scope_$0, funcname_$1) {
@@ -9387,7 +9381,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#96/19";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#100/19";
 return $lzsc$temp
 })(), __mousecontrol: false, setMouseControl: (function () {
 var $lzsc$temp = function (ison_$0) {
@@ -9426,7 +9420,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#102/23";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#106/23";
 return $lzsc$temp
 })(), __showhand: "pointer", showHandCursor: (function () {
 var $lzsc$temp = function (show_$0) {
@@ -9458,7 +9452,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#131/22";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#135/22";
 return $lzsc$temp
 })(), setCursorGlobal: (function () {
 var $lzsc$temp = function (n_$0) {
@@ -9495,7 +9489,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#142/23";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#146/23";
 return $lzsc$temp
 })(), restoreCursor: (function () {
 var $lzsc$temp = function () {
@@ -9532,7 +9526,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#159/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#163/21";
 return $lzsc$temp
 })(), lock: (function () {
 var $lzsc$temp = function () {
@@ -9562,7 +9556,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#174/12";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#178/12";
 return $lzsc$temp
 })(), unlock: (function () {
 var $lzsc$temp = function () {
@@ -9593,7 +9587,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#182/14";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#186/14";
 return $lzsc$temp
 })(), disableMouseTemporarily: (function () {
 var $lzsc$temp = function () {
@@ -9624,7 +9618,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#187/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#191/31";
 return $lzsc$temp
 })(), __resetonmouseover: false, __resetMouse: (function () {
 var $lzsc$temp = function () {
@@ -9656,7 +9650,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#192/20";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#196/20";
 return $lzsc$temp
 })(), __globalClickable: true, setGlobalClickable: (function () {
 var $lzsc$temp = function (isclickable_$0) {
@@ -9692,7 +9686,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#199/26";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#203/26";
 return $lzsc$temp
 })(), __sendMouseMove: (function () {
 var $lzsc$temp = function (e_$0, offsetx_$1, offsety_$2) {
@@ -9751,65 +9745,70 @@ $9.returns[$a] = $b
 };
 $9.last = $a
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#210/23";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#214/23";
 return $lzsc$temp
 })(), __contextmenumouse2: false, __handleContextMenu: (function () {
 var $lzsc$temp = function (e_$0) {
 try {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",calls:" + $8
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
 } else {
-$6.calls[$7] = $8
+$7.calls[$8] = $9
 };
-$6.last = $7
+$7.last = $8
 };
 LzMouseKernel.__sendMouseMove(e_$0);
-var cmenu_$1 = LzMouseKernel.__findContextMenu(e_$0);
-if (cmenu_$1) {
-var eventname_$2 = "on" + e_$0.type;
-var showbuiltins_$3 = cmenu_$1.kernel.showbuiltins;
-var viamouse2_$4 = false;
+var target_$1 = e_$0.target || e_$0.srcElement;
+if (target_$1 instanceof HTMLInputElement || target_$1 instanceof HTMLTextAreaElement) {
+return true
+};
+var cmenu_$2 = LzMouseKernel.__findContextMenu(e_$0);
+if (cmenu_$2) {
+var eventname_$3 = "on" + e_$0.type;
+var showbuiltins_$4 = cmenu_$2.kernel.showbuiltins;
+var viamouse2_$5 = false;
 if (LzSprite.prototype.quirks.has_dom2_mouseevents) {
-if (eventname_$2 === "oncontextmenu") {
+if (eventname_$3 === "oncontextmenu") {
 if (LzMouseKernel.__contextmenumouse2) {
 LzMouseKernel.__contextmenumouse2 = false;
 return false
-}} else if (eventname_$2 === "onmousedown" && e_$0.button == 2) {
-viamouse2_$4 = true
+}} else if (eventname_$3 === "onmousedown" && e_$0.button == 2) {
+viamouse2_$5 = true
 } else {
 return true
-}} else if (eventname_$2 !== "oncontextmenu") {
+}} else if (eventname_$3 !== "oncontextmenu") {
 return true
 };
-var target_$5 = e_$0.target || e_$0.srcElement;
-if (target_$5 && target_$5.owner && showbuiltins_$3 !== true) {
-LzMouseKernel.__contextmenumouse2 = viamouse2_$4;
+var target_$1 = e_$0.target || e_$0.srcElement;
+if (target_$1 && target_$1.owner && showbuiltins_$4 !== true) {
+LzMouseKernel.__contextmenumouse2 = viamouse2_$5;
 if (LzMouseKernel.__showncontextmenu) {
 LzContextMenuKernel.lzcontextmenu.hide()
 } else {
-cmenu_$1.kernel.__show()
+var targetview_$6 = target_$1.owner instanceof LzSprite ? target_$1.owner.owner : null;
+cmenu_$2.kernel.__show(targetview_$6)
 };
 return false
 }};
 return true
 }
 finally {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",returns:" + $8
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
 } else {
-$6.returns[$7] = $8
+$7.returns[$8] = $9
 };
-$6.last = $7
+$7.last = $8
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#251/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#255/27";
 return $lzsc$temp
 })(), __findContextMenu: (function () {
 var $lzsc$temp = function (e_$0) {
@@ -9828,27 +9827,29 @@ $g.last = $h
 var cmenu_$1 = LzSprite.__rootSprite.__contextmenu;
 var quirks_$2 = LzSprite.quirks;
 if (document.elementFromPoint) {
-var swf8mode_$3 = quirks_$2.swf8_contextmenu;
 if (window.pageXOffset) {
-var x_$4 = e_$0.pageX - window.top.pageXOffset;
-var y_$5 = e_$0.pageY - window.top.pageYOffset
+var x_$3 = e_$0.pageX - window.top.pageXOffset;
+var y_$4 = e_$0.pageY - window.top.pageYOffset
 } else {
-var x_$4 = e_$0.clientX;
-var y_$5 = e_$0.clientY
+var x_$3 = e_$0.clientX;
+var y_$4 = e_$0.clientY
 };
-var rootdiv_$6 = LzSprite.__rootSprite.__LZdiv;
+var rootdiv_$5 = LzSprite.__rootSprite.__LZdiv;
+var clickSprite_$6 = (e_$0.srcElement || e_$0.target).owner;
 var arr_$7 = [];
 if (quirks_$2.fix_contextmenu) {
-arr_$7.push(rootdiv_$6, rootdiv_$6.style.display);
-var rootprevZ_$8 = rootdiv_$6.style.zIndex;
-rootdiv_$6.style.zIndex = -1000;
-var rootclickdiv_$9 = LzSprite.__rootSprite.__LZclickcontainerdiv;
+arr_$7.push(rootdiv_$5, rootdiv_$5.style.display);
+var rootprevZ_$8 = rootdiv_$5.style.zIndex;
+rootdiv_$5.style.zIndex = -1000;
+var rootclickdiv_$9;
+if (quirks_$2.fix_clickable) {
+rootclickdiv_$9 = LzSprite.__rootSprite.__LZclickcontainerdiv;
 var clickprevZ_$a = rootclickdiv_$9.style.zIndex;
 arr_$7.push(rootclickdiv_$9, rootclickdiv_$9.style.display);
 rootclickdiv_$9.style.zIndex = -9999
-};
+}};
 do {
-var elem_$b = document.elementFromPoint(x_$4, y_$5);
+var elem_$b = document.elementFromPoint(x_$3, y_$4);
 if (!elem_$b) {
 break
 } else {
@@ -9858,21 +9859,18 @@ if (!owner_$c) {
 } else if (owner_$c.__contextmenu) {
 cmenu_$1 = owner_$c.__contextmenu;
 break
-} else if (quirks_$2.ie_elementfrompoint && owner_$c.scrolldiv === elem_$b) {
-
-} else if (swf8mode_$3 && (owner_$c.__LZdiv === elem_$b && owner_$c.bgcolor != null || owner_$c instanceof LzTextSprite)) {
-break
-};
+} else if (quirks_$2.ie_elementfrompoint && owner_$c.scrolldiv === elem_$b) {};
 arr_$7.push(elem_$b, elem_$b.style.display);
 elem_$b.style.display = "none"
-}} while (elem_$b !== rootdiv_$6 && elem_$b.tagName != "HTML");
+}} while (elem_$b !== rootdiv_$5 && elem_$b.tagName != "HTML");
 for (var i_$d = arr_$7.length - 1;i_$d >= 0;i_$d -= 2) {
 arr_$7[i_$d - 1].style.display = arr_$7[i_$d]
 };
 if (quirks_$2.fix_contextmenu) {
-rootdiv_$6.style.zIndex = rootprevZ_$8;
+rootdiv_$5.style.zIndex = rootprevZ_$8;
+if (quirks_$2.fix_clickable) {
 rootclickdiv_$9.style.zIndex = clickprevZ_$a
-}} else {
+}}} else {
 var sprite_$e = (e_$0.srcElement || e_$0.target).owner;
 if (sprite_$e) {
 while (sprite_$e.__parent) {
@@ -9898,7 +9896,7 @@ $g.returns[$h] = $i
 };
 $g.last = $h
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#303/25";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#315/25";
 return $lzsc$temp
 })()};
 Class.make("LzBrowserKernel", null, null, ["loadURL", (function () {
@@ -10325,6 +10323,54 @@ return $lzsc$temp
 var LzSprite = (function () {
 var $lzsc$temp = function (owner_$0, isroot_$1) {
 try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (owner_$0 == null) return;
+this.constructor = arguments.callee;
+this.owner = owner_$0;
+this.uid = LzSprite.prototype.uid++;
+this.aadescriptionDiv = null;
+this.__csscache = {};
+var quirks_$2 = this.quirks;
+if (isroot_$1) {
+this.__setupRoot()
+} else {
+this.__LZdiv = document.createElement("div");
+this.__LZdiv.className = "lzdiv"
+};
+this.__LZdiv.owner = this;
+if (quirks_$2.ie_leak_prevention) {
+this.__sprites[this.uid] = this
+}}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#18/16";
+return $lzsc$temp
+})();
+LzSprite.prototype.uid = 0;
+LzSprite.prototype.__LZdiv = null;
+LzSprite.prototype.__setupRoot = (function () {
+var $lzsc$temp = function (e_$0) {
+try {
 var $d = global["$lzprofiler"];
 if ($d) {
 var $e = "" + (new Date().getTime() - $d.base);
@@ -10336,20 +10382,13 @@ $d.calls[$e] = $f
 };
 $d.last = $e
 };
-if (owner_$0 == null) return;
-this.constructor = arguments.callee;
-this.owner = owner_$0;
-this.uid = LzSprite.prototype.uid++;
-this.aadescriptionDiv = null;
-this.__csscache = {};
-var quirks_$2 = this.quirks;
-if (isroot_$1) {
+var quirks_$1 = this.quirks;
 this.isroot = true;
 LzSprite.__rootSprite = this;
-var div = document.createElement("div");
-div.className = "lzcanvasdiv";
-quirks_$2["scrollbar_width"] = LzSprite._getScrollbarWidth();
-if (quirks_$2.ie6_improve_memory_performance) {
+var div_$2 = document.createElement("div");
+div_$2.className = "lzcanvasdiv";
+quirks_$1["scrollbar_width"] = LzSprite._getScrollbarWidth();
+if (quirks_$1.ie6_improve_memory_performance) {
 try {
 document.execCommand("BackgroundImageCache", false, true)
 }
@@ -10362,14 +10401,14 @@ rootcontainer_$5.style.padding = 0;
 rootcontainer_$5.style.border = "0 none";
 rootcontainer_$5.style.overflow = "hidden";
 rootcontainer_$5.style.textAlign = "left";
-if (quirks_$2["container_divs_require_overflow"]) {
+if (quirks_$1["container_divs_require_overflow"]) {
 appcontainer_$6 = document.createElement("div");
 appcontainer_$6.className = "lzappoverflow";
 rootcontainer_$5.appendChild(appcontainer_$6);
 appcontainer_$6.owner = this;
 LzSprite.__rootSpriteOverflowContainer = appcontainer_$6
 };
-if (quirks_$2.fix_contextmenu) {
+if (quirks_$1.fix_contextmenu) {
 var cxdiv_$7 = document.createElement("div");
 cxdiv_$7.className = "lzcanvascontextdiv";
 cxdiv_$7.id = "lzcanvascontextdiv";
@@ -10378,7 +10417,7 @@ cxdiv_$7.owner = this;
 this.__LZcontextcontainerdiv = cxdiv_$7
 };
 if (p_$4.bgcolor) {
-div.style.backgroundColor = p_$4.bgcolor;
+div_$2.style.backgroundColor = p_$4.bgcolor;
 this.bgcolor = p_$4.bgcolor
 };
 if (p_$4.id) {
@@ -10392,200 +10431,44 @@ if (options_$8) {
 this.options = options_$8
 };
 LzSprite.blankimage = options_$8.serverroot + LzSprite.blankimage;
-if (quirks_$2.use_css_sprites && options_$8.usemastersprite) {
-quirks_$2.use_css_master_sprite = options_$8.usemastersprite;
+if (quirks_$1.use_css_sprites && options_$8.usemastersprite) {
+quirks_$1.use_css_master_sprite = options_$8.usemastersprite;
 var mastersprite_$9 = LzResourceLibrary && LzResourceLibrary.__allcss && LzResourceLibrary.__allcss.path;
 if (mastersprite_$9) {
 LzSprite.__masterspriteurl = LzSprite.__rootSprite.options.approot + mastersprite_$9
 }};
-LzSprite.__defaultStyles.writeCSS(quirks_$2.write_css_with_createstylesheet);
-appcontainer_$6.appendChild(div);
-this.__LZdiv = div;
-if (quirks_$2.fix_clickable) {
+LzSprite.__defaultStyles.writeCSS(quirks_$1.write_css_with_createstylesheet);
+appcontainer_$6.appendChild(div_$2);
+this.__LZdiv = div_$2;
+if (quirks_$1.fix_clickable) {
 var cdiv_$a = document.createElement("div");
 cdiv_$a.className = "lzcanvasclickdiv";
 cdiv_$a.id = "lzcanvasclickdiv";
 appcontainer_$6.appendChild(cdiv_$a);
+cdiv_$a.owner = this;
 this.__LZclickcontainerdiv = cdiv_$a;
-LzSprite.__setClickable(true, appcontainer_$6)
+LzSprite.__setClickable(true, cdiv_$a)
+} else {
+LzSprite.__setClickable(true, div_$2);
+LzSprite.__setActivateOnMouseoverForNoClickDiv(div_$2)
 };
-if (quirks_$2["css_hide_canvas_during_init"]) {
+if (quirks_$1["css_hide_canvas_during_init"]) {
 var cssname_$b = "display";
 var cssval_$c = "none";
-if (quirks_$2["safari_visibility_instead_of_display"]) {
+if (quirks_$1["safari_visibility_instead_of_display"]) {
 cssname_$b = "visibility";
 cssval_$c = "hidden"
 };
 this.__LZdiv.style[cssname_$b] = cssval_$c;
-if (quirks_$2["fix_clickable"]) this.__LZclickcontainerdiv.style[cssname_$b] = cssval_$c;
-if (quirks_$2["fix_contextmenu"]) this.__LZcontextcontainerdiv.style[cssname_$b] = cssval_$c
+if (quirks_$1["fix_clickable"]) this.__LZclickcontainerdiv.style[cssname_$b] = cssval_$c;
+if (quirks_$1["fix_contextmenu"]) this.__LZcontextcontainerdiv.style[cssname_$b] = cssval_$c
 };
-if (quirks_$2.activate_on_mouseover) {
-div.mouseisover = false;
-div.onmouseover = (function () {
-var $lzsc$temp = function (e_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (LzSprite.quirks.keyboardlistentotop_in_frame) {
-if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
-LzSprite.quirks.keyboardlistentotop = true;
-LzKeyboardKernel.setKeyboardControl(true)
+if (quirks_$1.fix_clickable) {
+if (quirks_$1.activate_on_mouseover) {
+LzSprite.__setActivateOnMouseover(div_$2)
 }};
-if (LzSprite.quirks.focus_on_mouseover) {
-if (LzSprite.prototype.getSelectedText() == "") {
-div.focus()
-}};
-if (LzInputTextSprite.prototype.__focusedSprite == null) LzKeyboardKernel.setKeyboardControl(true);
-LzMouseKernel.setMouseControl(true);
-this.mouseisover = true
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#142/31";
-return $lzsc$temp
-})();
-div.onmouseout = (function () {
-var $lzsc$temp = function (e_$0) {
-try {
-var $8 = global["$lzprofiler"];
-if ($8) {
-var $9 = "" + (new Date().getTime() - $8.base);
-var $a = arguments.callee["displayName"];
-if ($8.last == $9) {
-$8.events[$9] += ",calls:" + $a
-} else {
-$8.calls[$9] = $a
-};
-$8.last = $9
-};
-if (!e_$0) {
-e_$0 = window.event;
-var el_$1 = e_$0.toElement
-} else {
-var el_$1 = e_$0.relatedTarget
-};
-var quirks_$2 = LzSprite.quirks;
-if (quirks_$2.inputtext_anonymous_div) {
-try {
-el_$1 && el_$1.parentNode
-}
-catch (e_$0) {
-return
-}};
-var mousein_$3 = false;
-if (el_$1) {
-var cm_$4 = LzContextMenuKernel.lzcontextmenu;
-if (el_$1.owner && el_$1.className.indexOf("lz") == 0) {
-mousein_$3 = true
-} else if (cm_$4 && (el_$1 === cm_$4 || el_$1.parentNode === cm_$4)) {
-mousein_$3 = true
-}};
-if (mousein_$3) {
-var wasClickable_$5 = LzMouseKernel.__globalClickable;
-if (quirks_$2.fix_ie_clickable) {
-LzMouseKernel.setGlobalClickable(true)
-};
-if (quirks_$2.focus_on_mouseover) {
-if (LzInputTextSprite.prototype.__lastshown == null) {
-if (LzSprite.prototype.getSelectedText() == "") {
-div.focus()
-}}};
-LzKeyboardKernel.setKeyboardControl(true);
-LzMouseKernel.setMouseControl(true);
-LzMouseKernel.__resetMouse();
-this.mouseisover = true;
-if (quirks_$2.fix_clickable && !wasClickable_$5 && LzMouseKernel.__globalClickable) {
-var target_$6 = e_$0.target || e_$0.srcElement;
-if (target_$6) {
-var owner_$7 = target_$6["owner"];
-if (LzSprite["$lzsc$isa"] ? LzSprite.$lzsc$isa(owner_$7) : owner_$7 instanceof LzSprite) {
-owner_$7 = owner_$7["owner"]
-};
-if (LzView["$lzsc$isa"] ? LzView.$lzsc$isa(owner_$7) : owner_$7 instanceof LzView) {
-LzMouseKernel.__sendEvent("onmouseout", owner_$7)
-}}}} else {
-if (quirks_$2.focus_on_mouseover) {
-if (LzInputTextSprite.prototype.__lastshown == null) {
-if (LzSprite.prototype.getSelectedText() == "") {
-div.blur()
-}}};
-LzKeyboardKernel.setKeyboardControl(false);
-LzMouseKernel.setMouseControl(false);
-this.mouseisover = false
-}}
-finally {
-var $8 = global["$lzprofiler"];
-if ($8) {
-var $9 = "" + (new Date().getTime() - $8.base);
-var $a = arguments.callee["displayName"];
-if ($8.last == $9) {
-$8.events[$9] += ",returns:" + $a
-} else {
-$8.returns[$9] = $a
-};
-$8.last = $9
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#159/30";
-return $lzsc$temp
-})();
-if (LzSprite.quirks.keyboardlistentotop_in_frame) {
-window.onfocus = (function () {
-var $lzsc$temp = function (e_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
-div.onmouseover()
-}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#248/34";
-return $lzsc$temp
-})()
-};
-LzSprite.__mouseActivationDiv = div
-};
 LzFontManager.__createContainerDiv();
-if (quirks_$2.prevent_selection) {
+if (quirks_$1.prevent_selection) {
 document.onselectstart = (function () {
 var $lzsc$temp = function (e_$0) {
 try {
@@ -10624,16 +10507,9 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#266/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#211/38";
 return $lzsc$temp
 })()
-}} else {
-this.__LZdiv = document.createElement("div");
-this.__LZdiv.className = "lzdiv"
-};
-this.__LZdiv.owner = this;
-if (quirks_$2.ie_leak_prevention) {
-this.__sprites[this.uid] = this
 }}
 finally {
 var $d = global["$lzprofiler"];
@@ -10647,10 +10523,393 @@ $d.returns[$e] = $f
 };
 $d.last = $e
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#18/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#79/34";
 return $lzsc$temp
 })();
-LzSprite.__defaultStyles = {lzdiv: {position: "absolute", borderStyle: "solid", borderWidth: 0}, lzclickdiv: {position: "absolute", borderStyle: "solid", borderColor: "transparent", borderWidth: 0}, lzcanvasdiv: {position: "absolute"}, lzcanvasclickdiv: {zIndex: 100000, position: "absolute"}, lzcanvascontextdiv: {position: "absolute"}, lzappoverflow: {position: "absolute", overflow: "hidden"}, lztextcontainer: {position: "absolute", cursor: "default"}, lzinputtextcontainer: {position: "absolute", overflow: "hidden"}, lzinputtextcontainer_click: {position: "absolute"}, lztext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", whiteSpace: "nowrap", position: "absolute", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none"}, lzswftext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", whiteSpace: "nowrap", position: "absolute", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordBreak: "break-all", padding: "2px"}, lzinputtext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", whiteSpace: "nowrap"}, lzswfinputtext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordBreak: "break-all", outline: "none", paddingTop: "1px", paddingBottom: "3px", paddingRight: "3px", paddingLeft: "1px", whiteSpace: "nowrap"}, lzswfinputtextmultiline: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", overflow: "hidden", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordBreak: "break-all", outline: "none", whiteSpace: "pre-wrap", paddingTop: "1px", paddingBottom: "3px", paddingRight: "3px", paddingLeft: "1px"}, lztextlink: {cursor: "pointer"}, lzaccessibilitydiv: {display: "none"}, lzcontext: {position: "absolute", borderStyle: "solid", borderColor: "transparent", borderWidth: 0}, lzimg: {position: "absolute", backgroundRepeat: "no-repeat", border: "0 none"}, lzgraphicscanvas: {position: "absolute"}, "#lzTextSizeCache": {position: "absolute", top: "-20000px", left: "-20000px"}, writeCSS: (function () {
+LzSprite.__setActivateOnMouseover = (function () {
+var $lzsc$temp = function (div) {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
+div.mouseisover = false;
+div.onmouseup = LzSprite.__globalClickDispatcher;
+div.onmousedown = LzSprite.__globalClickDispatcher;
+div.onclick = LzSprite.__globalClickDispatcher;
+div.onmouseover = (function () {
+var $lzsc$temp = function (e_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (LzSprite.quirks.keyboardlistentotop_in_frame) {
+if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
+LzSprite.quirks.keyboardlistentotop = true;
+LzKeyboardKernel.setKeyboardControl(true)
+}};
+if (LzSprite.quirks.focus_on_mouseover) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.focus()
+}};
+if (LzInputTextSprite.prototype.__focusedSprite == null) LzKeyboardKernel.setKeyboardControl(true);
+LzMouseKernel.setMouseControl(true);
+this.mouseisover = true;
+LzSprite.__globalClickDispatcher(e_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#244/23";
+return $lzsc$temp
+})();
+div.onmouseout = (function () {
+var $lzsc$temp = function (e_$0) {
+try {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
+} else {
+$7.calls[$8] = $9
+};
+$7.last = $8
+};
+e_$0 = e_$0 || window.event;
+var el_$1 = e_$0.target || e_$0.srcElement;
+var quirks_$2 = LzSprite.quirks;
+if (quirks_$2.inputtext_anonymous_div) {
+try {
+el_$1 && el_$1.parentNode
+}
+catch (e_$0) {
+return
+}};
+var mousein_$3 = false;
+var owner_$4 = el_$1.owner;
+if (el_$1) {
+var cm_$5 = LzContextMenuKernel.lzcontextmenu;
+if (owner_$4 && el_$1.className.indexOf("lz") == 0) {
+mousein_$3 = true
+} else if (cm_$5 && (el_$1 === cm_$5 || el_$1.parentNode === cm_$5)) {
+mousein_$3 = true
+}};
+if (mousein_$3) {
+var wasClickable_$6 = LzMouseKernel.__globalClickable;
+if (quirks_$2.fix_ie_clickable) {
+LzMouseKernel.setGlobalClickable(true)
+};
+if (quirks_$2.focus_on_mouseover) {
+if (LzInputTextSprite.prototype.__lastshown == null) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.focus()
+}}};
+LzKeyboardKernel.setKeyboardControl(true);
+LzMouseKernel.setMouseControl(true);
+LzMouseKernel.__resetMouse();
+this.mouseisover = true;
+if (quirks_$2.fix_clickable && !wasClickable_$6 && LzMouseKernel.__globalClickable) {
+if (owner_$4) {
+if (LzSprite["$lzsc$isa"] ? LzSprite.$lzsc$isa(owner_$4) : owner_$4 instanceof LzSprite) {
+owner_$4 = owner_$4["owner"]
+};
+if (LzView["$lzsc$isa"] ? LzView.$lzsc$isa(owner_$4) : owner_$4 instanceof LzView) {
+LzMouseKernel.__sendEvent("onmouseout", owner_$4)
+}}}} else {
+if (quirks_$2.focus_on_mouseover) {
+if (LzInputTextSprite.prototype.__lastshown == null) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.blur()
+}}};
+LzKeyboardKernel.setKeyboardControl(false);
+LzMouseKernel.setMouseControl(false);
+this.mouseisover = false
+};
+LzSprite.__globalClickDispatcher(e_$0)
+}
+finally {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
+} else {
+$7.returns[$8] = $9
+};
+$7.last = $8
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#263/22";
+return $lzsc$temp
+})();
+if (LzSprite.quirks.keyboardlistentotop_in_frame) {
+window.onfocus = (function () {
+var $lzsc$temp = function (e_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
+div.onmouseover()
+}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#350/26";
+return $lzsc$temp
+})()
+};
+LzSprite.__mouseActivationDiv = div
+}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#236/37";
+return $lzsc$temp
+})();
+LzSprite.__setActivateOnMouseoverForNoClickDiv = (function () {
+var $lzsc$temp = function (div) {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
+div.mouseisover = false;
+div.onmouseover = (function () {
+var $lzsc$temp = function (e_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (LzSprite.quirks.keyboardlistentotop_in_frame) {
+if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
+LzSprite.quirks.keyboardlistentotop = true;
+LzKeyboardKernel.setKeyboardControl(true)
+}};
+if (LzSprite.quirks.focus_on_mouseover) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.focus()
+}};
+if (LzInputTextSprite.prototype.__focusedSprite == null) LzKeyboardKernel.setKeyboardControl(true);
+LzMouseKernel.setMouseControl(true);
+this.mouseisover = true;
+LzSprite.__clickDispatcher(e_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#370/23";
+return $lzsc$temp
+})();
+div.onmouseout = (function () {
+var $lzsc$temp = function (e_$0) {
+try {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
+} else {
+$7.calls[$8] = $9
+};
+$7.last = $8
+};
+e_$0 = e_$0 || window.event;
+var el_$1 = e_$0.target || e_$0.srcElement;
+var quirks_$2 = LzSprite.quirks;
+if (quirks_$2.inputtext_anonymous_div) {
+try {
+el_$1 && el_$1.parentNode
+}
+catch (e_$0) {
+return
+}};
+var mousein_$3 = false;
+var owner_$4 = el_$1.owner;
+if (el_$1) {
+var cm_$5 = LzContextMenuKernel.lzcontextmenu;
+if (owner_$4 && el_$1.className.indexOf("lz") == 0) {
+mousein_$3 = true
+} else if (cm_$5 && (el_$1 === cm_$5 || el_$1.parentNode === cm_$5)) {
+mousein_$3 = true
+}};
+if (mousein_$3) {
+var wasClickable_$6 = LzMouseKernel.__globalClickable;
+if (quirks_$2.fix_ie_clickable) {
+LzMouseKernel.setGlobalClickable(true)
+};
+if (quirks_$2.focus_on_mouseover) {
+if (LzInputTextSprite.prototype.__lastshown == null) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.focus()
+}}};
+LzKeyboardKernel.setKeyboardControl(true);
+LzMouseKernel.setMouseControl(true);
+LzMouseKernel.__resetMouse();
+this.mouseisover = true;
+if (quirks_$2.fix_clickable && !wasClickable_$6 && LzMouseKernel.__globalClickable) {
+if (owner_$4) {
+if (LzSprite["$lzsc$isa"] ? LzSprite.$lzsc$isa(owner_$4) : owner_$4 instanceof LzSprite) {
+owner_$4 = owner_$4["owner"]
+};
+if (LzView["$lzsc$isa"] ? LzView.$lzsc$isa(owner_$4) : owner_$4 instanceof LzView) {
+LzMouseKernel.__sendEvent("onmouseout", owner_$4)
+}}}} else {
+if (quirks_$2.focus_on_mouseover) {
+if (LzInputTextSprite.prototype.__lastshown == null) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.blur()
+}}};
+LzKeyboardKernel.setKeyboardControl(false);
+LzMouseKernel.setMouseControl(false);
+this.mouseisover = false
+};
+LzSprite.__clickDispatcher(e_$0)
+}
+finally {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
+} else {
+$7.returns[$8] = $9
+};
+$7.last = $8
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#389/22";
+return $lzsc$temp
+})();
+if (LzSprite.quirks.keyboardlistentotop_in_frame) {
+window.onfocus = (function () {
+var $lzsc$temp = function (e_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
+div.onmouseover()
+}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#476/26";
+return $lzsc$temp
+})()
+};
+LzSprite.__mouseActivationDiv = div
+}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#362/50";
+return $lzsc$temp
+})();
+LzSprite.__defaultStyles = {lzdiv: {position: "absolute", borderStyle: "solid", borderWidth: 0, pointerEvents: "none"}, lzclickdiv: {position: "absolute", borderStyle: "solid", borderColor: "transparent", borderWidth: 0}, lzcanvasdiv: {position: "absolute"}, lzcanvasclickdiv: {zIndex: 100000, position: "absolute"}, lzcanvascontextdiv: {position: "absolute"}, lzappoverflow: {position: "absolute", overflow: "hidden"}, lztextcontainer: {position: "absolute", cursor: "default", pointerEvents: "none"}, lzinputtextcontainer: {position: "absolute", overflow: "hidden"}, lzinputtextcontainer_click: {position: "absolute"}, lztext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", whiteSpace: "nowrap", position: "absolute", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", pointerEvents: "none"}, lzswftext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", whiteSpace: "pre", position: "absolute", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordWrap: "break-word", MsWordBreak: "keep-all", padding: "2px", pointerEvents: "none"}, lzinputtext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", whiteSpace: "nowrap", pointerEvents: "auto"}, lzswfinputtext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordWrap: "break-word", MsWordBreak: "keep-all", outline: "none", paddingTop: "1px", paddingBottom: "3px", paddingRight: "3px", paddingLeft: "1px", whiteSpace: "nowrap", pointerEvents: "auto"}, lzswfinputtextmultiline: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", overflow: "hidden", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordWrap: "break-word", MsWordBreak: "keep-all", outline: "none", whiteSpace: "pre-wrap", paddingTop: "1px", paddingBottom: "3px", paddingRight: "3px", paddingLeft: "1px", resize: "none", pointerEvents: "auto"}, lztextlink: {cursor: "pointer"}, lzaccessibilitydiv: {display: "none"}, lzcontext: {position: "absolute", borderStyle: "solid", borderColor: "transparent", borderWidth: 0, pointerEvents: "auto"}, lzimg: {position: "absolute", backgroundRepeat: "no-repeat", border: "0 none", pointerEvents: "none"}, lzgraphicscanvas: {position: "absolute"}, "#lzTextSizeCache": {position: "absolute", top: "-20000px", left: "-20000px"}, writeCSS: (function () {
 var $lzsc$temp = function (isIE_$0) {
 try {
 var $8 = global["$lzprofiler"];
@@ -10684,7 +10943,7 @@ ss_$6.owningElement.id = "lzstyles";
 ss_$6.cssText = css_$2
 }} else {
 var o_$7 = document.createElement("style");
-lz.embed.__setAttr(o_$7, "type", "text/css");
+o_$7.setAttribute("type", "text/css");
 o_$7.appendChild(document.createTextNode(css_$2));
 document.getElementsByTagName("head")[0].appendChild(o_$7)
 }}
@@ -10700,7 +10959,7 @@ $8.returns[$9] = $a
 };
 $8.last = $9
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#503/15";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#208/15";
 return $lzsc$temp
 })(), __re: new RegExp("[A-Z]", "g"), hyphenate: (function () {
 var $lzsc$temp = function (n_$0) {
@@ -10730,7 +10989,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#534/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#239/16";
 return $lzsc$temp
 })(), __replace: (function () {
 var $lzsc$temp = function (found_$0) {
@@ -10760,13 +11019,139 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#537/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#242/16";
 return $lzsc$temp
 })()};
 LzSprite.__styleNames = {borderRadius: "borderRadius", userSelect: "userSelect", transformOrigin: "transformOrigin", transform: "transform", boxShadow: "boxShadow"};
-LzSprite.prototype.uid = 0;
-LzSprite.quirks = {fix_clickable: true, fix_ie_background_height: false, fix_ie_clickable: false, ie_alpha_image_loader: false, ie_leak_prevention: false, prevent_selection: false, ie_elementfrompoint: false, invisible_parent_image_sizing_fix: false, emulate_flash_font_metrics: true, inner_html_strips_newlines: true, inner_html_no_entity_apos: false, css_hide_canvas_during_init: true, firefox_autocomplete_bug: false, hand_pointer_for_clickable: true, alt_key_sends_control: false, safari_textarea_subtract_scrollbar_height: false, no_cursor_colresize: false, safari_visibility_instead_of_display: false, preload_images_only_once: false, absolute_position_accounts_for_offset: false, canvas_div_cannot_be_clipped: false, inputtext_parents_cannot_contain_clip: false, set_height_for_multiline_inputtext: false, ie_opacity: false, text_measurement_use_insertadjacenthtml: false, text_content_use_inner_text: false, text_selection_use_range: false, document_size_use_offsetheight: false, text_ie_carriagereturn: false, ie_paste_event: false, safari_paste_event: false, text_event_charcode: true, keypress_function_keys: true, ie_timer_closure: false, keyboardlistentotop: false, document_size_compute_correct_height: false, ie_mouse_events: false, activate_on_mouseover: true, ie6_improve_memory_performance: false, text_height_includes_padding: false, inputtext_size_includes_margin: false, listen_for_mouseover_out: true, focus_on_mouseover: true, textstyle_on_textdiv: false, textdeco_on_textdiv: false, use_css_sprites: true, preload_images: true, scrollbar_width: 15, inputtext_strips_newlines: false, swf8_contextmenu: true, inputtext_anonymous_div: false, clipped_scrollbar_causes_display_turd: false, hasmetakey: true, textgrabsinputtextfocus: false, input_highlight_bug: false, autoscroll_textarea: false, fix_contextmenu: true, size_blank_to_zero: true, has_dom2_mouseevents: false, container_divs_require_overflow: false, fix_ie_css_syntax: false, match_swf_letter_spacing: false, use_css_master_sprite: false, write_css_with_createstylesheet: false, inputtext_use_background_image: false, show_img_before_changing_size: false, use_filter_for_dropshadow: false, keyboardlistentotop_in_frame: false, forcemeasurescrollheight: false, resize2dcanvas: false, textmeasurementalphastring: false, textlinksneedmouseevents: false, dont_clip_clickdivs: false, explicitly_set_border_radius: false, prevent_selection_with_onselectstart: false};
-LzSprite.prototype.capabilities = {rotation: false, scalecanvastopercentage: false, readcanvassizefromsprite: true, opacity: true, colortransform: false, audio: false, accessibility: true, htmlinputtext: false, advancedfonts: false, bitmapcaching: false, persistence: false, clickregion: false, minimize_opacity_changes: false, history: true, runtimemenus: false, setclipboard: false, proxypolicy: false, linescrolling: false, allowfullscreen: false, setid: true, globalfocustrap: false, "2dcanvas": true, dropshadows: false, cornerradius: false, rgba: false, css2boxmodel: true, medialoading: true, backgroundrepeat: true, touchevents: false, directional_layout: false, scaling: false, customcontextmenu: true};
+LzSprite.prototype.__copystyles = (function () {
+var $lzsc$temp = function (from_$0, to_$1) {
+try {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
+} else {
+$7.calls[$8] = $9
+};
+$7.last = $8
+};
+var sprite_$2 = from_$0.owner;
+var left_$3 = sprite_$2._x;
+if (left_$3) {
+to_$1.style.left = left_$3
+};
+var top_$4 = sprite_$2._y;
+if (top_$4) {
+to_$1.style.top = top_$4
+};
+var display_$5 = sprite_$2.__csscache.__LZdivdisplay || "";
+if (display_$5) {
+to_$1.style.display = display_$5
+};
+to_$1.style.zIndex = sprite_$2._z || from_$0.style.zIndex;
+if (sprite_$2._transform) {
+var stylename_$6 = LzSprite.__styleNames.transform;
+to_$1.style[stylename_$6] = sprite_$2._transform
+}}
+finally {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
+} else {
+$7.returns[$8] = $9
+};
+$7.last = $8
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#256/35";
+return $lzsc$temp
+})();
+LzSprite.prototype.__csscache;
+LzSprite.prototype.setCSS = (function () {
+var $lzsc$temp = function (name_$0, value_$1, isdimension_$2) {
+try {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
+} else {
+$4.calls[$5] = $6
+};
+$4.last = $5
+};
+if (isdimension_$2) value_$1 = this.CSSDimension(value_$1);
+var callback_$3 = this["set_" + name_$0];
+if (callback_$3) {
+callback_$3.call(this, value_$1)
+} else {
+this.applyCSS(name_$0, value_$1);
+if (this.__LZclickcontainerdiv) {
+this.applyCSS(name_$0, value_$1, "__LZclickcontainerdiv")
+};
+if (this.__LZcontextcontainerdiv) {
+this.applyCSS(name_$0, value_$1, "__LZcontextcontainerdiv")
+}}}
+finally {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
+} else {
+$4.returns[$5] = $6
+};
+$4.last = $5
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#284/29";
+return $lzsc$temp
+})();
+LzSprite.prototype.applyCSS = (function () {
+var $lzsc$temp = function (name_$0, value_$1, divname_$2) {
+try {
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",calls:" + $8
+} else {
+$6.calls[$7] = $8
+};
+$6.last = $7
+};
+if (!divname_$2) divname_$2 = "__LZdiv";
+var key_$3 = divname_$2 + name_$0;
+var cache_$4 = this.__csscache;
+if (cache_$4[key_$3] === value_$1) {
+return
+};
+var styleobject_$5 = this[divname_$2].style;
+cache_$4[key_$3] = styleobject_$5[name_$0] = value_$1
+}
+finally {
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",returns:" + $8
+} else {
+$6.returns[$7] = $8
+};
+$6.last = $7
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#307/31";
+return $lzsc$temp
+})();
+LzSprite.quirks = {fix_clickable: true, fix_ie_background_height: false, fix_ie_clickable: false, ie_alpha_image_loader: false, ie_leak_prevention: false, prevent_selection: false, ie_elementfrompoint: false, invisible_parent_image_sizing_fix: false, emulate_flash_font_metrics: true, inner_html_strips_newlines: true, inner_html_no_entity_apos: false, css_hide_canvas_during_init: true, firefox_autocomplete_bug: false, hand_pointer_for_clickable: true, alt_key_sends_control: false, safari_textarea_subtract_scrollbar_height: false, no_cursor_colresize: false, safari_visibility_instead_of_display: false, preload_images_only_once: false, absolute_position_accounts_for_offset: false, canvas_div_cannot_be_clipped: false, inputtext_parents_cannot_contain_clip: false, set_height_for_multiline_inputtext: false, ie_opacity: false, text_measurement_use_insertadjacenthtml: false, text_content_use_inner_text: false, text_selection_use_range: false, document_size_use_offsetheight: false, text_ie_carriagereturn: false, ie_paste_event: false, safari_paste_event: false, text_event_charcode: true, keypress_function_keys: true, ie_timer_closure: false, keyboardlistentotop: false, document_size_compute_correct_height: false, ie_mouse_events: false, activate_on_mouseover: true, ie6_improve_memory_performance: false, text_height_includes_padding: false, inputtext_size_includes_margin: false, listen_for_mouseover_out: true, focus_on_mouseover: true, textstyle_on_textdiv: false, textdeco_on_textdiv: false, use_css_sprites: true, preload_images: true, scrollbar_width: 15, inputtext_strips_newlines: false, inputtext_anonymous_div: false, clipped_scrollbar_causes_display_turd: false, hasmetakey: true, textgrabsinputtextfocus: false, input_highlight_bug: false, autoscroll_textarea: false, fix_contextmenu: true, has_dom2_mouseevents: false, container_divs_require_overflow: false, fix_ie_css_syntax: false, match_swf_letter_spacing: false, use_css_master_sprite: false, write_css_with_createstylesheet: false, inputtext_use_background_image: false, show_img_before_changing_size: false, use_filter_for_dropshadow: false, keyboardlistentotop_in_frame: false, forcemeasurescrollheight: false, resize2dcanvas: false, textmeasurementalphastring: false, textlinksneedmouseevents: false, explicitly_set_border_radius: false, prevent_selection_with_onselectstart: false};
+LzSprite.prototype.capabilities = {rotation: false, scalecanvastopercentage: false, readcanvassizefromsprite: true, opacity: true, colortransform: false, audio: false, accessibility: true, htmlinputtext: false, advancedfonts: false, bitmapcaching: false, persistence: false, clickregion: false, minimize_opacity_changes: false, history: true, runtimemenus: false, setclipboard: false, proxypolicy: false, linescrolling: false, allowfullscreen: false, setid: true, globalfocustrap: false, "2dcanvas": true, dropshadows: false, cornerradius: false, rgba: false, css2boxmodel: true, medialoading: true, backgroundrepeat: true, touchevents: false, directional_layout: false, scaling: false, customcontextmenu: true, screenorientation: false, directional_layout: true};
 LzSprite.__updateQuirks = (function () {
 var $lzsc$temp = function () {
 try {
@@ -10795,13 +11180,18 @@ quirks_$0["ie6_improve_memory_performance"] = true
 } else {
 quirks_$0["prevent_selection"] = true;
 quirks_$0["invisible_parent_image_sizing_fix"] = true;
-if (browser_$4.osversion >= 6) {
+if (browser_$4.osversion >= 6 && browser_$4.version < 9) {
 quirks_$0["ie_alpha_image_loader"] = true
 };
-if (browser_$4.version > 7) {
+if (browser_$4.version == 8) {
 quirks_$0["resize2dcanvas"] = true
 }};
-quirks_$0["ie_opacity"] = true;
+if (browser_$4.version >= 9) {
+capabilities_$1["cornerradius"] = true
+};
+if (browser_$4.version <= 8) {
+quirks_$0["ie_opacity"] = true
+};
 quirks_$0["ie_timer_closure"] = true;
 quirks_$0["ie_leak_prevention"] = true;
 quirks_$0["fix_ie_clickable"] = true;
@@ -10829,7 +11219,6 @@ quirks_$0["hasmetakey"] = false;
 quirks_$0["inputtext_use_background_image"] = true;
 quirks_$0["show_img_before_changing_size"] = true;
 quirks_$0["use_filter_for_dropshadow"] = true;
-quirks_$0["forcemeasurescrollheight"] = true;
 defaultStyles_$3["lzswfinputtext"].resize = "none";
 defaultStyles_$3["lzswfinputtextmultiline"].resize = "none";
 capabilities_$1["dropshadows"] = true;
@@ -10867,7 +11256,7 @@ quirks_$0["keypress_function_keys"] = false;
 if (browser_$4.version < 523.15) {
 quirks_$0["keyboardlistentotop"] = true
 };
-if (window.top !== window) {
+if (browser_$4.isSafari && browser_$4.version < 533.16 && window.top !== window) {
 quirks_$0["keyboardlistentotop_in_frame"] = true
 };
 if (browser_$4.version >= 530.19) {
@@ -10875,12 +11264,12 @@ capabilities_$1["threedtransform"] = true
 };
 if (browser_$4.isIphone) {
 quirks_$0["canvas_div_cannot_be_clipped"] = true;
-capabilities_$1["touchevents"] = true
+capabilities_$1["touchevents"] = true;
+capabilities_$1["screenorientation"] = true
 };
 quirks_$0["inputtext_strips_newlines"] = true;
 quirks_$0["prevent_selection"] = true;
 quirks_$0["container_divs_require_overflow"] = true;
-quirks_$0["forcemeasurescrollheight"] = true;
 defaultStyles_$3.lzswfinputtext.paddingTop = "0px";
 defaultStyles_$3.lzswfinputtext.paddingBottom = "2px";
 defaultStyles_$3.lzswfinputtext.paddingLeft = "1px";
@@ -10890,6 +11279,8 @@ defaultStyles_$3.lzswfinputtextmultiline.paddingBottom = "2px";
 defaultStyles_$3.lzswfinputtextmultiline.paddingLeft = "2px";
 defaultStyles_$3.lzswfinputtextmultiline.paddingRight = "2px"
 } else if (browser_$4.isOpera) {
+stylenames_$2.transform = "OTransform";
+stylenames_$2.transformOrigin = "OTransformOrigin";
 quirks_$0["invisible_parent_image_sizing_fix"] = true;
 quirks_$0["no_cursor_colresize"] = true;
 quirks_$0["absolute_position_accounts_for_offset"] = true;
@@ -10903,7 +11294,10 @@ if (browser_$4.version >= 10.6) {
 defaultStyles_$3.lzswftext.wordWrap = "normal";
 defaultStyles_$3.lzswfinputtext.wordWrap = "normal";
 defaultStyles_$3.lzswfinputtextmultiline.wordWrap = "normal";
-quirks_$0["dont_clip_clickdivs"] = true
+quirks_$0["container_divs_require_overflow"] = true
+};
+if (browser_$4.version >= 10.6) {
+capabilities_$1["rotation"] = true
 }} else if (browser_$4.isFirefox) {
 stylenames_$2.borderRadius = "MozBorderRadius";
 stylenames_$2.boxShadow = "MozBoxShadow";
@@ -10944,7 +11338,8 @@ quirks_$0["alt_key_sends_control"] = true;
 quirks_$0["match_swf_letter_spacing"] = true
 };
 if (browser_$4.OS == "Android") {
-capabilities_$1["touchevents"] = true
+capabilities_$1["touchevents"] = true;
+capabilities_$1["screenorientation"] = true
 };
 if (quirks_$0["hand_pointer_for_clickable"]) {
 defaultStyles_$3.lzclickdiv.cursor = "pointer"
@@ -10965,6 +11360,11 @@ quirks_$0["has_dom2_mouseevents"] = true
 };
 if (quirks_$0["match_swf_letter_spacing"]) {
 defaultStyles_$3.lzswftext.letterSpacing = defaultStyles_$3.lzswfinputtext.letterSpacing = defaultStyles_$3.lzswfinputtextmultiline.letterSpacing = "0.01em"
+};
+if (!browser_$4.isIE) {
+quirks_$0["fix_clickable"] = false;
+quirks_$0["activate_on_mouseover"] = false;
+document.oncontextmenu = LzMouseKernel.__mouseEvent
 }};
 LzSprite.prototype.quirks = quirks_$0
 }
@@ -10980,688 +11380,13 @@ $5.returns[$6] = $7
 };
 $5.last = $6
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#684/27";
-return $lzsc$temp
-})();
-LzSprite._getScrollbarWidth = (function () {
-var $lzsc$temp = function () {
-try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
-} else {
-$5.calls[$6] = $7
-};
-$5.last = $6
-};
-var div_$0 = document.createElement("div");
-div_$0.style.width = "50px";
-div_$0.style.height = "50px";
-div_$0.style.overflow = "hidden";
-div_$0.style.position = "absolute";
-div_$0.style.top = "-200px";
-div_$0.style.left = "-200px";
-var div2_$1 = document.createElement("div");
-div2_$1.style.height = "100px";
-div_$0.appendChild(div2_$1);
-var body_$2 = document.body;
-body_$2.appendChild(div_$0);
-var w1_$3 = div_$0.clientWidth;
-div_$0.style.overflowY = "scroll";
-var w2_$4 = div_$0.clientWidth;
-LzSprite.prototype.__discardElement(div_$0);
-return w1_$3 - w2_$4
-}
-finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
-} else {
-$5.returns[$6] = $7
-};
-$5.last = $6
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1009/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-quirks.js#152/27";
 return $lzsc$temp
 })();
 LzSprite.__updateQuirks();
-LzSprite.setRootX = (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-var rootcontainer_$1 = LzSprite.__rootSpriteContainer;
-rootcontainer_$1.style.position = "absolute";
-rootcontainer_$1.style.left = LzSprite.prototype.CSSDimension(v_$0);
-setTimeout(LzScreenKernel.__resizeEvent, 0)
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1046/21";
-return $lzsc$temp
-})();
-LzSprite.setRootWidth = (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-LzSprite.__rootSpriteContainer.style.width = LzSprite.prototype.CSSDimension(v_$0);
-setTimeout(LzScreenKernel.__resizeEvent, 0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1060/25";
-return $lzsc$temp
-})();
-LzSprite.setRootY = (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-var rootcontainer_$1 = LzSprite.__rootSpriteContainer;
-rootcontainer_$1.style.position = "absolute";
-rootcontainer_$1.style.top = LzSprite.prototype.CSSDimension(v_$0);
-setTimeout(LzScreenKernel.__resizeEvent, 0)
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1072/21";
-return $lzsc$temp
-})();
-LzSprite.setRootHeight = (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-LzSprite.__rootSpriteContainer.style.height = LzSprite.prototype.CSSDimension(v_$0);
-setTimeout(LzScreenKernel.__resizeEvent, 0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1086/26";
-return $lzsc$temp
-})();
-LzSprite.prototype.__LZdiv = null;
-LzSprite.prototype.__LZimg = null;
 LzSprite.prototype.__LZclick = null;
-LzSprite.prototype.x = null;
-LzSprite.prototype.y = null;
-LzSprite.prototype.opacity = 1;
-LzSprite.prototype.width = null;
-LzSprite.prototype.height = null;
-LzSprite.prototype.playing = false;
 LzSprite.prototype.clickable = false;
-LzSprite.prototype.frame = 1;
-LzSprite.prototype.frames = null;
-LzSprite.blankimage = "lps/includes/blank.gif";
-LzSprite.prototype.resource = null;
-LzSprite.prototype.source = null;
-LzSprite.prototype.visible = true;
-LzSprite.prototype.clip = null;
-LzSprite.prototype.stretches = null;
-LzSprite.prototype.resourceWidth = null;
-LzSprite.prototype.resourceHeight = null;
-LzSprite.prototype.cursor = null;
-LzSprite.prototype._w = "0pt";
-LzSprite.prototype._h = "0pt";
-LzSprite.prototype.__LZcontext = null;
-LzSprite.prototype.initted = false;
-LzSprite.prototype.init = (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-this.setVisible(v_$0);
-if (this.isroot) {
-if (this.quirks["css_hide_canvas_during_init"]) {
-var cssname_$1 = "display";
-if (this.quirks["safari_visibility_instead_of_display"]) {
-cssname_$1 = "visibility"
-};
-this.__LZdiv.style[cssname_$1] = "";
-if (this.quirks["fix_clickable"]) this.__LZclickcontainerdiv.style[cssname_$1] = "";
-if (this.quirks["fix_contextmenu"]) this.__LZcontextcontainerdiv.style[cssname_$1] = ""
-};
-if (this._id) {
-lz.embed[this._id]._ready(this.owner)
-}};
-this.initted = true
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1143/27";
-return $lzsc$temp
-})();
-LzSprite.prototype.__topZ = 1;
-LzSprite.prototype.__parent = null;
-LzSprite.prototype.__children = null;
-LzSprite.prototype.addChildSprite = (function () {
-var $lzsc$temp = function (sprite_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (sprite_$0.__parent != null) return;
-sprite_$0.__parent = this;
-if (this.__children) {
-this.__children.push(sprite_$0)
-} else {
-this.__children = [sprite_$0]
-};
-this.__LZdiv.appendChild(sprite_$0.__LZdiv);
-if (sprite_$0.__LZclickcontainerdiv) {
-if (!this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv = this.__createContainerDivs("click")
-};
-this.__LZclickcontainerdiv.appendChild(sprite_$0.__LZclickcontainerdiv)
-};
-sprite_$0.__setZ(++this.__topZ)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1185/37";
-return $lzsc$temp
-})();
-LzSprite.prototype.setResource = (function () {
-var $lzsc$temp = function (r_$0) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-if (this.resource == r_$0) return;
-this.resource = r_$0;
-if (r_$0.indexOf("http:") == 0 || r_$0.indexOf("https:") == 0) {
-this.skiponload = false;
-this.setSource(r_$0);
-return
-};
-var res_$1 = LzResourceLibrary[r_$0];
-if (res_$1) {
-this.resourceWidth = res_$1.width;
-this.resourceHeight = res_$1.height;
-if (this.quirks.use_css_sprites) {
-if (this.quirks.use_css_master_sprite && res_$1.spriteoffset != null) {
-this.__csssprite = LzSprite.__masterspriteurl;
-this.__cssspriteoffset = res_$1.spriteoffset
-} else if (res_$1.sprite) {
-this.__csssprite = this.getBaseUrl(res_$1) + res_$1.sprite;
-this.__cssspriteoffset = 0
-}} else {
-this.__csssprite = null;
-if (this.__bgimage) this.__setBGImage(null)
-}};
-var urls_$2 = this.getResourceUrls(r_$0);
-this.owner.resourceevent("totalframes", urls_$2.length);
-this.frames = urls_$2;
-if (this.quirks.preload_images && !(this.stretches == null && this.__csssprite)) {
-this.__preloadFrames()
-};
-this.skiponload = true;
-this.setSource(urls_$2[0], true)
-}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1215/34";
-return $lzsc$temp
-})();
-LzSprite.prototype.getResourceUrls = (function () {
-var $lzsc$temp = function (resourcename_$0) {
-try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
-} else {
-$5.calls[$6] = $7
-};
-$5.last = $6
-};
-var urls_$1 = [];
-var res_$2 = LzResourceLibrary[resourcename_$0];
-if (!res_$2) {
-return urls_$1
-};
-var baseurl_$3 = this.getBaseUrl(res_$2);
-for (var i_$4 = 0;i_$4 < res_$2.frames.length;i_$4++) {
-urls_$1[i_$4] = baseurl_$3 + res_$2.frames[i_$4]
-};
-return urls_$1
-}
-finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
-} else {
-$5.returns[$6] = $7
-};
-$5.last = $6
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1257/38";
-return $lzsc$temp
-})();
-LzSprite.prototype.getBaseUrl = (function () {
-var $lzsc$temp = function (resource_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-return LzSprite.__rootSprite.options[resource_$0.ptype == "sr" ? "serverroot" : "approot"]
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1277/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.CSSDimension = LzKernelUtils.CSSDimension;
-LzSprite.prototype.loading = false;
-LzSprite.prototype.setSource = (function () {
-var $lzsc$temp = function (url_$0, usecache_$1) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-if (url_$0 == null || url_$0 == "null") {
-this.unload();
-return
-};
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && url_$0 != null) {
-this.__restoreSize()
-}};
-if (usecache_$1 == "reset") {
-usecache_$1 = false
-} else if (usecache_$1 != true) {
-this.skiponload = false;
-this.resource = url_$0;
-if (this.playing) this.stop();
-this.__updateLoadStatus(0);
-this.__csssprite = null;
-if (this.__bgimage) this.__setBGImage(null)
-};
-if (usecache_$1 == "memorycache") {
-usecache_$1 = true
-};
-if (this.loading) {
-if (this.__ImgPool && this.source) {
-this.__ImgPool.flush(this.source)
-};
-this.__destroyImage(null, this.__LZimg);
-this.__LZimg = null
-};
-this.source = url_$0;
-if (this.backgroundrepeat) {
-this.__createIMG();
-this.__setBGImage(url_$0);
-this.__updateBackgroundRepeat();
-this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload});
-return
-} else if (this.stretches == null && this.__csssprite) {
-this.__createIMG();
-this.__updateStretches();
-this.__setBGImage(this.__csssprite);
-this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload});
-return
-};
-if (!this.quirks.preload_images) {
-this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload})
-};
-this.loading = true;
-if (!this.__ImgPool) {
-this.__ImgPool = new LzPool(LzSprite.prototype.__getImage, LzSprite.prototype.__gotImage, LzSprite.prototype.__destroyImage, this)
-};
-var im_$2 = this.__ImgPool.get(url_$0, usecache_$1 != true);
-this.__bindImage(im_$2);
-if (this.loading) {
-if (this.skiponload && this.quirks.ie_alpha_image_loader) this.__updateIEAlpha(im_$2)
-} else {
-if (this.quirks.ie_alpha_image_loader) {
-this.__updateIEAlpha(im_$2)
-} else if (this.stretches) {
-this.__updateStretches()
-}};
-if (this.clickable) this.setClickable(true)
-}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1288/32";
-return $lzsc$temp
-})();
-LzSprite.prototype.__bindImage = (function () {
-var $lzsc$temp = function (im_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (this.__LZimg && this.__LZimg.owner) {
-this.__LZdiv.replaceChild(im_$0, this.__LZimg);
-this.__LZimg = im_$0
-} else {
-this.__LZimg = im_$0;
-this.__LZdiv.appendChild(this.__LZimg)
-};
-if (this.cornerradius != null) {
-this.__applyCornerRadius(im_$0)
-}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1374/34";
-return $lzsc$temp
-})();
-LzSprite.prototype.__setBGImage = (function () {
-var $lzsc$temp = function (url_$0) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-if (this.__LZimg) {
-var bgurl_$1 = url_$0 ? "url('" + url_$0 + "')" : null;
-this.__bgimage = this.__LZimg.style.backgroundImage = bgurl_$1
-};
-if (bgurl_$1 != null) {
-var y_$2 = -this.__cssspriteoffset || 0;
-this.__LZimg.style.backgroundPosition = "0 " + y_$2 + "px"
-}}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1389/35";
-return $lzsc$temp
-})();
-LzSprite.prototype.__createIMG = (function () {
-var $lzsc$temp = function () {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (!this.__LZimg) {
-var im_$0 = document.createElement("img");
-im_$0.className = "lzimg";
-im_$0.owner = this;
-im_$0.src = LzSprite.blankimage;
-this.__bindImage(im_$0)
-}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1400/34";
-return $lzsc$temp
-})();
-if (LzSprite.quirks.ie_alpha_image_loader) {
-LzSprite.prototype.__updateIEAlpha = (function () {
-var $lzsc$temp = function (who_$0) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-var w_$1 = this.resourceWidth;
-var h_$2 = this.resourceHeight;
-if (this.stretches == "both") {
-w_$1 = "100%";
-h_$2 = "100%"
-} else if (this.stretches == "width") {
-w_$1 = "100%"
-} else if (this.stretches == "height") {
-h_$2 = "100%"
-};
-if (w_$1 == null) w_$1 = this.width == null ? "100%" : this.CSSDimension(this.width);
-if (h_$2 == null) h_$2 = this.height == null ? "100%" : this.CSSDimension(this.height);
-who_$0.style.width = w_$1;
-who_$0.style.height = h_$2
-}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1417/42";
-return $lzsc$temp
-})()
-};
+LzSprite.prototype.__mouseisdown = false;
 LzSprite.prototype.setClickable = (function () {
 var $lzsc$temp = function (c_$0) {
 try {
@@ -11678,10 +11403,18 @@ $2.last = $3
 };
 c_$0 = !(!c_$0);
 if (this.clickable === c_$0) return;
-if (!this.__LZclickcontainerdiv) {
+if (this.quirks.fix_clickable && !this.__LZclickcontainerdiv) {
 this.__LZclickcontainerdiv = this.__createContainerDivs("click")
 };
-if (this.__LZimg != null) {
+if (!this.quirks.fix_clickable) {
+if (c_$0) {
+this.__LZdiv.style.pointerEvents = "auto";
+this.__LZdiv.style.cursor = "pointer"
+} else {
+this.__LZdiv.style.pointerEvents = "none";
+this.__LZdiv.style.cursor = "default"
+}};
+if (this.quirks.fix_clickable && this.__LZimg != null) {
 if (!this.__LZclick) {
 if (this.quirks.fix_ie_clickable) {
 this.__LZclick = document.createElement("img");
@@ -11739,7 +11472,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1440/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#26/35";
 return $lzsc$temp
 })();
 LzSprite.__setClickable = (function () {
@@ -11761,8 +11494,7 @@ div_$1._clickable = c_$0;
 var f_$2 = c_$0 ? LzSprite.__clickDispatcher : null;
 if (LzSprite.prototype.capabilities.touchevents) {
 div_$1.ontouchstart = f_$2;
-div_$1.ontouchmove = f_$2;
-div_$1.ontouchend = f_$2
+div_$1.ongesturestart = f_$2
 } else {
 div_$1.onclick = f_$2;
 div_$1.onmousedown = f_$2;
@@ -11788,10 +11520,77 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1517/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#114/27";
 return $lzsc$temp
 })();
-LzSprite.__clickDispatcher = (function () {
+LzSprite.__touchstart = (function () {
+var $lzsc$temp = function (c_$0, div_$1) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+var f_$2 = c_$0 ? LzSprite.__clickDispatcher : null;
+div_$1.ontouchmove = f_$2;
+div_$1.ontouchend = f_$2;
+div_$1.ontouchcancel = f_$2
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#144/25";
+return $lzsc$temp
+})();
+LzSprite.__gesturestart = (function () {
+var $lzsc$temp = function (c_$0, div_$1) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+var f_$2 = c_$0 ? LzSprite.__clickDispatcher : null;
+div_$1.ongesturechange = f_$2;
+div_$1.ongestureend = f_$2
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#155/27";
+return $lzsc$temp
+})();
+LzSprite.__globalClickDispatcher = (function () {
 var $lzsc$temp = function (e_$0) {
 try {
 var $7 = global["$lzprofiler"];
@@ -11806,112 +11605,36 @@ $7.calls[$8] = $9
 $7.last = $8
 };
 e_$0 = e_$0 || window.event;
-e_$0.cancelBubble = true;
-if (e_$0.button === 2) {
+if (!e_$0) return;
+if (lz.embed.browser.isIE && e_$0.button == 2) {
 return LzMouseKernel.__handleContextMenu(e_$0)
-};
-if (LzKeyboardKernel && LzKeyboardKernel["__updateControlKeys"]) {
-LzKeyboardKernel.__updateControlKeys(e_$0);
-if (LzKeyboardKernel.__cancelKeys) {
-e_$0.cancelBubble = true
-}};
-if (LzMouseKernel.__sendMouseMove(e_$0)) {
-return
 };
 var target_$1 = e_$0.target || e_$0.srcElement;
 var owner_$2 = target_$1 && target_$1.owner;
+var returnvalue_$3;
 if (!owner_$2) {
 return
+} else if (owner_$2.selectable && owner_$2 instanceof LzTextSprite) {
+returnvalue_$3 = LzSprite.__clickDispatcher(e_$0)
 };
-var eventname_$3 = "on" + e_$0.type;
-if (LzSprite.quirks.ie_mouse_events) {
-if (eventname_$3 === "onmouseenter") {
-eventname_$3 = "onmouseover"
-} else if (eventname_$3 === "onmouseleave") {
-eventname_$3 = "onmouseout"
-} else if (eventname_$3 === "ondblclick") {
-owner_$2.__mouseEvent("onmousedown");
-owner_$2.__mouseEvent("onmouseup");
-owner_$2.__mouseEvent("onclick");
-return false
-} else if (eventname_$3 === "ondrag") {
-return false
-}};
-if (LzSprite.prototype.capabilities.touchevents) {
-if (eventname_$3 === "ontouchstart") {
-if (e_$0.touches.length != 1) {
-return true
-};
-eventname_$3 = "onmousedown";
-owner_$2.__mouseEvent("onmouseover");
-owner_$2.__mouseEvent("onmousedown")
-} else if (eventname_$3 === "ontouchmove") {
-if (e_$0.touches.length != 1) {
-return true
-};
-LzMouseKernel.__sendMouseMove(e_$0);
-eventname_$3 = "onmousemove"
-} else if (eventname_$3 === "ontouchend") {
-if (e_$0.touches.length != 0) {
-return true
-};
-eventname_$3 = "onmouseup";
-e_$0.cancelBubble = false;
-var callback_$4 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onmouseout"]);
-setTimeout(callback_$4, 0);
-var callback_$4 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onclick"]);
-setTimeout(callback_$4, 0)
-} else {
-return true
-}};
-if (owner_$2.isroot === true) {
-if (eventname_$3 === "onmouseup") {
+var eventname_$4 = "on" + e_$0.type;
+if (eventname_$4 == "onmouseup") {
 var lastmousedown_$5 = LzMouseKernel.__lastMouseDown;
 if (lastmousedown_$5 && lastmousedown_$5 !== owner_$2) {
 lastmousedown_$5.__globalmouseup(e_$0)
-};
+}} else if (eventname_$4 == "onmousedown") {
 var focusedsprite_$6 = LzInputTextSprite.prototype.__focusedSprite;
 if (focusedsprite_$6 && focusedsprite_$6 !== owner_$2) {
 focusedsprite_$6.deselect()
-}};
-LzMouseKernel.__sendEvent(eventname_$3, null);
-return false
+}} else if (eventname_$4 == "onmouseover") {
+if (LzMouseKernel.__lastMouseOut == null && LzMouseKernel.__lastMouseOver == null) return;
+LzMouseKernel.__lastMouseOver = null
+} else if (eventname_$4 == "onmouseout") {
+if (LzMouseKernel.__lastMouseOut == null && LzMouseKernel.__lastMouseOver == null) return;
+LzMouseKernel.__lastMouseOut = null
 };
-if (owner_$2 instanceof LzInputTextSprite && owner_$2.selectable === true) {
-if (eventname_$3 === "onmousedown") {
-LzInputTextSprite.prototype.__focusedSprite = owner_$2
-} else if (eventname_$3 === "onmouseout") {
-if (!owner_$2.__isMouseOver()) {
-owner_$2.__hide()
-}} else {
-owner_$2.__show()
-};
-if (eventname_$3 !== "onmouseout") {
-owner_$2.__mouseEvent(eventname_$3)
-};
-return
-};
-if (eventname_$3 == "onmousedown") {
-owner_$2.__mouseisdown = true;
-LzMouseKernel.__lastMouseDown = owner_$2
-} else if (eventname_$3 === "onmouseup") {
-var lastmousedown_$5 = LzMouseKernel.__lastMouseDown;
-if (lastmousedown_$5 && lastmousedown_$5 !== owner_$2) {
-lastmousedown_$5.__globalmouseup(e_$0)
-};
-var focusedsprite_$6 = LzInputTextSprite.prototype.__focusedSprite;
-if (focusedsprite_$6 && focusedsprite_$6 !== owner_$2) {
-focusedsprite_$6.deselect()
-};
-if (LzMouseKernel.__lastMouseDown !== owner_$2) {
-return
-} else {
-owner_$2.__mouseisdown = false;
-LzMouseKernel.__lastMouseDown = null
-};
-e_$0.cancelBubble = false
-};
-return owner_$2.__mouseEvent(eventname_$3) || false
+LzMouseKernel.__sendEvent(eventname_$4, owner_$2.owner);
+return returnvalue_$3
 }
 finally {
 var $7 = global["$lzprofiler"];
@@ -11925,10 +11648,151 @@ $7.returns[$8] = $9
 };
 $7.last = $8
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1549/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#168/36";
 return $lzsc$temp
 })();
-LzSprite.prototype.__mouseisdown = false;
+LzSprite.__clickDispatcher = (function () {
+var $lzsc$temp = function (e_$0) {
+try {
+var $9 = global["$lzprofiler"];
+if ($9) {
+var $a = "" + (new Date().getTime() - $9.base);
+var $b = arguments.callee["displayName"];
+if ($9.last == $a) {
+$9.events[$a] += ",calls:" + $b
+} else {
+$9.calls[$a] = $b
+};
+$9.last = $a
+};
+e_$0 = e_$0 || window.event;
+if (!e_$0) return;
+e_$0.cancelBubble = true;
+if (lz.embed.browser.isIE && e_$0.button == 2) {
+return LzMouseKernel.__handleContextMenu(e_$0)
+};
+if (LzKeyboardKernel && LzKeyboardKernel["__updateControlKeys"]) {
+LzKeyboardKernel.__updateControlKeys(e_$0);
+if (LzKeyboardKernel.__cancelKeys) {
+e_$0.cancelBubble = true
+}};
+if (LzMouseKernel.__sendMouseMove(e_$0)) {
+return
+};
+var target_$1 = e_$0.target || e_$0.srcElement;
+var owner_$2 = target_$1 && target_$1.owner;
+if (!owner_$2) return;
+var eventname_$3 = "on" + e_$0.type;
+if (LzSprite.quirks.ie_mouse_events) {
+if (eventname_$3 == "onmouseenter") {
+eventname_$3 = "onmouseover"
+} else if (eventname_$3 == "onmouseleave") {
+eventname_$3 = "onmouseout"
+} else if (eventname_$3 == "ondblclick") {
+owner_$2.__mouseEvent("onmousedown");
+owner_$2.__mouseEvent("onmouseup");
+owner_$2.__mouseEvent("onclick");
+return false
+} else if (eventname_$3 == "ondrag") {
+return false
+}};
+if (LzSprite.prototype.capabilities.touchevents) {
+if (eventname_$3 == "ongesturestart") {
+LzSprite.__gesturestart(true, target_$1);
+return
+} else if (eventname_$3 == "ongesturechange") {
+LzMouseKernel.__sendEvent("ongesture", owner_$2.owner, {scale: e_$0.scale, rotation: e_$0.rotation});
+return
+} else if (eventname_$3 == "ongestureend") {
+LzSprite.__gesturestart(false, target_$1);
+return
+} else if (eventname_$3 == "ontouchstart") {
+if (e_$0.touches.length != 1) {
+LzMouseKernel.__sendEvent("ontouch", owner_$2.owner, e_$0.touches);
+return true
+};
+LzSprite.__touchstart(true, target_$1);
+eventname_$3 = "onmousedown";
+owner_$2.__mouseEvent("onmouseover")
+} else if (eventname_$3 == "ontouchmove") {
+if (e_$0.touches.length != 1) {
+LzMouseKernel.__sendEvent("ontouch", owner_$2.owner, e_$0.touches);
+return true
+};
+LzMouseKernel.__sendMouseMove(e_$0);
+var mouseisover_$4 = owner_$2.__isMouseOver();
+var lastmouseisover_$5 = LzMouseKernel.__lastMouseOver === owner_$2;
+if (!mouseisover_$4 && lastmouseisover_$5) {
+owner_$2.__mouseEvent("onmouseout")
+} else if (mouseisover_$4 && !lastmouseisover_$5) {
+owner_$2.__mouseEvent("onmouseover")
+};
+eventname_$3 = "onmousemove"
+} else if (eventname_$3 == "ontouchend" || eventname_$3 == "ontouchcancel") {
+LzSprite.__touchstart(false, target_$1);
+eventname_$3 = "onmouseup";
+e_$0.cancelBubble = false;
+if (!owner_$2.__isMouseOver()) {
+var callback_$6 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onmouseupoutside"]);
+setTimeout(callback_$6, 0)
+};
+var callback_$6 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onmouseout"]);
+setTimeout(callback_$6, 0);
+callback_$6 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onclick"]);
+setTimeout(callback_$6, 0)
+} else {
+return true
+}};
+if (owner_$2 instanceof LzInputTextSprite && owner_$2.selectable == true) {
+if (eventname_$3 == "onmousedown") {
+LzInputTextSprite.prototype.__focusedSprite = owner_$2
+} else if (eventname_$3 == "onmouseout") {
+if (!owner_$2.__isMouseOver()) {
+owner_$2.__hide()
+}} else {
+owner_$2.__show()
+};
+if (eventname_$3 !== "onmouseout") {
+owner_$2.__mouseEvent(eventname_$3)
+};
+return
+};
+if (eventname_$3 == "onmousedown") {
+owner_$2.__mouseisdown = true;
+LzMouseKernel.__lastMouseDown = owner_$2;
+var focusedsprite_$7 = LzInputTextSprite.prototype.__focusedSprite;
+if (focusedsprite_$7 && focusedsprite_$7 !== owner_$2) {
+focusedsprite_$7.deselect()
+}} else if (eventname_$3 == "onmouseup") {
+var lastmousedown_$8 = LzMouseKernel.__lastMouseDown;
+if (lastmousedown_$8 && lastmousedown_$8 !== owner_$2) {
+lastmousedown_$8.__globalmouseup(e_$0)
+};
+if (LzMouseKernel.__lastMouseDown !== owner_$2) {
+return
+} else {
+owner_$2.__mouseisdown = false;
+LzMouseKernel.__lastMouseDown = null
+};
+e_$0.cancelBubble = false
+};
+return owner_$2.__mouseEvent(eventname_$3) || false
+}
+finally {
+var $9 = global["$lzprofiler"];
+if ($9) {
+var $a = "" + (new Date().getTime() - $9.base);
+var $b = arguments.callee["displayName"];
+if ($9.last == $a) {
+$9.events[$a] += ",returns:" + $b
+} else {
+$9.returns[$a] = $b
+};
+$9.last = $a
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#239/30";
+return $lzsc$temp
+})();
 LzSprite.prototype.__mouseEvent = (function () {
 var $lzsc$temp = function (eventname_$0) {
 try {
@@ -11953,10 +11817,12 @@ if (this.quirks.activate_on_mouseover) {
 var activationdiv_$2 = LzSprite.__mouseActivationDiv;
 if (!activationdiv_$2.mouseisover) {
 activationdiv_$2.onmouseover()
-}}};
+}}} else if (eventname_$0 == "onmouseout") {
+LzMouseKernel.__lastMouseOut = this
+};
 if (this.owner.mouseevent) {
 if (LzMouseKernel.__lastMouseDown) {
-if (eventname_$0 === "onmouseover" || eventname_$0 === "onmouseout") {
+if (eventname_$0 == "onmouseover" || eventname_$0 == "onmouseout") {
 var sendevents_$3 = LzMouseKernel.__lastMouseDown === this;
 if (eventname_$0 == "onmouseover") {
 LzMouseKernel.__lastMouseOver = this
@@ -11988,7 +11854,7 @@ $5.returns[$6] = $7
 };
 $5.last = $6
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1745/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#436/35";
 return $lzsc$temp
 })();
 LzSprite.prototype.__isMouseOver = (function () {
@@ -12022,7 +11888,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1815/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#508/36";
 return $lzsc$temp
 })();
 LzSprite.prototype.__globalmouseup = (function () {
@@ -12062,13 +11928,11 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1827/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#520/38";
 return $lzsc$temp
 })();
-LzSprite.prototype.xoffset = 0;
-LzSprite.prototype._xoffset = 0;
-LzSprite.prototype.setX = (function () {
-var $lzsc$temp = function (x_$0) {
+LzSprite.prototype.aafocus = (function () {
+var $lzsc$temp = function () {
 try {
 var $1 = global["$lzprofiler"];
 if ($1) {
@@ -12081,20 +11945,12 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
-if (x_$0 == null || x_$0 == this.x && this._xoffset == this.xoffset) return;
-this.__poscacheid = -1;
-this._xoffset = this.xoffset;
-this.x = x_$0;
-x_$0 = this.CSSDimension(x_$0 + this.xoffset);
-if (this._x != x_$0) {
-this._x = x_$0;
-this.__LZdiv.style.left = x_$0;
-if (this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.left = x_$0
-};
-if (this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.left = x_$0
-}}}
+try {
+if (this.__LZdiv != null) {
+this.__LZdiv.blur();
+this.__LZdiv.focus()
+}}
+catch (e_$0) {}}
 finally {
 var $1 = global["$lzprofiler"];
 if ($1) {
@@ -12107,11 +11963,24 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1850/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#546/30";
 return $lzsc$temp
 })();
-LzSprite.prototype.setWidth = (function () {
-var $lzsc$temp = function (w_$0) {
+LzSprite.prototype.__LZimg = null;
+LzSprite.prototype.playing = false;
+LzSprite.prototype.frame = 1;
+LzSprite.prototype.frames = null;
+LzSprite.blankimage = "lps/includes/blank.gif";
+LzSprite.prototype.resourceurl = null;
+LzSprite.prototype.resource = null;
+LzSprite.prototype.source = null;
+LzSprite.prototype.stretches = null;
+LzSprite.prototype.resourceWidth = null;
+LzSprite.prototype.resourceHeight = null;
+LzSprite.prototype.cursor = null;
+LzSprite.prototype.loading = false;
+LzSprite.prototype.setResource = (function () {
+var $lzsc$temp = function (r_$0) {
 try {
 var $3 = global["$lzprofiler"];
 if ($3) {
@@ -12124,31 +11993,244 @@ $3.calls[$4] = $5
 };
 $3.last = $4
 };
-if (w_$0 < 0 || this.width == w_$0) return;
-this.width = w_$0;
-w_$0 = this.CSSDimension(w_$0);
-if (this._w != w_$0) {
-this._w = w_$0;
-var size_$1 = w_$0;
-var quirks_$2 = this.quirks;
-if (quirks_$2.size_blank_to_zero) {
-if (this.bgcolor == null && this.source == null && !this.clip && !(this instanceof LzTextSprite) && !this.shadow && !this.borderwidth) {
-this.__sizedtozero = true;
-size_$1 = 0
-}};
-this.applyCSS("width", size_$1);
-if (this.__LZcontext) this.__LZcontext.style.width = w_$0;
-if (this.clip) this.__updateClip();
-if (this.isroot) {
-if (quirks_$2.container_divs_require_overflow) {
-LzSprite.__rootSpriteOverflowContainer.style.width = w_$0
-}} else {
-if (this.stretches) this.__updateStretches();
-if (this.backgroundrepeat) this.__updateBackgroundRepeat();
-if (this.__LZclick) this.__LZclick.style.width = w_$0;
-if (this.__LZcanvas) this.__resizecanvas()
+if (this.resource == r_$0) return;
+this.resource = r_$0;
+if (r_$0.indexOf("http:") == 0 || r_$0.indexOf("https:") == 0) {
+this.skiponload = false;
+this.setSource(r_$0);
+return
 };
-return w_$0
+var res_$1 = LzResourceLibrary[r_$0];
+var urls_$2 = this.getResourceUrls(r_$0);
+if (res_$1) {
+this.resourceWidth = res_$1.width;
+this.resourceHeight = res_$1.height;
+if (this.quirks.use_css_sprites) {
+if (this.quirks.use_css_master_sprite && res_$1.spriteoffset != null) {
+this.__csssprite = LzSprite.__masterspriteurl;
+this.__cssspriteoffset = res_$1.spriteoffset
+} else if (res_$1.sprite) {
+this.__csssprite = this.getBaseUrl(res_$1) + res_$1.sprite;
+this.__cssspriteoffset = 0
+} else if (urls_$2 && urls_$2.length == 1) {
+this.__csssprite = urls_$2[0]
+}} else {
+this.__csssprite = null;
+if (this.__bgimage) this.__setBGImage(null)
+}};
+this.owner.resourceevent("totalframes", urls_$2.length);
+this.frames = urls_$2;
+if (this.quirks.preload_images && !(this.stretches == null && this.__csssprite)) {
+this.__preloadFrames()
+};
+this.skiponload = true;
+this.setSource(urls_$2[0], true)
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#38/34";
+return $lzsc$temp
+})();
+LzSprite.prototype.getResourceUrls = (function () {
+var $lzsc$temp = function (resourcename_$0) {
+try {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
+} else {
+$5.calls[$6] = $7
+};
+$5.last = $6
+};
+var urls_$1 = [];
+var res_$2 = LzResourceLibrary[resourcename_$0];
+if (!res_$2) {
+return urls_$1
+};
+var baseurl_$3 = this.getBaseUrl(res_$2);
+for (var i_$4 = 0;i_$4 < res_$2.frames.length;i_$4++) {
+urls_$1[i_$4] = baseurl_$3 + res_$2.frames[i_$4]
+};
+return urls_$1
+}
+finally {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
+} else {
+$5.returns[$6] = $7
+};
+$5.last = $6
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#85/38";
+return $lzsc$temp
+})();
+LzSprite.prototype.setSource = (function () {
+var $lzsc$temp = function (url_$0, usecache_$1) {
+try {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
+} else {
+$4.calls[$5] = $6
+};
+$4.last = $5
+};
+if (url_$0 == null || url_$0 == "null") {
+this.unload();
+return
+};
+var rawurl_$2 = url_$0;
+if (url_$0.indexOf("http:") == 0 && url_$0.indexOf("http://") != 0) {
+url_$0 = url_$0.substring(5)
+};
+if (usecache_$1 == "reset") {
+usecache_$1 = false
+} else if (usecache_$1 != true) {
+this.skiponload = false;
+this.resource = rawurl_$2;
+this.resourceurl = url_$0;
+if (this.playing) this.stop();
+this.__updateLoadStatus(0);
+this.__csssprite = null;
+if (this.__bgimage) this.__setBGImage(null)
+};
+if (usecache_$1 == "memorycache") {
+usecache_$1 = true
+};
+if (this.loading) {
+if (this.__ImgPool && this.source) {
+this.__ImgPool.flush(this.source)
+};
+this.__destroyImage(null, this.__LZimg);
+this.__LZimg = null
+};
+this.source = rawurl_$2;
+if (this.backgroundrepeat) {
+this.__createIMG();
+this.__setBGImage(url_$0);
+this.__updateBackgroundRepeat();
+this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload});
+return
+} else if (this.stretches == null && this.__csssprite) {
+this.__createIMG();
+this.__LZimg.src = LzSprite.blankimage;
+this.__updateStretches();
+this.__setBGImage(this.__csssprite);
+this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload});
+return
+};
+if (!this.quirks.preload_images) {
+this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload})
+};
+this.loading = true;
+if (!this.__ImgPool) {
+this.__ImgPool = new LzPool(LzSprite.prototype.__getImage, LzSprite.prototype.__gotImage, LzSprite.prototype.__destroyImage, this)
+};
+var im_$3 = this.__ImgPool.get(url_$0, usecache_$1 != true);
+this.__bindImage(im_$3);
+if (this.loading) {
+if (this.skiponload && this.quirks.ie_alpha_image_loader) this.__updateIEAlpha(im_$3)
+} else {
+if (this.quirks.ie_alpha_image_loader) {
+this.__updateIEAlpha(im_$3)
+} else if (this.stretches) {
+this.__updateStretches()
+}}}
+finally {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
+} else {
+$4.returns[$5] = $6
+};
+$4.last = $5
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#105/32";
+return $lzsc$temp
+})();
+LzSprite.prototype.__bindImage = (function () {
+var $lzsc$temp = function (im_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (this.__LZimg && this.__LZimg.owner) {
+this.__LZdiv.replaceChild(im_$0, this.__LZimg);
+this.__LZimg = im_$0
+} else {
+this.__LZimg = im_$0;
+this.__LZdiv.appendChild(this.__LZimg)
+};
+if (this.cornerradius != null) {
+this.__applyCornerRadius(im_$0)
+}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#194/34";
+return $lzsc$temp
+})();
+LzSprite.prototype.__setBGImage = (function () {
+var $lzsc$temp = function (url_$0) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (this.__LZimg) {
+var bgurl_$1 = url_$0 ? "url('" + url_$0 + "')" : null;
+this.__bgimage = this.__LZimg.style.backgroundImage = bgurl_$1
+};
+if (bgurl_$1 != null) {
+var y_$2 = -this.__cssspriteoffset || 0;
+this.__LZimg.style.backgroundPosition = "0 " + y_$2 + "px"
 }}
 finally {
 var $3 = global["$lzprofiler"];
@@ -12162,13 +12244,11 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1868/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#209/35";
 return $lzsc$temp
 })();
-LzSprite.prototype.yoffset = 0;
-LzSprite.prototype._yoffset = 0;
-LzSprite.prototype.setY = (function () {
-var $lzsc$temp = function (y_$0) {
+LzSprite.prototype.__createIMG = (function () {
+var $lzsc$temp = function () {
 try {
 var $1 = global["$lzprofiler"];
 if ($1) {
@@ -12181,103 +12261,12 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
-if (y_$0 == null || y_$0 == this.y && this._yoffset == this.yoffset) return;
-this.__poscacheid = -1;
-this.y = y_$0;
-this._yoffset = this.yoffset;
-y_$0 = this.CSSDimension(y_$0 + this.yoffset);
-if (this._y != y_$0) {
-this._y = y_$0;
-this.__LZdiv.style.top = y_$0;
-if (this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.top = y_$0
-};
-if (this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.top = y_$0
-}}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1905/27";
-return $lzsc$temp
-})();
-LzSprite.prototype.setHeight = (function () {
-var $lzsc$temp = function (h_$0) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-if (h_$0 < 0 || this.height == h_$0) return;
-this.height = h_$0;
-h_$0 = this.CSSDimension(h_$0);
-if (this._h != h_$0) {
-this._h = h_$0;
-var size_$1 = h_$0;
-var quirks_$2 = this.quirks;
-if (quirks_$2.size_blank_to_zero) {
-if (this.bgcolor == null && this.source == null && !this.clip && !(this instanceof LzTextSprite) && !this.shadow && !this.borderwidth) {
-this.__sizedtozero = true;
-size_$1 = 0
-}};
-this.applyCSS("height", size_$1);
-if (this.__LZcontext) this.__LZcontext.style.height = h_$0;
-if (this.clip) this.__updateClip();
-if (this.isroot) {
-if (quirks_$2.container_divs_require_overflow) {
-LzSprite.__rootSpriteOverflowContainer.style.height = h_$0
-}} else {
-if (this.stretches) this.__updateStretches();
-if (this.backgroundrepeat) this.__updateBackgroundRepeat();
-if (this.__LZclick) this.__LZclick.style.height = h_$0;
-if (this.__LZcanvas) this.__resizecanvas()
-};
-return h_$0
-}}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1924/32";
-return $lzsc$temp
-})();
-LzSprite.prototype.setMaxLength = (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
+if (!this.__LZimg) {
+var im_$0 = document.createElement("img");
+im_$0.className = "lzimg";
+im_$0.owner = this;
+im_$0.src = LzSprite.blankimage;
+this.__bindImage(im_$0)
 }}
 finally {
 var $1 = global["$lzprofiler"];
@@ -12291,127 +12280,10 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1962/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#220/34";
 return $lzsc$temp
 })();
-LzSprite.prototype.setPattern = (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1969/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.setVisible = (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-if (this.visible === v_$0) return;
-this.visible = v_$0;
-var divdisplay_$1 = v_$0 ? "" : "none";
-this.applyCSS("display", divdisplay_$1);
-if (this.quirks.fix_clickable) {
-if (this.quirks.fix_ie_clickable && this.__LZclick) {
-this.__LZclick.style.display = v_$0 && this.clickable ? "" : "none"
-};
-if (this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.display = divdisplay_$1
-};
-if (this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.display = divdisplay_$1
-}}}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1973/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.setBGColor = (function () {
-var $lzsc$temp = function (c_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (c_$0 != null && !this.capabilities.rgba) {
-c_$0 = c_$0 | 0
-};
-if (this.bgcolor == c_$0) return;
-this.bgcolor = c_$0;
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && c_$0 != null) {
-this.__restoreSize()
-}};
-this.__LZdiv.style.backgroundColor = c_$0 == null ? "transparent" : LzColorUtils.torgb(c_$0);
-if (this.quirks.fix_ie_background_height) {
-if (this.height != null && this.height < 2) {
-this.setSource(LzSprite.blankimage, true)
-} else if (!this._fontSize) {
-this.__LZdiv.style.fontSize = 0
-}}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1996/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.__restoreSize = (function () {
+(function () {
 var $lzsc$temp = function () {
 try {
 var $0 = global["$lzprofiler"];
@@ -12425,10 +12297,51 @@ $0.calls[$1] = $2
 };
 $0.last = $1
 };
-if (this.__sizedtozero) {
-this.__sizedtozero = false;
-this.applyCSS("width", this._w);
-this.applyCSS("height", this._h)
+if (LzSprite.quirks.ie_alpha_image_loader) {
+LzSprite.prototype.__updateIEAlpha = (function () {
+var $lzsc$temp = function (who_$0) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+var w_$1 = this.resourceWidth;
+var h_$2 = this.resourceHeight;
+if (this.stretches == "both") {
+w_$1 = "100%";
+h_$2 = "100%"
+} else if (this.stretches == "width") {
+w_$1 = "100%"
+} else if (this.stretches == "height") {
+h_$2 = "100%"
+};
+if (w_$1 == null) w_$1 = this.width == null ? "100%" : this.CSSDimension(this.width);
+if (h_$2 == null) h_$2 = this.height == null ? "100%" : this.CSSDimension(this.height);
+who_$0.style.width = w_$1;
+who_$0.style.height = h_$2
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#239/42";
+return $lzsc$temp
+})()
 }}
 finally {
 var $0 = global["$lzprofiler"];
@@ -12442,91 +12355,9 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2018/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#231/3";
 return $lzsc$temp
-})();
-LzSprite.prototype.__filters = null;
-LzSprite.prototype.setFilter = (function () {
-var $lzsc$temp = function (name_$0, value_$1) {
-try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
-} else {
-$4.calls[$5] = $6
-};
-$4.last = $5
-};
-if (this.__filters == null) {
-this.__filters = {}};
-this.__filters[name_$0] = value_$1;
-var filterstr_$2 = "";
-for (var i_$3 in this.__filters) {
-filterstr_$2 += this.__filters[i_$3]
-};
-return filterstr_$2
-}
-finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
-} else {
-$4.returns[$5] = $6
-};
-$4.last = $5
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2029/32";
-return $lzsc$temp
-})();
-LzSprite.prototype.setOpacity = (function () {
-var $lzsc$temp = function (o_$0) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-if (this.opacity == o_$0 || o_$0 < 0) return;
-this.opacity = o_$0;
-var factor_$1 = 100;
-if (this.capabilities.minimize_opacity_changes) {
-factor_$1 = 10
-};
-o_$0 = (o_$0 * factor_$1 | 0) / factor_$1;
-if (o_$0 != this._opacity) {
-this._opacity = o_$0;
-if (this.quirks.ie_opacity) {
-this.__LZdiv.style.filter = this.setFilter("opacity", o_$0 == 1 ? "" : "alpha(opacity=" + (o_$0 * 100 | 0) + ")")
-} else {
-this.__LZdiv.style.opacity = o_$0 == 1 ? "" : o_$0
-}}}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2042/33";
-return $lzsc$temp
-})();
+})()();
 LzSprite.prototype.play = (function () {
 var $lzsc$temp = function (f_$0) {
 try {
@@ -12549,6 +12380,7 @@ this.__setFrame(f_$0)
 if (this.playing == true) return;
 this.playing = true;
 this.owner.resourceevent("play", null, true);
+this.owner.resourceevent("playing", true);
 LzIdleKernel.addCallback(this, "__incrementFrame")
 }
 finally {
@@ -12563,7 +12395,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2063/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#264/27";
 return $lzsc$temp
 })();
 LzSprite.prototype.stop = (function () {
@@ -12584,6 +12416,7 @@ if (!this.frames || this.frames.length < 2) return;
 if (this.playing == true) {
 this.playing = false;
 this.owner.resourceevent("stop", null, true);
+this.owner.resourceevent("playing", false);
 LzIdleKernel.removeCallback(this, "__incrementFrame")
 };
 f_$0 = f_$0 | 0;
@@ -12602,7 +12435,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2076/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#278/27";
 return $lzsc$temp
 })();
 LzSprite.prototype.__incrementFrame = (function () {
@@ -12634,11 +12467,40 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2093/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#296/39";
 return $lzsc$temp
 })();
+(function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
 if (LzSprite.quirks.preload_images_only_once) {
-LzSprite.prototype.__preloadurls = {}};
+LzSprite.prototype.__preloadurls = {}}}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#302/3";
+return $lzsc$temp
+})()();
 LzSprite.prototype.__preloadFrames = (function () {
 var $lzsc$temp = function () {
 try {
@@ -12681,48 +12543,7 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2105/38";
-return $lzsc$temp
-})();
-LzSprite.prototype.__findParents = (function () {
-var $lzsc$temp = function (prop_$0, value_$1, onlyone_$2) {
-try {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",calls:" + $8
-} else {
-$6.calls[$7] = $8
-};
-$6.last = $7
-};
-var parents_$3 = [];
-var root_$4 = LzSprite.__rootSprite;
-var sprite_$5 = this;
-while (sprite_$5 && sprite_$5 !== root_$4) {
-if (sprite_$5[prop_$0] == value_$1) {
-parents_$3.push(sprite_$5);
-if (onlyone_$2) return parents_$3
-};
-sprite_$5 = sprite_$5.__parent
-};
-return parents_$3
-}
-finally {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",returns:" + $8
-} else {
-$6.returns[$7] = $8
-};
-$6.last = $7
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2130/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#310/38";
 return $lzsc$temp
 })();
 LzSprite.prototype.__imgonload = (function () {
@@ -12784,7 +12605,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2171/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#359/21";
 return $lzsc$temp
 })();
 this.__processHiddenParents(f_$2, i_$0)
@@ -12822,49 +12643,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2147/34";
-return $lzsc$temp
-})();
-LzSprite.prototype.__processHiddenParents = (function () {
-var $lzsc$temp = function (method_$0) {
-try {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",calls:" + $9
-} else {
-$7.calls[$8] = $9
-};
-$7.last = $8
-};
-var sprites_$1 = this.__findParents("visible", false);
-var l_$2 = sprites_$1.length;
-for (var n_$3 = 0;n_$3 < l_$2;n_$3++) {
-sprites_$1[n_$3].__LZdiv.style.display = ""
-};
-var args_$4 = Array.prototype.slice.call(arguments, 1);
-var result_$5 = method_$0.apply(this, args_$4);
-for (var n_$3 = 0;n_$3 < l_$2;n_$3++) {
-var sprite_$6 = sprites_$1[n_$3];
-sprite_$6.__LZdiv.style.display = sprite_$6.__csscache.__LZdivdisplay || ""
-};
-return result_$5
-}
-finally {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",returns:" + $9
-} else {
-$7.returns[$8] = $9
-};
-$7.last = $8
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2216/45";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#335/34";
 return $lzsc$temp
 })();
 LzSprite.prototype.__imgonerror = (function () {
@@ -12921,7 +12700,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2240/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#400/35";
 return $lzsc$temp
 })();
 LzSprite.prototype.__imgontimeout = (function () {
@@ -12975,7 +12754,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2280/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#440/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.__updateLoadStatus = (function () {
@@ -13007,7 +12786,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2317/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#477/41";
 return $lzsc$temp
 })();
 LzSprite.prototype.__destroyImage = (function () {
@@ -13051,7 +12830,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2331/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#491/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.__clearImageEvents = (function () {
@@ -13098,7 +12877,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2354/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#514/41";
 return $lzsc$temp
 })();
 LzSprite.prototype.__gotImage = (function () {
@@ -13135,7 +12914,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2380/33";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#540/33";
 return $lzsc$temp
 })();
 LzSprite.prototype.__getImage = (function () {
@@ -13189,7 +12968,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2411/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#571/31";
 return $lzsc$temp
 })();
 im.sizer.onloadforeal = lz.BrowserUtils.getcallbackfunc(this.owner, "__imgonload", [im.sizer]);
@@ -13231,95 +13010,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2398/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.setClip = (function () {
-var $lzsc$temp = function (c_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (this.clip === c_$0) return;
-this.clip = c_$0;
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && c_$0) {
-this.__restoreSize()
-}};
-this.__updateClip()
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2448/30";
-return $lzsc$temp
-})();
-LzSprite.prototype._clip = "";
-LzSprite.prototype.__updateClip = (function () {
-var $lzsc$temp = function () {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-var quirks_$0 = this.quirks;
-if (this.isroot && this.quirks.canvas_div_cannot_be_clipped) return;
-var clipcss_$1 = "";
-if (this.clip && this.width != null && this.width >= 0 && this.height != null && this.height >= 0) {
-clipcss_$1 = "rect(0px " + this._w + " " + this._h + " 0px)"
-} else if (this._clip) {
-clipcss_$1 = quirks_$0.fix_ie_css_syntax ? "rect(auto auto auto auto)" : ""
-};
-if (clipcss_$1 !== this._clip) {
-this._clip = clipcss_$1;
-this.__LZdiv.style.clip = clipcss_$1
-} else {
-return
-};
-if (quirks_$0.fix_clickable && quirks_$0.dont_clip_clickdivs != true) {
-if (this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.clip = clipcss_$1
-}};
-if (quirks_$0.fix_contextmenu && this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.clip = clipcss_$1
-}}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2464/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#558/33";
 return $lzsc$temp
 })();
 LzSprite.prototype.stretchResource = (function () {
@@ -13358,7 +13049,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2504/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#619/38";
 return $lzsc$temp
 })();
 LzSprite.prototype.__updateStretches = (function () {
@@ -13413,7 +13104,1743 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2522/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#637/40";
+return $lzsc$temp
+})();
+LzSprite.prototype.setCursor = (function () {
+var $lzsc$temp = function (c_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (this.quirks.no_cursor_colresize) {
+return
+};
+if (c_$0 === this.cursor) return;
+if (this.clickable !== true) this.setClickable(true);
+this.cursor = c_$0;
+if (this.quirks.fix_clickable) {
+this.__LZclick.style.cursor = LzSprite.__defaultStyles.hyphenate(c_$0)
+} else {
+this.__LZdiv.style.cursor = LzSprite.__defaultStyles.hyphenate(c_$0)
+}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#676/32";
+return $lzsc$temp
+})();
+LzSprite.prototype.__setFrame = (function () {
+var $lzsc$temp = function (f_$0, force_$1) {
+try {
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",calls:" + $8
+} else {
+$6.calls[$7] = $8
+};
+$6.last = $7
+};
+if (f_$0 < 1) {
+f_$0 = 1
+} else if (f_$0 > this.frames.length) {
+f_$0 = this.frames.length
+};
+var skipevent_$2 = false;
+if (force_$1) {
+skipevent_$2 = f_$0 == this.frame
+} else if (f_$0 == this.frame) {
+return
+};
+this.frame = f_$0;
+var url_$3 = this.frames[this.frame - 1];
+if (this.backgroundrepeat) {
+this.__setBGImage(url_$3);
+this.__updateBackgroundRepeat()
+} else if (this.stretches == null && this.__csssprite) {
+if (!this.__bgimage) {
+this.__createIMG();
+this.__setBGImage(this.__csssprite)
+};
+var x_$4 = (this.frame - 1) * -this.resourceWidth;
+var y_$5 = -this.__cssspriteoffset || 0;
+this.__LZimg.style.backgroundPosition = x_$4 + "px " + y_$5 + "px"
+} else {
+this.setSource(url_$3, true)
+};
+if (skipevent_$2) return;
+this.owner.resourceevent("frame", this.frame);
+if (this.frames.length == this.frame) {
+this.owner.resourceevent("lastframe", null, true)
+}}
+finally {
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",returns:" + $8
+} else {
+$6.returns[$7] = $8
+};
+$6.last = $7
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#695/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.updateResourceSize = (function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
+this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: true})
+}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#737/41";
+return $lzsc$temp
+})();
+LzSprite.prototype.unload = (function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
+this.resourceurl = null;
+this.resource = null;
+this.source = null;
+this.resourceWidth = null;
+this.resourceHeight = null;
+if (this.__ImgPool) {
+this.__ImgPool.destroy();
+this.__ImgPool = null
+};
+if (this.__LZimg) {
+this.__destroyImage(null, this.__LZimg);
+this.__LZimg = null
+};
+this.__updateLoadStatus(0)
+}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#741/29";
+return $lzsc$temp
+})();
+LzSprite.prototype.backgroundrepeat = null;
+LzSprite.prototype.tilex = false;
+LzSprite.prototype.tiley = false;
+LzSprite.prototype.setBackgroundRepeat = (function () {
+var $lzsc$temp = function (backgroundrepeat_$0) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (this.backgroundrepeat == backgroundrepeat_$0) return;
+var x_$1 = false;
+var y_$2 = false;
+if (backgroundrepeat_$0 == "repeat") {
+x_$1 = y_$2 = true
+} else if (backgroundrepeat_$0 == "repeat-x") {
+x_$1 = true
+} else if (backgroundrepeat_$0 == "repeat-y") {
+y_$2 = true
+};
+this.tilex = x_$1;
+this.tiley = y_$2;
+this.backgroundrepeat = backgroundrepeat_$0;
+if (!this.__LZimg) this.__createIMG();
+this.__updateBackgroundRepeat();
+if (backgroundrepeat_$0) {
+this.__setBGImage(this.source);
+this.__LZimg.src = LzSprite.blankimage
+} else {
+if (this.__bgimage) this.__setBGImage(null);
+backgroundrepeat_$0 = "";
+this.skiponload = true;
+this.setSource(this.source, "reset")
+};
+this.__LZdiv.style.backgroundRepeat = backgroundrepeat_$0
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#762/42";
+return $lzsc$temp
+})();
+LzSprite.prototype.__updateBackgroundRepeat = (function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
+if (this.__LZimg) {
+this.__LZimg.style.backgroundRepeat = this.backgroundrepeat;
+this.__LZimg.style.backgroundPosition = "0 0";
+this.__LZimg.width = this.backgroundrepeat ? this.width : this.resourceWidth;
+this.__LZimg.height = this.backgroundrepeat ? this.height : this.resourceHeight
+}}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#791/47";
+return $lzsc$temp
+})();
+LzSprite.prototype.getContext = (function () {
+var $lzsc$temp = function () {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (this.__LZcanvas && this.__LZcanvas.getContext) {
+return this.__LZcanvas.getContext("2d")
+};
+var canvas_$0 = document.createElement("canvas");
+canvas_$0.owner = this;
+this.__LZcanvas = canvas_$0;
+canvas_$0.className = "lzgraphicscanvas";
+if (this.__LZdiv.firstChild) {
+this.__LZdiv.insertBefore(canvas_$0, this.__LZdiv.firstChild)
+} else {
+this.__LZdiv.appendChild(canvas_$0)
+};
+canvas_$0.setAttribute("width", this.width);
+canvas_$0.setAttribute("height", this.height);
+if (this.cornerradius != null) {
+this.__applyCornerRadius(canvas_$0)
+};
+if (lz.embed.browser.isIE) {
+this.__maxTries = 10;
+this.__initcanvasie()
+} else {
+return canvas_$0.getContext("2d")
+}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#19/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.setContextCallback = (function () {
+var $lzsc$temp = function (callbackscope_$0, callbackname_$1) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+this.__canvascallbackscope = callbackscope_$0;
+this.__canvascallbackname = callbackname_$1
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#55/41";
+return $lzsc$temp
+})();
+LzSprite.prototype.setDefaultContextMenu = (function () {
+var $lzsc$temp = function (cmenu_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+LzSprite.__rootSprite.__contextmenu = cmenu_$0
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#66/44";
+return $lzsc$temp
+})();
+LzSprite.prototype.setContextMenu = (function () {
+var $lzsc$temp = function (cmenu_$0) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+this.__contextmenu = cmenu_$0;
+if (!this.quirks.fix_contextmenu || this.__LZcontext) return;
+var cxdiv_$1 = document.createElement("div");
+cxdiv_$1.className = "lzcontext";
+if (!this.quirks.fix_clickable) {
+cxdiv_$1.onmousedown = LzSprite.__contextClickDispatcher
+};
+if (!this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv = this.__createContainerDivs("context")
+};
+this.__LZcontextcontainerdiv.appendChild(cxdiv_$1);
+this.__LZcontext = cxdiv_$1;
+this.__LZcontext.style.width = this._w;
+this.__LZcontext.style.height = this._h;
+cxdiv_$1.owner = this
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#77/37";
+return $lzsc$temp
+})();
+LzSprite.prototype.getContextMenu = (function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
+return this.__contextmenu
+}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#106/37";
+return $lzsc$temp
+})();
+LzSprite.__contextClickDispatcher = (function () {
+var $lzsc$temp = function (e_$0) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+e_$0 = e_$0 || window.event;
+if (!e_$0) return;
+if (lz.embed.browser.isIE && e_$0.button == 2) {
+return LzMouseKernel.__handleContextMenu(e_$0)
+};
+var cmenu_$1 = LzMouseKernel.__showncontextmenu;
+if (cmenu_$1) {
+LzContextMenuKernel.lzcontextmenu.hide()
+}}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#114/37";
+return $lzsc$temp
+})();
+LzSprite.prototype.x = null;
+LzSprite.prototype.y = null;
+LzSprite.prototype.width = null;
+LzSprite.prototype.height = null;
+LzSprite.prototype._w = "0pt";
+LzSprite.prototype._h = "0pt";
+LzSprite.prototype.__topZ = 1;
+LzSprite.prototype.xoffset = 0;
+LzSprite.prototype._xoffset = 0;
+LzSprite.prototype.setX = (function () {
+var $lzsc$temp = function (x_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (x_$0 == null || x_$0 == this.x && this._xoffset == this.xoffset) return;
+this.__poscacheid = -1;
+this._xoffset = this.xoffset;
+this.x = x_$0;
+x_$0 = this.CSSDimension(x_$0 + this.xoffset);
+if (this._x != x_$0) {
+this._x = x_$0;
+this.__LZdiv.style.left = x_$0;
+if (this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.left = x_$0
+};
+if (this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.left = x_$0
+}}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#41/27";
+return $lzsc$temp
+})();
+LzSprite.prototype.setWidth = (function () {
+var $lzsc$temp = function (w_$0) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (w_$0 < 0 || this.width == w_$0) return;
+this.width = w_$0;
+w_$0 = this.CSSDimension(w_$0);
+if (this._w != w_$0) {
+this._w = w_$0;
+var size_$1 = w_$0;
+var quirks_$2 = this.quirks;
+this.applyCSS("width", size_$1);
+if (this.__LZcontext) this.__LZcontext.style.width = w_$0;
+if (this.clip) this.__updateClip();
+if (this.isroot) {
+if (quirks_$2.container_divs_require_overflow) {
+LzSprite.__rootSpriteOverflowContainer.style.width = w_$0
+}} else {
+if (this.stretches) this.__updateStretches();
+if (this.backgroundrepeat) this.__updateBackgroundRepeat();
+if (this.__LZclick) this.__LZclick.style.width = w_$0;
+if (this.__LZcanvas) this.__resizecanvas()
+};
+return w_$0
+}}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#59/31";
+return $lzsc$temp
+})();
+LzSprite.prototype.yoffset = 0;
+LzSprite.prototype._yoffset = 0;
+LzSprite.prototype.setY = (function () {
+var $lzsc$temp = function (y_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (y_$0 == null || y_$0 == this.y && this._yoffset == this.yoffset) return;
+this.__poscacheid = -1;
+this.y = y_$0;
+this._yoffset = this.yoffset;
+y_$0 = this.CSSDimension(y_$0 + this.yoffset);
+if (this._y != y_$0) {
+this._y = y_$0;
+this.__LZdiv.style.top = y_$0;
+if (this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.top = y_$0
+};
+if (this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.top = y_$0
+}}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#89/27";
+return $lzsc$temp
+})();
+LzSprite.prototype.setHeight = (function () {
+var $lzsc$temp = function (h_$0) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (h_$0 < 0 || this.height == h_$0) return;
+this.height = h_$0;
+h_$0 = this.CSSDimension(h_$0);
+if (this._h != h_$0) {
+this._h = h_$0;
+var size_$1 = h_$0;
+var quirks_$2 = this.quirks;
+this.applyCSS("height", size_$1);
+if (this.__LZcontext) this.__LZcontext.style.height = h_$0;
+if (this.clip) this.__updateClip();
+if (this.isroot) {
+if (quirks_$2.container_divs_require_overflow) {
+LzSprite.__rootSpriteOverflowContainer.style.height = h_$0
+}} else {
+if (this.stretches) this.__updateStretches();
+if (this.backgroundrepeat) this.__updateBackgroundRepeat();
+if (this.__LZclick) this.__LZclick.style.height = h_$0;
+if (this.__LZcanvas) this.__resizecanvas()
+};
+return h_$0
+}}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#108/32";
+return $lzsc$temp
+})();
+LzSprite.prototype.getWidth = (function () {
+var $lzsc$temp = function () {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+var w_$0 = this.__LZdiv.clientWidth;
+return w_$0 == 0 ? this.width : w_$0
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#137/31";
+return $lzsc$temp
+})();
+LzSprite.prototype.getHeight = (function () {
+var $lzsc$temp = function () {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+var h_$0 = this.__LZdiv.clientHeight;
+return h_$0 == 0 ? this.height : h_$0
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#143/32";
+return $lzsc$temp
+})();
+LzSprite.prototype.bringToFront = (function () {
+var $lzsc$temp = function () {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (!this.__parent) {
+return
+};
+var c_$0 = this.__parent.__children;
+if (c_$0.length < 2) return;
+c_$0.sort(LzSprite.prototype.__zCompare);
+this.sendInFrontOf(c_$0[c_$0.length - 1])
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#150/35";
+return $lzsc$temp
+})();
+LzSprite.prototype.__setZ = (function () {
+var $lzsc$temp = function (z_$0) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+this.__LZdiv.style.zIndex = z_$0;
+var quirks_$1 = this.quirks;
+if (quirks_$1.fix_clickable && this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.zIndex = z_$0
+};
+if (quirks_$1.fix_contextmenu && this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.zIndex = z_$0
+};
+this.__z = z_$0
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#168/29";
+return $lzsc$temp
+})();
+LzSprite.prototype.__zCompare = (function () {
+var $lzsc$temp = function (a_$0, b_$1) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+if (a_$0.__z < b_$1.__z) return -1;
+if (a_$0.__z > b_$1.__z) return 1;
+return 0
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#183/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.sendToBack = (function () {
+var $lzsc$temp = function () {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (!this.__parent) {
+return
+};
+var c_$0 = this.__parent.__children;
+if (c_$0.length < 2) return;
+c_$0.sort(LzSprite.prototype.__zCompare);
+this.sendBehind(c_$0[0])
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#191/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.sendBehind = (function () {
+var $lzsc$temp = function (behindSprite_$0) {
+try {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
+} else {
+$5.calls[$6] = $7
+};
+$5.last = $6
+};
+if (!behindSprite_$0 || behindSprite_$0 === this) return;
+if (!this.__parent) {
+return
+};
+var c_$1 = this.__parent.__children;
+if (c_$1.length < 2) return;
+c_$1.sort(LzSprite.prototype.__zCompare);
+var behindZ_$2 = false;
+for (var i_$3 = 0;i_$3 < c_$1.length;i_$3++) {
+var s_$4 = c_$1[i_$3];
+if (s_$4 == behindSprite_$0) behindZ_$2 = behindSprite_$0.__z;
+if (behindZ_$2 != false) {
+s_$4.__setZ(++s_$4.__z)
+}};
+this.__setZ(behindZ_$2)
+}
+finally {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
+} else {
+$5.returns[$6] = $7
+};
+$5.last = $6
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#206/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.sendInFrontOf = (function () {
+var $lzsc$temp = function (frontSprite_$0) {
+try {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
+} else {
+$5.calls[$6] = $7
+};
+$5.last = $6
+};
+if (!frontSprite_$0 || frontSprite_$0 === this) return;
+if (!this.__parent) {
+return
+};
+var c_$1 = this.__parent.__children;
+if (c_$1.length < 2) return;
+c_$1.sort(LzSprite.prototype.__zCompare);
+var frontZ_$2 = false;
+for (var i_$3 = 0;i_$3 < c_$1.length;i_$3++) {
+var s_$4 = c_$1[i_$3];
+if (frontZ_$2 != false) {
+s_$4.__setZ(++s_$4.__z)
+};
+if (s_$4 == frontSprite_$0) frontZ_$2 = frontSprite_$0.__z + 1
+};
+this.__setZ(frontZ_$2)
+}
+finally {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
+} else {
+$5.returns[$6] = $7
+};
+$5.last = $6
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#232/36";
+return $lzsc$temp
+})();
+LzSprite.prototype.getZ = (function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
+return this.__z
+}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#263/27";
+return $lzsc$temp
+})();
+LzSprite._getScrollbarWidth = (function () {
+var $lzsc$temp = function () {
+try {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
+} else {
+$5.calls[$6] = $7
+};
+$5.last = $6
+};
+var div_$0 = document.createElement("div");
+div_$0.style.width = "50px";
+div_$0.style.height = "50px";
+div_$0.style.overflow = "hidden";
+div_$0.style.position = "absolute";
+div_$0.style.top = "-200px";
+div_$0.style.left = "-200px";
+var div2_$1 = document.createElement("div");
+div2_$1.style.height = "100px";
+div_$0.appendChild(div2_$1);
+var body_$2 = document.body;
+body_$2.appendChild(div_$0);
+var w1_$3 = div_$0.clientWidth;
+div_$0.style.overflowY = "scroll";
+var w2_$4 = div_$0.clientWidth;
+LzSprite.prototype.__discardElement(div_$0);
+return w1_$3 - w2_$4
+}
+finally {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
+} else {
+$5.returns[$6] = $7
+};
+$5.last = $6
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#19/31";
+return $lzsc$temp
+})();
+LzSprite.setRootX = (function () {
+var $lzsc$temp = function (v_$0) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+var rootcontainer_$1 = LzSprite.__rootSpriteContainer;
+rootcontainer_$1.style.position = "absolute";
+rootcontainer_$1.style.left = LzSprite.prototype.CSSDimension(v_$0);
+setTimeout(LzScreenKernel.__resizeEvent, 0)
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#52/21";
+return $lzsc$temp
+})();
+LzSprite.setRootWidth = (function () {
+var $lzsc$temp = function (v_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+LzSprite.__rootSpriteContainer.style.width = LzSprite.prototype.CSSDimension(v_$0);
+setTimeout(LzScreenKernel.__resizeEvent, 0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#66/25";
+return $lzsc$temp
+})();
+LzSprite.setRootY = (function () {
+var $lzsc$temp = function (v_$0) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+var rootcontainer_$1 = LzSprite.__rootSpriteContainer;
+rootcontainer_$1.style.position = "absolute";
+rootcontainer_$1.style.top = LzSprite.prototype.CSSDimension(v_$0);
+setTimeout(LzScreenKernel.__resizeEvent, 0)
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#78/21";
+return $lzsc$temp
+})();
+LzSprite.setRootHeight = (function () {
+var $lzsc$temp = function (v_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+LzSprite.__rootSpriteContainer.style.height = LzSprite.prototype.CSSDimension(v_$0);
+setTimeout(LzScreenKernel.__resizeEvent, 0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#92/26";
+return $lzsc$temp
+})();
+LzSprite.prototype.opacity = 1;
+LzSprite.prototype.visible = true;
+LzSprite.prototype.clip = null;
+LzSprite.prototype.__LZcontext = null;
+LzSprite.prototype.initted = false;
+LzSprite.prototype.init = (function () {
+var $lzsc$temp = function (v_$0) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+this.setVisible(v_$0);
+if (this.isroot) {
+if (this.quirks["css_hide_canvas_during_init"]) {
+var cssname_$1 = "display";
+if (this.quirks["safari_visibility_instead_of_display"]) {
+cssname_$1 = "visibility"
+};
+this.__LZdiv.style[cssname_$1] = "";
+if (this.quirks["fix_clickable"]) this.__LZclickcontainerdiv.style[cssname_$1] = "";
+if (this.quirks["fix_contextmenu"]) this.__LZcontextcontainerdiv.style[cssname_$1] = ""
+};
+if (this._id) {
+lz.embed[this._id]._ready(this.owner)
+}};
+this.initted = true
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#121/27";
+return $lzsc$temp
+})();
+LzSprite.prototype.__parent = null;
+LzSprite.prototype.__children = null;
+LzSprite.prototype.addChildSprite = (function () {
+var $lzsc$temp = function (sprite_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (sprite_$0.__parent != null) return;
+sprite_$0.__parent = this;
+if (this.__children) {
+this.__children.push(sprite_$0)
+} else {
+this.__children = [sprite_$0]
+};
+this.__LZdiv.appendChild(sprite_$0.__LZdiv);
+if (sprite_$0.__LZclickcontainerdiv) {
+if (!this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv = this.__createContainerDivs("click");
+if (this.clip) this.__updateClip()
+};
+this.__LZclickcontainerdiv.appendChild(sprite_$0.__LZclickcontainerdiv)
+};
+sprite_$0.__setZ(++this.__topZ)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#159/37";
+return $lzsc$temp
+})();
+LzSprite.prototype.getBaseUrl = (function () {
+var $lzsc$temp = function (resource_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+return LzSprite.__rootSprite.options[resource_$0.ptype == "sr" ? "serverroot" : "approot"]
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#190/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.CSSDimension = LzKernelUtils.CSSDimension;
+LzSprite.prototype.setMaxLength = (function () {
+var $lzsc$temp = function (v_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#204/35";
+return $lzsc$temp
+})();
+LzSprite.prototype.setPattern = (function () {
+var $lzsc$temp = function (v_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#211/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.setVisible = (function () {
+var $lzsc$temp = function (v_$0) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+if (this.visible === v_$0) return;
+this.visible = v_$0;
+this.applyCSS("display", this.visible && this.opacity != 0 ? "" : "none");
+var clickdisplay_$1 = v_$0 ? "" : "none";
+if (this.quirks.fix_clickable) {
+if (this.quirks.fix_ie_clickable && this.__LZclick) {
+this.__LZclick.style.display = v_$0 && this.clickable ? "" : "none"
+};
+if (this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.display = clickdisplay_$1
+}};
+if (this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.display = clickdisplay_$1
+}}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#215/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.setBGColor = (function () {
+var $lzsc$temp = function (c_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (c_$0 != null && !this.capabilities.rgba) {
+switch (LzColorUtils.alphafrominternal(c_$0)) {
+case 0:
+c_$0 = null;break;;default:
+;case 1:
+c_$0 = LzColorUtils.colorfrominternal(c_$0);break
+}};
+if (this.bgcolor === c_$0) return;
+this.bgcolor = c_$0;
+this.__LZdiv.style.backgroundColor = c_$0 === null ? "transparent" : LzColorUtils.torgb(c_$0);
+if (this.quirks.fix_ie_background_height) {
+if (this.height != null && this.height < 2) {
+this.setSource(LzSprite.blankimage, true)
+} else if (!this._fontSize) {
+this.__LZdiv.style.fontSize = 0
+}}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#244/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.__filters = null;
+LzSprite.prototype.setFilter = (function () {
+var $lzsc$temp = function (name_$0, value_$1) {
+try {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
+} else {
+$4.calls[$5] = $6
+};
+$4.last = $5
+};
+if (this.__filters == null) {
+this.__filters = {}};
+this.__filters[name_$0] = value_$1;
+var filterstr_$2 = "";
+for (var i_$3 in this.__filters) {
+filterstr_$2 += this.__filters[i_$3]
+};
+return filterstr_$2
+}
+finally {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
+} else {
+$4.returns[$5] = $6
+};
+$4.last = $5
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#276/32";
+return $lzsc$temp
+})();
+LzSprite.prototype.setOpacity = (function () {
+var $lzsc$temp = function (o_$0) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (lz.embed.browser.isIE && o_$0 == 0) {
+o_$0 = 0.01
+};
+if (this.opacity == o_$0 || o_$0 < 0) return;
+var updateVisibility_$1 = this.opacity == 0 || o_$0 == 0;
+this.opacity = o_$0;
+var factor_$2 = 100;
+if (this.capabilities.minimize_opacity_changes) {
+factor_$2 = 10
+};
+o_$0 = (o_$0 * factor_$2 | 0) / factor_$2;
+if (o_$0 != this._opacity) {
+this._opacity = o_$0;
+if (this.quirks.ie_opacity) {
+this.__LZdiv.style.filter = this.setFilter("opacity", o_$0 == 1 ? "" : "alpha(opacity=" + (o_$0 * 100 | 0) + ")")
+} else {
+this.__LZdiv.style.opacity = o_$0 == 1 ? "" : o_$0
+};
+if (updateVisibility_$1) {
+this.applyCSS("display", this.visible && this.opacity != 0 ? "" : "none")
+}}}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#289/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.__findParents = (function () {
+var $lzsc$temp = function (prop_$0, value_$1, onlyone_$2) {
+try {
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",calls:" + $8
+} else {
+$6.calls[$7] = $8
+};
+$6.last = $7
+};
+var parents_$3 = [];
+var root_$4 = LzSprite.__rootSprite;
+var sprite_$5 = this;
+while (sprite_$5 && sprite_$5 !== root_$4) {
+if (sprite_$5[prop_$0] == value_$1) {
+parents_$3.push(sprite_$5);
+if (onlyone_$2) return parents_$3
+};
+sprite_$5 = sprite_$5.__parent
+};
+return parents_$3
+}
+finally {
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",returns:" + $8
+} else {
+$6.returns[$7] = $8
+};
+$6.last = $7
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#325/36";
+return $lzsc$temp
+})();
+LzSprite.prototype.__processHiddenParents = (function () {
+var $lzsc$temp = function (method_$0) {
+try {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
+} else {
+$7.calls[$8] = $9
+};
+$7.last = $8
+};
+var sprites_$1 = this.__findParents("visible", false);
+var l_$2 = sprites_$1.length;
+for (var n_$3 = 0;n_$3 < l_$2;n_$3++) {
+sprites_$1[n_$3].__LZdiv.style.display = ""
+};
+var args_$4 = Array.prototype.slice.call(arguments, 1);
+var result_$5 = method_$0.apply(this, args_$4);
+for (var n_$3 = 0;n_$3 < l_$2;n_$3++) {
+var sprite_$6 = sprites_$1[n_$3];
+sprite_$6.__LZdiv.style.display = sprite_$6.__csscache.__LZdivdisplay || ""
+};
+return result_$5
+}
+finally {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
+} else {
+$7.returns[$8] = $9
+};
+$7.last = $8
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#347/45";
+return $lzsc$temp
+})();
+LzSprite.prototype.setClip = (function () {
+var $lzsc$temp = function (c_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (this.clip === c_$0) return;
+this.clip = c_$0;
+this.__updateClip()
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#368/30";
+return $lzsc$temp
+})();
+LzSprite.prototype._clip = "";
+LzSprite.prototype.__updateClip = (function () {
+var $lzsc$temp = function () {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+var quirks_$0 = this.quirks;
+if (this.isroot && this.quirks.canvas_div_cannot_be_clipped) return;
+if (this.width == null || this.height == null) return;
+var clipcss_$1 = "";
+if (this.clip && this.width >= 0 && this.height >= 0) {
+clipcss_$1 = "rect(0px " + this._w + " " + this._h + " 0px)"
+} else if (this._clip) {
+clipcss_$1 = quirks_$0.fix_ie_css_syntax ? "rect(auto auto auto auto)" : ""
+};
+if (clipcss_$1 !== this._clip) {
+this._clip = clipcss_$1;
+this.__LZdiv.style.clip = clipcss_$1
+};
+if (quirks_$0.fix_clickable && this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.clip = clipcss_$1
+};
+if (quirks_$0.fix_contextmenu && this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.clip = clipcss_$1
+}}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#379/35";
 return $lzsc$temp
 })();
 LzSprite.prototype.predestroy = (function () {
@@ -13442,7 +14869,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2553/33";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#408/33";
 return $lzsc$temp
 })();
 LzSprite.prototype.destroy = (function () {
@@ -13487,7 +14914,10 @@ if (this.__LZdiv) {
 if (this.isroot) {
 if (this.quirks.activate_on_mouseover) {
 this.__LZdiv.onmouseover = null;
-this.__LZdiv.onmouseout = null
+this.__LZdiv.onmouseout = null;
+this.__LZdiv.onmouseup = null;
+this.__LZdiv.onmousedown = null;
+this.__LZdiv.onclick = null
 };
 if (LzSprite.quirks.prevent_selection) {
 this.__LZdiv.onselectstart = null
@@ -13539,7 +14969,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2556/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#411/30";
 return $lzsc$temp
 })();
 LzSprite.prototype.getMouse = (function () {
@@ -13570,7 +15000,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2643/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#501/31";
 return $lzsc$temp
 })();
 LzSprite.prototype.__poscache = null;
@@ -13633,109 +15063,7 @@ $8.returns[$9] = $a
 };
 $8.last = $9
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2665/31";
-return $lzsc$temp
-})();
-LzSprite.prototype.getWidth = (function () {
-var $lzsc$temp = function () {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-var w_$0 = this.__LZdiv.clientWidth;
-return w_$0 == 0 ? this.width : w_$0
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2712/31";
-return $lzsc$temp
-})();
-LzSprite.prototype.getHeight = (function () {
-var $lzsc$temp = function () {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-var h_$0 = this.__LZdiv.clientHeight;
-return h_$0 == 0 ? this.height : h_$0
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2718/32";
-return $lzsc$temp
-})();
-LzSprite.prototype.setCursor = (function () {
-var $lzsc$temp = function (c_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (this.quirks.no_cursor_colresize) {
-return
-};
-if (c_$0 === this.cursor) return;
-if (this.clickable !== true) this.setClickable(true);
-this.cursor = c_$0;
-if (this.quirks.fix_clickable) {
-this.__LZclick.style.cursor = LzSprite.__defaultStyles.hyphenate(c_$0)
-}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2731/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#523/31";
 return $lzsc$temp
 })();
 LzSprite.prototype.setShowHandCursor = (function () {
@@ -13769,7 +15097,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2749/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#575/40";
 return $lzsc$temp
 })();
 LzSprite.prototype.getDisplayObject = (function () {
@@ -13800,391 +15128,10 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2757/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#583/39";
 return $lzsc$temp
 })();
 LzSprite.prototype.__LZcanvas = null;
-LzSprite.prototype.getContext = (function () {
-var $lzsc$temp = function () {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (this.__LZcanvas && this.__LZcanvas.getContext) {
-return this.__LZcanvas.getContext("2d")
-};
-var canvas_$0 = document.createElement("canvas");
-canvas_$0.owner = this;
-this.__LZcanvas = canvas_$0;
-canvas_$0.className = "lzgraphicscanvas";
-if (this.__LZdiv.firstChild) {
-this.__LZdiv.insertBefore(canvas_$0, this.__LZdiv.firstChild)
-} else {
-this.__LZdiv.appendChild(canvas_$0)
-};
-lz.embed.__setAttr(canvas_$0, "width", this.width);
-lz.embed.__setAttr(canvas_$0, "height", this.height);
-if (this.cornerradius != null) {
-this.__applyCornerRadius(canvas_$0)
-};
-if (lz.embed.browser.isIE) {
-this.__maxTries = 10;
-this.__initcanvasie()
-} else {
-return canvas_$0.getContext("2d")
-}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2764/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.setContextCallback = (function () {
-var $lzsc$temp = function (callbackscope_$0, callbackname_$1) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-this.__canvascallbackscope = callbackscope_$0;
-this.__canvascallbackname = callbackname_$1
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2800/41";
-return $lzsc$temp
-})();
-LzSprite.prototype.bringToFront = (function () {
-var $lzsc$temp = function () {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (!this.__parent) {
-return
-};
-var c_$0 = this.__parent.__children;
-if (c_$0.length < 2) return;
-c_$0.sort(LzSprite.prototype.__zCompare);
-this.sendInFrontOf(c_$0[c_$0.length - 1])
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2806/35";
-return $lzsc$temp
-})();
-LzSprite.prototype.__setZ = (function () {
-var $lzsc$temp = function (z_$0) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-this.__LZdiv.style.zIndex = z_$0;
-var quirks_$1 = this.quirks;
-if (quirks_$1.fix_clickable && this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.zIndex = z_$0
-};
-if (quirks_$1.fix_contextmenu && this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.zIndex = z_$0
-};
-this.__z = z_$0
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2824/29";
-return $lzsc$temp
-})();
-LzSprite.prototype.__zCompare = (function () {
-var $lzsc$temp = function (a_$0, b_$1) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-if (a_$0.__z < b_$1.__z) return -1;
-if (a_$0.__z > b_$1.__z) return 1;
-return 0
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2839/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.sendToBack = (function () {
-var $lzsc$temp = function () {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-if (!this.__parent) {
-return
-};
-var c_$0 = this.__parent.__children;
-if (c_$0.length < 2) return;
-c_$0.sort(LzSprite.prototype.__zCompare);
-this.sendBehind(c_$0[0])
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2847/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.sendBehind = (function () {
-var $lzsc$temp = function (behindSprite_$0) {
-try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
-} else {
-$5.calls[$6] = $7
-};
-$5.last = $6
-};
-if (!behindSprite_$0 || behindSprite_$0 === this) return;
-if (!this.__parent) {
-return
-};
-var c_$1 = this.__parent.__children;
-if (c_$1.length < 2) return;
-c_$1.sort(LzSprite.prototype.__zCompare);
-var behindZ_$2 = false;
-for (var i_$3 = 0;i_$3 < c_$1.length;i_$3++) {
-var s_$4 = c_$1[i_$3];
-if (s_$4 == behindSprite_$0) behindZ_$2 = behindSprite_$0.__z;
-if (behindZ_$2 != false) {
-s_$4.__setZ(++s_$4.__z)
-}};
-this.__setZ(behindZ_$2)
-}
-finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
-} else {
-$5.returns[$6] = $7
-};
-$5.last = $6
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2862/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.sendInFrontOf = (function () {
-var $lzsc$temp = function (frontSprite_$0) {
-try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
-} else {
-$5.calls[$6] = $7
-};
-$5.last = $6
-};
-if (!frontSprite_$0 || frontSprite_$0 === this) return;
-if (!this.__parent) {
-return
-};
-var c_$1 = this.__parent.__children;
-if (c_$1.length < 2) return;
-c_$1.sort(LzSprite.prototype.__zCompare);
-var frontZ_$2 = false;
-for (var i_$3 = 0;i_$3 < c_$1.length;i_$3++) {
-var s_$4 = c_$1[i_$3];
-if (frontZ_$2 != false) {
-s_$4.__setZ(++s_$4.__z)
-};
-if (s_$4 == frontSprite_$0) frontZ_$2 = frontSprite_$0.__z + 1
-};
-this.__setZ(frontZ_$2)
-}
-finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
-} else {
-$5.returns[$6] = $7
-};
-$5.last = $6
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2888/36";
-return $lzsc$temp
-})();
-LzSprite.prototype.__setFrame = (function () {
-var $lzsc$temp = function (f_$0, force_$1) {
-try {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",calls:" + $8
-} else {
-$6.calls[$7] = $8
-};
-$6.last = $7
-};
-if (f_$0 < 1) {
-f_$0 = 1
-} else if (f_$0 > this.frames.length) {
-f_$0 = this.frames.length
-};
-var skipevent_$2 = false;
-if (force_$1) {
-skipevent_$2 = f_$0 == this.frame
-} else if (f_$0 == this.frame) {
-return
-};
-this.frame = f_$0;
-var url_$3 = this.frames[this.frame - 1];
-if (this.backgroundrepeat) {
-this.__setBGImage(url_$3);
-this.__updateBackgroundRepeat()
-} else if (this.stretches == null && this.__csssprite) {
-if (!this.__bgimage) {
-this.__createIMG();
-this.__setBGImage(this.__csssprite)
-};
-var x_$4 = (this.frame - 1) * -this.resourceWidth;
-var y_$5 = -this.__cssspriteoffset || 0;
-this.__LZimg.style.backgroundPosition = x_$4 + "px " + y_$5 + "px"
-} else {
-this.setSource(url_$3, true)
-};
-if (skipevent_$2) return;
-this.owner.resourceevent("frame", this.frame);
-if (this.frames.length == this.frame) this.owner.resourceevent("lastframe", null, true)
-}
-finally {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",returns:" + $8
-} else {
-$6.returns[$7] = $8
-};
-$6.last = $7
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2918/33";
-return $lzsc$temp
-})();
 LzSprite.prototype.__discardElement = (function () {
 var $lzsc$temp = function (element_$0) {
 try {
@@ -14214,112 +15161,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2961/39";
-return $lzsc$temp
-})();
-LzSprite.prototype.getZ = (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-return this.__z
-}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2970/27";
-return $lzsc$temp
-})();
-LzSprite.prototype.updateResourceSize = (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: true})
-}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2974/41";
-return $lzsc$temp
-})();
-LzSprite.prototype.unload = (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-this.resource = null;
-this.source = null;
-this.resourceWidth = null;
-this.resourceHeight = null;
-if (this.__ImgPool) {
-this.__ImgPool.destroy();
-this.__ImgPool = null
-};
-if (this.__LZimg) {
-this.__destroyImage(null, this.__LZimg);
-this.__LZimg = null
-};
-this.__updateLoadStatus(0)
-}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2978/29";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#593/39";
 return $lzsc$temp
 })();
 LzSprite.prototype.__setCSSClassProperty = (function () {
@@ -14341,11 +15183,14 @@ var sheets_$4 = document.styleSheets;
 var sl_$5 = sheets_$4.length - 1;
 for (var i_$6 = sl_$5;i_$6 >= 0;i_$6--) {
 var rules_$7 = sheets_$4[i_$6][rulename_$3];
+if (rules_$7 && rules_$7["length"]) {
 var rl_$8 = rules_$7.length - 1;
 for (var j_$9 = rl_$8;j_$9 >= 0;j_$9--) {
 if (rules_$7[j_$9].selectorText == classname_$0) {
 rules_$7[j_$9].style[name_$1] = value_$2
-}}}}
+}}} else {
+Debug.debug("__setCSSClassProperty----unexpected css-", classname_$0, rulename_$3, rules_$7)
+}}}
 finally {
 var $a = global["$lzprofiler"];
 if ($a) {
@@ -14358,80 +15203,7 @@ $a.returns[$b] = $c
 };
 $a.last = $b
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2997/44";
-return $lzsc$temp
-})();
-LzSprite.prototype.setDefaultContextMenu = (function () {
-var $lzsc$temp = function (cmenu_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-LzSprite.__rootSprite.__contextmenu = cmenu_$0
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3017/44";
-return $lzsc$temp
-})();
-LzSprite.prototype.setContextMenu = (function () {
-var $lzsc$temp = function (cmenu_$0) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-this.__contextmenu = cmenu_$0;
-if (!this.quirks.fix_contextmenu || this.__LZcontext) return;
-var cxdiv_$1 = document.createElement("div");
-cxdiv_$1.className = "lzcontext";
-if (!this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv = this.__createContainerDivs("context")
-};
-this.__LZcontextcontainerdiv.appendChild(cxdiv_$1);
-this.__LZcontext = cxdiv_$1;
-this.__LZcontext.style.width = this._w;
-this.__LZcontext.style.height = this._h;
-cxdiv_$1.owner = this
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3026/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#602/44";
 return $lzsc$temp
 })();
 LzSprite.prototype.__createContainerDivs = (function () {
@@ -14450,9 +15222,6 @@ $8.last = $9
 };
 var propname_$1 = "__LZ" + typestring_$0 + "containerdiv";
 var copyclip_$2 = true;
-if (this.quirks.dont_clip_clickdivs && typestring_$0 === "click") {
-copyclip_$2 = false
-};
 if (this[propname_$1]) {
 return this[propname_$1]
 };
@@ -14465,7 +15234,7 @@ var parentcontainer_$7 = sprite_$5.__parent && sprite_$5.__parent[propname_$1];
 if (parentcontainer_$7) {
 parentcontainer_$7.appendChild(newdiv_$6)
 };
-this.__copystyles(sprite_$5.__LZdiv, newdiv_$6, copyclip_$2);
+this.__copystyles(sprite_$5.__LZdiv, newdiv_$6);
 if (sprite_$5._id && !newdiv_$6.id) {
 newdiv_$6.id = typestring_$0 + sprite_$5._id
 };
@@ -14486,88 +15255,7 @@ $8.returns[$9] = $a
 };
 $8.last = $9
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3046/44";
-return $lzsc$temp
-})();
-LzSprite.prototype.__copystyles = (function () {
-var $lzsc$temp = function (from_$0, to_$1, copyclip_$2) {
-try {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",calls:" + $9
-} else {
-$7.calls[$8] = $9
-};
-$7.last = $8
-};
-copyclip_$2 = copyclip_$2 == null ? true : copyclip_$2;
-var sprite_$3 = from_$0.owner;
-var left_$4 = sprite_$3._x;
-if (left_$4) {
-to_$1.style.left = left_$4
-};
-var top_$5 = sprite_$3._y;
-if (top_$5) {
-to_$1.style.top = top_$5
-};
-var display_$6 = sprite_$3.__csscache.__LZdivdisplay || "";
-if (display_$6) {
-to_$1.style.display = display_$6
-};
-to_$1.style.zIndex = sprite_$3._z || from_$0.style.zIndex;
-if (copyclip_$2 && sprite_$3._clip) {
-to_$1.style.clip = sprite_$3._clip
-};
-if (sprite_$3._transform) {
-to_$1.style[stylename] = sprite_$3._transform
-}}
-finally {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",returns:" + $9
-} else {
-$7.returns[$8] = $9
-};
-$7.last = $8
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3105/35";
-return $lzsc$temp
-})();
-LzSprite.prototype.getContextMenu = (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-return this.__contextmenu
-}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3134/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#622/44";
 return $lzsc$temp
 })();
 LzSprite.prototype.rotation = 0;
@@ -14602,7 +15290,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3139/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#673/34";
 return $lzsc$temp
 })();
 LzSprite.prototype._transform = "";
@@ -14643,138 +15331,26 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3147/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#681/40";
 return $lzsc$temp
 })();
-LzSprite.prototype.backgroundrepeat = null;
-LzSprite.prototype.tilex = false;
-LzSprite.prototype.tiley = false;
-LzSprite.prototype.setBackgroundRepeat = (function () {
-var $lzsc$temp = function (backgroundrepeat_$0) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-if (this.backgroundrepeat == backgroundrepeat_$0) return;
-var x_$1 = false;
-var y_$2 = false;
-if (backgroundrepeat_$0 == "repeat") {
-x_$1 = y_$2 = true
-} else if (backgroundrepeat_$0 == "repeat-x") {
-x_$1 = true
-} else if (backgroundrepeat_$0 == "repeat-y") {
-y_$2 = true
-};
-this.tilex = x_$1;
-this.tiley = y_$2;
-this.backgroundrepeat = backgroundrepeat_$0;
-if (!this.__LZimg) this.__createIMG();
-this.__updateBackgroundRepeat();
-if (backgroundrepeat_$0) {
-this.__setBGImage(this.source);
-this.__LZimg.src = LzSprite.blankimage
-} else {
-if (this.__bgimage) this.__setBGImage(null);
-backgroundrepeat_$0 = "";
-this.skiponload = true;
-this.setSource(this.source, "reset")
-};
-this.__LZdiv.style.backgroundRepeat = backgroundrepeat_$0
-}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3165/42";
-return $lzsc$temp
-})();
-LzSprite.prototype.__updateBackgroundRepeat = (function () {
+(function () {
 var $lzsc$temp = function () {
 try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
+var __cleanUpForIE_$0;
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
 } else {
-$0.calls[$1] = $2
+$1.calls[$2] = $3
 };
-$0.last = $1
+$1.last = $2
 };
-if (this.__LZimg) {
-this.__LZimg.style.backgroundRepeat = this.backgroundrepeat;
-this.__LZimg.style.backgroundPosition = "0 0";
-this.__LZimg.width = this.backgroundrepeat ? this.width : this.resourceWidth;
-this.__LZimg.height = this.backgroundrepeat ? this.height : this.resourceHeight
-}}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3194/47";
-return $lzsc$temp
-})();
 if (LzSprite.quirks.ie_leak_prevention) {
 LzSprite.prototype.__sprites = {};
-function __cleanUpForIE () {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = "__cleanUpForIE";
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-LzTextSprite.prototype.__cleanupdivs();
-LzTextSprite.prototype._sizecache = {};
-var obj_$0 = LzSprite.prototype.__sprites;
-for (var i_$1 in obj_$0) {
-obj_$0[i_$1].destroy();
-obj_$0[i_$1] = null
-};
-LzSprite.prototype.__sprites = {}}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = "__cleanUpForIE";
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-__cleanUpForIE["displayName"] = "__cleanUpForIE";
 lz.embed.attachEventHandler(window, "beforeunload", window, "__cleanUpForIE");
 LzSprite.prototype.__discardElement = (function () {
 var $lzsc$temp = function (element_$0) {
@@ -14815,10 +15391,25 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3221/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#715/43";
 return $lzsc$temp
 })()
+}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
 };
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#696/3";
+return $lzsc$temp
+})()();
 LzSprite.prototype.getSelectedText = (function () {
 var $lzsc$temp = function () {
 try {
@@ -14852,7 +15443,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3245/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#740/38";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAADescription = (function () {
@@ -14874,7 +15465,7 @@ if (aadiv_$1 == null) {
 this.aadescriptionDiv = aadiv_$1 = document.createElement("LABEL");
 aadiv_$1.className = "lzaccessibilitydiv";
 if (!this.__LZdiv.id) this.__LZdiv.id = "sprite_" + this.uid;
-lz.embed.__setAttr(aadiv_$1, "for", this.__LZdiv.id);
+aadiv_$1.setAttribute("for", this.__LZdiv.id);
 this.__LZdiv.appendChild(aadiv_$1)
 };
 aadiv_$1.innerHTML = s_$0
@@ -14891,7 +15482,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3259/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#754/39";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAccessible = (function () {
@@ -14922,7 +15513,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3279/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#774/36";
 return $lzsc$temp
 })();
 LzSprite.prototype._accProps = null;
@@ -14954,7 +15545,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3296/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#791/34";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAASilent = (function () {
@@ -14983,7 +15574,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3306/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#801/34";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAAName = (function () {
@@ -15012,42 +15603,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3315/32";
-return $lzsc$temp
-})();
-LzSprite.prototype.aafocus = (function () {
-var $lzsc$temp = function () {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-try {
-if (this.__LZdiv != null) {
-this.__LZdiv.blur();
-this.__LZdiv.focus()
-}}
-catch (e_$0) {}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3323/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#810/32";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAATabIndex = (function () {
@@ -15076,7 +15632,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3337/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#818/36";
 return $lzsc$temp
 })();
 LzSprite.prototype.sendAAEvent = (function () {
@@ -15110,7 +15666,7 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3344/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#825/34";
 return $lzsc$temp
 })();
 LzSprite.prototype.setID = (function () {
@@ -15144,7 +15700,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3353/28";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#834/28";
 return $lzsc$temp
 })();
 LzSprite.prototype.__resizecanvas = (function () {
@@ -15163,8 +15719,8 @@ $0.last = $1
 };
 if (this.width > 0 && this.height > 0) {
 if (this.__LZcanvas) {
-lz.embed.__setAttr(this.__LZcanvas, "width", this.width);
-lz.embed.__setAttr(this.__LZcanvas, "height", this.height);
+this.__LZcanvas.setAttribute("width", this.width);
+this.__LZcanvas.setAttribute("height", this.height);
 this.__docanvascallback()
 };
 if (this.__LZcanvas && this["_canvashidden"]) {
@@ -15186,7 +15742,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3360/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#841/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.__docanvascallback = (function () {
@@ -15223,7 +15779,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3378/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#859/41";
 return $lzsc$temp
 })();
 LzSprite.prototype.__initcanvasie = (function () {
@@ -15264,7 +15820,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3391/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#872/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.__getShadowCSS = (function () {
@@ -15289,24 +15845,27 @@ shadowdistance_$1 = Math.round(shadowdistance_$1);
 shadowblurradius_$3 = Math.round(shadowblurradius_$3);
 shadowangle_$2 = Math.round(shadowangle_$2)
 };
+var inset_$4 = shadowblurradius_$3 < 0 ? "inset " : "";
+if (inset_$4 !== "") {
+shadowblurradius_$3 = -shadowblurradius_$3
+};
 if (this.quirks.use_filter_for_dropshadow) {
+var rgbcolor_$5 = LzColorUtils.inttohex(LzColorUtils.colorfrominternal(shadowcolor_$0));
 if (shadowdistance_$1 == 0) {
-this.xoffset = this.yoffset = -shadowblurradius_$3;
-this.applyCSS("left", this.x + this.xoffset);
-this.applyCSS("top", this.y + this.yoffset);
-if (shadowblurradius_$3 > 0) {
-var hexcolor_$4 = LzColorUtils.inttohex(shadowcolor_$0);
-return "progid:DXImageTransform.Microsoft.Glow(Color='" + hexcolor_$4 + "',Strength=" + shadowblurradius_$3 + ")"
-}} else {
+this.applyCSS("left", this.x - shadowblurradius_$3);
+this.applyCSS("top", this.y - shadowblurradius_$3);
+return "progid:DXImageTransform.Microsoft.Glow(Color='" + rgbcolor_$5 + "',Strength=" + shadowblurradius_$3 + ")"
+} else {
+this.applyCSS("left", this.x);
+this.applyCSS("top", this.y);
 shadowangle_$2 += 90;
-var hexcolor_$4 = LzColorUtils.inttohex(shadowcolor_$0);
-return "progid:DXImageTransform.Microsoft.Shadow(Color='" + hexcolor_$4 + "',Direction=" + shadowangle_$2 + ",Strength=" + shadowdistance_$1 + ")"
+return "progid:DXImageTransform.Microsoft.Shadow(Color='" + rgbcolor_$5 + "',Direction=" + shadowangle_$2 + ",Strength=" + shadowdistance_$1 + ")"
 }} else {
-var radians_$5 = shadowangle_$2 * Math.PI / 180;
-var xoffset_$6 = this.CSSDimension(Math.cos(radians_$5) * shadowdistance_$1);
-var yoffset_$7 = this.CSSDimension(Math.sin(radians_$5) * shadowdistance_$1);
-var rgbcolor_$8 = LzColorUtils.torgb(shadowcolor_$0);
-return rgbcolor_$8 + " " + xoffset_$6 + " " + yoffset_$7 + " " + this.CSSDimension(shadowblurradius_$3)
+var radians_$6 = shadowangle_$2 * Math.PI / 180;
+var xoffset_$7 = this.CSSDimension(Math.cos(radians_$6) * shadowdistance_$1);
+var yoffset_$8 = this.CSSDimension(Math.sin(radians_$6) * shadowdistance_$1);
+var rgbcolor_$5 = LzColorUtils.cssfrominternal(shadowcolor_$0);
+return inset_$4 + rgbcolor_$5 + " " + xoffset_$7 + " " + yoffset_$8 + " " + this.CSSDimension(shadowblurradius_$3)
 }}
 finally {
 var $9 = global["$lzprofiler"];
@@ -15320,7 +15879,7 @@ $9.returns[$a] = $b
 };
 $9.last = $a
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3409/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#890/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.shadow = null;
@@ -15350,10 +15909,6 @@ this.__LZdiv.style[cssname_$5] = "";
 this.__LZcanvas.style[cssname_$5] = newshadow_$4
 } else {
 this.__LZdiv.style[cssname_$5] = newshadow_$4
-}};
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero) {
-this.__restoreSize()
 }}}
 finally {
 var $6 = global["$lzprofiler"];
@@ -15367,31 +15922,37 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3450/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#937/35";
 return $lzsc$temp
 })();
 LzSprite.prototype.cornerradius = null;
+LzSprite.prototype.cornerradius_h = null;
+LzSprite.prototype.cornerradius_v = null;
 LzSprite.prototype.setCornerRadius = (function () {
 var $lzsc$temp = function (radii_$0) {
 try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",calls:" + $8
 } else {
-$4.calls[$5] = $6
+$6.calls[$7] = $8
 };
-$4.last = $5
+$6.last = $7
 };
 var css_$1 = "";
 for (var i_$2 = 0, l_$3 = radii_$0.length;i_$2 < l_$3;i_$2++) {
 radii_$0[i_$2] = this.CSSDimension(radii_$0[i_$2])
 };
-css_$1 = radii_$0.join(" ");
+var css1_$4 = radii_$0.slice(0, 4).join(" ");
+var css2_$5 = radii_$0.slice(4).join(" ");
+css_$1 = css1_$4 + " / " + css2_$5;
 if (css_$1 == this.cornerradius) return;
 this.cornerradius = css_$1;
+this.cornerradius_h = css1_$4;
+this.cornerradius_v = css2_$5;
 this.__applyCornerRadius(this.__LZdiv);
 if (this.__LZclick) {
 this.__applyCornerRadius(this.__LZclick)
@@ -15406,62 +15967,22 @@ if (this.__LZimg) {
 this.__applyCornerRadius(this.__LZimg)
 }}
 finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",returns:" + $8
 } else {
-$4.returns[$5] = $6
+$6.returns[$7] = $8
 };
-$4.last = $5
+$6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3477/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#962/38";
 return $lzsc$temp
 })();
 LzSprite.prototype.__applyCornerRadius = (function () {
 var $lzsc$temp = function (div_$0) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-var stylenames_$1 = LzSprite.__styleNames;
-if (this.quirks.explicitly_set_border_radius) {
-var radii_$2 = this.cornerradius.split(" ");
-div_$0.style[stylenames_$1.borderTopLeftRadius] = radii_$2[0];
-div_$0.style[stylenames_$1.borderTopRightRadius] = radii_$2[1];
-div_$0.style[stylenames_$1.borderBottomRightRadius] = radii_$2[2];
-div_$0.style[stylenames_$1.borderBottomLeftRadius] = radii_$2[3]
-} else {
-div_$0.style[stylenames_$1.borderRadius] = this.cornerradius
-}}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3502/42";
-return $lzsc$temp
-})();
-LzSprite.prototype.__csscache;
-LzSprite.prototype.setCSS = (function () {
-var $lzsc$temp = function (name_$0, value_$1, isdimension_$2) {
 try {
 var $4 = global["$lzprofiler"];
 if ($4) {
@@ -15474,18 +15995,17 @@ $4.calls[$5] = $6
 };
 $4.last = $5
 };
-if (isdimension_$2) value_$1 = this.CSSDimension(value_$1);
-var callback_$3 = this["set_" + name_$0];
-if (callback_$3) {
-callback_$3.call(this, value_$1)
+var stylenames_$1 = LzSprite.__styleNames;
+if (this.quirks.explicitly_set_border_radius) {
+var hradii_$2 = this.cornerradius_h.split(" ");
+var vradii_$3 = this.cornerradius_v.split(" ");
+div_$0.style[stylenames_$1.borderTopLeftRadius] = hradii_$2[0] + " " + vradii_$3[0];
+div_$0.style[stylenames_$1.borderTopRightRadius] = hradii_$2[1] + " " + vradii_$3[1];
+div_$0.style[stylenames_$1.borderBottomRightRadius] = hradii_$2[2] + " " + vradii_$3[2];
+div_$0.style[stylenames_$1.borderBottomLeftRadius] = hradii_$2[3] + " " + vradii_$3[3]
 } else {
-this.applyCSS(name_$0, value_$1);
-if (this.__LZclickcontainerdiv) {
-this.applyCSS(name_$0, value_$1, "__LZclickcontainerdiv")
-};
-if (this.__LZcontextcontainerdiv) {
-this.applyCSS(name_$0, value_$1, "__LZcontextcontainerdiv")
-}}}
+div_$0.style[stylenames_$1.borderRadius] = this.cornerradius
+}}
 finally {
 var $4 = global["$lzprofiler"];
 if ($4) {
@@ -15498,45 +16018,7 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3520/29";
-return $lzsc$temp
-})();
-LzSprite.prototype.applyCSS = (function () {
-var $lzsc$temp = function (name_$0, value_$1, divname_$2) {
-try {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",calls:" + $8
-} else {
-$6.calls[$7] = $8
-};
-$6.last = $7
-};
-if (!divname_$2) divname_$2 = "__LZdiv";
-var key_$3 = divname_$2 + name_$0;
-var cache_$4 = this.__csscache;
-if (cache_$4[key_$3] === value_$1) {
-return
-};
-var styleobject_$5 = this[divname_$2].style;
-cache_$4[key_$3] = styleobject_$5[name_$0] = value_$1
-}
-finally {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",returns:" + $8
-} else {
-$6.returns[$7] = $8
-};
-$6.last = $7
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3543/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#991/42";
 return $lzsc$temp
 })();
 LzSprite.prototype.set_borderColor = (function () {
@@ -15568,11 +16050,50 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3573/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1007/38";
 return $lzsc$temp
 })();
-LzSprite.prototype.borderwidth = 0;
-LzSprite.prototype.set_borderWidth = (function () {
+LzSprite.prototype.set_borderWidth_internal = (function () {
+var $lzsc$temp = function (side_$0, width_$1) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (width_$1 == 0) {
+width_$1 = ""
+};
+var stylename_$2 = "border" + side_$0 + "Width";
+this.__LZdiv.style[stylename_$2] = width_$1;
+if (this.__LZclick) {
+this.__LZclick.style[stylename_$2] = width_$1
+};
+if (this.__LZcontext) {
+this.__LZcontext.style[stylename_$2] = width_$1
+}}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1012/47";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_borderTopWidth = (function () {
 var $lzsc$temp = function (width_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -15586,22 +16107,8 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
-if (this.borderwidth === width_$0) return;
-this.borderwidth = width_$0;
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && width_$0 != null) {
-this.__restoreSize()
-}};
-if (width_$0 == 0) {
-width_$0 = ""
-};
-this.__LZdiv.style.borderWidth = width_$0;
-if (this.__LZclick) {
-this.__LZclick.style.borderWidth = width_$0
-};
-if (this.__LZcontext) {
-this.__LZcontext.style.borderWidth = width_$0
-}}
+this.set_borderWidth_internal("Top", width_$0)
+}
 finally {
 var $1 = global["$lzprofiler"];
 if ($1) {
@@ -15614,10 +16121,143 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3579/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1028/41";
 return $lzsc$temp
 })();
-LzSprite.prototype.set_padding = (function () {
+LzSprite.prototype.set_borderRightWidth = (function () {
+var $lzsc$temp = function (width_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_borderWidth_internal("Right", width_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1029/43";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_borderBottomWidth = (function () {
+var $lzsc$temp = function (width_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_borderWidth_internal("Bottom", width_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1030/44";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_borderLeftWidth = (function () {
+var $lzsc$temp = function (width_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_borderWidth_internal("Left", width_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1031/42";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_padding_internal = (function () {
+var $lzsc$temp = function (side_$0, padding_$1) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (padding_$1 == 0) {
+padding_$1 = ""
+};
+var stylename_$2 = "padding" + side_$0;
+this.__LZdiv.style[stylename_$2] = padding_$1;
+if (this.__LZclick) {
+this.__LZclick.style[stylename_$2] = padding_$1
+};
+if (this.__LZcontext) {
+this.__LZcontext.style[stylename_$2] = padding_$1
+}}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1033/43";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_paddingTop = (function () {
 var $lzsc$temp = function (padding_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -15631,21 +16271,8 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
-if (this.padding === padding_$0) return;
-this.padding = padding_$0;
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && padding_$0 != null) {
-this.__restoreSize()
-}};
-if (padding_$0 == 0) {
-padding_$0 = ""
-};
-if (this.__LZclick) {
-this.__LZclick.style.padding = padding_$0
-};
-if (this.__LZcontext) {
-this.__LZcontext.style.padding = padding_$0
-}}
+this.set_padding_internal("Top", padding_$0)
+}
 finally {
 var $1 = global["$lzprofiler"];
 if ($1) {
@@ -15658,7 +16285,264 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3602/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1049/37";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_paddingRight = (function () {
+var $lzsc$temp = function (padding_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_padding_internal("Right", padding_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1050/39";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_paddingBottom = (function () {
+var $lzsc$temp = function (padding_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_padding_internal("Bottom", padding_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1051/40";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_paddingLeft = (function () {
+var $lzsc$temp = function (padding_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_padding_internal("Left", padding_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1052/38";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_margin_internal = (function () {
+var $lzsc$temp = function (side_$0, margin_$1) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (margin_$1 == 0) {
+margin_$1 = ""
+};
+var stylename_$2 = "margin" + side_$0;
+this.__LZdiv.style[stylename_$2] = margin_$1;
+if (this.__LZclick) {
+this.__LZclick.style[stylename_$2] = margin_$1
+};
+if (this.__LZcontext) {
+this.__LZcontext.style[stylename_$2] = margin_$1
+}}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1054/42";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_marginTop = (function () {
+var $lzsc$temp = function (margin_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_margin_internal("Top", margin_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1070/36";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_marginRight = (function () {
+var $lzsc$temp = function (margin_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_margin_internal("Right", margin_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1071/38";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_marginBottom = (function () {
+var $lzsc$temp = function (margin_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_margin_internal("Bottom", margin_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1072/39";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_marginLeft = (function () {
+var $lzsc$temp = function (margin_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.set_margin_internal("Left", margin_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1073/37";
 return $lzsc$temp
 })();
 LzSprite.medialoadtimeout = 30000;
@@ -15690,7 +16574,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3625/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1076/32";
 return $lzsc$temp
 })();
 LzSprite.setMediaErrorTimeout = (function () {
@@ -15719,7 +16603,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3629/33";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1080/33";
 return $lzsc$temp
 })();
 LzSprite.prototype.xscale = 1;
@@ -15754,7 +16638,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3634/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1085/32";
 return $lzsc$temp
 })();
 LzSprite.prototype.yscale = 1;
@@ -15789,10 +16673,10 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3642/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1093/32";
 return $lzsc$temp
 })();
-Class.make("LzLibrary", ["loaded", false, "loading", false, "sprite", null, "href", void 0, "stage", "late", "onload", LzDeclaredEvent, "construct", (function () {
+Class.make("LzLibrary", ["loaded", false, "loading", false, "href", void 0, "stage", "late", "onload", LzDeclaredEvent, "construct", (function () {
 var $lzsc$temp = function (parent_$0, args_$1) {
 try {
 var $2 = global["$lzprofiler"];
@@ -15808,7 +16692,6 @@ $2.last = $3
 };
 this.stage = args_$1.stage;
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["construct"] || this.nextMethod(arguments.callee, "construct")).call(this, parent_$0, args_$1);
-this.sprite = new LzSprite(this, false, args_$1);
 LzLibrary.libraries[args_$1.name] = this
 }
 finally {
@@ -15870,10 +16753,6 @@ $0.events[$1] += ",calls:" + $2
 $0.calls[$1] = $2
 };
 $0.last = $1
-};
-if (this.sprite) {
-this.sprite.destroy();
-this.sprite = null
 };
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["destroy"] || this.nextMethod(arguments.callee, "destroy")).call(this)
 }
@@ -15939,7 +16818,7 @@ if (this.loading || this.loaded) {
 return
 };
 this.loading = true;
-lz.embed.__dhtmlLoadLibrary(this.href)
+lz.embed.loadJSLib(this.href)
 }
 finally {
 var $0 = global["$lzprofiler"];
@@ -16329,6 +17208,37 @@ $1.last = $2
 $lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#129/38";
 return $lzsc$temp
 })();
+LzTextSprite.prototype.setDirection = (function () {
+var $lzsc$temp = function (dir_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.scrolldiv.style.direction = dir_$0.toUpperCase()
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#141/40";
+return $lzsc$temp
+})();
 LzTextSprite.prototype.setTextColor = (function () {
 var $lzsc$temp = function (c_$0) {
 try {
@@ -16359,7 +17269,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#137/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#145/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.lineHeight = null;
@@ -16421,7 +17331,7 @@ $8.returns[$9] = $a
 };
 $8.last = $9
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#154/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#162/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.scrollevents = false;
@@ -16454,7 +17364,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#193/42";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#201/42";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__updatefieldsizeTID = null;
@@ -16493,7 +17403,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#204/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#212/44";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__fontLoaded = (function () {
@@ -16525,7 +17435,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#216/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#224/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__updatefieldsizeCallback = (function () {
@@ -16565,7 +17475,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#222/52";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#230/52";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setMaxLength = (function () {
@@ -16596,7 +17506,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#242/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#250/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__updatefieldprop = (function () {
@@ -16630,7 +17540,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#247/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#255/44";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setText = (function () {
@@ -16671,7 +17581,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#261/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#269/34";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.multiline = false;
@@ -16691,7 +17601,7 @@ $2.last = $3
 };
 this.multiline = m_$0;
 if (m_$0) {
-var whitespace_$1 = "normal";
+var whitespace_$1 = "pre-wrap";
 this.applyCSS("overflow", "hidden", "scrolldiv")
 } else {
 var whitespace_$1 = this.className === "lzswfinputtextmultiline" ? "pre-wrap" : "nowrap";
@@ -16718,7 +17628,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#289/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#298/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setPattern = (function () {
@@ -16752,7 +17662,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#321/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#330/37";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getTextWidth = (function () {
@@ -16795,7 +17705,7 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#340/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#349/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getLineHeight = (function () {
@@ -16836,7 +17746,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#363/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#372/40";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getTextfieldHeight = (function () {
@@ -16885,10 +17795,24 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#384/45";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#393/45";
 return $lzsc$temp
 })();
 LzTextSprite.prototype._sizecache = {counter: 0};
+(function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
 if (LzSprite.quirks.ie_leak_prevention) {
 LzTextSprite.prototype.__divstocleanup = [];
 LzTextSprite.prototype.__cleanupdivs = (function () {
@@ -16925,10 +17849,25 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#424/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#434/44";
 return $lzsc$temp
 })()
+}}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
 };
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#431/3";
+return $lzsc$temp
+})()();
 LzTextSprite.prototype._cacheStyleKey = null;
 LzTextSprite.prototype._cacheTextKey = null;
 LzTextSprite.prototype._cachevalue = null;
@@ -16974,7 +17913,7 @@ this._cacheStyleKey = styleKey_$5;
 if (dimension_$0 != "lineheight") {
 this._cacheTextKey = string_$1
 };
-var style_$7 = "padding:0px;overflow:visible;width:" + width_$2 + ";height:auto;" + (this._fontSize ? "font-size:" + this._fontSize + ";" : "") + (this._fontWeight ? "font-weight:" + this._fontWeight + ";" : "") + (this._fontStyle ? "font-style:" + this._fontStyle + ";" : "") + (this._fontFamily ? "font-family:" + this._fontFamily + ";" : "") + (this._fontSize ? "font-size:" + this._fontSize + ";" : "") + (this._letterSpacing ? "letter-spacing:" + this._letterSpacing + ";" : "") + (this._whiteSpace ? "white-space:" + this._whiteSpace + ";" : "");
+var style_$7 = "padding:0px;overflow:visible;width:" + width_$2 + ";height:auto;" + (this._fontSize ? "font-size:" + this._fontSize + ";" : "") + (this._fontWeight ? "font-weight:" + this._fontWeight + ";" : "") + (this._fontStyle ? "font-style:" + this._fontStyle + ";" : "") + (this._fontFamily ? "font-family:" + this._fontFamily + ";" : "") + (this._fontSize ? "font-size:" + this._fontSize + ";" : "") + (this._letterSpacing ? "letter-spacing:" + this._letterSpacing + ";" : "") + (this._whiteSpace ? "white-space:" + (dimension_$0 == "width" ? "pre" : this._whiteSpace) + ";" : "");
 this._cachevalue = LzFontManager.getSize(dimension_$0, className_$4, style_$7, this.scrolldivtagname, string_$1);
 return this._cachevalue[dimension_$0]
 }
@@ -16990,7 +17929,7 @@ $8.returns[$9] = $a
 };
 $8.last = $9
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#445/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#456/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setSelectable = (function () {
@@ -17016,7 +17955,13 @@ this.__LZdiv.onselectstart = handler_$1
 var selectstyle_$2 = s_$0 ? "text" : "none";
 var stylename_$3 = LzSprite.__styleNames.userSelect;
 this.__LZdiv.style[stylename_$3] = selectstyle_$2
-}}
+};
+if (!this.quirks.fix_clickable) {
+if (s_$0) {
+this.scrolldiv.style.pointerEvents = "auto"
+} else {
+this.scrolldiv.style.pointerEvents = "none"
+}}}
 finally {
 var $4 = global["$lzprofiler"];
 if ($4) {
@@ -17029,7 +17974,7 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#512/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#524/40";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$__mouseEvent = LzSprite.prototype.__mouseEvent;
@@ -17062,7 +18007,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#529/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#549/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__onselectstartHandler = (function () {
@@ -17095,7 +18040,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#539/49";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#559/49";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__cancelhandler = (function () {
@@ -17126,7 +18071,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#546/42";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#566/42";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setResize = (function () {
@@ -17158,7 +18103,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#550/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#570/36";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setSelection = (function () {
@@ -17216,7 +18161,7 @@ $7.returns[$8] = $9
 };
 $7.last = $8
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#555/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#575/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__findNodeByOffset = (function () {
@@ -17258,7 +18203,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#588/45";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#608/45";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__getGlobalRange = (function () {
@@ -17306,7 +18251,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#605/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#625/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__textareaToRange = (function () {
@@ -17357,7 +18302,7 @@ $7.returns[$8] = $9
 };
 $7.last = $8
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#632/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#652/44";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__getRangeOwner = (function () {
@@ -17394,7 +18339,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#665/42";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#685/42";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__getOffset = (function () {
@@ -17432,7 +18377,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#677/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#697/38";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getSelectionPosition = (function () {
@@ -17475,7 +18420,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#690/47";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#710/47";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getSelectionSize = (function () {
@@ -17518,7 +18463,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#708/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#728/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getScroll = (function () {
@@ -17547,7 +18492,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#726/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#746/36";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getMaxScroll = (function () {
@@ -17576,7 +18521,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#733/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#753/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setScroll = (function () {
@@ -17605,7 +18550,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#740/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#760/36";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setYScroll = (function () {
@@ -17636,7 +18581,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#747/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#767/37";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setXScroll = (function () {
@@ -17667,7 +18612,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#751/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#771/37";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$setX = LzSprite.prototype.setX;
@@ -17716,7 +18661,7 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#756/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#776/31";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$setY = LzSprite.prototype.setY;
@@ -17765,7 +18710,7 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#780/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#800/31";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$setWidth = LzSprite.prototype.setWidth;
@@ -17789,6 +18734,9 @@ var nw_$1 = this.$LzSprite$setWidth(w_$0);
 if (nw_$1 == null) return;
 var scrolldivwidth_$2 = w_$0 >= this.__wpadding ? w_$0 - this.__wpadding : 0;
 if (this.scrolling) {
+if (this instanceof LzInputTextSprite && lz.embed.browser.isFirefox) {
+scrolldivwidth_$2 += 3
+};
 scrolldivwidth_$2 += this.quirks.scrollbar_width
 };
 var clipwidth_$3 = scrolldivwidth_$2;
@@ -17821,7 +18769,7 @@ $a.returns[$b] = $c
 };
 $a.last = $b
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#805/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#825/35";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$setHeight = LzSprite.prototype.setHeight;
@@ -17845,8 +18793,10 @@ var nh_$1 = this.$LzSprite$setHeight(h_$0);
 if (nh_$1 == null) return;
 var ht_$2 = h_$0 >= this.__hpadding ? h_$0 - this.__hpadding : 0;
 if (this.scrolling || this.classname == "lzswfinputtextmultiline") {
-ht_$2 += this.quirks.scrollbar_width
-};
+ht_$2 += this.quirks.scrollbar_width;
+if (this instanceof LzInputTextSprite && lz.embed.browser.isFirefox) {
+ht_$2 += 2
+}};
 var cdim_$3 = this.CSSDimension;
 var hp_$4 = cdim_$3(ht_$2);
 if (hp_$4 !== this.__heightcss) {
@@ -17857,6 +18807,7 @@ if (this.scrolling) {
 var wp_$6 = cdim_$3(this.width || 0);
 scrolldiv_$5.style.clip = "rect(0 " + wp_$6 + " " + hp_$4 + " 0)"
 }};
+this.__updatefieldsize();
 return ht_$2
 }
 finally {
@@ -17871,7 +18822,7 @@ $7.returns[$8] = $9
 };
 $7.last = $8
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#853/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#878/36";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.enableClickableLinks = (function () {
@@ -17900,7 +18851,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#897/47";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#929/47";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.makeTextLink = (function () {
@@ -17933,7 +18884,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#900/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#932/39";
 return $lzsc$temp
 })();
 $modules.lz.__callTextLink = (function () {
@@ -17966,7 +18917,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#907/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#939/30";
 return $lzsc$temp
 })();
 LzTextSprite.linkIDMap = [];
@@ -17998,7 +18949,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#919/26";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#951/26";
 return $lzsc$temp
 })();
 LzTextSprite.deleteLinkID = (function () {
@@ -18029,7 +18980,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#924/29";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#956/29";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$destroy = LzSprite.prototype.destroy;
@@ -18062,7 +19013,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#929/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#961/34";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setTextAlign = (function () {
@@ -18095,7 +19046,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#934/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#966/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setTextIndent = (function () {
@@ -18134,7 +19085,7 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#941/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#973/40";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setLetterSpacing = (function () {
@@ -18168,7 +19119,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#959/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#991/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setTextDecoration = (function () {
@@ -18201,7 +19152,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#968/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#1000/44";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getDisplayObject = (function () {
@@ -18232,7 +19183,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#975/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#1007/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.updateShadow = (function () {
@@ -18270,7 +19221,7 @@ $5.returns[$6] = $7
 };
 $5.last = $6
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#979/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#1011/39";
 return $lzsc$temp
 })();
 var LzInputTextSprite = (function () {
@@ -18349,7 +19300,7 @@ type_$1 = "multiline"
 }};
 this.__createInputDiv(type_$1);
 t_$0 = t_$0 || "";
-lz.embed.__setAttr(this.__LzInputDiv, "value", t_$0);
+this.__LzInputDiv.setAttribute("value", t_$0);
 if (this.quirks.fix_clickable) {
 if (this.quirks.fix_ie_clickable) {
 this.__LZinputclickdiv = document.createElement("img");
@@ -18408,7 +19359,7 @@ var tagname_$1 = "input";
 if (type_$0 === "password") {
 this.multiline = false;
 this.__LzInputDiv = document.createElement(tagname_$1);
-lz.embed.__setAttr(this.__LzInputDiv, "type", "password")
+this.__LzInputDiv.setAttribute("type", "password")
 } else if (type_$0 === "multiline") {
 tagname_$1 = "textarea";
 this.multiline = true;
@@ -18416,10 +19367,10 @@ this.__LzInputDiv = document.createElement(tagname_$1)
 } else {
 this.multiline = false;
 this.__LzInputDiv = document.createElement(tagname_$1);
-lz.embed.__setAttr(this.__LzInputDiv, "type", "text")
+this.__LzInputDiv.setAttribute("type", "text")
 };
 if (this.quirks.firefox_autocomplete_bug) {
-lz.embed.__setAttr(this.__LzInputDiv, "autocomplete", "off")
+this.__LzInputDiv.setAttribute("autocomplete", "off")
 };
 this.__LzInputDiv.owner = this;
 if (this.quirks.emulate_flash_font_metrics) {
@@ -18432,7 +19383,7 @@ this.className = this.__LzInputDiv.className = "lzswfinputtext"
 this.className = this.__LzInputDiv.className = "lzinputtext"
 };
 if (this.owner) {
-lz.embed.__setAttr(this.__LzInputDiv, "name", this.owner.name)
+this.__LzInputDiv.setAttribute("name", this.owner.name)
 };
 this.scrolldiv = this.__LzInputDiv;
 this.scrolldivtagname = tagname_$1;
@@ -18475,7 +19426,7 @@ var olddiv_$2 = this.__LzInputDiv;
 this.__setTextEvents(false);
 this.__createInputDiv(ml_$0 ? "multiline" : "");
 var newdiv_$3 = this.__LzInputDiv;
-lz.embed.__setAttr(newdiv_$3, "style", olddiv_$2.style.cssText);
+newdiv_$3.setAttribute("style", olddiv_$2.style.cssText);
 if (this.quirks["fix_ie_css_syntax"]) {
 newdiv_$3.style.fontStyle = olddiv_$2.style.fontStyle;
 newdiv_$3.style.fontWeight = olddiv_$2.style.fontWeight;
@@ -18713,6 +19664,7 @@ $0.last = $1
 $lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#306/40";
 return $lzsc$temp
 })();
+LzInputTextSprite.prototype.r_to_n_re = new RegExp("\r", "mg");
 LzInputTextSprite.prototype.setText = (function () {
 var $lzsc$temp = function (t_$0) {
 try {
@@ -18731,6 +19683,7 @@ if (this.capabilities["htmlinputtext"]) {
 if (t_$0.indexOf("<br/>") != -1) {
 t_$0 = t_$0.replace(this.br_to_newline_re, "\r")
 }};
+t_$0 = t_$0.replace(this.r_to_n_re, "\n");
 this.text = t_$0;
 this.__createInputText(t_$0);
 this.__LzInputDiv.value = t_$0;
@@ -18748,7 +19701,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#312/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#314/39";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__setTextEvents = (function () {
@@ -18810,7 +19763,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#348/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#353/27";
 return $lzsc$temp
 })() : null
 }}
@@ -18826,7 +19779,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#329/47";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#334/47";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__pasteHandlerEx = (function () {
@@ -18910,7 +19863,7 @@ $e.returns[$f] = $g
 };
 $e.last = $f
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#352/48";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#357/48";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__pasteHandler = (function () {
@@ -18977,7 +19930,7 @@ $9.returns[$a] = $b
 };
 $9.last = $a
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#436/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#441/16";
 return $lzsc$temp
 })(), 1)
 }
@@ -18993,7 +19946,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#429/46";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#434/46";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__textEvent = (function () {
@@ -19040,14 +19993,14 @@ if (y_$5 >= d_$4.clientHeight - 3) {
 d_$4.scrollTop += sprite_$1.lineHeight ? sprite_$1.lineHeight : 10
 }}}};
 if (eventname_$2 === "onmouseout") {
+sprite_$1.__hide();
 sprite_$1.__mouseEvent(eventname_$2)
 } else if (eventname_$2 === "onmousedown") {
 sprite_$1.__mouseisdown = true
 } else if (eventname_$2 === "onmouseup") {
 evt_$0.cancelBubble = true;
 if (!sprite_$1.__isMouseOver()) {
-sprite_$1.__globalmouseup(evt_$0);
-sprite_$1.deselect()
+sprite_$1.__globalmouseup(evt_$0)
 } else {
 sprite_$1.__mouseEvent(eventname_$2)
 }};
@@ -19167,7 +20120,7 @@ $j.returns[$k] = $l
 };
 $j.last = $k
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#472/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#477/43";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setClickable = LzTextSprite.prototype.setClickable;
@@ -19200,7 +20153,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#705/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#709/44";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setEnabled = (function () {
@@ -19232,7 +20185,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#712/42";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#716/42";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setMaxLength = (function () {
@@ -19269,7 +20222,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#717/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#721/44";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.select = (function () {
@@ -19307,7 +20260,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#730/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#734/38";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__selectLastFocused = (function () {
@@ -19339,26 +20292,30 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#744/51";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#748/51";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setSelection = (function () {
 var $lzsc$temp = function (start_$0, end_$1) {
 try {
-var $b = global["$lzprofiler"];
-if ($b) {
-var $c = "" + (new Date().getTime() - $b.base);
-var $d = arguments.callee["displayName"];
-if ($b.last == $c) {
-$b.events[$c] += ",calls:" + $d
+var $c = global["$lzprofiler"];
+if ($c) {
+var $d = "" + (new Date().getTime() - $c.base);
+var $e = arguments.callee["displayName"];
+if ($c.last == $d) {
+$c.events[$d] += ",calls:" + $e
 } else {
-$b.calls[$c] = $d
+$c.calls[$d] = $e
 };
-$b.last = $c
+$c.last = $d
 };
 switch (arguments.length) {
 case 1:
 end_$1 = null
+};
+var cheight_$2 = this.__LZdiv.clientHeight;
+if (cheight_$2 == 0) {
+return
 };
 if (end_$1 == null) {
 end_$1 = start_$0
@@ -19367,43 +20324,43 @@ this._cancelblur = true;
 this.__show();
 LzInputTextSprite.prototype.__lastfocus = this;
 if (this.quirks["text_selection_use_range"]) {
-var range_$2 = this.__LzInputDiv.createTextRange();
-var val_$3 = this.__LzInputDiv.value;
+var range_$3 = this.__LzInputDiv.createTextRange();
+var val_$4 = this.__LzInputDiv.value;
 if (start_$0 > end_$1) {
-var st_$4 = start_$0;
+var st_$5 = start_$0;
 start_$0 = end_$1;
-end_$1 = st_$4
+end_$1 = st_$5
 };
 if (this.multiline) {
-var offset_$5 = 0;
-var startcounter_$6 = 0;
-while (offset_$5 < start_$0) {
-offset_$5 = val_$3.indexOf("\r\n", offset_$5 + 2);
-if (offset_$5 == -1) break;
-startcounter_$6++
+var offset_$6 = 0;
+var startcounter_$7 = 0;
+while (offset_$6 < start_$0) {
+offset_$6 = val_$4.indexOf("\r\n", offset_$6 + 2);
+if (offset_$6 == -1) break;
+startcounter_$7++
 };
-var midcounter_$7 = 0;
-while (offset_$5 < end_$1) {
-offset_$5 = val_$3.indexOf("\r\n", offset_$5 + 2);
-if (offset_$5 == -1) break;
-midcounter_$7++
+var midcounter_$8 = 0;
+while (offset_$6 < end_$1) {
+offset_$6 = val_$4.indexOf("\r\n", offset_$6 + 2);
+if (offset_$6 == -1) break;
+midcounter_$8++
 };
-var endcounter_$8 = 0;
-while (offset_$5 < val_$3.length) {
-offset_$5 = val_$3.indexOf("\r\n", offset_$5 + 2);
-if (offset_$5 == -1) break;
-endcounter_$8++
+var endcounter_$9 = 0;
+while (offset_$6 < val_$4.length) {
+offset_$6 = val_$4.indexOf("\r\n", offset_$6 + 2);
+if (offset_$6 == -1) break;
+endcounter_$9++
 };
-var tl_$9 = range_$2.text.length;
-var st_$4 = start_$0;
-var ed_$a = end_$1 - val_$3.length + startcounter_$6 + midcounter_$7 + endcounter_$8 + 1
+var tl_$a = range_$3.text.length;
+var st_$5 = start_$0;
+var ed_$b = end_$1 - val_$4.length + startcounter_$7 + midcounter_$8 + endcounter_$9 + 1
 } else {
-var st_$4 = start_$0;
-var ed_$a = end_$1 - range_$2.text.length
+var st_$5 = start_$0;
+var ed_$b = end_$1 - range_$3.text.length
 };
-range_$2.moveStart("character", st_$4);
-range_$2.moveEnd("character", ed_$a);
-range_$2.select()
+range_$3.moveStart("character", st_$5);
+range_$3.moveEnd("character", ed_$b);
+range_$3.select()
 } else {
 this.__LzInputDiv.setSelectionRange(start_$0, end_$1)
 };
@@ -19411,18 +20368,18 @@ this.__LzInputDiv.focus();
 if (window["LzKeyboardKernel"]) LzKeyboardKernel.__cancelKeys = false
 }
 finally {
-var $b = global["$lzprofiler"];
-if ($b) {
-var $c = "" + (new Date().getTime() - $b.base);
-var $d = arguments.callee["displayName"];
-if ($b.last == $c) {
-$b.events[$c] += ",returns:" + $d
+var $c = global["$lzprofiler"];
+if ($c) {
+var $d = "" + (new Date().getTime() - $c.base);
+var $e = arguments.callee["displayName"];
+if ($c.last == $d) {
+$c.events[$d] += ",returns:" + $e
 } else {
-$b.returns[$c] = $d
+$c.returns[$d] = $e
 };
-$b.last = $c
+$c.last = $d
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#751/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#755/44";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.getSelectionPosition = (function () {
@@ -19465,7 +20422,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#816/52";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#834/52";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.getSelectionSize = (function () {
@@ -19508,9 +20465,23 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#835/48";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#853/48";
 return $lzsc$temp
 })();
+(function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
 if (LzSprite.quirks["text_selection_use_range"]) {
 LzInputTextSprite.prototype._getTextSelection = (function () {
 var $lzsc$temp = function () {
@@ -19560,7 +20531,7 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#854/49";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#873/49";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype._getTextareaSelection = (function () {
@@ -19665,10 +20636,25 @@ $n.returns[$o] = $p
 };
 $n.last = $o
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#884/53";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#903/53";
 return $lzsc$temp
 })()
+}}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
 };
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#871/3";
+return $lzsc$temp
+})()();
 LzInputTextSprite.prototype.deselect = (function () {
 var $lzsc$temp = function () {
 try {
@@ -19699,7 +20685,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#997/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1017/40";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__fontStyle = "normal";
@@ -19738,7 +20724,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1012/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1032/43";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setFontStyle = LzTextSprite.prototype.setFontStyle;
@@ -19777,7 +20763,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1021/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1041/44";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setFontName = LzTextSprite.prototype.setFontName;
@@ -19812,7 +20798,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1034/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1054/43";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setWidth = LzTextSprite.prototype.setWidth;
@@ -19852,7 +20838,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1044/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1064/40";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setHeight = LzTextSprite.prototype.setHeight;
@@ -19892,7 +20878,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1063/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1083/41";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setColor = (function () {
@@ -19925,7 +20911,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1081/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1101/40";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.getText = (function () {
@@ -19959,7 +20945,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1087/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1107/39";
 return $lzsc$temp
 })();
 LzInputTextSprite.findSelection = (function () {
@@ -19991,7 +20977,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1098/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1118/35";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setTextColor = (function () {
@@ -20024,7 +21010,40 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1105/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1125/44";
+return $lzsc$temp
+})();
+LzInputTextSprite.prototype.setReadOnly = (function () {
+var $lzsc$temp = function (c_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (c_$0) {
+this.__LzInputDiv.setAttribute("readonly", "readonly")
+} else this.__LzInputDiv.removeAttribute("readonly")
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1131/43";
 return $lzsc$temp
 })();
 var LzXMLParser = {parseXML: (function () {
@@ -20084,7 +21103,7 @@ $2.calls[$3] = $4
 $2.last = $3
 };
 var browser_$1 = lz.embed.browser;
-if (browser_$1.isIE) {
+if (browser_$1.isIE && browser_$1.version < 9) {
 return this.__checkIE(doc_$0)
 } else if (browser_$1.isFirefox || browser_$1.isOpera) {
 return this.__checkFirefox(doc_$0)
@@ -20135,7 +21154,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#42/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#44/16";
 return $lzsc$temp
 })(), __checkFirefox: (function () {
 var $lzsc$temp = function (doc_$0) {
@@ -20168,7 +21187,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#48/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#50/21";
 return $lzsc$temp
 })(), __checkSafari: (function () {
 var $lzsc$temp = function (doc_$0) {
@@ -20206,11 +21225,25 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#57/20";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#59/20";
 return $lzsc$temp
 })()};
+(function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
 if (typeof DOMParser == "undefined") {
-var DOMParser = (function () {
+DOMParser = (function () {
 var $lzsc$temp = function () {
 try {
 var $0 = global["$lzprofiler"];
@@ -20236,7 +21269,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#84/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#87/17";
 return $lzsc$temp
 })();
 DOMParser.prototype.parseFromString = (function () {
@@ -20286,10 +21319,25 @@ $7.returns[$8] = $9
 };
 $7.last = $8
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#85/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#88/43";
 return $lzsc$temp
 })()
+}}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
 };
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#83/3";
+return $lzsc$temp
+})()();
 var LzXMLTranslator = {whitespacePat: new RegExp("^\\s*$"), stringTrimPat: new RegExp("^\\s+|\\s+$", "g"), copyXML: (function () {
 var $lzsc$temp = function (xmldoc_$0, trimwhitespace_$1, nsprefix_$2) {
 try {
@@ -20475,7 +21523,9 @@ $2.last = $3
 this.owner = owner_$0;
 this.options = {parsexml: true, serverproxyargs: null};
 this.requestheaders = {};
-this.requestmethod = LzHTTPLoader.GET_METHOD
+this.requestmethod = LzHTTPLoader.GET_METHOD;
+this.iscors = false;
+this.credentialled = false
 }
 finally {
 var $2 = global["$lzprofiler"];
@@ -20523,7 +21573,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#30/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#32/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.loadError = (function () {
@@ -20552,7 +21602,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#31/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#33/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.loadTimeout = (function () {
@@ -20581,7 +21631,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#32/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#34/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.loadContent = (function () {
@@ -20615,7 +21665,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#34/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#36/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.translateXML = (function () {
@@ -20662,7 +21712,7 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#43/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#45/39";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getResponse = (function () {
@@ -20693,7 +21743,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#76/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#78/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getResponseStatus = (function () {
@@ -20724,7 +21774,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#81/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#83/44";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getResponseHeaders = (function () {
@@ -20755,7 +21805,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#86/45";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#88/45";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getResponseHeader = (function () {
@@ -20786,7 +21836,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#90/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#92/44";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setRequestHeaders = (function () {
@@ -20817,7 +21867,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#97/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#99/44";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setRequestHeader = (function () {
@@ -20848,7 +21898,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#105/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#107/43";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setOption = (function () {
@@ -20879,7 +21929,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#110/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#112/36";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getOption = (function () {
@@ -20910,7 +21960,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#115/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#117/36";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setProxied = (function () {
@@ -20941,7 +21991,38 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#120/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#122/37";
+return $lzsc$temp
+})();
+LzHTTPLoader.prototype.setCredentialled = (function () {
+var $lzsc$temp = function (cred_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.credentialled = cred_$0
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#127/43";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setQueryParams = (function () {
@@ -20972,7 +22053,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#125/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#132/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setQueryString = (function () {
@@ -21003,7 +22084,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#130/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#137/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setQueueing = (function () {
@@ -21034,7 +22115,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#138/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#145/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.abort = (function () {
@@ -21069,7 +22150,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#143/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#150/32";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.open = (function () {
@@ -21098,7 +22179,8 @@ this.__abort = false;
 this.__timeout = false;
 this.__timeoutID = 0;
 this.requesturl = url_$1;
-this.requestmethod = method_$0
+this.requestmethod = method_$0;
+this.iscors = this.checkIfCORS()
 }
 finally {
 var $4 = global["$lzprofiler"];
@@ -21112,7 +22194,7 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#152/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#159/31";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.send = (function () {
@@ -21143,7 +22225,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#173/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#183/31";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.makeProxiedURL = (function () {
@@ -21175,7 +22257,7 @@ $7.returns[$8] = $9
 };
 $7.last = $8
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#185/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#195/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.timeout = Infinity;
@@ -21207,7 +22289,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#208/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#218/37";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setupTimeout = (function () {
@@ -21238,7 +22320,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#214/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#224/39";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.removeTimeout = (function () {
@@ -21271,7 +22353,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#219/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#229/40";
 return $lzsc$temp
 })();
 LzHTTPLoader.__LZhandleXMLHTTPTimeout = (function () {
@@ -21307,7 +22389,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#227/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#237/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getElapsedTime = (function () {
@@ -21338,7 +22420,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#236/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#246/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.__setRequestHeaders = (function () {
@@ -21372,7 +22454,7 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#241/46";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#251/46";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.__getAllResponseHeaders = (function () {
@@ -21410,7 +22492,7 @@ $5.returns[$6] = $7
 };
 $5.last = $6
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#251/50";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#261/50";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.loadXMLDoc = (function () {
@@ -21481,7 +22563,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#268/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#277/39";
 return $lzsc$temp
 })();
 try {
@@ -21492,8 +22574,11 @@ this.req = null;
 this.loadError(this, null);
 return
 };
-if (method_$0 == "POST" && headers_$2["content-type"] == null) {
-headers_$2["content-type"] = "application/x-www-form-urlencoded"
+if (this.iscors && this.credentialled && this.req.withCredentials !== undefined) {
+this.req.withCredentials = true
+};
+if (method_$0 == "POST" && headers_$2["Content-Type"] == null) {
+headers_$2["Content-Type"] = "application/x-www-form-urlencoded"
 };
 this.__setRequestHeaders(this.req, headers_$2);
 this.gstart = new Date().getTime();
@@ -21520,7 +22605,50 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#264/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#273/37";
+return $lzsc$temp
+})();
+LzHTTPLoader.prototype.checkIfCORS = (function () {
+var $lzsc$temp = function () {
+try {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
+} else {
+$4.calls[$5] = $6
+};
+$4.last = $5
+};
+var url_$0 = new (lz.URL)(this.requesturl);
+if (this.options.proxied === "true" || url_$0.host === null && url_$0.port === null) {
+return false
+};
+var domainRegExp_$1 = new RegExp("//(www.)?(.[^/:]+)"), isHttps_$2 = url_$0.protocol == "https", port_$3 = url_$0.port;
+if (port_$3 == null) {
+if (isHttps_$2) {
+port_$3 = lz.Browser.defaultPortNums.https
+} else {
+port_$3 = lz.Browser.defaultPortNums.http
+}};
+this.iscors = url_$0.host != document.location.hostname || document.location.port != port_$3;
+return this.iscors
+}
+finally {
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
+} else {
+$4.returns[$5] = $6
+};
+$4.last = $5
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#361/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.destroy = (function () {
@@ -21551,10 +22679,10 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#341/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#387/34";
 return $lzsc$temp
 })();
-var LzScreenKernel = {width: null, height: null, __resizeEvent: (function () {
+var LzScreenKernel = {width: null, height: null, orientation: "landscape", __orientationchange: false, __resizeEvent: (function () {
 var $lzsc$temp = function () {
 try {
 var $1 = global["$lzprofiler"];
@@ -21571,7 +22699,10 @@ $1.last = $2
 var rootcontainerdiv_$0 = LzSprite.__rootSpriteContainer;
 LzScreenKernel.width = rootcontainerdiv_$0.offsetWidth;
 LzScreenKernel.height = rootcontainerdiv_$0.offsetHeight;
-if (LzScreenKernel.__callback) LzScreenKernel.__scope[LzScreenKernel.__callback]({width: LzScreenKernel.width, height: LzScreenKernel.height})
+if (LzScreenKernel.__orientationchange) {
+LzScreenKernel.orientation = Math.abs(window.orientation) === 90 ? "landscape" : "portrait"
+};
+if (LzScreenKernel.__callback) LzScreenKernel.__scope[LzScreenKernel.__callback]({width: LzScreenKernel.width, height: LzScreenKernel.height, orientation: LzScreenKernel.orientation})
 }
 finally {
 var $1 = global["$lzprofiler"];
@@ -21585,7 +22716,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#16/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#18/21";
 return $lzsc$temp
 })(), __init: (function () {
 var $lzsc$temp = function () {
@@ -21601,8 +22732,11 @@ $0.calls[$1] = $2
 };
 $0.last = $1
 };
-lz.embed.attachEventHandler(window.top, "resize", LzScreenKernel, "__resizeEvent")
-}
+lz.embed.attachEventHandler(window.top, "resize", LzScreenKernel, "__resizeEvent");
+if (LzSprite.prototype.capabilities.screenorientation) {
+LzScreenKernel.__orientationchange = true;
+lz.embed.attachEventHandler(window.top, "orientationchange", LzScreenKernel, "__resizeEvent")
+}}
 finally {
 var $0 = global["$lzprofiler"];
 if ($0) {
@@ -21615,7 +22749,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#59/14";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#64/14";
 return $lzsc$temp
 })(), __callback: null, __scope: null, setCallback: (function () {
 var $lzsc$temp = function (scope_$0, funcname_$1) {
@@ -21648,7 +22782,7 @@ $2.returns[$3] = $4
 };
 $2.last = $3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#64/19";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#74/19";
 return $lzsc$temp
 })()};
 Class.make("LzContextMenuKernel", ["$lzsc$initialize", (function () {
@@ -21711,34 +22845,6 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "setDelegate";
 return $lzsc$temp
-})(), "addItem", (function () {
-var $lzsc$temp = function (item_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "addItem";
-return $lzsc$temp
 })(), "hideBuiltInItems", (function () {
 var $lzsc$temp = function () {
 try {
@@ -21799,90 +22905,65 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "showBuiltInItems";
 return $lzsc$temp
-})(), "clearItems", (function () {
-var $lzsc$temp = function () {
+})(), "kernelItems", void 0, "__show", (function () {
+var $lzsc$temp = function (target_$0) {
 try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
+var $b = global["$lzprofiler"];
+if ($b) {
+var $c = "" + (new Date().getTime() - $b.base);
+var $d = arguments.callee["displayName"];
+if ($b.last == $c) {
+$b.events[$c] += ",calls:" + $d
 } else {
-$0.calls[$1] = $2
+$b.calls[$c] = $d
 };
-$0.last = $1
-}}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "clearItems";
-return $lzsc$temp
-})(), "__show", (function () {
-var $lzsc$temp = function () {
-try {
-var $9 = global["$lzprofiler"];
-if ($9) {
-var $a = "" + (new Date().getTime() - $9.base);
-var $b = arguments.callee["displayName"];
-if ($9.last == $a) {
-$9.events[$a] += ",calls:" + $b
-} else {
-$9.calls[$a] = $b
-};
-$9.last = $a
+$b.last = $c
 };
 if (LzMouseKernel.__showncontextmenu === this) {
 return
 } else {
 LzMouseKernel.__showncontextmenu = this
 };
-var owner_$0 = this.owner;
-var del_$1 = this._delegate;
-if (del_$1 != null) del_$1.execute(owner_$0);
-if (owner_$0.onmenuopen.ready) owner_$0.onmenuopen.sendEvent(owner_$0);
-var classlist_$2 = [];
-var items_$3 = owner_$0.getItems();
-var _items_$4 = {};
-for (var i_$5 = 0;i_$5 < items_$3.length;i_$5++) {
-var v_$6 = items_$3[i_$5].kernel.cmenuitem;
-var caption_$7 = v_$6.caption;
-if (v_$6.visible != true || (caption_$7 in _items_$4)) {
+var owner_$1 = this.owner;
+var del_$2 = this._delegate;
+if (del_$2 != null) del_$2.execute(owner_$1);
+if (owner_$1.onmenuopen.ready) owner_$1.onmenuopen.sendEvent(owner_$1);
+var classlist_$3 = [];
+var items_$4 = owner_$1._filteredItems(target_$0);
+this.kernelItems = [];
+var _items_$5 = {};
+for (var i_$6 = 0;i_$6 < items_$4.length;i_$6++) {
+var ki_$7 = items_$4[i_$6].kernel;
+var v_$8 = ki_$7.cmenuitem;
+var caption_$9 = v_$8.caption;
+if (v_$8.visible != true || (caption_$9 in _items_$5)) {
 continue
 };
-_items_$4[caption_$7] = true;
-if (v_$6.separatorBefore) {
-classlist_$2.push({type: "separator"})
+_items_$5[caption_$9] = true;
+this.kernelItems[i_$6] = ki_$7;
+if (v_$8.separatorBefore) {
+classlist_$3.push({type: "separator"})
 };
-if (v_$6.enabled) {
-classlist_$2.push({type: "text", label: caption_$7, offset: i_$5})
+if (v_$8.enabled) {
+classlist_$3.push({type: "text", label: caption_$9, offset: i_$6})
 } else {
-classlist_$2.push({type: "disabled", label: caption_$7, offset: i_$5})
+classlist_$3.push({type: "disabled", label: caption_$9, offset: i_$6})
 }};
-var s_$8 = LzContextMenuKernel.lzcontextmenu || LzContextMenuKernel.__create();
-s_$8.setItems(classlist_$2);
-s_$8.show()
+var s_$a = LzContextMenuKernel.lzcontextmenu || LzContextMenuKernel.__create();
+s_$a.setItems(classlist_$3);
+s_$a.show()
 }
 finally {
-var $9 = global["$lzprofiler"];
-if ($9) {
-var $a = "" + (new Date().getTime() - $9.base);
-var $b = arguments.callee["displayName"];
-if ($9.last == $a) {
-$9.events[$a] += ",returns:" + $b
+var $b = global["$lzprofiler"];
+if ($b) {
+var $c = "" + (new Date().getTime() - $b.base);
+var $d = arguments.callee["displayName"];
+if ($b.last == $c) {
+$b.events[$c] += ",returns:" + $d
 } else {
-$9.returns[$a] = $b
+$b.returns[$c] = $d
 };
-$9.last = $a
+$b.last = $c
 }}};
 $lzsc$temp["displayName"] = "__show";
 return $lzsc$temp
@@ -21930,8 +23011,8 @@ $2.calls[$3] = $4
 };
 $2.last = $3
 };
-var items_$1 = this.owner.getItems();
-if (items_$1 && items_$1[i_$0]) items_$1[i_$0].kernel.__select()
+var items_$1 = this.kernelItems;
+if (items_$1 && items_$1[i_$0]) items_$1[i_$0].__select()
 }
 finally {
 var $2 = global["$lzprofiler"];
@@ -22233,6 +23314,20 @@ $2.last = $3
 $lzsc$temp["displayName"] = "__select";
 return $lzsc$temp
 })()]);
+(function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
 if (LzSprite.quirks.ie_timer_closure) {
 (function () {
 var $lzsc$temp = function (f_$0) {
@@ -22263,7 +23358,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#18/4";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#19/4";
 return $lzsc$temp
 })()((function () {
 var $lzsc$temp = function (f) {
@@ -22323,7 +23418,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#26/18";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#27/18";
 return $lzsc$temp
 })(), t_$0))
 }
@@ -22339,7 +23434,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#22/12 closure";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#23/12 closure";
 return $lzsc$temp
 })()
 }
@@ -22355,10 +23450,25 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#21/6";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#22/6 closure";
 return $lzsc$temp
 })())
+}}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
 };
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#13/3";
+return $lzsc$temp
+})()();
 var LzTimeKernel = {setTimeout: (function () {
 var $lzsc$temp = function () {
 try {
@@ -22387,7 +23497,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#34/17";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#36/17";
 return $lzsc$temp
 })(), setInterval: (function () {
 var $lzsc$temp = function () {
@@ -22417,7 +23527,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#37/19";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#39/19";
 return $lzsc$temp
 })(), clearTimeout: (function () {
 var $lzsc$temp = function (id_$0) {
@@ -22447,7 +23557,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#40/20";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#42/20";
 return $lzsc$temp
 })(), clearInterval: (function () {
 var $lzsc$temp = function (id_$0) {
@@ -22477,7 +23587,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#43/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#45/21";
 return $lzsc$temp
 })(), startTime: new Date().valueOf(), getTimer: (function () {
 var $lzsc$temp = function () {
@@ -22507,7 +23617,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#49/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#51/16";
 return $lzsc$temp
 })()};
 var LzFontManager = new Object();
@@ -22547,16 +23657,16 @@ return $lzsc$temp
 LzFontManager.generateCSS = (function () {
 var $lzsc$temp = function () {
 try {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",calls:" + $8
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",calls:" + $a
 } else {
-$6.calls[$7] = $8
+$8.calls[$9] = $a
 };
-$6.last = $7
+$8.last = $9
 };
 var fonts_$0 = this.fonts;
 var output_$1 = "";
@@ -22564,22 +23674,24 @@ for (var i_$2 in fonts_$0) {
 var font_$3 = fonts_$0[i_$2];
 var url_$4 = this.getURL(font_$3);
 var i_$2 = url_$4.lastIndexOf(".ttf");
-var ieurl_$5 = url_$4.substring(0, i_$2) + ".eot";
-output_$1 += "@font-face{font-family:" + font_$3.name + ";src:url(" + ieurl_$5 + ');src:local("' + font_$3.name + '"), url(' + url_$4 + ') format("truetype");font-weight:' + font_$3.weight + ";font-style:" + font_$3.style + ";}"
+var ttf_$5 = url_$4;
+var eot_$6 = url_$4.substring(0, i_$2) + ".eot";
+var woff_$7 = url_$4.substring(0, i_$2) + ".woff";
+output_$1 += "@font-face{" + "font-family:" + font_$3.name + ";" + "src:url(" + eot_$6 + ");" + 'src:local("' + font_$3.name + '"),' + "url(" + woff_$7 + ') format("woff"),' + "url(" + eot_$6 + ') format("embedded-opentype"),' + "url(" + ttf_$5 + ') format("truetype");' + "font-weight:" + font_$3.weight + ";" + "font-style:" + font_$3.style + ";" + "}"
 };
 return output_$1
 }
 finally {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",returns:" + $8
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",returns:" + $a
 } else {
-$6.returns[$7] = $8
+$8.returns[$9] = $a
 };
-$6.last = $7
+$8.last = $9
 }}};
 $lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#42/29";
 return $lzsc$temp
@@ -22612,7 +23724,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#55/24";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#68/24";
 return $lzsc$temp
 })();
 LzFontManager.__fontloadstate = {counter: 0};
@@ -22667,7 +23779,7 @@ $d.returns[$e] = $f
 };
 $d.last = $e
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#64/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#77/30";
 return $lzsc$temp
 })();
 LzFontManager.fontloadtimeout = 15000;
@@ -22723,7 +23835,7 @@ $b.returns[$c] = $d
 };
 $b.last = $c
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#107/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#120/34";
 return $lzsc$temp
 })();
 LzFontManager.__sizecache = {counter: 0};
@@ -22761,7 +23873,7 @@ $0.returns[$1] = $2
 };
 $0.last = $1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#154/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#167/37";
 return $lzsc$temp
 })();
 LzFontManager.__createContainerDiv = (function () {
@@ -22779,7 +23891,7 @@ $1.calls[$2] = $3
 $1.last = $2
 };
 var textsizecache_$0 = document.createElement("div");
-lz.embed.__setAttr(textsizecache_$0, "id", "lzTextSizeCache");
+textsizecache_$0.setAttribute("id", "lzTextSizeCache");
 document.body.appendChild(textsizecache_$0);
 this.__rootdiv = document.getElementById("lzTextSizeCache")
 }
@@ -22795,7 +23907,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#163/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#176/38";
 return $lzsc$temp
 })();
 LzFontManager.getSize = (function () {
@@ -22848,7 +23960,7 @@ $a.returns[$b] = $c
 };
 $a.last = $b
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#171/25";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#184/25";
 return $lzsc$temp
 })();
 LzFontManager.__createMeasureDiv = (function () {
@@ -22878,8 +23990,8 @@ if (LzSprite.prototype.quirks.ie_leak_prevention) {
 LzTextSprite.prototype.__divstocleanup.push(mdiv_$5)
 }} else {
 var mdiv_$5 = document.createElement(tagname_$2);
-lz.embed.__setAttr(mdiv_$5, "class", className_$0);
-lz.embed.__setAttr(mdiv_$5, "style", style_$1);
+mdiv_$5.setAttribute("class", className_$0);
+mdiv_$5.setAttribute("style", style_$1);
 this.__rootdiv.appendChild(mdiv_$5)
 };
 __sizecache_$3.counter++;
@@ -22897,7 +24009,7 @@ $6.returns[$7] = $8
 };
 $6.last = $7
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#207/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#220/36";
 return $lzsc$temp
 })();
 LzFontManager.__setTextContent = (function () {
@@ -22937,7 +24049,7 @@ $3.returns[$4] = $5
 };
 $3.last = $4
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#232/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#245/34";
 return $lzsc$temp
 })();
 Class.make("LzView", ["$lzsc$initialize", (function () {
@@ -23018,7 +24130,7 @@ $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_visible";
 return $lzsc$temp
-})(), "onaddsubview", LzDeclaredEvent, "onblur", LzDeclaredEvent, "onclick", LzDeclaredEvent, "onclickable", LzDeclaredEvent, "onfocus", LzDeclaredEvent, "onframe", LzDeclaredEvent, "onheight", LzDeclaredEvent, "onkeyup", LzDeclaredEvent, "onkeydown", LzDeclaredEvent, "onlastframe", LzDeclaredEvent, "onload", LzDeclaredEvent, "onframesloadratio", LzDeclaredEvent, "onloadratio", LzDeclaredEvent, "onerror", LzDeclaredEvent, "ontimeout", LzDeclaredEvent, "onmousedown", LzDeclaredEvent, "onmouseout", LzDeclaredEvent, "onmouseover", LzDeclaredEvent, "onmousetrackover", LzDeclaredEvent, "onmousetrackup", LzDeclaredEvent, "onmousetrackout", LzDeclaredEvent, "onmouseup", LzDeclaredEvent, "onmousedragin", LzDeclaredEvent, "onmousedragout", LzDeclaredEvent, "onmouseupoutside", LzDeclaredEvent, "onopacity", LzDeclaredEvent, "onplay", LzDeclaredEvent, "onremovesubview", LzDeclaredEvent, "onresource", LzDeclaredEvent, "onresourceheight", LzDeclaredEvent, "onresourcewidth", LzDeclaredEvent, "onrotation", LzDeclaredEvent, "onstop", LzDeclaredEvent, "ontotalframes", LzDeclaredEvent, "onunstretchedheight", LzDeclaredEvent, "onunstretchedwidth", LzDeclaredEvent, "onvisible", LzDeclaredEvent, "onvisibility", LzDeclaredEvent, "onwidth", LzDeclaredEvent, "onx", LzDeclaredEvent, "onxoffset", LzDeclaredEvent, "ony", LzDeclaredEvent, "onyoffset", LzDeclaredEvent, "onfont", LzDeclaredEvent, "onfontsize", LzDeclaredEvent, "onfontstyle", LzDeclaredEvent, "ondblclick", LzDeclaredEvent, "DOUBLE_CLICK_TIME", 500, "onclip", LzDeclaredEvent, "capabilities", void 0, "construct", (function () {
+})(), "onaddsubview", LzDeclaredEvent, "onblur", LzDeclaredEvent, "onclick", LzDeclaredEvent, "onclickable", LzDeclaredEvent, "onfocus", LzDeclaredEvent, "onframe", LzDeclaredEvent, "onheight", LzDeclaredEvent, "onkeyup", LzDeclaredEvent, "onkeydown", LzDeclaredEvent, "onlastframe", LzDeclaredEvent, "onload", LzDeclaredEvent, "onframesloadratio", LzDeclaredEvent, "onloadratio", LzDeclaredEvent, "onerror", LzDeclaredEvent, "ontimeout", LzDeclaredEvent, "onmousedown", LzDeclaredEvent, "onmouseout", LzDeclaredEvent, "onmouseover", LzDeclaredEvent, "onmousetrackover", LzDeclaredEvent, "onmousetrackup", LzDeclaredEvent, "onmousetrackout", LzDeclaredEvent, "onmouseup", LzDeclaredEvent, "onmousedragin", LzDeclaredEvent, "onmousedragout", LzDeclaredEvent, "onmouseupoutside", LzDeclaredEvent, "ongesture", LzDeclaredEvent, "ontouch", LzDeclaredEvent, "onopacity", LzDeclaredEvent, "onplay", LzDeclaredEvent, "onplaying", LzDeclaredEvent, "onremovesubview", LzDeclaredEvent, "onresource", LzDeclaredEvent, "onresourceheight", LzDeclaredEvent, "onresourcewidth", LzDeclaredEvent, "onrotation", LzDeclaredEvent, "onstop", LzDeclaredEvent, "ontotalframes", LzDeclaredEvent, "onunstretchedheight", LzDeclaredEvent, "onunstretchedwidth", LzDeclaredEvent, "onvisible", LzDeclaredEvent, "onvisibility", LzDeclaredEvent, "onwidth", LzDeclaredEvent, "onx", LzDeclaredEvent, "onxoffset", LzDeclaredEvent, "ony", LzDeclaredEvent, "onyoffset", LzDeclaredEvent, "onfont", LzDeclaredEvent, "onfontsize", LzDeclaredEvent, "onfontstyle", LzDeclaredEvent, "ondblclick", LzDeclaredEvent, "DOUBLE_CLICK_TIME", 500, "onclip", LzDeclaredEvent, "capabilities", void 0, "construct", (function () {
 var $lzsc$temp = function (parent_$0, args_$1) {
 try {
 var $3 = global["$lzprofiler"];
@@ -23085,18 +24197,8 @@ $2.calls[$3] = $4
 };
 $2.last = $3
 };
-if (this[attrname_$0]) {
-if (!this.__LZdeleted) {
-var $lzsc$o2qrcj = "$lzc$set_" + attrname_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$o2qrcj]) : this[$lzsc$o2qrcj] instanceof Function) {
-this[$lzsc$o2qrcj](value_$1)
-} else {
-this[attrname_$0] = value_$1;
-var $lzsc$j2a892 = this["on" + attrname_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$j2a892) : $lzsc$j2a892 instanceof LzEvent) {
-if ($lzsc$j2a892.ready) {
-$lzsc$j2a892.sendEvent(value_$1)
-}}}}}}
+if (this[attrname_$0]) this.setAttribute(attrname_$0, value_$1)
+}
 finally {
 var $2 = global["$lzprofiler"];
 if ($2) {
@@ -23144,35 +24246,35 @@ return $lzsc$temp
 })(), "init", (function () {
 var $lzsc$temp = function () {
 try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
 } else {
-$0.calls[$1] = $2
+$1.calls[$2] = $3
 };
-$0.last = $1
+$1.last = $2
 };
-if (this.__updateshadowoninit) {
-delete this.__updateshadowoninit;
-this.__updateShadow()
+var updateshadow_$0 = this.shadowcolor != null && (this.shadowdistance != 0 || this.shadowblurradius != 0);
+if (updateshadow_$0) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
 };
 if (this.sprite) {
 this.sprite.init(this.visible)
 }}
 finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
 } else {
-$0.returns[$1] = $2
+$1.returns[$2] = $3
 };
-$0.last = $1
+$1.last = $2
 }}};
 $lzsc$temp["displayName"] = "init";
 return $lzsc$temp
@@ -23607,6 +24709,36 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_fontstyle";
+return $lzsc$temp
+})(), "hasdirectionallayout", void 0, "onhasdirectionallayout", LzDeclaredEvent, "$lzc$set_hasdirectionallayout", (function () {
+var $lzsc$temp = function (val_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.hasdirectionallayout = val_$0
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "$lzc$set_hasdirectionallayout";
 return $lzsc$temp
 })(), "fontsize", void 0, "$lzc$set_fontsize", (function () {
 var $lzsc$temp = function (val_$0) {
@@ -24574,71 +25706,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_resource";
 return $lzsc$temp
-})(), "resourcewidth", 0, "resourceheight", 0, "__LZcheckwidth", true, "__LZcheckheight", true, "__LZhasoffset", null, "__LZoutlieheight", null, "__LZoutliewidth", null, "setLayout", (function () {
-var $lzsc$temp = function (layoutobj_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_layout(layoutobj_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setLayout";
-return $lzsc$temp
-})(), "setFontName", (function () {
-var $lzsc$temp = function (val_$0, prop_$1) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-switch (arguments.length) {
-case 1:
-prop_$1 = null
-};
-this.$lzc$set_font(val_$0)
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "setFontName";
-return $lzsc$temp
-})(), "_setrescwidth", false, "_setrescheight", false, "searchSubviews", (function () {
+})(), "resourcewidth", 0, "resourceheight", 0, "__LZcheckwidth", true, "__LZcheckheight", true, "__LZhasoffset", null, "__LZoutlieheight", null, "__LZoutliewidth", null, "_setrescwidth", false, "_setrescheight", false, "searchSubviews", (function () {
 var $lzsc$temp = function (prop_$0, val_$1) {
 try {
 var $8 = global["$lzprofiler"];
@@ -24681,37 +25749,7 @@ $8.last = $9
 }}};
 $lzsc$temp["displayName"] = "searchSubviews";
 return $lzsc$temp
-})(), "layouts", null, "_resource", null, "setResource", (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_resource(v_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setResource";
-return $lzsc$temp
-})(), "resourceload", (function () {
+})(), "layouts", null, "_resource", null, "resourceload", (function () {
 var $lzsc$temp = function (i_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -24935,66 +25973,6 @@ $4.last = $5
 }}};
 $lzsc$temp["displayName"] = "destroy";
 return $lzsc$temp
-})(), "setVisible", (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_visible(v_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setVisible";
-return $lzsc$temp
-})(), "setVisibility", (function () {
-var $lzsc$temp = function (amVisible_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_visibility(amVisible_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setVisibility";
-return $lzsc$temp
 })(), "__LZupdateShown", (function () {
 var $lzsc$temp = function () {
 try {
@@ -25037,216 +26015,6 @@ $2.returns[$3] = $4
 $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "__LZupdateShown";
-return $lzsc$temp
-})(), "setWidth", (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_width(v_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setWidth";
-return $lzsc$temp
-})(), "setHeight", (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_height(v_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setHeight";
-return $lzsc$temp
-})(), "setOpacity", (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_opacity(v_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setOpacity";
-return $lzsc$temp
-})(), "setX", (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_x(v_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setX";
-return $lzsc$temp
-})(), "setY", (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_y(v_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setY";
-return $lzsc$temp
-})(), "setRotation", (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_rotation(v_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setRotation";
-return $lzsc$temp
-})(), "setAlign", (function () {
-var $lzsc$temp = function (align_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_align(align_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setAlign";
 return $lzsc$temp
 })(), "__LZalignCenter", (function () {
 var $lzsc$temp = function (e_$0) {
@@ -25317,66 +26085,6 @@ $2.returns[$3] = $4
 $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "__LZalignRight";
-return $lzsc$temp
-})(), "setXOffset", (function () {
-var $lzsc$temp = function (o_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_xoffset(o_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setXOffset";
-return $lzsc$temp
-})(), "setYOffset", (function () {
-var $lzsc$temp = function (o_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_yoffset(o_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setYOffset";
 return $lzsc$temp
 })(), "getBounds", (function () {
 var $lzsc$temp = function () {
@@ -25470,36 +26178,6 @@ $2.returns[$3] = $4
 $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "$lzc$getBounds_dependencies";
-return $lzsc$temp
-})(), "setValign", (function () {
-var $lzsc$temp = function (valign_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_valign(valign_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setValign";
 return $lzsc$temp
 })(), "__LZvalignMiddle", (function () {
 var $lzsc$temp = function (e_$0) {
@@ -26166,35 +26844,13 @@ var tLink_$2 = this.getLinkage(refView_$1);
 var val_$3 = refView_$1[prop_$0];
 if (prop_$0 == "x" || prop_$0 == "y") {
 tLink_$2.update(prop_$0);
-{
-var $lzsc$od4mgy = (val_$3 - tLink_$2[prop_$0 + "offset"]) / tLink_$2[prop_$0 + "scale"];
-if (!this.__LZdeleted) {
-var $lzsc$slae2i = "$lzc$set_" + prop_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$slae2i]) : this[$lzsc$slae2i] instanceof Function) {
-this[$lzsc$slae2i]($lzsc$od4mgy)
-} else {
-this[prop_$0] = $lzsc$od4mgy;
-var $lzsc$b1nfwy = this["on" + prop_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$b1nfwy) : $lzsc$b1nfwy instanceof LzEvent) {
-if ($lzsc$b1nfwy.ready) {
-$lzsc$b1nfwy.sendEvent($lzsc$od4mgy)
-}}}}}} else if (prop_$0 == "width" || prop_$0 == "height") {
+this.setAttribute(prop_$0, (val_$3 - tLink_$2[prop_$0 + "offset"]) / tLink_$2[prop_$0 + "scale"])
+} else if (prop_$0 == "width" || prop_$0 == "height") {
 var axis_$4 = prop_$0 == "width" ? "x" : "y";
 tLink_$2.update(axis_$4);
 var scale_$5 = axis_$4 + "scale";
-{
-var $lzsc$a2bys9 = val_$3 * refView_$1[scale_$5] / tLink_$2[scale_$5] / this[scale_$5];
-if (!this.__LZdeleted) {
-var $lzsc$2tufty = "$lzc$set_" + prop_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$2tufty]) : this[$lzsc$2tufty] instanceof Function) {
-this[$lzsc$2tufty]($lzsc$a2bys9)
-} else {
-this[prop_$0] = $lzsc$a2bys9;
-var $lzsc$hx20e3 = this["on" + prop_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$hx20e3) : $lzsc$hx20e3 instanceof LzEvent) {
-if ($lzsc$hx20e3.ready) {
-$lzsc$hx20e3.sendEvent($lzsc$a2bys9)
-}}}}}}}
+this.setAttribute(prop_$0, val_$3 * refView_$1[scale_$5] / tLink_$2[scale_$5] / this[scale_$5])
+}}
 finally {
 var $6 = global["$lzprofiler"];
 if ($6) {
@@ -26395,32 +27051,36 @@ $2.last = $3
 $lzsc$temp["displayName"] = "getLinkage";
 return $lzsc$temp
 })(), "mouseevent", (function () {
-var $lzsc$temp = function (eventname_$0) {
+var $lzsc$temp = function (eventname_$0, value_$1) {
 try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
 } else {
-$1.calls[$2] = $3
+$2.calls[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 };
-if (this[eventname_$0] && this[eventname_$0].ready) this[eventname_$0].sendEvent(this)
+switch (arguments.length) {
+case 1:
+value_$1 = null
+};
+if (this[eventname_$0] && this[eventname_$0].ready) this[eventname_$0].sendEvent(value_$1 || this)
 }
 finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
 } else {
-$1.returns[$2] = $3
+$2.returns[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 }}};
 $lzsc$temp["displayName"] = "mouseevent";
 return $lzsc$temp
@@ -26730,96 +27390,6 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "sendToBack";
 return $lzsc$temp
-})(), "setResourceNumber", (function () {
-var $lzsc$temp = function (n_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_frame(n_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setResourceNumber";
-return $lzsc$temp
-})(), "stretchResource", (function () {
-var $lzsc$temp = function (v_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_stretches(v_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "stretchResource";
-return $lzsc$temp
-})(), "setBGColor", (function () {
-var $lzsc$temp = function (bgc_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_bgcolor(bgc_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setBGColor";
-return $lzsc$temp
 })(), "setSource", (function () {
 var $lzsc$temp = function (source_$0, cache_$1, headers_$2, filetype_$3) {
 try {
@@ -26951,36 +27521,6 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "removeMask";
 return $lzsc$temp
-})(), "setClickable", (function () {
-var $lzsc$temp = function (amclickable_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_clickable(amclickable_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setClickable";
-return $lzsc$temp
 })(), "$lzc$set_cursor", (function () {
 var $lzsc$temp = function (cursor_$0) {
 try {
@@ -27011,40 +27551,6 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_cursor";
 return $lzsc$temp
-})(), "setCursor", (function () {
-var $lzsc$temp = function (cursor_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-switch (arguments.length) {
-case 0:
-cursor_$0 = null
-};
-this.$lzc$set_cursor(cursor_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setCursor";
-return $lzsc$temp
 })(), "$lzc$set_play", (function () {
 var $lzsc$temp = function (b_$0) {
 try {
@@ -27059,11 +27565,8 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
-if (b_$0) {
-this.play()
-} else {
-this.stop()
-}}
+this.$lzc$set_playing(b_$0)
+}
 finally {
 var $1 = global["$lzprofiler"];
 if ($1) {
@@ -27078,65 +27581,40 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_play";
 return $lzsc$temp
-})(), "setPlay", (function () {
+})(), "$lzc$set_playing", (function () {
 var $lzsc$temp = function (b_$0) {
 try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
 } else {
-$1.calls[$2] = $3
+$2.calls[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 };
-this.$lzc$set_play(b_$0)
-}
+var changed_$1 = b_$0 !== this.playing;
+if (changed_$1) {
+if (b_$0) {
+this.play()
+} else {
+this.stop()
+}}}
 finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
 } else {
-$1.returns[$2] = $3
+$2.returns[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 }}};
-$lzsc$temp["displayName"] = "setPlay";
-return $lzsc$temp
-})(), "getMCRef", (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-return this.getDisplayObject()
-}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "getMCRef";
+$lzsc$temp["displayName"] = "$lzc$set_playing";
 return $lzsc$temp
 })(), "getDisplayObject", (function () {
 var $lzsc$temp = function () {
@@ -27597,36 +28075,6 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "getID3";
 return $lzsc$temp
-})(), "setShowHandCursor", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_showhandcursor(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setShowHandCursor";
-return $lzsc$temp
 })(), "setAccessible", (function () {
 var $lzsc$temp = function (accessible_$0) {
 try {
@@ -27657,156 +28105,6 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "setAccessible";
-return $lzsc$temp
-})(), "setAAActive", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_aaactive(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setAAActive";
-return $lzsc$temp
-})(), "setAAName", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_aaname(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setAAName";
-return $lzsc$temp
-})(), "setAADescription", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_aadescription(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setAADescription";
-return $lzsc$temp
-})(), "setAATabIndex", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_aatabindex(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setAATabIndex";
-return $lzsc$temp
-})(), "setAASilent", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_aasilent(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setAASilent";
 return $lzsc$temp
 })(), "shouldYieldFocus", (function () {
 var $lzsc$temp = function () {
@@ -27946,37 +28244,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "setProxyPolicy";
 return $lzsc$temp
-})(), "__proxypolicy", null, "setProxyURL", (function () {
-var $lzsc$temp = function (f_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_proxyurl(f_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setProxyURL";
-return $lzsc$temp
-})(), "proxyurl", (function () {
+})(), "__proxypolicy", null, "proxyurl", (function () {
 var $lzsc$temp = function (url_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -28004,7 +28272,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "views/LaszloView.lzs#3442/16";
+$lzsc$temp["displayName"] = "views/LaszloView.lzs#3158/16";
 return $lzsc$temp
 })(), "$lzc$set_proxyurl", (function () {
 var $lzsc$temp = function (f_$0) {
@@ -28066,66 +28334,6 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_contextmenu";
-return $lzsc$temp
-})(), "setContextMenu", (function () {
-var $lzsc$temp = function (cmenu_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_contextmenu(cmenu_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setContextMenu";
-return $lzsc$temp
-})(), "getContextMenu", (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-return this.contextmenu
-}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "getContextMenu";
 return $lzsc$temp
 })(), "getNextSelection", (function () {
 var $lzsc$temp = function () {
@@ -28266,17 +28474,8 @@ if (this.capabilities["2dcanvas"]) {
 this.sprite.setContextCallback(this, "$lzc$set_context");
 var context_$0 = this.sprite.getContext();
 if (context_$0) {
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_context"]) : this["$lzc$set_context"] instanceof Function) {
-this["$lzc$set_context"](context_$0)
-} else {
-this["context"] = context_$0;
-var $lzsc$22vmtn = this["oncontext"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$22vmtn) : $lzsc$22vmtn instanceof LzEvent) {
-if ($lzsc$22vmtn.ready) {
-$lzsc$22vmtn.sendEvent(context_$0)
-}}}}}}}}
+this.setAttribute("context", context_$0)
+}}}
 finally {
 var $1 = global["$lzprofiler"];
 if ($1) {
@@ -28290,6 +28489,37 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "createContext";
+return $lzsc$temp
+})(), "drawshadow", (function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
+if (this.inited && this.height != null) {
+this.sprite.setHeight(this.height)
+}}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "drawshadow";
 return $lzsc$temp
 })(), "onshadowangle", LzDeclaredEvent, "shadowangle", 0, "$lzc$set_shadowangle", (function () {
 var $lzsc$temp = function (angle_$0) {
@@ -28307,7 +28537,9 @@ $1.last = $2
 };
 if (this.capabilities["dropshadows"]) {
 this.shadowangle = angle_$0;
-this.__updateShadow();
+if (this.inited) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
+};
 if (this.onshadowangle.ready) {
 this.onshadowangle.sendEvent(angle_$0)
 }}}
@@ -28342,7 +28574,9 @@ $1.last = $2
 if (this.capabilities["dropshadows"]) {
 if (distance_$0 < 0.01) distance_$0 = 0;
 this.shadowdistance = distance_$0;
-this.__updateShadow();
+if (this.inited) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
+};
 if (this.onshadowdistance.ready) {
 this.onshadowdistance.sendEvent(distance_$0)
 }}}
@@ -28360,7 +28594,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_shadowdistance";
 return $lzsc$temp
-})(), "onshadowcolor", LzDeclaredEvent, "shadowcolor", 0, "$lzc$set_shadowcolor", (function () {
+})(), "onshadowcolor", LzDeclaredEvent, "shadowcolor", null, "$lzc$set_shadowcolor", (function () {
 var $lzsc$temp = function (color_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -28375,8 +28609,10 @@ $1.calls[$2] = $3
 $1.last = $2
 };
 if (this.capabilities["dropshadows"]) {
-this.shadowcolor = LzColorUtils.torgb(color_$0);
-this.__updateShadow();
+this.shadowcolor = color_$0;
+if (this.inited) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
+};
 if (this.onshadowcolor.ready) {
 this.onshadowcolor.sendEvent(color_$0)
 }}}
@@ -28409,9 +28645,13 @@ $1.calls[$2] = $3
 $1.last = $2
 };
 if (this.capabilities["dropshadows"]) {
-if (blurradius_$0 < 0.01) blurradius_$0 = 0;
+if (blurradius_$0 < 0.01 && blurradius_$0 > 0 || blurradius_$0 > -0.01 && blurradius_$0 < 0) {
+blurradius_$0 = 0
+};
 this.shadowblurradius = blurradius_$0;
-this.__updateShadow();
+if (this.inited) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
+};
 if (this.onshadowblurradius.ready) {
 this.onshadowblurradius.sendEvent(blurradius_$0)
 }}}
@@ -28428,39 +28668,6 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_shadowblurradius";
-return $lzsc$temp
-})(), "__updateShadow", (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-if (!this.isinited) {
-this.__updateshadowoninit = true
-} else {
-this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
-}}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "__updateShadow";
 return $lzsc$temp
 })(), "ontintcolor", LzDeclaredEvent, "tintcolor", "", "$lzc$set_tintcolor", (function () {
 var $lzsc$temp = function (color_$0) {
@@ -28509,47 +28716,55 @@ $3.last = $4
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_tintcolor";
 return $lzsc$temp
-})(), "oncornerradius", LzDeclaredEvent, "cornerradius", "4", "$lzc$set_cornerradius", (function () {
+})(), "oncornerradius", LzDeclaredEvent, "cornerradius", "0", "$lzc$set_cornerradius", (function () {
 var $lzsc$temp = function (radius_$0) {
 try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",calls:" + $a
 } else {
-$4.calls[$5] = $6
+$8.calls[$9] = $a
 };
-$4.last = $5
+$8.last = $9
 };
 if (this.capabilities["cornerradius"]) {
 if (this.cornerradius !== radius_$0) {
-var radii_$1 = String(radius_$0).split(" ");
-var l_$2 = radii_$1.length;
-if (l_$2 == 0) return;
-if (l_$2 <= 1) radii_$1[1] = radii_$1[0];
-if (l_$2 <= 3) radii_$1[3] = radii_$1[1];
-if (l_$2 <= 2) radii_$1[2] = radii_$1[0];
-for (var i_$3 = 0, l_$2 = radii_$1.length;i_$3 < l_$2;i_$3++) {
-radii_$1[i_$3] = parseFloat(radii_$1[i_$3])
+var axes_$1 = String(radius_$0).split("/");
+if (axes_$1.length == 1) {
+axes_$1[1] = axes_$1[0]
 };
-this.sprite.setCornerRadius(radii_$1)
+var allradii_$2 = [];
+for (var i_$3 = 0;i_$3 < 2;i_$3++) {
+var str_$4 = LzParsedPath.trim(String(axes_$1[i_$3]));
+var radii_$5 = str_$4.split(" ");
+var l_$6 = radii_$5.length;
+if (l_$6 > 4) l_$6 = 4;
+if (l_$6 == 0) return;
+if (l_$6 <= 1) radii_$5[1] = radii_$5[0];
+if (l_$6 <= 3) radii_$5[3] = radii_$5[1];
+if (l_$6 <= 2) radii_$5[2] = radii_$5[0];
+for (var j_$7 = 0;j_$7 < 4;j_$7++) {
+allradii_$2[i_$3 * 4 + j_$7] = parseFloat(radii_$5[j_$7])
+}};
+this.sprite.setCornerRadius(allradii_$2)
 }};
 this.cornerradius = radius_$0;
 if (this.oncornerradius.ready) this.oncornerradius.sendEvent(radius_$0)
 }
 finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",returns:" + $a
 } else {
-$4.returns[$5] = $6
+$8.returns[$9] = $a
 };
-$4.last = $5
+$8.last = $9
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_cornerradius";
 return $lzsc$temp
@@ -28677,7 +28892,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "isBehind";
 return $lzsc$temp
-})(), "__widthoffset", 0, "__heightoffset", 0, "__styleinfo", {}, "setCSS", (function () {
+})(), "__widthoffset", 0, "__heightoffset", 0, "__xoffset", 0, "__yoffset", 0, "__styleinfo", {}, "setCSS", (function () {
 var $lzsc$temp = function (stylename_$0, value_$1) {
 try {
 var $4 = global["$lzprofiler"];
@@ -28802,7 +29017,7 @@ $1.last = $2
 };
 if (this.capabilities.scaling) {
 this.yscale = yscale_$0;
-this.usegetbounds = this.__LZhasoffset || this.rotation != 0 || this.yscale != 1 || this.yscale != 1;
+this.usegetbounds = this.__LZhasoffset || this.rotation != 0 || this.xscale != 1 || this.yscale != 1;
 this.sprite.setYScale(yscale_$0)
 };
 if (this.onyscale.ready) this.onyscale.sendEvent(yscale_$0)
@@ -28821,7 +29036,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_yscale";
 return $lzsc$temp
-})()], LzNode, ["tagname", "view", "attributes", new LzInheritedHash(LzNode.attributes), "__LZlastmtrix", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "__LZproxypolicies", [], "addProxyPolicy", (function () {
+})()], LzNode, ["tagname", "view", "__LZCSSTagSelectors", ["view", "node"], "attributes", new LzInheritedHash(LzNode.attributes), "__LZlastmtrix", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "__LZproxypolicies", [], "addProxyPolicy", (function () {
 var $lzsc$temp = function (f_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -29133,7 +29348,7 @@ $4.last = $5
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "selectable", false, "hasdirectionallayout", false, "onselectable", LzDeclaredEvent, "$lzc$set_selectable", (function () {
+})(), "selectable", false, "onselectable", LzDeclaredEvent, "$lzc$set_selectable", (function () {
 var $lzsc$temp = function (isSel_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -29182,7 +29397,7 @@ $1.last = $2
 };
 this.direction = dir_$0;
 if (this.capabilities.directional_layout) {
-this.tsprite.setDirection(dir_$0)
+if (this.hasdirectionallayout) this.tsprite.setDirection(dir_$0)
 };
 if (this.ondirection.ready) this.ondirection.sendEvent(dir_$0)
 }
@@ -29954,7 +30169,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_resize";
 return $lzsc$temp
-})(), "text", "", "$lzc$set_text", (function () {
+})(), "text", "", "ontext", LzDeclaredEvent, "$lzc$set_text", (function () {
 var $lzsc$temp = function (t_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -29969,17 +30184,17 @@ $1.calls[$2] = $3
 $1.last = $2
 };
 t_$0 = String(t_$0);
-if (t_$0 == this.getText()) {
-if (this.ontext.ready) this.ontext.sendEvent(t_$0);
-return
-};
+if (t_$0 != this.text) {
 if (this.visible) this.tsprite.setVisible(this.visible);
 if (t_$0.length > this.maxlength) {
 t_$0 = t_$0.substring(0, this.maxlength)
 };
 this.tsprite.setText(t_$0);
 this.text = t_$0;
-if (this.ontext.ready) this.ontext.sendEvent(t_$0)
+this.cdata = t_$0
+};
+if (this.ontext.ready) this.ontext.sendEvent(t_$0);
+if (this.oncdata.ready) this.oncdata.sendEvent(t_$0)
 }
 finally {
 var $1 = global["$lzprofiler"];
@@ -29994,6 +30209,36 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_text";
+return $lzsc$temp
+})(), "cdata", "", "oncdata", LzDeclaredEvent, "$lzc$set_cdata", (function () {
+var $lzsc$temp = function (t_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.$lzc$set_text(t_$0)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "$lzc$set_cdata";
 return $lzsc$temp
 })(), "_updateSize", (function () {
 var $lzsc$temp = function () {
@@ -30036,7 +30281,7 @@ $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "_updateSize";
 return $lzsc$temp
-})(), "ontext", LzDeclaredEvent, "ontextlink", LzDeclaredEvent, "maxlength", Infinity, "$lzc$set_maxlength", (function () {
+})(), "ontextlink", LzDeclaredEvent, "maxlength", Infinity, "$lzc$set_maxlength", (function () {
 var $lzsc$temp = function (val_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -30388,6 +30633,38 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_cascadedfgcolor";
 return $lzsc$temp
+})(), "$lzc$set_cascadedhasdirectionallayout", (function () {
+var $lzsc$temp = function (val_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.__keepconstraint = true;
+this.$lzc$set_hasdirectionallayout(val_$0);
+this.__keepconstraint = false
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "$lzc$set_cascadedhasdirectionallayout";
+return $lzsc$temp
 })(), "textalign", "left", "$lzc$set_textalign", (function () {
 var $lzsc$temp = function (align_$0) {
 try {
@@ -30526,7 +30803,38 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_textdecoration";
 return $lzsc$temp
-})(), "construct", (function () {
+})(), "$lzc$set_hasdirectionallayout", (function () {
+var $lzsc$temp = function (val_$0) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+var prev_$1 = this.hasdirectionallayout;
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzc$set_hasdirectionallayout"] || this.nextMethod(arguments.callee, "$lzc$set_hasdirectionallayout")).call(this, val_$0)
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "$lzc$set_hasdirectionallayout";
+return $lzsc$temp
+})(), "__cascadeattrs", {font: true, fontsize: true, fontstyle: true, fgcolor: true, hasdirectionallayout: true}, "construct", (function () {
 var $lzsc$temp = function (parent_$0, args_$1) {
 try {
 var $8 = global["$lzprofiler"];
@@ -30542,23 +30850,23 @@ $8.last = $9
 };
 this.hasdirectionallayout = ("hasdirectionallayout" in args_$1) ? args_$1.hasdirectionallayout : false;
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["construct"] || this.nextMethod(arguments.callee, "construct")).call(this, parent_$0, args_$1);
-var cascadeattrs_$2 = {font: null, fontsize: null, fontstyle: null, fgcolor: null};
-var initattrs_$3 = {hassetheight: this.hassetheight, height: this.height};
-var searchattrs_$4 = [];
-for (var attr_$5 in cascadeattrs_$2) {
+var initattrs_$2 = {hassetheight: this.hassetheight, height: this.height};
+var searchattrs_$3 = [];
+var cascattrs_$4 = this.__cascadeattrs;
+for (var attr_$5 in cascattrs_$4) {
 if (attr_$5 in args_$1) {
-this[attr_$5] = initattrs_$3[attr_$5] = args_$1[attr_$5]
+this[attr_$5] = initattrs_$2[attr_$5] = args_$1[attr_$5]
 } else {
-searchattrs_$4.push(attr_$5)
+searchattrs_$3.push(attr_$5)
 }};
-if (searchattrs_$4.length > 0) {
-var parents_$6 = this.searchParentAttrs(searchattrs_$4);
+if (searchattrs_$3.length > 0) {
+var parents_$6 = this.searchParentAttrs(searchattrs_$3);
 for (var attr_$5 in parents_$6) {
 var par_$7 = parents_$6[attr_$5];
-this[attr_$5] = initattrs_$3[attr_$5] = par_$7[attr_$5];
+this[attr_$5] = initattrs_$2[attr_$5] = par_$7[attr_$5];
 this["__cascadeDel" + attr_$5] = new LzDelegate(this, "$lzc$set_cascaded" + attr_$5, par_$7, "on" + attr_$5)
 }};
-this.tsprite.__initTextProperties(initattrs_$3);
+this.tsprite.__initTextProperties(initattrs_$2);
 this.yscroll = 0;
 this.xscroll = 0;
 this.$lzc$set_resize(("resize" in args_$1) ? !(!args_$1.resize) : this.resize);
@@ -30647,62 +30955,36 @@ return $lzsc$temp
 })(), "tsprite", void 0, "__makeSprite", (function () {
 var $lzsc$temp = function (args_$0) {
 try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
 } else {
-$1.calls[$2] = $3
+$2.calls[$3] = $4
 };
-$1.last = $2
+$2.last = $3
+};
+var par_$1 = this.searchParents("hasdirectionallayout");
+if (par_$1 != null) {
+this.hasdirectionallayout = par_$1.hasdirectionallayout
 };
 this.sprite = this.tsprite = new LzTextSprite(this, args_$0, this.hasdirectionallayout)
 }
 finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
 } else {
-$1.returns[$2] = $3
+$2.returns[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 }}};
 $lzsc$temp["displayName"] = "__makeSprite";
-return $lzsc$temp
-})(), "setResize", (function () {
-var $lzsc$temp = function (val_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_resize(val_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setResize";
 return $lzsc$temp
 })(), "addText", (function () {
 var $lzsc$temp = function (t_$0) {
@@ -30718,7 +31000,7 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
-this.$lzc$set_text(this.getText() + t_$0)
+this.$lzc$set_text(this.text + t_$0)
 }
 finally {
 var $1 = global["$lzprofiler"];
@@ -30763,66 +31045,6 @@ $0.returns[$1] = $2
 $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "clearText";
-return $lzsc$temp
-})(), "setMaxLength", (function () {
-var $lzsc$temp = function (val_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_maxlength(val_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setMaxLength";
-return $lzsc$temp
-})(), "setPattern", (function () {
-var $lzsc$temp = function (val_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_pattern(val_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setPattern";
 return $lzsc$temp
 })(), "getTextWidth", (function () {
 var $lzsc$temp = function () {
@@ -30977,36 +31199,6 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "applyData";
 return $lzsc$temp
-})(), "setScroll", (function () {
-var $lzsc$temp = function (h_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_scroll(h_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setScroll";
-return $lzsc$temp
 })(), "getScroll", (function () {
 var $lzsc$temp = function () {
 try {
@@ -31126,96 +31318,6 @@ $0.returns[$1] = $2
 $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "getBottomScroll";
-return $lzsc$temp
-})(), "setXScroll", (function () {
-var $lzsc$temp = function (n_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_xscroll(n_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setXScroll";
-return $lzsc$temp
-})(), "setYScroll", (function () {
-var $lzsc$temp = function (n_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_yscroll(n_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setYScroll";
-return $lzsc$temp
-})(), "setHScroll", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_hscroll(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setHScroll";
 return $lzsc$temp
 })(), "annotateAAimg", (function () {
 var $lzsc$temp = function (txt_$0) {
@@ -31345,36 +31447,6 @@ $e.last = $f
 }}};
 $lzsc$temp["displayName"] = "parseImgAttributes";
 return $lzsc$temp
-})(), "setText", (function () {
-var $lzsc$temp = function (t_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_text(t_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setText";
-return $lzsc$temp
 })(), "format", (function () {
 var $lzsc$temp = function (control_$0) {
 try {
@@ -31421,7 +31493,7 @@ $2.calls[$3] = $4
 $2.last = $3
 };
 var args_$1 = Array.prototype.slice.call(arguments, 1);
-this.$lzc$set_text(this.getText() + this.formatToString.apply(this, [control_$0].concat(args_$1)).toString().toHTML())
+this.$lzc$set_text(this.text + this.formatToString.apply(this, [control_$0].concat(args_$1)).toString().toHTML())
 }
 finally {
 var $2 = global["$lzprofiler"];
@@ -31436,66 +31508,6 @@ $2.returns[$3] = $4
 $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "addFormat";
-return $lzsc$temp
-})(), "getText", (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-return this.text
-}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "getText";
-return $lzsc$temp
-})(), "$lzc$getText_dependencies", (function () {
-var $lzsc$temp = function (who_$0, self_$1) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-return [self_$1, "text"]
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "$lzc$getText_dependencies";
 return $lzsc$temp
 })(), "escapeText", (function () {
 var $lzsc$temp = function (ts_$0) {
@@ -31533,126 +31545,6 @@ $4.returns[$5] = $6
 $4.last = $5
 }}};
 $lzsc$temp["displayName"] = "escapeText";
-return $lzsc$temp
-})(), "setSelectable", (function () {
-var $lzsc$temp = function (isSel_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_selectable(isSel_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setSelectable";
-return $lzsc$temp
-})(), "setFontSize", (function () {
-var $lzsc$temp = function (fsize_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_fontsize(fsize_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setFontSize";
-return $lzsc$temp
-})(), "setFontStyle", (function () {
-var $lzsc$temp = function (fstyle_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_fontstyle(fstyle_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setFontStyle";
-return $lzsc$temp
-})(), "setMultiline", (function () {
-var $lzsc$temp = function (ml_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_multiline(ml_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setMultiline";
 return $lzsc$temp
 })(), "setBorder", (function () {
 var $lzsc$temp = function (onroff_$0) {
@@ -31744,36 +31636,6 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "setEmbedFonts";
 return $lzsc$temp
-})(), "setAntiAliasType", (function () {
-var $lzsc$temp = function (aliasType_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_antiAliasType(aliasType_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setAntiAliasType";
-return $lzsc$temp
 })(), "getAntiAliasType", (function () {
 var $lzsc$temp = function () {
 try {
@@ -31804,36 +31666,6 @@ $0.returns[$1] = $2
 $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "getAntiAliasType";
-return $lzsc$temp
-})(), "setGridFit", (function () {
-var $lzsc$temp = function (gridFit_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_gridFit(gridFit_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setGridFit";
 return $lzsc$temp
 })(), "getGridFit", (function () {
 var $lzsc$temp = function () {
@@ -31866,36 +31698,6 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "getGridFit";
 return $lzsc$temp
-})(), "setSharpness", (function () {
-var $lzsc$temp = function (sharpness_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_sharpness(sharpness_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setSharpness";
-return $lzsc$temp
 })(), "getSharpness", (function () {
 var $lzsc$temp = function () {
 try {
@@ -31926,36 +31728,6 @@ $0.returns[$1] = $2
 $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "getSharpness";
-return $lzsc$temp
-})(), "setThickness", (function () {
-var $lzsc$temp = function (thickness_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_thickness(thickness_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setThickness";
 return $lzsc$temp
 })(), "getThickness", (function () {
 var $lzsc$temp = function () {
@@ -32129,7 +31901,7 @@ $0.calls[$1] = $2
 };
 $0.last = $1
 };
-return "LzText: " + this.getText()
+return "LzText: " + this.text
 }
 finally {
 var $0 = global["$lzprofiler"];
@@ -32145,7 +31917,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], [LzFormatter, LzView], ["tagname", "text", "attributes", new LzInheritedHash(LzView.attributes), "escapeChars", {">": "&gt;", "<": "&lt;"}]);
+})()], [LzFormatter, LzView], ["tagname", "text", "__LZCSSTagSelectors", ["text", "formatter", "view", "node"], "attributes", new LzInheritedHash(LzView.attributes), "escapeChars", {">": "&gt;", "<": "&lt;"}]);
 (function () {
 var $lzsc$temp = function ($0) {
 try {
@@ -32177,7 +31949,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "views/LzText.lzs#193/1";
+$lzsc$temp["displayName"] = "views/LzText.lzs#226/1";
 return $lzsc$temp
 })()(LzText);
 lz[LzText.tagname] = LzText;
@@ -32264,11 +32036,13 @@ $2.last = $3
 };
 this.password = ("password" in args_$1) ? !(!args_$1.password) : false;
 this.focusable = true;
+this.hasdirectionallayout = ("hasdirectionallayout" in args_$1) ? args_$1.hasdirectionallayout : false;
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["construct"] || this.nextMethod(arguments.callee, "construct")).call(this, parent_$0, args_$1);
 this.$lzc$set_resize(("resize" in args_$1) ? !(!args_$1.resize) : false);
 this._onfocusDel = new LzDelegate(this, "_gotFocusEvent", this, "onfocus");
 this._onblurDel = new LzDelegate(this, "_gotBlurEvent", this, "onblur");
-this._modemanagerDel = new LzDelegate(this, "_modechanged", lz.ModeManager, "onmode")
+this._modemanagerDel = new LzDelegate(this, "_modechanged", lz.ModeManager, "onmode");
+this._onmousewheeldeltaDel = new LzDelegate(this, "_mousewheelChanged", lz.Keys, "onmousewheeldelta")
 }
 finally {
 var $2 = global["$lzprofiler"];
@@ -32287,30 +32061,34 @@ return $lzsc$temp
 })(), "isprite", void 0, "__makeSprite", (function () {
 var $lzsc$temp = function (args_$0) {
 try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
 } else {
-$1.calls[$2] = $3
+$2.calls[$3] = $4
 };
-$1.last = $2
+$2.last = $3
+};
+var par_$1 = this.searchParents("hasdirectionallayout");
+if (par_$1 != null) {
+this.hasdirectionallayout = par_$1.hasdirectionallayout
 };
 this.sprite = this.tsprite = this.isprite = new LzInputTextSprite(this, args_$0, this.hasdirectionallayout)
 }
 finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
 } else {
-$1.returns[$2] = $3
+$2.returns[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 }}};
 $lzsc$temp["displayName"] = "__makeSprite";
 return $lzsc$temp
@@ -32408,7 +32186,7 @@ if (eventname_$0 == "onfocus") {
 this._focused = true;
 if (lz.Focus.getFocus() !== this) {
 var tabdown_$2 = lz.Keys.isKeyDown("tab");
-lz.Focus.setFocus(this, tabdown_$2);
+lz.Focus.setFocus(this, tabdown_$2 ? lz.Focus.MOUSE_KEYBOARD : lz.Focus.MOUSE_MANUAL);
 if (lz.Focus.getFocus() !== this && this._focused) {
 this._gotBlurEvent()
 }}} else if (eventname_$0 == "onchange") {
@@ -32500,36 +32278,6 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_enabled";
-return $lzsc$temp
-})(), "setEnabled", (function () {
-var $lzsc$temp = function (enabled_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_enabled(enabled_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setEnabled";
 return $lzsc$temp
 })(), "setHTML", (function () {
 var $lzsc$temp = function (htmlp_$0) {
@@ -32625,6 +32373,53 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "_modechanged";
 return $lzsc$temp
+})(), "_mousewheelChanged", (function () {
+var $lzsc$temp = function (d_$0) {
+try {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
+} else {
+$5.calls[$6] = $7
+};
+$5.last = $6
+};
+var step_$1 = this.fontsize;
+if (this.multiline && this.isMouseOver()) {
+var s_$2 = this.yscroll + d_$0 * step_$1;
+if (s_$2 > 0) {
+if (this.yscroll < 0) {
+s_$2 = 0
+} else {
+return
+}};
+var inputDiv_$3 = this.tsprite["__LzInputDiv"];
+var minyscroll_$4 = -(inputDiv_$3.scrollHeight - this.height + 4);
+if (s_$2 < minyscroll_$4) {
+if (this.yscroll > minyscroll_$4) {
+s_$2 = minyscroll_$4
+} else {
+return
+}};
+this.setAttribute("yscroll", s_$2)
+}}
+finally {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
+} else {
+$5.returns[$6] = $7
+};
+$5.last = $6
+}}};
+$lzsc$temp["displayName"] = "_mousewheelChanged";
+return $lzsc$temp
 })(), "_setallowselectable", (function () {
 var $lzsc$temp = function (value_$0) {
 try {
@@ -32687,7 +32482,39 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_selectable";
 return $lzsc$temp
-})()], LzText, ["tagname", "inputtext", "attributes", new LzInheritedHash(LzText.attributes)]);
+})(), "readonly", false, "$lzc$set_readonly", (function () {
+var $lzsc$temp = function (readonly_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+if (this.readonly == readonly_$0) return;
+this.readonly = readonly_$0;
+this.isprite.setReadOnly(this.readonly)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "$lzc$set_readonly";
+return $lzsc$temp
+})()], LzText, ["tagname", "inputtext", "__LZCSSTagSelectors", ["inputtext", "text", "formatter", "view", "node"], "attributes", new LzInheritedHash(LzText.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 try {
@@ -32772,74 +32599,75 @@ return $lzsc$temp
 })(), "update", (function () {
 var $lzsc$temp = function (xory_$0) {
 try {
-var $b = global["$lzprofiler"];
-if ($b) {
-var $c = "" + (new Date().getTime() - $b.base);
-var $d = arguments.callee["displayName"];
-if ($b.last == $c) {
-$b.events[$c] += ",calls:" + $d
+var $c = global["$lzprofiler"];
+if ($c) {
+var $d = "" + (new Date().getTime() - $c.base);
+var $e = arguments.callee["displayName"];
+if ($c.last == $d) {
+$c.events[$d] += ",calls:" + $e
 } else {
-$b.calls[$c] = $d
+$c.calls[$d] = $e
 };
-$b.last = $c
+$c.last = $d
 };
 var scale_$1 = xory_$0 + "scale";
 var offset_$2 = xory_$0 + "offset";
-var uplinkArray_$3 = this.uplinkArray;
-var downlinkArray_$4 = this.downlinkArray;
-var upscale_$5 = 1;
-var upoffset_$6 = 0;
-if (uplinkArray_$3) {
-var i_$7 = uplinkArray_$3.length - 1;
-var v_$8 = uplinkArray_$3[i_$7--];
-upscale_$5 *= v_$8[scale_$1];
-for (;i_$7 >= 0;i_$7--) {
-v_$8 = uplinkArray_$3[i_$7];
-upoffset_$6 += v_$8[xory_$0] * upscale_$5;
-upscale_$5 *= v_$8[scale_$1]
+var boxoffset_$3 = "__" + offset_$2;
+var uplinkArray_$4 = this.uplinkArray;
+var downlinkArray_$5 = this.downlinkArray;
+var upscale_$6 = 1;
+var upoffset_$7 = 0;
+if (uplinkArray_$4) {
+var i_$8 = uplinkArray_$4.length - 1;
+var v_$9 = uplinkArray_$4[i_$8--];
+upscale_$6 *= v_$9[scale_$1];
+for (;i_$8 >= 0;i_$8--) {
+v_$9 = uplinkArray_$4[i_$8];
+upoffset_$7 += (v_$9[xory_$0] + v_$9[boxoffset_$3]) * upscale_$6;
+upscale_$6 *= v_$9[scale_$1]
 }};
-var downscale_$9 = 1;
-var downoffset_$a = 0;
-if (downlinkArray_$4) {
-var i_$7 = downlinkArray_$4.length - 1;
-var v_$8 = downlinkArray_$4[i_$7--];
-downscale_$9 *= v_$8[scale_$1];
-for (;i_$7 >= 0;i_$7--) {
-v_$8 = downlinkArray_$4[i_$7];
-downoffset_$a += v_$8[xory_$0] * downscale_$9;
-downscale_$9 *= v_$8[scale_$1]
+var downscale_$a = 1;
+var downoffset_$b = 0;
+if (downlinkArray_$5) {
+var i_$8 = downlinkArray_$5.length - 1;
+var v_$9 = downlinkArray_$5[i_$8--];
+downscale_$a *= v_$9[scale_$1];
+for (;i_$8 >= 0;i_$8--) {
+v_$9 = downlinkArray_$5[i_$8];
+downoffset_$b += (v_$9[xory_$0] + v_$9[boxoffset_$3]) * downscale_$a;
+downscale_$a *= v_$9[scale_$1]
 }};
-this[scale_$1] = upscale_$5 / downscale_$9;
-this[offset_$2] = (upoffset_$6 - downoffset_$a) / downscale_$9
+this[scale_$1] = upscale_$6 / downscale_$a;
+this[offset_$2] = (upoffset_$7 - downoffset_$b) / downscale_$a
 }
 finally {
-var $b = global["$lzprofiler"];
-if ($b) {
-var $c = "" + (new Date().getTime() - $b.base);
-var $d = arguments.callee["displayName"];
-if ($b.last == $c) {
-$b.events[$c] += ",returns:" + $d
+var $c = global["$lzprofiler"];
+if ($c) {
+var $d = "" + (new Date().getTime() - $c.base);
+var $e = arguments.callee["displayName"];
+if ($c.last == $d) {
+$c.events[$d] += ",returns:" + $e
 } else {
-$b.returns[$c] = $d
+$c.returns[$d] = $e
 };
-$b.last = $c
+$c.last = $d
 }}};
 $lzsc$temp["displayName"] = "update";
 return $lzsc$temp
 })()]);
-Class.make("LzCanvas", ["updatePercentCreatedEnabled", true, "_lzinitialsubviews", [], "totalnodes", void 0, "framerate", 30, "onframerate", LzDeclaredEvent, "creatednodes", void 0, "__LZproxied", void 0, "embedfonts", void 0, "lpsbuild", void 0, "lpsbuilddate", void 0, "appbuilddate", void 0, "runtime", void 0, "allowfullscreen", void 0, "fullscreen", void 0, "onfullscreen", LzDeclaredEvent, "__LZmouseupDel", void 0, "__LZmousedownDel", void 0, "__LZmousemoveDel", void 0, "__LZDefaultCanvasMenu", void 0, "httpdataprovider", null, "defaultdataprovider", null, "$lzsc$initialize", (function () {
+Class.make("LzCanvas", ["updatePercentCreatedEnabled", true, "_lzinitialsubviews", [], "totalnodes", void 0, "framerate", 30, "onframerate", LzDeclaredEvent, "creatednodes", void 0, "__LZproxied", void 0, "embedfonts", void 0, "lpsbuild", void 0, "lpsbuilddate", void 0, "appbuilddate", void 0, "runtime", void 0, "allowfullscreen", void 0, "fullscreen", void 0, "onfullscreen", LzDeclaredEvent, "__LZmouseupDel", void 0, "__LZmousedownDel", void 0, "__LZmousemoveDel", void 0, "__LZDefaultCanvasMenu", void 0, "screenorientation", "landscape", "onscreenorientation", LzDeclaredEvent, "httpdataprovider", null, "defaultdataprovider", null, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (parent_$0, args_$1, children_$2, async_$3) {
 try {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",calls:" + $6
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
 } else {
-$4.calls[$5] = $6
+$5.calls[$6] = $7
 };
-$4.last = $5
+$5.last = $6
 };
 switch (arguments.length) {
 case 0:
@@ -32850,28 +32678,29 @@ async_$3 = null
 };
 if (!args_$1["medialoadtimeout"]) args_$1.medialoadtimeout = this.medialoadtimeout;
 if (!args_$1["mediaerrortimeout"]) args_$1.mediaerrortimeout = this.mediaerrortimeout;
-if (args_$1["fontsize"] != null) {
-this.fontsize = LzCanvas.attributes.fontsize.fallback = args_$1.fontsize;
+var fallbacks_$4 = LzCanvas.attributes.$attributeDescriptor.fallbacks;
+if (args_$1.hasOwnProperty("fontsize")) {
+this.fontsize = fallbacks_$4.fontsize = args_$1.fontsize;
 delete args_$1.fontsize
 };
-if (args_$1["fontstyle"] != null) {
-this.fontstyle = LzCanvas.attributes.fontstyle.fallback = args_$1.fontstyle;
+if (args_$1.hasOwnProperty("fontstyle")) {
+this.fontstyle = fallbacks_$4.fontstyle = args_$1.fontstyle;
 delete args_$1.fontstyle
 };
-if (args_$1["font"] != null) {
-this.font = LzCanvas.attributes.font.fallback = args_$1.font;
+if (args_$1.hasOwnProperty("font")) {
+this.font = fallbacks_$4.font = args_$1.font;
 delete args_$1.font
 };
-if (args_$1["bgcolor"] != null) {
-LzCanvas.attributes.bgcolor.fallback = args_$1.bgcolor;
+if (args_$1.hasOwnProperty("bgcolor")) {
+fallbacks_$4.bgcolor = args_$1.bgcolor;
 delete args_$1.bgcolor
 };
-if (args_$1["width"] != null) {
-LzCanvas.attributes.width.fallback = args_$1.width;
+if (args_$1.hasOwnProperty("width")) {
+fallbacks_$4.width = args_$1.width;
 delete args_$1.width
 };
-if (args_$1["height"] != null) {
-LzCanvas.attributes.height.fallback = args_$1.height;
+if (args_$1.hasOwnProperty("height")) {
+fallbacks_$4.height = args_$1.height;
 delete args_$1.height
 };
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, parent_$0, args_$1, children_$2, async_$3);
@@ -32884,16 +32713,16 @@ this.hassetwidth = true;
 this.hassetheight = true
 }
 finally {
-var $4 = global["$lzprofiler"];
-if ($4) {
-var $5 = "" + (new Date().getTime() - $4.base);
-var $6 = arguments.callee["displayName"];
-if ($4.last == $5) {
-$4.events[$5] += ",returns:" + $6
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
 } else {
-$4.returns[$5] = $6
+$5.returns[$6] = $7
 };
-$4.last = $5
+$5.last = $6
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
@@ -33003,9 +32832,6 @@ LzScreenKernel.setFullscreenCallback(this, "__fullscreenEventCallback", "__fulls
 };
 this.lpsversion = args.lpsversion + "." + this.__LZlfcversion;
 delete args.lpsversion;
-if (!this.version) {
-this.version = this.lpsversion
-};
 this.isinited = false;
 this._lzinitialsubviews = [];
 this.datasets = {};
@@ -33065,30 +32891,35 @@ return $lzsc$temp
 })(), "__LZmousemove", (function () {
 var $lzsc$temp = function (e_$0) {
 try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
 } else {
-$1.calls[$2] = $3
+$3.calls[$4] = $5
 };
-$1.last = $2
+$3.last = $4
 };
-if (this.onmousemove.ready) this.onmousemove.sendEvent()
-}
+if (this.onmousemove.ready) this.onmousemove.sendEvent();
+if (LzMouseKernel.__lastMouseDown) {
+var mx_$1 = canvas.getMouse("x");
+var my_$2 = canvas.getMouse("y");
+if (mx_$1 < 0 || mx_$1 > canvas.width || my_$2 < 0 || my_$2 > canvas.height) {
+LzMouseKernel.__lastMouseDown.__globalmouseup({type: "mouseout"})
+}}}
 finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
 } else {
-$1.returns[$2] = $3
+$3.returns[$4] = $5
 };
-$1.last = $2
+$3.last = $4
 }}};
 $lzsc$temp["displayName"] = "__LZmousemove";
 return $lzsc$temp
@@ -33152,7 +32983,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "__makeSprite";
 return $lzsc$temp
-})(), "onmouseleave", LzDeclaredEvent, "onmouseenter", LzDeclaredEvent, "onpercentcreated", LzDeclaredEvent, "onmousemove", LzDeclaredEvent, "onafterinit", LzDeclaredEvent, "lpsversion", void 0, "lpsrelease", void 0, "version", null, "scriptlimits", void 0, "__LZlfcversion", "0", "proxied", true, "dataloadtimeout", 30000, "medialoadtimeout", 30000, "$lzc$set_medialoadtimeout", (function () {
+})(), "onmouseleave", LzDeclaredEvent, "onmouseenter", LzDeclaredEvent, "onpercentcreated", LzDeclaredEvent, "onmousemove", LzDeclaredEvent, "onafterinit", LzDeclaredEvent, "lpsversion", void 0, "lpsrelease", void 0, "scriptlimits", void 0, "__LZlfcversion", "0", "proxied", true, "dataloadtimeout", 30000, "medialoadtimeout", 30000, "$lzc$set_medialoadtimeout", (function () {
 var $lzsc$temp = function (ms_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -34046,13 +33877,21 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
+if (size_$0.width !== this.width) {
 this.width = size_$0.width;
 if (this.onwidth.ready) this.onwidth.sendEvent(this.width);
-this.sprite.setWidth(this.width);
+this.sprite.setWidth(this.width)
+};
+if (size_$0.height !== this.height) {
 this.height = size_$0.height;
 if (this.onheight.ready) this.onheight.sendEvent(this.height);
 this.sprite.setHeight(this.height)
-}
+};
+if (this.capabilities.screenorientation) {
+if (size_$0.orientation !== this.screenorientation) {
+this.screenorientation = size_$0.orientation;
+if (this.onscreenorientation.ready) this.onscreenorientation.sendEvent(this.orientation)
+}}}
 finally {
 var $1 = global["$lzprofiler"];
 if ($1) {
@@ -34166,7 +34005,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "__LzLibraryLoaded";
 return $lzsc$temp
-})()], LzView, ["tagname", "canvas", "attributes", new LzInheritedHash(LzView.attributes), "versionInfoString", (function () {
+})()], LzView, ["tagname", "canvas", "__LZCSSTagSelectors", ["canvas", "view", "node"], "attributes", new LzInheritedHash(LzView.attributes), "versionInfoString", (function () {
 var $lzsc$temp = function () {
 try {
 var $0 = global["$lzprofiler"];
@@ -34180,7 +34019,7 @@ $0.calls[$1] = $2
 };
 $0.last = $1
 };
-return "URL: " + lz.Browser.getLoadURL() + "\n" + "LPS\n" + "  Version: " + canvas.lpsversion + "\n" + "  Release: " + canvas.lpsrelease + "\n" + "  Build: " + canvas.lpsbuild + "\n" + "  Date: " + canvas.lpsbuilddate + "\n" + "Application\n" + "  Date: " + canvas.appbuilddate + "\n" + "Target: " + canvas.runtime + "\n" + "Runtime: " + lz.Browser.getVersion() + "\n" + "OS: " + lz.Browser.getOS() + "\n"
+return "URL: " + lz.Browser.getLoadURL() + "\n" + "LPS\n" + "  Version: " + canvas.lpsversion + "\n" + "  Release: " + canvas.lpsrelease + "\n" + "  Build: " + canvas.lpsbuild + "\n" + "  Date: " + canvas.lpsbuilddate + "\n" + "Application\n" + "  Date: " + canvas.appbuilddate + "\n" + "Runtime: " + canvas.runtime + "\n" + "Browser/Player\n" + "  Version: " + lz.Browser.getVersion() + "\n" + "OS: " + lz.Browser.getOS()
 }
 finally {
 var $0 = global["$lzprofiler"];
@@ -34213,13 +34052,37 @@ $1.last = $2
 };
 with ($0) with ($0.prototype) {
 {
-attributes.bgcolor = new LzStyleConstraintExpr("bgcolor", "color", "background-color", 16777215, false);
-attributes.font = new LzStyleConstraintExpr("font", "string", "font-family", "Verdana,Vera,sans-serif", false);
-attributes.fontsize = new LzStyleConstraintExpr("fontsize", "number", "font-size", 11, false);
-attributes.fontstyle = new LzStyleConstraintExpr("fontstyle", "string", "font-style", "plain", false);
-attributes.fgcolor = new LzStyleConstraintExpr("fgcolor", "color", "font-color", 0, false);
-attributes.width = new LzStyleConstraintExpr("width", "string", "width", "100%", false);
-attributes.height = new LzStyleConstraintExpr("height", "string", "height", "100%", false)
+(function () {
+var $lzsc$temp = function ($0, $1) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+LzNode.mergeAttributes({$attributeDescriptor: {fallbacks: {bgcolor: 16777215, fgcolor: 0, fontsize: 11, font: "Verdana,Vera,sans-serif", fontstyle: "plain", height: "100%", width: "100%"}, properties: {bgcolor: "background-color", fgcolor: "color", fontsize: "font-size", font: "font-family", fontstyle: "font-style", height: "height", width: "width"}, types: {bgcolor: "color", fgcolor: "color", fontsize: "number", font: "string", fontstyle: "string", height: "string", width: "string"}}, bgcolor: $0, fgcolor: $0, fontsize: $0, font: $0, fontstyle: $0, height: $0, width: $0}, $1)
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "views/LaszloCanvas.lzs#64/4";
+return $lzsc$temp
+})()(LzStyleConstraintExpr.StyleConstraintExpr, LzCanvas.attributes)
 }}}
 finally {
 var $1 = global["$lzprofiler"];
@@ -35055,7 +34918,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], LzNode, ["tagname", "animatorgroup", "attributes", new LzInheritedHash(LzNode.attributes)]);
+})()], LzNode, ["tagname", "animatorgroup", "__LZCSSTagSelectors", ["animatorgroup", "node"], "attributes", new LzInheritedHash(LzNode.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 try {
@@ -35401,19 +35264,8 @@ var expected_$2 = targ_$0.__animatedAttributes;
 if (expected_$2 == null) {
 expected_$2 = targ_$0.__animatedAttributes = {}};
 if (this.from != null) {
-{
-var $lzsc$a8ocf2 = Number(this.from);
-if (!targ_$0.__LZdeleted) {
-var $lzsc$6ijnlb = "$lzc$set_" + attr_$1;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(targ_$0[$lzsc$6ijnlb]) : targ_$0[$lzsc$6ijnlb] instanceof Function) {
-targ_$0[$lzsc$6ijnlb]($lzsc$a8ocf2)
-} else {
-targ_$0[attr_$1] = $lzsc$a8ocf2;
-var $lzsc$v3mdvz = targ_$0["on" + attr_$1];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$v3mdvz) : $lzsc$v3mdvz instanceof LzEvent) {
-if ($lzsc$v3mdvz.ready) {
-$lzsc$v3mdvz.sendEvent($lzsc$a8ocf2)
-}}}}}};
+targ_$0.__setAttr(attr_$1, Number(this.from))
+};
 if (expected_$2[attr_$1] == null) {
 expected_$2[attr_$1] = Number(targ_$0[attr_$1])
 };
@@ -35465,19 +35317,8 @@ expected_$2[attr_$1] = Number(targ_$0[attr_$1])
 var from_$3 = this.from;
 if (from_$3 != null) {
 expected_$2[attr_$1] += Number(from_$3 - expected_$2[attr_$1]);
-{
-var $lzsc$9hlmou = Number(from_$3);
-if (!targ_$0.__LZdeleted) {
-var $lzsc$grahja = "$lzc$set_" + attr_$1;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(targ_$0[$lzsc$grahja]) : targ_$0[$lzsc$grahja] instanceof Function) {
-targ_$0[$lzsc$grahja]($lzsc$9hlmou)
-} else {
-targ_$0[attr_$1] = $lzsc$9hlmou;
-var $lzsc$byuzo0 = targ_$0["on" + attr_$1];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$byuzo0) : $lzsc$byuzo0 instanceof LzEvent) {
-if ($lzsc$byuzo0.ready) {
-$lzsc$byuzo0.sendEvent($lzsc$9hlmou)
-}}}}}};
+targ_$0.__setAttr(attr_$1, Number(from_$3))
+};
 if (!this.relative) {
 var newto_$4 = this.origto - expected_$2[attr_$1];
 if (this.to != newto_$4) {
@@ -35591,21 +35432,11 @@ $4.last = $5
 var targ_$0 = this.target;
 var attr_$1 = this.attribute;
 var expected_$2 = targ_$0.__animatedAttributes;
-if (this.updateCounter(-1) == 0) {
+if (this.updateCounter(-this.repeat) == 0) {
 var val_$3 = expected_$2[attr_$1];
 delete expected_$2[attr_$1];
-{
-if (!targ_$0.__LZdeleted) {
-var $lzsc$5u8akv = "$lzc$set_" + attr_$1;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(targ_$0[$lzsc$5u8akv]) : targ_$0[$lzsc$5u8akv] instanceof Function) {
-targ_$0[$lzsc$5u8akv](val_$3)
-} else {
-targ_$0[attr_$1] = val_$3;
-var $lzsc$hqsw5k = targ_$0["on" + attr_$1];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$hqsw5k) : $lzsc$hqsw5k instanceof LzEvent) {
-if ($lzsc$hqsw5k.ready) {
-$lzsc$hqsw5k.sendEvent(val_$3)
-}}}}}};
+targ_$0.__setAttr(attr_$1, val_$3)
+};
 this.__LZhalt()
 }
 finally {
@@ -35720,19 +35551,7 @@ checkrepeat_$2 = true
 };
 var targ_$4 = this.target;
 var attr_$5 = this.attribute;
-{
-var $lzsc$5iztdu = targ_$4[attr_$5] + (value_$3 - this.currentValue);
-if (!targ_$4.__LZdeleted) {
-var $lzsc$8wa1op = "$lzc$set_" + attr_$5;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(targ_$4[$lzsc$8wa1op]) : targ_$4[$lzsc$8wa1op] instanceof Function) {
-targ_$4[$lzsc$8wa1op]($lzsc$5iztdu)
-} else {
-targ_$4[attr_$5] = $lzsc$5iztdu;
-var $lzsc$y8pk75 = targ_$4["on" + attr_$5];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$y8pk75) : $lzsc$y8pk75 instanceof LzEvent) {
-if ($lzsc$y8pk75.ready) {
-$lzsc$y8pk75.sendEvent($lzsc$5iztdu)
-}}}}};
+targ_$4.__setAttr(attr_$5, targ_$4[attr_$5] + (value_$3 - this.currentValue));
 this.currentValue = value_$3;
 if (checkrepeat_$2) {
 return this.checkRepeat()
@@ -35783,7 +35602,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], LzAnimatorGroup, ["tagname", "animator", "attributes", new LzInheritedHash(LzAnimatorGroup.attributes)]);
+})()], LzAnimatorGroup, ["tagname", "animator", "__LZCSSTagSelectors", ["animator", "animatorgroup", "node"], "attributes", new LzInheritedHash(LzAnimatorGroup.attributes)]);
 lz[LzAnimator.tagname] = LzAnimator;
 Class.make("LzContextMenu", ["onmenuopen", LzDeclaredEvent, "kernel", null, "items", null, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (del_$0, attrs_$1, children_$2, instcall_$3) {
@@ -35890,7 +35709,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "init";
 return $lzsc$temp
-})(), "$lzc$set_delegate", (function () {
+})(), "delegate", void 0, "$lzc$set_delegate", (function () {
 var $lzsc$temp = function (delegate_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -35904,6 +35723,7 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
+this.delegate = delegate_$0;
 this.kernel.setDelegate(delegate_$0)
 }
 finally {
@@ -35920,36 +35740,6 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_delegate";
 return $lzsc$temp
-})(), "setDelegate", (function () {
-var $lzsc$temp = function (delegate_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_delegate(delegate_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setDelegate";
-return $lzsc$temp
 })(), "addItem", (function () {
 var $lzsc$temp = function (item_$0) {
 try {
@@ -35965,8 +35755,7 @@ $1.calls[$2] = $3
 $1.last = $2
 };
 if (canvas.capabilities.customcontextmenu) {
-this.items.push(item_$0);
-this.kernel.addItem(item_$0)
+this.items.push(item_$0)
 }}
 finally {
 var $1 = global["$lzprofiler"];
@@ -36057,8 +35846,7 @@ $0.calls[$1] = $2
 $0.last = $1
 };
 if (canvas.capabilities.customcontextmenu) {
-this.items = [];
-this.kernel.clearItems()
+this.items = []
 }}
 finally {
 var $0 = global["$lzprofiler"];
@@ -36104,6 +35892,67 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "getItems";
 return $lzsc$temp
+})(), "filterItems", (function () {
+var $lzsc$temp = function (target_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+return this.getItems()
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "filterItems";
+return $lzsc$temp
+})(), "_filteredItems", (function () {
+var $lzsc$temp = function (target_$0) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+var items_$1 = this.filterItems(target_$0);
+return items_$1
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "_filteredItems";
+return $lzsc$temp
 })(), "makeMenuItem", (function () {
 var $lzsc$temp = function (title_$0, delegate_$1) {
 try {
@@ -36135,7 +35984,7 @@ $3.last = $4
 }}};
 $lzsc$temp["displayName"] = "makeMenuItem";
 return $lzsc$temp
-})()], LzNode, ["tagname", "contextmenu", "attributes", new LzInheritedHash(LzNode.attributes)]);
+})()], LzNode, ["tagname", "contextmenu", "__LZCSSTagSelectors", ["contextmenu", "node"], "attributes", new LzInheritedHash(LzNode.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 try {
@@ -36244,7 +36093,7 @@ $5.last = $6
 }}};
 $lzsc$temp["displayName"] = "construct";
 return $lzsc$temp
-})(), "$lzc$set_delegate", (function () {
+})(), "delegate", void 0, "$lzc$set_delegate", (function () {
 var $lzsc$temp = function (delegate_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -36258,6 +36107,7 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
+this.delegate = delegate_$0;
 this.kernel.setDelegate(delegate_$0)
 }
 finally {
@@ -36274,7 +36124,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_delegate";
 return $lzsc$temp
-})(), "$lzc$set_caption", (function () {
+})(), "caption", void 0, "$lzc$set_caption", (function () {
 var $lzsc$temp = function (caption_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -36288,6 +36138,7 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
+this.caption = caption_$0;
 this.kernel.setCaption(caption_$0)
 }
 finally {
@@ -36304,7 +36155,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_caption";
 return $lzsc$temp
-})(), "$lzc$set_enabled", (function () {
+})(), "enabled", void 0, "$lzc$set_enabled", (function () {
 var $lzsc$temp = function (val_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -36318,6 +36169,7 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
+this.enabled = val_$0;
 this.kernel.setEnabled(val_$0)
 }
 finally {
@@ -36334,7 +36186,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_enabled";
 return $lzsc$temp
-})(), "$lzc$set_separatorbefore", (function () {
+})(), "separatorbefore", void 0, "$lzc$set_separatorbefore", (function () {
 var $lzsc$temp = function (val_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -36348,6 +36200,7 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
+this.separatorbefore = val_$0;
 this.kernel.setSeparatorBefore(val_$0)
 }
 finally {
@@ -36364,7 +36217,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_separatorbefore";
 return $lzsc$temp
-})(), "$lzc$set_visible", (function () {
+})(), "visible", void 0, "$lzc$set_visible", (function () {
 var $lzsc$temp = function (val_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -36378,6 +36231,7 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
+this.visible = val_$0;
 this.kernel.setVisible(val_$0)
 }
 finally {
@@ -36393,66 +36247,6 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_visible";
-return $lzsc$temp
-})(), "setDelegate", (function () {
-var $lzsc$temp = function (delegate_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_delegate(delegate_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setDelegate";
-return $lzsc$temp
-})(), "setCaption", (function () {
-var $lzsc$temp = function (caption_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_caption(caption_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setCaption";
 return $lzsc$temp
 })(), "getCaption", (function () {
 var $lzsc$temp = function () {
@@ -36484,97 +36278,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "getCaption";
 return $lzsc$temp
-})(), "setEnabled", (function () {
-var $lzsc$temp = function (val_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_enabled(val_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setEnabled";
-return $lzsc$temp
-})(), "setSeparatorBefore", (function () {
-var $lzsc$temp = function (val_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_separatorbefore(val_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setSeparatorBefore";
-return $lzsc$temp
-})(), "setVisible", (function () {
-var $lzsc$temp = function (val_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_visible(val_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setVisible";
-return $lzsc$temp
-})()], LzNode, ["tagname", "contextmenuitem", "attributes", new LzInheritedHash(LzNode.attributes)]);
+})()], LzNode, ["tagname", "contextmenuitem", "__LZCSSTagSelectors", ["contextmenuitem", "node"], "attributes", new LzInheritedHash(LzNode.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 try {
@@ -36602,7 +36306,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "helpers/LzContextMenu.lzs#196/1";
+$lzsc$temp["displayName"] = "helpers/LzContextMenu.lzs#227/1";
 return $lzsc$temp
 })()(LzContextMenuItem);
 lz[LzContextMenuItem.tagname] = LzContextMenuItem;
@@ -37162,9 +36866,9 @@ delete held_$3[dependenciesName_$g]
 } else if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[dependenciesName_$g]) : this[dependenciesName_$g] instanceof Function) {
 held_$3[newDependenciesName_$l] = this[dependenciesName_$g]
 };
-held_$3[key_$5] = new (expr_$i.constructor)(expr_$i.attribute, expr_$i.type, newMethodName_$j, newDependenciesName_$l, dbgName_$k)
+held_$3[key_$5] = new (expr_$i.constructor)(newMethodName_$j, newDependenciesName_$l, dbgName_$k)
 } else {
-held_$3[key_$5] = new (expr_$i.constructor)(expr_$i.attribute, expr_$i.type, newMethodName_$j, dbgName_$k)
+held_$3[key_$5] = new (expr_$i.constructor)(newMethodName_$j, dbgName_$k)
 }}};
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["__LZapplyArgs"] || this.nextMethod(arguments.callee, "__LZapplyArgs")).call(this, stateArgs_$2, constcall_$1)
 }
@@ -37274,7 +36978,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "__LZretach";
 return $lzsc$temp
-})()], LzNode, ["tagname", "state", "attributes", new LzInheritedHash(LzNode.attributes), "events", {onremove: true, onapply: true, onapplied: true}]);
+})()], LzNode, ["tagname", "state", "__LZCSSTagSelectors", ["state", "node"], "attributes", new LzInheritedHash(LzNode.attributes), "events", {onremove: true, onapply: true, onapplied: true}]);
 (function () {
 var $lzsc$temp = function ($0) {
 try {
@@ -37879,36 +37583,6 @@ $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_ownerDocument";
 return $lzsc$temp
-})(), "setOwnerDocument", (function () {
-var $lzsc$temp = function (ownerDoc_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_ownerDocument(ownerDoc_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setOwnerDocument";
-return $lzsc$temp
 })(), "cloneNode", (function () {
 var $lzsc$temp = function (deep_$0) {
 try {
@@ -38171,42 +37845,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], LzEventable, ["ELEMENT_NODE", 1, "TEXT_NODE", 3, "DOCUMENT_NODE", 9, "stringToLzData", (function () {
-var $lzsc$temp = function (str_$0, trimwhitespace_$1, nsprefix_$2) {
-try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
-} else {
-$3.calls[$4] = $5
-};
-$3.last = $4
-};
-switch (arguments.length) {
-case 1:
-trimwhitespace_$1 = false;;case 2:
-nsprefix_$2 = false
-};
-return LzDataElement.stringToLzData(str_$0, trimwhitespace_$1, nsprefix_$2)
-}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "stringToLzData";
-return $lzsc$temp
-})()]);
+})()], LzEventable);
 lz.DataNode = LzDataNode;
 Mixin.make("LzDataElementMixin", ["__LZchangeQ", null, "__LZlocker", null, "nodeName", null, "attributes", null, "insertBefore", (function () {
 var $lzsc$temp = function (newChild_$0, refChild_$1) {
@@ -38933,36 +38572,6 @@ $3.last = $4
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_attributes";
 return $lzsc$temp
-})(), "setAttrs", (function () {
-var $lzsc$temp = function (attrs_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_attributes(attrs_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setAttrs";
-return $lzsc$temp
 })(), "$lzc$set_childNodes", (function () {
 var $lzsc$temp = function (children_$0) {
 try {
@@ -39016,36 +38625,6 @@ $5.last = $6
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_childNodes";
 return $lzsc$temp
-})(), "setChildNodes", (function () {
-var $lzsc$temp = function (children_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_childNodes(children_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setChildNodes";
-return $lzsc$temp
 })(), "$lzc$set_nodeName", (function () {
 var $lzsc$temp = function (name_$0) {
 try {
@@ -39082,36 +38661,6 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_nodeName";
-return $lzsc$temp
-})(), "setNodeName", (function () {
-var $lzsc$temp = function (name_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_nodeName(name_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setNodeName";
 return $lzsc$temp
 })(), "__LZgetText", (function () {
 var $lzsc$temp = function () {
@@ -39879,36 +39428,6 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "$lzc$set_data";
 return $lzsc$temp
-})(), "setData", (function () {
-var $lzsc$temp = function (newdata_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_data(newdata_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setData";
-return $lzsc$temp
 })(), "cloneNode", (function () {
 var $lzsc$temp = function (deep_$0) {
 try {
@@ -40130,7 +39649,7 @@ $lzsc$temp["displayName"] = "abortLoadForRequest";
 return $lzsc$temp
 })()], LzEventable);
 lz.DataProvider = LzDataProvider;
-Class.make("LzHTTPDataRequest", ["method", "GET", "postbody", void 0, "proxied", void 0, "proxyurl", void 0, "multirequest", false, "queuerequests", false, "queryparams", null, "requestheaders", null, "getresponseheaders", false, "responseheaders", void 0, "cacheable", false, "clientcacheable", false, "trimwhitespace", false, "nsprefix", false, "serverproxyargs", null, "xmldata", null, "loadtime", 0, "loadstarttime", void 0, "secure", false, "secureport", void 0, "parsexml", true, "loader", null, "$lzsc$initialize", (function () {
+Class.make("LzHTTPDataRequest", ["method", "GET", "postbody", void 0, "proxied", void 0, "proxyurl", void 0, "multirequest", false, "queuerequests", false, "queryparams", null, "requestheaders", null, "getresponseheaders", false, "responseheaders", void 0, "credentialled", void 0, "cacheable", false, "clientcacheable", false, "trimwhitespace", false, "nsprefix", false, "serverproxyargs", null, "xmldata", null, "loadtime", 0, "loadstarttime", void 0, "secure", false, "secureport", void 0, "parsexml", true, "loader", null, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (requestor_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -40219,11 +39738,11 @@ tloader_$2.loadSuccess = this.loadSuccess;
 tloader_$2.loadError = this.loadError;
 tloader_$2.loadTimeout = this.loadTimeout;
 tloader_$2.setProxied(proxied_$1);
+tloader_$2.setCredentialled(dreq_$0.credentialled);
 var secure_$3 = dreq_$0.secure;
-if (secure_$3 == null) {
 if (dreq_$0.src.substring(0, 5) == "https") {
 secure_$3 = true
-}};
+};
 tloader_$2.secure = secure_$3;
 if (secure_$3) {
 tloader_$2.baserequest = lz.Browser.getBaseURL(secure_$3, dreq_$0.secureport);
@@ -40340,7 +39859,7 @@ lzurl_$d.query += "&" + postbody_$c
 }};
 postbody_$c = null
 };
-var cachebreak_$e = "__lzbc__=" + new Date().getTime();
+var cachebreak_$e = "__lzbc__=" + Math.floor(Math.random() * (-1 >>> 1)).toString(36);
 if (!proxied_$2 && httpdreq_$1.method == "POST" && (postbody_$c == null || postbody_$c == "")) {
 postbody_$c = cachebreak_$e
 };
@@ -40855,6 +40374,36 @@ $0.returns[$1] = $2
 $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "isProxied";
+return $lzsc$temp
+})(), "credentialled", false, "$lzc$set_credentialled", (function () {
+var $lzsc$temp = function (b_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+this.credentialled = b_$0
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "$lzc$set_credentialled";
 return $lzsc$temp
 })(), "responseheaders", null, "queuerequests", false, "oncanvas", void 0, "$lzc$set_initialdata", (function () {
 var $lzsc$temp = function (d_$0) {
@@ -41531,216 +41080,6 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "setQueryParams";
 return $lzsc$temp
-})(), "setSrc", (function () {
-var $lzsc$temp = function (src_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_src(src_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setSrc";
-return $lzsc$temp
-})(), "setProxyRequests", (function () {
-var $lzsc$temp = function (val_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_proxied(val_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setProxyRequests";
-return $lzsc$temp
-})(), "setRequest", (function () {
-var $lzsc$temp = function (b_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_request(b_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setRequest";
-return $lzsc$temp
-})(), "setAutorequest", (function () {
-var $lzsc$temp = function (b_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_autorequest(b_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setAutorequest";
-return $lzsc$temp
-})(), "setPostBody", (function () {
-var $lzsc$temp = function (str_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_postbody(str_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setPostBody";
-return $lzsc$temp
-})(), "setQueryType", (function () {
-var $lzsc$temp = function (reqtype_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_querytype(reqtype_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setQueryType";
-return $lzsc$temp
-})(), "setInitialData", (function () {
-var $lzsc$temp = function (d_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_initialdata(d_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setInitialData";
-return $lzsc$temp
 })(), "abort", (function () {
 var $lzsc$temp = function () {
 try {
@@ -41825,6 +41164,7 @@ dreq_$1.cacheable = this.cacheable;
 dreq_$1.clientcacheable = this.clientcacheable;
 dreq_$1.trimwhitespace = this.trimwhitespace;
 dreq_$1.nsprefix = this.nsprefix;
+dreq_$1.credentialled = this.credentialled;
 if (this.dsloadDel == null) {
 this.dsloadDel = new LzDelegate(this, "handleDataResponse", dreq_$1, "onstatus")
 } else {
@@ -42082,7 +41422,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], [LzDataElementMixin, LzDataNodeMixin, LzNode], ["tagname", "dataset", "attributes", new LzInheritedHash(LzNode.attributes), "slashPat", "/", "queryStringToTable", (function () {
+})()], [LzDataElementMixin, LzDataNodeMixin, LzNode], ["tagname", "dataset", "__LZCSSTagSelectors", ["dataset", "DataElementMixin", "DataNodeMixin", "node"], "attributes", new LzInheritedHash(LzNode.attributes), "slashPat", "/", "queryStringToTable", (function () {
 var $lzsc$temp = function (query_$0) {
 try {
 var $8 = global["$lzprofiler"];
@@ -42103,7 +41443,7 @@ var key_$4 = parameters_$2[i_$3];
 var value_$5 = "";
 var n_$6 = key_$4.indexOf("=");
 if (n_$6 > 0) {
-value_$5 = unescape(key_$4.substring(n_$6 + 1));
+value_$5 = decodeURIComponent(key_$4.substring(n_$6 + 1));
 key_$4 = key_$4.substring(0, n_$6)
 };
 if (key_$4 in queries_$1) {
@@ -43482,7 +42822,7 @@ $3.last = $4
 };
 var np_$2 = this.p;
 for (;np_$2 != null && amnt_$1 > 0;amnt_$1--) {
-if (np_$2.nodeType == LzDataNode.TEXT_NODE) {
+if (np_$2.nodeType == LzDataElement.TEXT_NODE) {
 if (selector_$0 == "getFirstChild") break
 };
 np_$2 = np_$2[selector_$0]()
@@ -43677,36 +43017,6 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "selectNextParent";
-return $lzsc$temp
-})(), "getNodeOffset", (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-return this.getXPathIndex()
-}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "getNodeOffset";
 return $lzsc$temp
 })(), "getXPathIndex", (function () {
 var $lzsc$temp = function () {
@@ -44770,7 +44080,7 @@ $6.last = $7
 }}};
 $lzsc$temp["displayName"] = "__LZsetTracking";
 return $lzsc$temp
-})()], LzNode, ["tagname", "datapointer", "attributes", {ignoreplacement: true}, "ppcache", {}, "pathSymbols", {"/": 1, "..": 2, "*": 3, ".": 4}]);
+})()], LzNode, ["tagname", "datapointer", "__LZCSSTagSelectors", ["datapointer", "node"], "attributes", {ignoreplacement: true}, "ppcache", {}, "pathSymbols", {"/": 1, "..": 2, "*": 3, ".": 4}]);
 lz[LzDatapointer.tagname] = LzDatapointer;
 Class.make("LzParam", ["d", null, "delimiter", "&", "$lzc$set_delimiter", (function () {
 var $lzsc$temp = function (d_$0) {
@@ -44861,36 +44171,6 @@ $0.returns[$1] = $2
 $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})(), "parseQueryString", (function () {
-var $lzsc$temp = function (query_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-return lz.Param.parseQueryString(query_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "parseQueryString";
 return $lzsc$temp
 })(), "addObject", (function () {
 var $lzsc$temp = function (o_$0) {
@@ -45143,37 +44423,6 @@ $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "getValues";
 return $lzsc$temp
-})(), "getValueNoCase", (function () {
-var $lzsc$temp = function (name_$0) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-var a_$1 = this.getValues(name_$0);
-return a_$1 != null && a_$1.length == 1 ? a_$1[0] : a_$1
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "getValueNoCase";
-return $lzsc$temp
 })(), "getNames", (function () {
 var $lzsc$temp = function () {
 try {
@@ -45372,7 +44621,7 @@ var key_$4 = parameters_$2[i_$3];
 var value_$5 = "";
 var n_$6 = key_$4.indexOf("=");
 if (n_$6 > 0) {
-value_$5 = unescape(key_$4.substring(n_$6 + 1));
+value_$5 = decodeURIComponent(key_$4.substring(n_$6 + 1));
 key_$4 = key_$4.substring(0, n_$6)
 };
 queries_$1[key_$4] = value_$5
@@ -46710,7 +45959,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "__LZgetPosition";
 return $lzsc$temp
-})()], LzDatapointer, ["tagname", "datapath", "attributes", new LzInheritedHash(LzDatapointer.attributes)]);
+})()], LzDatapointer, ["tagname", "datapath", "__LZCSSTagSelectors", ["datapath", "datapointer", "node"], "attributes", new LzInheritedHash(LzDatapointer.attributes)]);
 lz[LzDatapath.tagname] = LzDatapath;
 Class.make("LzReplicationManager", ["asyncnew", true, "initialnodes", void 0, "clonePool", void 0, "cloneClass", void 0, "cloneParent", void 0, "cloneAttrs", void 0, "cloneChildren", void 0, "hasdata", void 0, "orderpath", void 0, "comparator", void 0, "__LZxpathconstr", null, "__LZxpathdepend", null, "visible", true, "__LZpreventXPathUpdate", false, "nodes", void 0, "clones", void 0, "__LZdataoffset", 0, "onnodes", LzDeclaredEvent, "onclones", LzDeclaredEvent, "onvisible", LzDeclaredEvent, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (odp_$0, args_$1, children_$2, instcall_$3) {
@@ -46879,7 +46128,7 @@ var dpCons_$9 = dp_$8;
 this.__LZxpathconstr = view_$2[dpCons_$9.methodName];
 this.__LZxpathdepend = view_$2[dpCons_$9.dependenciesName];
 this.__LZpreventXPathUpdate = true;
-this.applyConstraintExpr(new LzAlwaysExpr("datapath", "string", "__LZxpathconstr", "__LZxpathdepend"));
+this.applyConstraintExpr(new LzAlwaysExpr("__LZxpathconstr", "__LZxpathdepend"));
 this.__LZpreventXPathUpdate = false;
 if (this.pooling) {
 view_$2.releaseConstraintMethod(dpCons_$9.methodName)
@@ -46891,7 +46140,7 @@ var xpCons_$c = xp_$a;
 refObj_$b.__LZxpathconstr = odp_$0[xpCons_$c.methodName];
 refObj_$b.__LZxpathdepend = odp_$0[xpCons_$c.dependenciesName];
 this.__LZpreventXPathUpdate = true;
-refObj_$b.applyConstraintExpr(new LzAlwaysExpr("xpath", "string", "__LZxpathconstr", "__LZxpathdepend"));
+refObj_$b.applyConstraintExpr(new LzAlwaysExpr("__LZxpathconstr", "__LZxpathdepend"));
 this.__LZpreventXPathUpdate = false;
 if (this.pooling) {
 odp_$0.releaseConstraintMethod(xpCons_$c.methodName)
@@ -47650,7 +46899,7 @@ $1.calls[$2] = $3
 $1.last = $2
 };
 if (this.__LZpreventXPathUpdate) return false;
-return (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["setXPath"] || this.nextMethod(arguments.callee, "setXPath")).apply(this, arguments)
+return (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["setXPath"] || this.nextMethod(arguments.callee, "setXPath")).call(this, xp_$0)
 }
 finally {
 var $1 = global["$lzprofiler"];
@@ -47773,36 +47022,6 @@ $0.returns[$1] = $2
 $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "toString";
-return $lzsc$temp
-})(), "setVisible", (function () {
-var $lzsc$temp = function (vis_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-this.$lzc$set_visible(vis_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "setVisible";
 return $lzsc$temp
 })(), "$lzc$set_visible", (function () {
 var $lzsc$temp = function (vis_$0) {
@@ -48276,18 +47495,8 @@ data_$4 = null
 };
 var newvalue_$7 = lz.Type.acceptTypeValue(this.type, data_$4, node_$5, attr_$6);
 if (pchg_$2 || node_$5[attr_$6] !== newvalue_$7 || !node_$5.inited || this.parsedPath.operator == "attributes") {
-{
-if (!node_$5.__LZdeleted) {
-var $lzsc$wdb6ct = "$lzc$set_" + attr_$6;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(node_$5[$lzsc$wdb6ct]) : node_$5[$lzsc$wdb6ct] instanceof Function) {
-node_$5[$lzsc$wdb6ct](newvalue_$7)
-} else {
-node_$5[attr_$6] = newvalue_$7;
-var $lzsc$t14806 = node_$5["on" + attr_$6];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$t14806) : $lzsc$t14806 instanceof LzEvent) {
-if ($lzsc$t14806.ready) {
-$lzsc$t14806.sendEvent(newvalue_$7)
-}}}}}}};
+node_$5.setAttribute(attr_$6, newvalue_$7)
+}};
 return result_$3
 }
 finally {
@@ -48694,20 +47903,7 @@ if (args_$1.spacing == null) {
 args_$1.spacing = 0
 };
 this.totalsize = this.viewsize + args_$1.spacing;
-{
-var $lzsc$xmdcvu = this.axis;
-var $lzsc$c78d3m = this.totalsize;
-if (!v_$6.__LZdeleted) {
-var $lzsc$1455w4 = "$lzc$set_" + $lzsc$xmdcvu;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(v_$6[$lzsc$1455w4]) : v_$6[$lzsc$1455w4] instanceof Function) {
-v_$6[$lzsc$1455w4]($lzsc$c78d3m)
-} else {
-v_$6[$lzsc$xmdcvu] = $lzsc$c78d3m;
-var $lzsc$r7keiq = v_$6["on" + $lzsc$xmdcvu];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$r7keiq) : $lzsc$r7keiq instanceof LzEvent) {
-if ($lzsc$r7keiq.ready) {
-$lzsc$r7keiq.sendEvent($lzsc$c78d3m)
-}}}}};
+v_$6.setAttribute(this.axis, this.totalsize);
 this.__LZdataoffset = 0;
 this.updateDel = new LzDelegate(this, "__LZhandleUpdate");
 this.updateDel.register(this.cloneimmediateparent, "on" + this.axis);
@@ -48845,19 +48041,7 @@ var _totalsize_$6 = this.totalsize;
 if (_nodes_$3) {
 var nodelen_$7 = _nodes_$3.length;
 if (this.__LZoldnodelen != nodelen_$7) {
-{
-var $lzsc$1y9ou4 = nodelen_$7 * _totalsize_$6 - this.spacing;
-if (!cloneip_$2.__LZdeleted) {
-var $lzsc$lzvxar = "$lzc$set_" + _sizeAxis_$5;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(cloneip_$2[$lzsc$lzvxar]) : cloneip_$2[$lzsc$lzvxar] instanceof Function) {
-cloneip_$2[$lzsc$lzvxar]($lzsc$1y9ou4)
-} else {
-cloneip_$2[_sizeAxis_$5] = $lzsc$1y9ou4;
-var $lzsc$r1fqhr = cloneip_$2["on" + _sizeAxis_$5];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$r1fqhr) : $lzsc$r1fqhr instanceof LzEvent) {
-if ($lzsc$r1fqhr.ready) {
-$lzsc$r1fqhr.sendEvent($lzsc$1y9ou4)
-}}}}};
+cloneip_$2.setAttribute(_sizeAxis_$5, nodelen_$7 * _totalsize_$6 - this.spacing);
 this.__LZoldnodelen = nodelen_$7
 }};
 if (!(this.mask && this.mask["hasset" + _sizeAxis_$5])) return;
@@ -48898,19 +48082,7 @@ cl_$g = this.getNewClone()
 }};
 if (cl_$g) {
 this.clones[i_$f] = cl_$g;
-{
-var $lzsc$u8ke74 = (i_$f + newstart_$8) * _totalsize_$6;
-if (!cl_$g.__LZdeleted) {
-var $lzsc$k40jcy = "$lzc$set_" + _axis_$4;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(cl_$g[$lzsc$k40jcy]) : cl_$g[$lzsc$k40jcy] instanceof Function) {
-cl_$g[$lzsc$k40jcy]($lzsc$u8ke74)
-} else {
-cl_$g[_axis_$4] = $lzsc$u8ke74;
-var $lzsc$3msqps = cl_$g["on" + _axis_$4];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$3msqps) : $lzsc$3msqps instanceof LzEvent) {
-if ($lzsc$3msqps.ready) {
-$lzsc$3msqps.sendEvent($lzsc$u8ke74)
-}}}}};
+cl_$g.setAttribute(_axis_$4, (i_$f + newstart_$8) * _totalsize_$6);
 cl_$g.clonenumber = newstart_$8 + i_$f;
 if (_nodes_$3) {
 cl_$g.datapath.setClonePointer(_nodes_$3[newstart_$8 + i_$f])
@@ -49376,52 +48548,16 @@ if (cl_$m.onclonenumber.ready) cl_$m.onclonenumber.sendEvent(i_$e + newoffset_$5
 this.clones[i_$e] = cl_$m
 };
 this.clones[i_$e] = cl_$m;
-{
-var $lzsc$8z8rlq = this.axis;
-if (!cl_$m.__LZdeleted) {
-var $lzsc$t6kd2q = "$lzc$set_" + $lzsc$8z8rlq;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(cl_$m[$lzsc$t6kd2q]) : cl_$m[$lzsc$t6kd2q] instanceof Function) {
-cl_$m[$lzsc$t6kd2q](clpos_$n)
-} else {
-cl_$m[$lzsc$8z8rlq] = clpos_$n;
-var $lzsc$n2t7z2 = cl_$m["on" + $lzsc$8z8rlq];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$n2t7z2) : $lzsc$n2t7z2 instanceof LzEvent) {
-if ($lzsc$n2t7z2.ready) {
-$lzsc$n2t7z2.sendEvent(clpos_$n)
-}}}}};
+cl_$m.setAttribute(this.axis, clpos_$n);
 var ds_$g = cnode_$f.getUserData(this.datasizevar);
 var csiz_$h = ds_$g == null ? this.viewsize : ds_$g;
 if (cl_$m[this.sizeAxis] != csiz_$h) {
-{
-var $lzsc$13g9q3 = this.sizeAxis;
-if (!cl_$m.__LZdeleted) {
-var $lzsc$i8pr3t = "$lzc$set_" + $lzsc$13g9q3;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(cl_$m[$lzsc$i8pr3t]) : cl_$m[$lzsc$i8pr3t] instanceof Function) {
-cl_$m[$lzsc$i8pr3t](csiz_$h)
-} else {
-cl_$m[$lzsc$13g9q3] = csiz_$h;
-var $lzsc$dmbade = cl_$m["on" + $lzsc$13g9q3];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$dmbade) : $lzsc$dmbade instanceof LzEvent) {
-if ($lzsc$dmbade.ready) {
-$lzsc$dmbade.sendEvent(csiz_$h)
-}}}}}};
+cl_$m.setAttribute(this.sizeAxis, csiz_$h)
+};
 clpos_$n += csiz_$h + this.spacing
 };
 this.__LZdataoffset = newoffset_$5;
-{
-var $lzsc$y4y5ri = this.cloneimmediateparent;
-var $lzsc$vc4hmh = this.sizeAxis;
-if (!$lzsc$y4y5ri.__LZdeleted) {
-var $lzsc$r7bb2j = "$lzc$set_" + $lzsc$vc4hmh;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa($lzsc$y4y5ri[$lzsc$r7bb2j]) : $lzsc$y4y5ri[$lzsc$r7bb2j] instanceof Function) {
-$lzsc$y4y5ri[$lzsc$r7bb2j](cpos_$9)
-} else {
-$lzsc$y4y5ri[$lzsc$vc4hmh] = cpos_$9;
-var $lzsc$tspz3u = $lzsc$y4y5ri["on" + $lzsc$vc4hmh];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$tspz3u) : $lzsc$tspz3u instanceof LzEvent) {
-if ($lzsc$tspz3u.ready) {
-$lzsc$tspz3u.sendEvent(cpos_$9)
-}}}}};
+this.cloneimmediateparent.setAttribute(this.sizeAxis, cpos_$9);
 this.__LZresizeupdating = false
 }
 finally {
@@ -49440,7 +48576,605 @@ $lzsc$temp["displayName"] = "__LZadjustVisibleClones";
 return $lzsc$temp
 })()], LzLazyReplicationManager);
 lz.ResizeReplicationManager = LzResizeReplicationManager;
-Class.make("LzColorUtils", null, null, ["__cache", {counter: 0}, "stringToColor", (function () {
+Class.make("LzColorUtils", null, null, ["__cache", {counter: 0}, "colorfrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+return n_$0 & 16777215
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "colorfrominternal";
+return $lzsc$temp
+})(), "alphafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+return (255 - (n_$0 >>> 24 & 255)) / 255
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "alphafrominternal";
+return $lzsc$temp
+})(), "coloralphafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+return [n_$0 & 16777215, (255 - (n_$0 >>> 24 & 255)) / 255]
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "coloralphafrominternal";
+return $lzsc$temp
+})(), "internalfromcoloralpha", (function () {
+var $lzsc$temp = function (c_$0, a_$1) {
+try {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
+} else {
+$2.calls[$3] = $4
+};
+$2.last = $3
+};
+return 255 - (Math.round(a_$1 * 255) & 255) << 24 | c_$0 & 16777215
+}
+finally {
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
+} else {
+$2.returns[$3] = $4
+};
+$2.last = $3
+}}};
+$lzsc$temp["displayName"] = "internalfromcoloralpha";
+return $lzsc$temp
+})(), "rgbafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+return [n_$0 >> 16 & 255, n_$0 >> 8 & 255, n_$0 & 255, (255 - (n_$0 >>> 24 & 255)) / 255]
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "rgbafrominternal";
+return $lzsc$temp
+})(), "internalfromrgba", (function () {
+var $lzsc$temp = function (r_$0, g_$1, b_$2, a_$3) {
+try {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
+} else {
+$5.calls[$6] = $7
+};
+$5.last = $6
+};
+var round_$4 = Math.round;
+return 255 - (round_$4(a_$3 * 255) & 255) << 24 | (round_$4(r_$0) & 255) << 16 | (round_$4(g_$1) & 255) << 8 | round_$4(b_$2) & 255
+}
+finally {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
+} else {
+$5.returns[$6] = $7
+};
+$5.last = $6
+}}};
+$lzsc$temp["displayName"] = "internalfromrgba";
+return $lzsc$temp
+})(), "hslafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+try {
+var $b = global["$lzprofiler"];
+if ($b) {
+var $c = "" + (new Date().getTime() - $b.base);
+var $d = arguments.callee["displayName"];
+if ($b.last == $c) {
+$b.events[$c] += ",calls:" + $d
+} else {
+$b.calls[$c] = $d
+};
+$b.last = $c
+};
+var r_$1 = (n_$0 >> 16 & 255) / 255, g_$2 = (n_$0 >> 8 & 255) / 255, b_$3 = (n_$0 & 255) / 255;
+var a_$4 = (255 - (n_$0 >>> 24 & 255)) / 255;
+var min_$5 = Math.min(r_$1, Math.min(g_$2, b_$3)), max_$6 = Math.max(r_$1, Math.max(g_$2, b_$3));
+var h_$7, s_$8, l_$9 = (max_$6 + min_$5) / 2;
+if (max_$6 == min_$5) {
+h_$7 = s_$8 = 0
+} else {
+var d_$a = max_$6 - min_$5;
+s_$8 = l_$9 > 0.5 ? d_$a / (2 - max_$6 - min_$5) : d_$a / (max_$6 + min_$5);
+switch (max_$6) {
+case r_$1:
+h_$7 = (g_$2 - b_$3) / d_$a + (g_$2 < b_$3 ? 6 : 0);break;;case g_$2:
+h_$7 = (b_$3 - r_$1) / d_$a + 2;break;;case b_$3:
+h_$7 = (r_$1 - g_$2) / d_$a + 4;break
+};
+h_$7 *= 60;
+if (h_$7 < 0) {
+h_$7 += 360
+}};
+return [h_$7, s_$8, l_$9, a_$4]
+}
+finally {
+var $b = global["$lzprofiler"];
+if ($b) {
+var $c = "" + (new Date().getTime() - $b.base);
+var $d = arguments.callee["displayName"];
+if ($b.last == $c) {
+$b.events[$c] += ",returns:" + $d
+} else {
+$b.returns[$c] = $d
+};
+$b.last = $c
+}}};
+$lzsc$temp["displayName"] = "hslafrominternal";
+return $lzsc$temp
+})(), "internalfromhsla", (function () {
+var $lzsc$temp = function (h_$0, s_$1, l_$2, a_$3) {
+try {
+var hue2rgb_$4;
+var $a = global["$lzprofiler"];
+if ($a) {
+var $b = "" + (new Date().getTime() - $a.base);
+var $c = arguments.callee["displayName"];
+if ($a.last == $b) {
+$a.events[$b] += ",calls:" + $c
+} else {
+$a.calls[$b] = $c
+};
+$a.last = $b
+};
+hue2rgb_$4 = (function () {
+var $lzsc$temp = function (m1_$0, m2_$1, h_$2) {
+try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (h_$2 < 0) {
+h_$2++
+};
+if (h_$2 > 1) {
+h_$2--
+};
+if (h_$2 * 6 < 1) {
+return m1_$0 + (m2_$1 - m1_$0) * h_$2 * 6
+};
+if (h_$2 * 2 < 1) {
+return m2_$1
+};
+if (h_$2 * 3 < 2) {
+return m1_$0 + (m2_$1 - m1_$0) * (2 / 3 - h_$2) * 6
+};
+return m1_$0
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "hue2rgb";
+return $lzsc$temp
+})();
+h_$0 = (h_$0 % 360 + 360) % 360 / 360;
+var m2_$5 = l_$2 <= 0.5 ? l_$2 * (s_$1 + 1) : l_$2 + s_$1 - l_$2 * s_$1;
+var m1_$6 = l_$2 * 2 - m2_$5;
+var r_$7 = hue2rgb_$4(m1_$6, m2_$5, h_$0 + 1 / 3);
+var g_$8 = hue2rgb_$4(m1_$6, m2_$5, h_$0);
+var b_$9 = hue2rgb_$4(m1_$6, m2_$5, h_$0 - 1 / 3);
+return LzColorUtils.internalfromrgba(r_$7 * 255, g_$8 * 255, b_$9 * 255, a_$3)
+}
+finally {
+var $a = global["$lzprofiler"];
+if ($a) {
+var $b = "" + (new Date().getTime() - $a.base);
+var $c = arguments.callee["displayName"];
+if ($a.last == $b) {
+$a.events[$b] += ",returns:" + $c
+} else {
+$a.returns[$b] = $c
+};
+$a.last = $b
+}}};
+$lzsc$temp["displayName"] = "internalfromhsla";
+return $lzsc$temp
+})(), "hsvafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+try {
+var $b = global["$lzprofiler"];
+if ($b) {
+var $c = "" + (new Date().getTime() - $b.base);
+var $d = arguments.callee["displayName"];
+if ($b.last == $c) {
+$b.events[$c] += ",calls:" + $d
+} else {
+$b.calls[$c] = $d
+};
+$b.last = $c
+};
+var r_$1 = (n_$0 >> 16 & 255) / 255, g_$2 = (n_$0 >> 8 & 255) / 255, b_$3 = (n_$0 & 255) / 255;
+var a_$4 = (255 - (n_$0 >>> 24 & 255)) / 255;
+var min_$5 = Math.min(r_$1, Math.min(g_$2, b_$3)), max_$6 = Math.max(r_$1, Math.max(g_$2, b_$3));
+var h_$7, s_$8, v_$9 = max_$6;
+if (max_$6 == min_$5) {
+h_$7 = s_$8 = 0
+} else {
+var d_$a = max_$6 - min_$5;
+s_$8 = d_$a / max_$6;
+if (r_$1 == max_$6) {
+h_$7 = (g_$2 - b_$3) / d_$a
+} else if (g_$2 == max_$6) {
+h_$7 = 2 + (b_$3 - r_$1) / d_$a
+} else {
+h_$7 = 4 + (r_$1 - g_$2) / d_$a
+};
+h_$7 *= 60;
+if (h_$7 < 0) {
+h_$7 += 360
+}};
+return [h_$7, s_$8, v_$9, a_$4]
+}
+finally {
+var $b = global["$lzprofiler"];
+if ($b) {
+var $c = "" + (new Date().getTime() - $b.base);
+var $d = arguments.callee["displayName"];
+if ($b.last == $c) {
+$b.events[$c] += ",returns:" + $d
+} else {
+$b.returns[$c] = $d
+};
+$b.last = $c
+}}};
+$lzsc$temp["displayName"] = "hsvafrominternal";
+return $lzsc$temp
+})(), "internalfromhsva", (function () {
+var $lzsc$temp = function (h_$0, s_$1, v_$2, a_$3) {
+try {
+var $d = global["$lzprofiler"];
+if ($d) {
+var $e = "" + (new Date().getTime() - $d.base);
+var $f = arguments.callee["displayName"];
+if ($d.last == $e) {
+$d.events[$e] += ",calls:" + $f
+} else {
+$d.calls[$e] = $f
+};
+$d.last = $e
+};
+var t_$4 = h_$0 / 60;
+var ti_$5 = t_$4 | 0;
+var hi_$6 = ti_$5 % 6;
+var f_$7 = t_$4 - ti_$5;
+var p_$8 = v_$2 * (1 - s_$1);
+var q_$9 = v_$2 * (1 - f_$7 * s_$1);
+var t_$4 = v_$2 * (1 - (1 - f_$7) * s_$1);
+var r_$a, g_$b, b_$c;
+switch (hi_$6) {
+case 0:
+r_$a = v_$2;g_$b = t_$4;b_$c = p_$8;break;;case 1:
+r_$a = q_$9;g_$b = v_$2;b_$c = p_$8;break;;case 2:
+r_$a = p_$8;g_$b = v_$2;b_$c = t_$4;break;;case 3:
+r_$a = p_$8;g_$b = q_$9;b_$c = v_$2;break;;case 4:
+r_$a = t_$4;g_$b = p_$8;b_$c = v_$2;break;;case 5:
+r_$a = v_$2;g_$b = p_$8;b_$c = q_$9;break
+};
+return LzColorUtils.internalfromrgba(r_$a * 255, g_$b * 255, b_$c * 255, a_$3)
+}
+finally {
+var $d = global["$lzprofiler"];
+if ($d) {
+var $e = "" + (new Date().getTime() - $d.base);
+var $f = arguments.callee["displayName"];
+if ($d.last == $e) {
+$d.events[$e] += ",returns:" + $f
+} else {
+$d.returns[$e] = $f
+};
+$d.last = $e
+}}};
+$lzsc$temp["displayName"] = "internalfromhsva";
+return $lzsc$temp
+})(), "ColorPattern", new RegExp("^\\s*(rgb|hsl|hsv)a?\\s*\\(([^,]+),([^,]+),([^,\\)]+)(?:,([^\\)]+))?\\)\\s*$"), "PercentPattern", new RegExp("^\\s*(100(?:\\.0*)?|\\d{1,2}(?:\\.\\d*)?|\\.\\d+)\\s*%\\s*$"), "NumberPattern", new RegExp("^\\s*(\\d{1,3}(?:\\.\\d*)?|\\.\\d+)\\s*$"), "HexPattern", new RegExp("^\\s*#\\s*([a-fA-F\\d]{3,8})\\s*$"), "internalfromcss", (function () {
+var $lzsc$temp = function (s_$0) {
+try {
+var $d = global["$lzprofiler"];
+if ($d) {
+var $e = "" + (new Date().getTime() - $d.base);
+var $f = arguments.callee["displayName"];
+if ($d.last == $e) {
+$d.events[$e] += ",calls:" + $f
+} else {
+$d.calls[$e] = $f
+};
+$d.last = $e
+};
+if (s_$0 in lz.colors) {
+return lz.colors[s_$0]
+};
+var match_$1;
+if (match_$1 = s_$0.match(LzColorUtils.ColorPattern)) {
+var components_$2 = [0, 0, 0, 1];
+var multipliers_$3, divisors_$4;
+switch (match_$1[1]) {
+case "rgb":
+multipliers_$3 = [255, 255, 255, 1];divisors_$4 = [1, 1, 1, 1];break;;case "hsv":
+case "hsl":
+multipliers_$3 = [360, 1, 1, 1];divisors_$4 = [1, 100, 100, 1];break
+};
+var percent_$5, number_$6;
+for (var i_$7 = 0, l_$8 = match_$1.length - 2;i_$7 < l_$8;i_$7++) {
+var elt_$9 = match_$1[i_$7 + 2];
+if (elt_$9) {
+if (percent_$5 = elt_$9.match(LzColorUtils.PercentPattern)) {
+components_$2[i_$7] = parseFloat(percent_$5[1]) * multipliers_$3[i_$7] / 100
+} else if (number_$6 = elt_$9.match(LzColorUtils.NumberPattern)) {
+components_$2[i_$7] = parseFloat(number_$6[1]) / divisors_$4[i_$7]
+} else {
+return 0
+}}};
+switch (match_$1[1]) {
+case "rgb":
+return LzColorUtils.internalfromrgba.apply(LzColorUtils, components_$2);;case "hsv":
+return LzColorUtils.internalfromhsva.apply(LzColorUtils, components_$2);;case "hsl":
+return LzColorUtils.internalfromhsla.apply(LzColorUtils, components_$2)
+}} else if (match_$1 = s_$0.match(LzColorUtils.HexPattern)) {
+var hex_$a = match_$1[1];
+var rgb_$b = parseInt(hex_$a, 16);
+var alpha_$c = 1;
+switch (hex_$a.length) {
+case 3:
+rgb_$b = ((rgb_$b & 3840) << 8 | (rgb_$b & 240) << 4 | rgb_$b & 15) * 17;break;;case 6:
+break;;case 4:
+rgb_$b = ((rgb_$b & 61440) << 12 | (rgb_$b & 3840) << 8 | (rgb_$b & 240) << 4 | rgb_$b & 15) * 17;;case 8:
+alpha_$c = (rgb_$b & 255) / 255;rgb_$b = rgb_$b >>> 8 & 16777215;break;;default:
+return 0
+};
+return LzColorUtils.internalfromcoloralpha(rgb_$b, alpha_$c)
+};
+return 0
+}
+finally {
+var $d = global["$lzprofiler"];
+if ($d) {
+var $e = "" + (new Date().getTime() - $d.base);
+var $f = arguments.callee["displayName"];
+if ($d.last == $e) {
+$d.events[$e] += ",returns:" + $f
+} else {
+$d.returns[$e] = $f
+};
+$d.last = $e
+}}};
+$lzsc$temp["displayName"] = "internalfromcss";
+return $lzsc$temp
+})(), "fractionToDecimal", (function () {
+var $lzsc$temp = function (n_$0, base_$1) {
+try {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
+} else {
+$7.calls[$8] = $9
+};
+$7.last = $8
+};
+switch (arguments.length) {
+case 1:
+base_$1 = 255
+};
+var round_$2 = Math.round;
+var str_$3 = (n_$0 / base_$1).toString();
+var i_$4 = str_$3.indexOf(".");
+if (i_$4 == -1) {
+return str_$3
+};
+i_$4 += 2;
+for (var l_$5 = str_$3.length;i_$4 < l_$5;i_$4++) {
+var s_$6 = str_$3.substring(0, i_$4);
+if (n_$0 === round_$2(base_$1 * s_$6)) {
+return s_$6
+}};
+return str_$3
+}
+finally {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
+} else {
+$7.returns[$8] = $9
+};
+$7.last = $8
+}}};
+$lzsc$temp["displayName"] = "fractionToDecimal";
+return $lzsc$temp
+})(), "cssfrominternal", (function () {
+var $lzsc$temp = function (n_$0, format_$1) {
+try {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
+} else {
+$7.calls[$8] = $9
+};
+$7.last = $8
+};
+switch (arguments.length) {
+case 1:
+format_$1 = null
+};
+var f2d_$2 = LzColorUtils.fractionToDecimal;
+var v_$3;
+if (!format_$1) {
+format_$1 = LzColorUtils.alphafrominternal(n_$0) !== 1 ? "rgb" : "#"
+};
+switch (format_$1) {
+default:
+;case "rgb":
+v_$3 = LzColorUtils.rgbafrominternal(n_$0);if (v_$3[3] == 1) {
+return "rgb(" + v_$3[0] + "," + v_$3[1] + "," + v_$3[2] + ")"
+} else {
+return "rgba(" + v_$3[0] + "," + v_$3[1] + "," + v_$3[2] + "," + f2d_$2(v_$3[3] * 255) + ")"
+};case "hsl":
+v_$3 = LzColorUtils.hslafrominternal(n_$0);if (v_$3[3] == 1) {
+return "hsl(" + v_$3[0] + "," + v_$3[1] * 100 + "%," + v_$3[2] * 100 + "%)"
+} else {
+return "hsl(" + v_$3[0] + "," + v_$3[1] * 100 + "%," + v_$3[2] * 100 + "%," + v_$3[3] + ")"
+};case "hsv":
+v_$3 = LzColorUtils.hsvafrominternal(n_$0);if (v_$3[3] == 1) {
+return "hsv(" + v_$3[0] + "," + v_$3[1] * 100 + "%," + v_$3[2] * 100 + "%)"
+} else {
+return "hsv(" + v_$3[0] + "," + v_$3[1] * 100 + "%," + v_$3[2] * 100 + "%," + v_$3[3] + ")"
+};case "#":
+v_$3 = LzColorUtils.rgbafrominternal(n_$0);var s_$4 = "#";for (var i_$5 = 0;i_$5 < 4;i_$5++) {
+var c_$6 = v_$3[i_$5];
+if (i_$5 == 3) {
+if (c_$6 == 1) {
+break
+};
+c_$6 = Math.round(c_$6 * 255)
+};
+if (c_$6 < 16) {
+s_$4 += "0"
+};
+s_$4 += c_$6.toString(16)
+};return s_$4
+}}
+finally {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
+} else {
+$7.returns[$8] = $9
+};
+$7.last = $8
+}}};
+$lzsc$temp["displayName"] = "cssfrominternal";
+return $lzsc$temp
+})(), "stringToColor", (function () {
 var $lzsc$temp = function (s_$0) {
 try {
 var $2 = global["$lzprofiler"];
@@ -49456,8 +49190,7 @@ $2.last = $3
 };
 if (typeof s_$0 != "string") return s_$0;
 if (s_$0 in lz.colors) return lz.colors[s_$0];
-if (s_$0 in global) return global[s_$0];
-if (s_$0.indexOf("rgb") != -1) return LzColorUtils.fromrgb(s_$0);
+if (s_$0.indexOf("rgb") != -1) return LzColorUtils.internalfromcss(s_$0);
 var n_$1 = Number(s_$0);
 if (isNaN(n_$1)) {
 return s_$0
@@ -49481,37 +49214,31 @@ return $lzsc$temp
 })(), "fromrgb", (function () {
 var $lzsc$temp = function (s_$0) {
 try {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
 } else {
-$3.calls[$4] = $5
+$1.calls[$2] = $3
 };
-$3.last = $4
+$1.last = $2
 };
 if (typeof s_$0 != "string") return s_$0;
-if (s_$0.indexOf("rgb") == -1) return LzColorUtils.stringToColor(s_$0);
-var parts_$1 = s_$0.substring(s_$0.indexOf("(") + 1, s_$0.lastIndexOf(")")).split(",");
-var color_$2 = LzColorUtils.rgbatoint(parts_$1[0], parts_$1[1], parts_$1[2], parts_$1[3]);
-if (!isNaN(color_$2)) {
-return color_$2
-};
-return 0
+return LzColorUtils.internalfromcss(s_$0)
 }
 finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
 } else {
-$3.returns[$4] = $5
+$1.returns[$2] = $3
 };
-$3.last = $4
+$1.last = $2
 }}};
 $lzsc$temp["displayName"] = "fromrgb";
 return $lzsc$temp
@@ -49560,6 +49287,44 @@ return $lzsc$temp
 })(), "torgb", (function () {
 var $lzsc$temp = function (s_$0) {
 try {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
+} else {
+$3.calls[$4] = $5
+};
+$3.last = $4
+};
+if (typeof s_$0 == "string") {
+s_$0 = LzColorUtils.hextoint(s_$0)
+};
+var cache_$1 = LzColorUtils.__cache;
+var key_$2 = "torgb" + s_$0;
+if (cache_$1[key_$2]) return cache_$1[key_$2];
+if (++cache_$1.counter > 1000) {
+cache_$1 = {counter: 0}};
+return cache_$1[key_$2] = LzColorUtils.cssfrominternal(s_$0, "rgb")
+}
+finally {
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
+} else {
+$3.returns[$4] = $5
+};
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "torgb";
+return $lzsc$temp
+})(), "tohsv", (function () {
+var $lzsc$temp = function (rgb_$0) {
+try {
 var $4 = global["$lzprofiler"];
 if ($4) {
 var $5 = "" + (new Date().getTime() - $4.base);
@@ -49571,21 +49336,14 @@ $4.calls[$5] = $6
 };
 $4.last = $5
 };
-if (typeof s_$0 == "string" && s_$0.indexOf("rgb") != -1) return s_$0;
-var n_$1 = LzColorUtils.inttohex(s_$0);
-if (typeof n_$1 != "string") return n_$1;
-if (typeof s_$0 == "number" || lz.colors[s_$0] != null) s_$0 = n_$1;
-var cache_$2 = LzColorUtils.__cache;
-var key_$3 = "torgb" + n_$1;
-if (cache_$2[key_$3]) return cache_$2[key_$3];
-if (++cache_$2.counter > 1000) {
-cache_$2 = {counter: 0}};
-if (s_$0.length < 6) {
-s_$0 = "#" + s_$0.charAt(1) + s_$0.charAt(1) + s_$0.charAt(2) + s_$0.charAt(2) + s_$0.charAt(3) + s_$0.charAt(3) + (s_$0.length > 4 ? s_$0.charAt(4) + s_$0.charAt(4) : "")
-};
-cache_$2[key_$3] = (s_$0.length > 7 ? "rgba(" : "rgb(") + parseInt(s_$0.substring(1, 3), 16) + "," + parseInt(s_$0.substring(3, 5), 16) + "," + parseInt(s_$0.substring(5, 7), 16) + (s_$0.length > 7 ? "," + parseInt(s_$0.substring(7), 16) / 255 : "") + ")";
-return cache_$2[key_$3]
-}
+var cache_$1 = LzColorUtils.__cache;
+var key_$2 = "tohsv" + rgb_$0;
+if (cache_$1[key_$2]) return cache_$1[key_$2];
+if (++cache_$1.counter > 1000) {
+cache_$1 = {counter: 0}};
+rgb_$0 = LzColorUtils.hextoint(rgb_$0);
+var hsva_$3 = LzColorUtils.hsvafrominternal(rgb_$0);
+return cache_$1[key_$2] = {h: hsva_$3[0], s: hsva_$3[1], v: hsva_$3[2], a: hsva_$3[3]}}
 finally {
 var $4 = global["$lzprofiler"];
 if ($4) {
@@ -49598,112 +49356,44 @@ $4.returns[$5] = $6
 };
 $4.last = $5
 }}};
-$lzsc$temp["displayName"] = "torgb";
-return $lzsc$temp
-})(), "tohsv", (function () {
-var $lzsc$temp = function (rgb_$0) {
-try {
-var $c = global["$lzprofiler"];
-if ($c) {
-var $d = "" + (new Date().getTime() - $c.base);
-var $e = arguments.callee["displayName"];
-if ($c.last == $d) {
-$c.events[$d] += ",calls:" + $e
-} else {
-$c.calls[$d] = $e
-};
-$c.last = $d
-};
-var cache_$1 = LzColorUtils.__cache;
-var key_$2 = "tohsv" + rgb_$0;
-if (cache_$1[key_$2]) return cache_$1[key_$2];
-if (++cache_$1.counter > 1000) {
-cache_$1 = {counter: 0}};
-rgb_$0 = LzColorUtils.hextoint(rgb_$0);
-var r_$3 = (rgb_$0 >> 16 & 255) / 255, g_$4 = (rgb_$0 >> 8 & 255) / 255, b_$5 = (rgb_$0 & 255) / 255;
-var min_$6 = Math.min(r_$3, Math.min(g_$4, b_$5)), max_$7 = Math.max(r_$3, Math.max(g_$4, b_$5));
-var v_$8 = max_$7;
-var delta_$9 = max_$7 - min_$6;
-if (delta_$9 == 0) {
-cache_$1[key_$2] = {h: 0, s: 0, v: v_$8}} else {
-var s_$a = delta_$9 / max_$7;
-if (r_$3 == max_$7) {
-var h_$b = (g_$4 - b_$5) / delta_$9
-} else if (g_$4 == max_$7) {
-var h_$b = 2 + (b_$5 - r_$3) / delta_$9
-} else {
-var h_$b = 4 + (r_$3 - g_$4) / delta_$9
-};
-h_$b *= 60;
-if (h_$b < 0) {
-h_$b += 360
-};
-cache_$1[key_$2] = {h: h_$b, s: s_$a, v: v_$8}};
-return cache_$1[key_$2]
-}
-finally {
-var $c = global["$lzprofiler"];
-if ($c) {
-var $d = "" + (new Date().getTime() - $c.base);
-var $e = arguments.callee["displayName"];
-if ($c.last == $d) {
-$c.events[$d] += ",returns:" + $e
-} else {
-$c.returns[$d] = $e
-};
-$c.last = $d
-}}};
 $lzsc$temp["displayName"] = "tohsv";
 return $lzsc$temp
 })(), "fromhsv", (function () {
-var $lzsc$temp = function (h_$0, s_$1, v_$2) {
+var $lzsc$temp = function (h_$0, s_$1, v_$2, a_$3) {
 try {
-var $e = global["$lzprofiler"];
-if ($e) {
-var $f = "" + (new Date().getTime() - $e.base);
-var $g = arguments.callee["displayName"];
-if ($e.last == $f) {
-$e.events[$f] += ",calls:" + $g
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",calls:" + $8
 } else {
-$e.calls[$f] = $g
+$6.calls[$7] = $8
 };
-$e.last = $f
+$6.last = $7
 };
-var cache_$3 = LzColorUtils.__cache;
-var key_$4 = "fromhsv" + h_$0 + s_$1 + v_$2;
-if (cache_$3[key_$4]) return cache_$3[key_$4];
-if (++cache_$3.counter > 1000) {
-cache_$3 = {counter: 0}};
-var t_$5 = h_$0 / 60;
-var ti_$6 = t_$5 | 0;
-var hi_$7 = ti_$6 % 6;
-var f_$8 = t_$5 - ti_$6;
-var p_$9 = v_$2 * (1 - s_$1);
-var q_$a = v_$2 * (1 - f_$8 * s_$1);
-var t_$5 = v_$2 * (1 - (1 - f_$8) * s_$1);
-var r_$b, g_$c, b_$d;
-switch (hi_$7) {
-case 0:
-r_$b = v_$2;g_$c = t_$5;b_$d = p_$9;break;;case 1:
-r_$b = q_$a;g_$c = v_$2;b_$d = p_$9;break;;case 2:
-r_$b = p_$9;g_$c = v_$2;b_$d = t_$5;break;;case 3:
-r_$b = p_$9;g_$c = q_$a;b_$d = v_$2;break;;case 4:
-r_$b = t_$5;g_$c = p_$9;b_$d = v_$2;break;;case 5:
-r_$b = v_$2;g_$c = p_$9;b_$d = q_$a;break
+switch (arguments.length) {
+case 3:
+a_$3 = 1
 };
-return cache_$3[key_$4] = LzColorUtils.rgbatoint(r_$b * 255, g_$c * 255, b_$d * 255)
+var cache_$4 = LzColorUtils.__cache;
+var key_$5 = "fromhsv" + h_$0 + s_$1 + v_$2 + a_$3;
+if (cache_$4[key_$5]) return cache_$4[key_$5];
+if (++cache_$4.counter > 1000) {
+cache_$4 = {counter: 0}};
+return cache_$4[key_$5] = LzColorUtils.internalfromhsva(h_$0, s_$1, v_$2, a_$3)
 }
 finally {
-var $e = global["$lzprofiler"];
-if ($e) {
-var $f = "" + (new Date().getTime() - $e.base);
-var $g = arguments.callee["displayName"];
-if ($e.last == $f) {
-$e.events[$f] += ",returns:" + $g
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",returns:" + $8
 } else {
-$e.returns[$f] = $g
+$6.returns[$7] = $8
 };
-$e.last = $f
+$6.last = $7
 }}};
 $lzsc$temp["displayName"] = "fromhsv";
 return $lzsc$temp
@@ -49741,16 +49431,16 @@ return $lzsc$temp
 })(), "hextoint", (function () {
 var $lzsc$temp = function (s_$0) {
 try {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",calls:" + $8
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
 } else {
-$6.calls[$7] = $8
+$4.calls[$5] = $6
 };
-$6.last = $7
+$4.last = $5
 };
 var n_$1 = LzColorUtils.stringToColor(s_$0);
 if (typeof n_$1 != "string") return n_$1;
@@ -49759,50 +49449,35 @@ var key_$3 = "hextoint" + s_$0;
 if (cache_$2[key_$3]) return cache_$2[key_$3];
 if (++cache_$2.counter > 1000) {
 cache_$2 = {counter: 0}};
-var hex_$4 = s_$0;
-hex_$4 = hex_$4.slice(1);
-var alpha_$5 = 0;
-if (hex_$4.length > 6) {
-alpha_$5 = parseInt(hex_$4.slice(6), 16) / 25500;
-hex_$4 = hex_$4.slice(0, 6)
-};
-var n_$1 = parseInt(hex_$4, 16);
-switch (hex_$4.length) {
-case 3:
-hex_$4 = ((n_$1 & 3840) << 8 | (n_$1 & 240) << 4 | n_$1 & 15) * 17 + alpha_$5;break;;case 6:
-hex_$4 = n_$1 + alpha_$5;break;;default:
-hex_$4 = 0;break
-};
-cache_$2[key_$3] = hex_$4;
-return hex_$4
+return cache_$2[key_$3] = LzColorUtils.internalfromcss(s_$0)
 }
 finally {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",returns:" + $8
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
 } else {
-$6.returns[$7] = $8
+$4.returns[$5] = $6
 };
-$6.last = $7
+$4.last = $5
 }}};
 $lzsc$temp["displayName"] = "hextoint";
 return $lzsc$temp
 })(), "inttohex", (function () {
 var $lzsc$temp = function (n_$0, padding_$1) {
 try {
-var $8 = global["$lzprofiler"];
-if ($8) {
-var $9 = "" + (new Date().getTime() - $8.base);
-var $a = arguments.callee["displayName"];
-if ($8.last == $9) {
-$8.events[$9] += ",calls:" + $a
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
 } else {
-$8.calls[$9] = $a
+$5.calls[$6] = $7
 };
-$8.last = $9
+$5.last = $6
 };
 switch (arguments.length) {
 case 1:
@@ -49815,29 +49490,19 @@ var key_$4 = "inttohex" + s_$2;
 if (cache_$3[key_$4]) return cache_$3[key_$4];
 if (++cache_$3.counter > 1000) {
 cache_$3 = {counter: 0}};
-var hex_$5 = "#" + LzColorUtils.dectohex(s_$2, padding_$1);
-var alpha_$6 = LzColorUtils.findalpha(n_$0);
-if (alpha_$6 != null) {
-var alphastring_$7 = alpha_$6.toString(16);
-if (alphastring_$7.length == 1) {
-alphastring_$7 = "0" + alphastring_$7
-};
-hex_$5 += alphastring_$7
-};
-cache_$3[key_$4] = hex_$5;
-return hex_$5
+return cache_$3[key_$4] = LzColorUtils.cssfrominternal(s_$2)
 }
 finally {
-var $8 = global["$lzprofiler"];
-if ($8) {
-var $9 = "" + (new Date().getTime() - $8.base);
-var $a = arguments.callee["displayName"];
-if ($8.last == $9) {
-$8.events[$9] += ",returns:" + $a
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
 } else {
-$8.returns[$9] = $a
+$5.returns[$6] = $7
 };
-$8.last = $9
+$5.last = $6
 }}};
 $lzsc$temp["displayName"] = "inttohex";
 return $lzsc$temp
@@ -49886,68 +49551,70 @@ return $lzsc$temp
 })(), "rgbatoint", (function () {
 var $lzsc$temp = function (r_$0, g_$1, b_$2, a_$3) {
 try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",calls:" + $6
 } else {
-$5.calls[$6] = $7
+$4.calls[$5] = $6
 };
-$5.last = $6
+$4.last = $5
 };
 switch (arguments.length) {
 case 3:
 a_$3 = null
 };
-var color_$4 = (r_$0 & 255) << 16 | (g_$1 & 255) << 8 | b_$2 & 255;
-if (a_$3 != null) {
-color_$4 += a_$3 * 0.01
-};
-return color_$4
+return LzColorUtils.internalfromrgba(r_$0, g_$1, b_$2, a_$3 == null ? 1 : a_$3)
 }
 finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
+var $4 = global["$lzprofiler"];
+if ($4) {
+var $5 = "" + (new Date().getTime() - $4.base);
+var $6 = arguments.callee["displayName"];
+if ($4.last == $5) {
+$4.events[$5] += ",returns:" + $6
 } else {
-$5.returns[$6] = $7
+$4.returns[$5] = $6
 };
-$5.last = $6
+$4.last = $5
 }}};
 $lzsc$temp["displayName"] = "rgbatoint";
 return $lzsc$temp
 })(), "inttorgba", (function () {
 var $lzsc$temp = function (rgb_$0) {
 try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",calls:" + $4
 } else {
-$1.calls[$2] = $3
+$2.calls[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 };
-return [rgb_$0 >> 16 & 255, rgb_$0 >> 8 & 255, rgb_$0 & 255, LzColorUtils.findalpha(rgb_$0)]
+var result_$1 = LzColorUtils.rgbafrominternal(rgb_$0);
+if (result_$1[3] == 1) {
+result_$1[3] = null
+} else {
+result_$1[3] = Math.round(result_$1[3] * 255)
+};
+return result_$1
 }
 finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
+var $2 = global["$lzprofiler"];
+if ($2) {
+var $3 = "" + (new Date().getTime() - $2.base);
+var $4 = arguments.callee["displayName"];
+if ($2.last == $3) {
+$2.events[$3] += ",returns:" + $4
 } else {
-$1.returns[$2] = $3
+$2.returns[$3] = $4
 };
-$1.last = $2
+$2.last = $3
 }}};
 $lzsc$temp["displayName"] = "inttorgba";
 return $lzsc$temp
@@ -49966,11 +49633,12 @@ $2.calls[$3] = $4
 $2.last = $3
 };
 if (rgba_$0 == null) return;
-rgba_$0 = Number(rgba_$0);
-var alpha_$1 = rgba_$0 - (rgba_$0 | 0);
-if (alpha_$1 != 0 && !isNaN(alpha_$1)) {
-return alpha_$1 * 25600 | 0
-}}
+var alpha_$1 = LzColorUtils.alphafrominternal(rgba_$0);
+if (alpha_$1 == 1) {
+return null
+};
+return Math.round(alpha_$1 * 255)
+}
 finally {
 var $2 = global["$lzprofiler"];
 if ($2) {
@@ -49984,6 +49652,82 @@ $2.returns[$3] = $4
 $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "findalpha";
+return $lzsc$temp
+})(), "blendRGBA", (function () {
+var $lzsc$temp = function (from_$0, to_$1, percent_$2) {
+try {
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",calls:" + $a
+} else {
+$8.calls[$9] = $a
+};
+$8.last = $9
+};
+if (from_$0 === to_$1) return from_$0;
+from_$0 = LzColorUtils.rgbafrominternal(from_$0);
+to_$1 = LzColorUtils.rgbafrominternal(to_$1);
+var oppositepercent_$3 = 1 - percent_$2;
+var newr_$4 = oppositepercent_$3 * from_$0[0] + percent_$2 * to_$1[0];
+var newg_$5 = oppositepercent_$3 * from_$0[1] + percent_$2 * to_$1[1];
+var newb_$6 = oppositepercent_$3 * from_$0[2] + percent_$2 * to_$1[2];
+var newa_$7 = oppositepercent_$3 * from_$0[3] + percent_$2 * to_$1[3];
+return LzColorUtils.internalfromrgba(newr_$4, newg_$5, newb_$6, newa_$7)
+}
+finally {
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",returns:" + $a
+} else {
+$8.returns[$9] = $a
+};
+$8.last = $9
+}}};
+$lzsc$temp["displayName"] = "blendRGBA";
+return $lzsc$temp
+})(), "blendHSVA", (function () {
+var $lzsc$temp = function (from_$0, to_$1, percent_$2) {
+try {
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",calls:" + $a
+} else {
+$8.calls[$9] = $a
+};
+$8.last = $9
+};
+if (from_$0 === to_$1) return from_$0;
+from_$0 = LzColorUtils.hsvafrominternal(from_$0);
+to_$1 = LzColorUtils.hsvafrominternal(to_$1);
+var oppositepercent_$3 = 1 - percent_$2;
+var newh_$4 = oppositepercent_$3 * from_$0[0] + percent_$2 * to_$1[0];
+var news_$5 = oppositepercent_$3 * from_$0[1] + percent_$2 * to_$1[1];
+var newv_$6 = oppositepercent_$3 * from_$0[2] + percent_$2 * to_$1[2];
+var newa_$7 = oppositepercent_$3 * from_$0[3] + percent_$2 * to_$1[3];
+return LzColorUtils.internalfromhsva(newh_$4, news_$5, newv_$6, newa_$7)
+}
+finally {
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",returns:" + $a
+} else {
+$8.returns[$9] = $a
+};
+$8.last = $9
+}}};
+$lzsc$temp["displayName"] = "blendHSVA";
 return $lzsc$temp
 })(), "applyTransform", (function () {
 var $lzsc$temp = function (color_$0, trans_$1) {
@@ -50063,285 +49807,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "color", {hextoint: (function () {
-var $lzsc$temp = function (value_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-return LzColorUtils.hextoint(value_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "hextoint";
-return $lzsc$temp
-})(), inttohex: (function () {
-var $lzsc$temp = function (c_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-return LzColorUtils.inttohex(c_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "inttohex";
-return $lzsc$temp
-})(), torgb: (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-return LzColorUtils.torgb(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "torgb";
-return $lzsc$temp
-})()}, "hextoint", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-return LzColorUtils.hextoint(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "hextoint";
-return $lzsc$temp
-})(), "inttohex", (function () {
-var $lzsc$temp = function (n_$0, padding_$1) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-switch (arguments.length) {
-case 1:
-padding_$1 = 6
-};
-return LzColorUtils.inttohex(n_$0, padding_$1)
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "inttohex";
-return $lzsc$temp
-})(), "dectohex", (function () {
-var $lzsc$temp = function (n_$0, padding_$1) {
-try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
-} else {
-$2.calls[$3] = $4
-};
-$2.last = $3
-};
-switch (arguments.length) {
-case 1:
-padding_$1 = 0
-};
-return LzColorUtils.dectohex(n_$0, padding_$1)
-}
-finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
-} else {
-$2.returns[$3] = $4
-};
-$2.last = $3
-}}};
-$lzsc$temp["displayName"] = "dectohex";
-return $lzsc$temp
-})(), "stringToColor", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-return LzColorUtils.stringToColor(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "stringToColor";
-return $lzsc$temp
-})(), "torgb", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-return LzColorUtils.torgb(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "torgb";
-return $lzsc$temp
-})(), "fromrgb", (function () {
-var $lzsc$temp = function (s_$0) {
-try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
-} else {
-$1.calls[$2] = $3
-};
-$1.last = $2
-};
-return LzColorUtils.fromrgb(s_$0)
-}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
-};
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "fromrgb";
-return $lzsc$temp
-})(), "colornames", lz.colors, "__parseArgs", (function () {
+})(), "__parseArgs", (function () {
 var $lzsc$temp = function (argstr_$0, scope_$1) {
 try {
 var $d = global["$lzprofiler"];
@@ -50367,18 +49833,18 @@ var currarg_$4 = "";
 for (var i_$5 = 0, l_$6 = argstr_$0.length;i_$5 < l_$6;i_$5++) {
 var lc_$7 = c_$8;
 var c_$8 = argstr_$0.charAt(i_$5);
-if (c_$8 == '"' || c_$8 == "'") {
+if (lc_$7 !== "\\" && (c_$8 === '"' || c_$8 === "'")) {
 if (lastquote_$3 == null) {
 lastquote_$3 = c_$8
-} else if (lastquote_$3 == c_$8) {
+} else if (lastquote_$3 === c_$8) {
 lastquote_$3 = null
-}} else if (c_$8 == ",") {
+}} else if (c_$8 === ",") {
 if (!lastquote_$3) {
 args_$2.push(currarg_$4);
 currarg_$4 = "";
 continue
-}} else if (c_$8 == " " || c_$8 == "\t" || c_$8 == "\n" || c_$8 == "\r") {
-if (lastquote_$3 == null && (lc_$7 == "," || lc_$7 == " " || lc_$7 == "\t" || lc_$7 == "\n" || lc_$7 == "\r")) {
+}} else if (c_$8 === " " || c_$8 === "\t" || c_$8 === "\n" || c_$8 === "\r") {
+if (lastquote_$3 == null && (lc_$7 === "," || lc_$7 === " " || lc_$7 === "\t" || lc_$7 === "\n" || lc_$7 === "\r")) {
 continue
 }};
 currarg_$4 += c_$8
@@ -50386,16 +49852,16 @@ currarg_$4 += c_$8
 args_$2.push(currarg_$4);
 for (var i_$5 = 0;i_$5 < args_$2.length;i_$5++) {
 var a_$9 = args_$2[i_$5];
-if (a_$9 == "") continue;
+if (a_$9 === "") continue;
 var firstchar_$a = a_$9.charAt(a_$9);
 var n_$b = parseFloat(a_$9);
 if (!isNaN(n_$b)) {
 args_$2[i_$5] = n_$b
-} else if (firstchar_$a == '"' || firstchar_$a == "'") {
+} else if (firstchar_$a === '"' || firstchar_$a === "'") {
 var e_$c = a_$9.lastIndexOf(firstchar_$a);
 args_$2[i_$5] = a_$9.substring(1, e_$c)
-} else if (a_$9 == "true" || a_$9 == "false") {
-args_$2[i_$5] = a_$9 == "true"
+} else if (a_$9 === "true" || a_$9 === "false") {
+args_$2[i_$5] = a_$9 === "true"
 } else if (scope_$1[a_$9]) {
 args_$2[i_$5] = scope_$1[a_$9]
 } else {
@@ -50538,7 +50004,6 @@ $lzsc$temp["displayName"] = "safeNew";
 return $lzsc$temp
 })()]);
 lz.Utils = new LzUtilsClass();
-var LzUtils = lz.Utils;
 Class.make("LzInstantiatorService", ["checkQDel", null, "$lzsc$initialize", (function () {
 var $lzsc$temp = function () {
 try {
@@ -51206,6 +50671,7 @@ $3.calls[$4] = $5
 };
 $3.last = $4
 };
+if (eventname_$0.indexOf("on") != 0) eventname_$0 = "on" + eventname_$0;
 if (eventname_$0 == "onmouseleave") {
 this.__mouseactive = false;
 if (canvas.onmouseleave.ready) {
@@ -52032,7 +51498,10 @@ $1.calls[$2] = $3
 };
 $1.last = $2
 };
-return LzDataElement.__LZXMLescape(str_$0)
+if (typeof str_$0 != "string") {
+return ""
+};
+return lz.Type.acceptTypeValue("cdata", str_$0, null, null)
 }
 finally {
 var $1 = global["$lzprofiler"];
@@ -52047,6 +51516,36 @@ $1.returns[$2] = $3
 $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "xmlEscape";
+return $lzsc$temp
+})(), "xmlUnescape", (function () {
+var $lzsc$temp = function (str_$0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+return lz.Type.presentTypeValue("cdata", str_$0, null, null)
+}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "xmlUnescape";
 return $lzsc$temp
 })(), "urlEscape", (function () {
 var $lzsc$temp = function (str_$0) {
@@ -52410,16 +51909,16 @@ return $lzsc$temp
 })(), "handleMouseEvent", (function () {
 var $lzsc$temp = function (view_$0, eventStr_$1) {
 try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",calls:" + $8
 } else {
-$5.calls[$6] = $7
+$6.calls[$7] = $8
 };
-$5.last = $6
+$6.last = $7
 };
 if (eventStr_$1 == "onmouseup") lz.Track.__LZmouseup(null);
 if (view_$0 == null) {
@@ -52445,7 +51944,7 @@ return
 };
 if (dosend_$2) {
 if (eventStr_$1 == "onclick") {
-if (this.__LZlastclick === view_$0 && view_$0.ondblclick.ready && LzTimeKernel.getTimer() - this.__LZlastClickTime < view_$0.DOUBLE_CLICK_TIME) {
+if (this.__LZlastclick === view_$0 && LzTimeKernel.getTimer() - this.__LZlastClickTime < view_$0.DOUBLE_CLICK_TIME) {
 eventStr_$1 = "ondblclick";
 lz.GlobalMouse.__mouseEvent(eventStr_$1, view_$0);
 this.__LZlastclick = null
@@ -52453,21 +51952,22 @@ this.__LZlastclick = null
 this.__LZlastclick = view_$0;
 this.__LZlastClickTime = LzTimeKernel.getTimer()
 }};
+var focuscount_$5 = lz.Focus.focuscount;
 view_$0.mouseevent(eventStr_$1);
-if (eventStr_$1 == "onmousedown") {
+if (lz.Focus.focuscount == focuscount_$5 && eventStr_$1 == "onmousedown") {
 lz.Focus.__LZcheckFocusChange(view_$0)
 }}}
 finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
+var $6 = global["$lzprofiler"];
+if ($6) {
+var $7 = "" + (new Date().getTime() - $6.base);
+var $8 = arguments.callee["displayName"];
+if ($6.last == $7) {
+$6.events[$7] += ",returns:" + $8
 } else {
-$5.returns[$6] = $7
+$6.returns[$7] = $8
 };
-$5.last = $6
+$6.last = $7
 }}};
 $lzsc$temp["displayName"] = "handleMouseEvent";
 return $lzsc$temp
@@ -52688,35 +52188,41 @@ $0.last = $1
 $lzsc$temp["displayName"] = "__findInputtextSelection";
 return $lzsc$temp
 })(), "rawMouseEvent", (function () {
-var $lzsc$temp = function (eventname_$0, view_$1) {
+var $lzsc$temp = function (eventname_$0, view_$1, value_$2) {
 try {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",calls:" + $4
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
 } else {
-$2.calls[$3] = $4
+$3.calls[$4] = $5
 };
-$2.last = $3
+$3.last = $4
 };
-if (eventname_$0 == "onmousemove") {
+switch (arguments.length) {
+case 2:
+value_$2 = null
+};
+if (eventname_$0 == "ongesture" || eventname_$0 == "ontouch") {
+view_$1.mouseevent(eventname_$0, value_$2)
+} else if (eventname_$0 == "onmousemove") {
 lz.GlobalMouse.__mouseEvent("onmousemove", null)
 } else {
 this.handleMouseEvent(view_$1, eventname_$0)
 }}
 finally {
-var $2 = global["$lzprofiler"];
-if ($2) {
-var $3 = "" + (new Date().getTime() - $2.base);
-var $4 = arguments.callee["displayName"];
-if ($2.last == $3) {
-$2.events[$3] += ",returns:" + $4
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
 } else {
-$2.returns[$3] = $4
+$3.returns[$4] = $5
 };
-$2.last = $3
+$3.last = $4
 }}};
 $lzsc$temp["displayName"] = "rawMouseEvent";
 return $lzsc$temp
@@ -53006,44 +52512,52 @@ $0.last = $1
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })(), "downKeysHash", {}, "downKeysArray", [], "keycombos", {}, "onkeydown", LzDeclaredEvent, "onkeyup", LzDeclaredEvent, "onmousewheeldelta", LzDeclaredEvent, "onkeyevent", LzDeclaredEvent, "codemap", {shift: 16, control: 17, alt: 18}, "ctrlKey", false, "__keyEvent", (function () {
-var $lzsc$temp = function (delta_$0, k_$1, type_$2, ctrlKey_$3) {
+var $lzsc$temp = function (delta_$0, k_$1, type_$2, ctrlKey_$3, shiftKey_$4) {
 try {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",calls:" + $9
+var $9 = global["$lzprofiler"];
+if ($9) {
+var $a = "" + (new Date().getTime() - $9.base);
+var $b = arguments.callee["displayName"];
+if ($9.last == $a) {
+$9.events[$a] += ",calls:" + $b
 } else {
-$7.calls[$8] = $9
+$9.calls[$a] = $b
 };
-$7.last = $8
+$9.last = $a
 };
 switch (arguments.length) {
 case 3:
-ctrlKey_$3 = false
+ctrlKey_$3 = false;;case 4:
+shiftKey_$4 = null
 };
 this.ctrlKey = ctrlKey_$3;
-var cm_$4 = this.codemap;
-for (var key_$5 in delta_$0) {
-var down_$6 = delta_$0[key_$5];
-if (cm_$4[key_$5] != null) k_$1 = cm_$4[key_$5];
-if (down_$6) {
+if (shiftKey_$4 !== null) {
+var dkhash_$5 = this.downKeysHash;
+if (shiftKey_$4) {
+dkhash_$5[16] = true
+} else {
+delete dkhash_$5[16]
+}};
+var cm_$6 = this.codemap;
+for (var key_$7 in delta_$0) {
+var down_$8 = delta_$0[key_$7];
+if (cm_$6[key_$7] != null) k_$1 = cm_$6[key_$7];
+if (down_$8) {
 this.gotKeyDown(k_$1)
 } else {
 this.gotKeyUp(k_$1)
 }}}
 finally {
-var $7 = global["$lzprofiler"];
-if ($7) {
-var $8 = "" + (new Date().getTime() - $7.base);
-var $9 = arguments.callee["displayName"];
-if ($7.last == $8) {
-$7.events[$8] += ",returns:" + $9
+var $9 = global["$lzprofiler"];
+if ($9) {
+var $a = "" + (new Date().getTime() - $9.base);
+var $b = arguments.callee["displayName"];
+if ($9.last == $a) {
+$9.events[$a] += ",returns:" + $b
 } else {
-$7.returns[$8] = $9
+$9.returns[$a] = $b
 };
-$7.last = $8
+$9.last = $a
 }}};
 $lzsc$temp["displayName"] = "__keyEvent";
 return $lzsc$temp
@@ -53129,6 +52643,11 @@ info_$1 = null
 };
 var dkhash_$2 = this.downKeysHash;
 var dkeys_$3 = this.downKeysArray;
+if (LzKeyboardKernel.__shiftState && !dkhash_$2[16]) {
+dkhash_$2[16] = true;
+dkeys_$3.push(16);
+dkeys_$3.sort()
+};
 var firstkeydown_$4 = !dkhash_$2[kC_$0];
 if (firstkeydown_$4) {
 dkhash_$2[kC_$0] = true;
@@ -53808,7 +53327,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "isReady", false, "ready", false, "onready", LzDeclaredEvent, "persist", false, "_persistso", null, "offset", 0, "__lzdirty", false, "__lzhistq", [], "__lzcurrstate", {}, "capabilities", LzSprite.prototype.capabilities, "onoffset", LzDeclaredEvent, "receiveHistory", (function () {
+})(), "ready", false, "onready", LzDeclaredEvent, "persist", false, "_persistso", null, "offset", 0, "__lzdirty", false, "__lzhistq", [], "__lzcurrstate", {}, "capabilities", LzSprite.prototype.capabilities, "onoffset", LzDeclaredEvent, "receiveHistory", (function () {
 var $lzsc$temp = function (o_$0) {
 try {
 var $6 = global["$lzprofiler"];
@@ -53835,21 +53354,8 @@ offset_$2 = len_$1
 var h_$3 = this.__lzhistq[offset_$2];
 for (var u_$4 in h_$3) {
 var obj_$5 = h_$3[u_$4];
-{
-var $lzsc$8if9e9 = global[obj_$5.c];
-var $lzsc$13qd32 = obj_$5.n;
-var $lzsc$ijlkdb = obj_$5.v;
-if (!$lzsc$8if9e9.__LZdeleted) {
-var $lzsc$119cyb = "$lzc$set_" + $lzsc$13qd32;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa($lzsc$8if9e9[$lzsc$119cyb]) : $lzsc$8if9e9[$lzsc$119cyb] instanceof Function) {
-$lzsc$8if9e9[$lzsc$119cyb]($lzsc$ijlkdb)
-} else {
-$lzsc$8if9e9[$lzsc$13qd32] = $lzsc$ijlkdb;
-var $lzsc$5kc3xc = $lzsc$8if9e9["on" + $lzsc$13qd32];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$5kc3xc) : $lzsc$5kc3xc instanceof LzEvent) {
-if ($lzsc$5kc3xc.ready) {
-$lzsc$5kc3xc.sendEvent($lzsc$ijlkdb)
-}}}}}};
+global[obj_$5.c].setAttribute(obj_$5.n, obj_$5.v)
+};
 this.offset = offset_$2;
 if (this.onoffset.ready) this.onoffset.sendEvent(offset_$2);
 return offset_$2
@@ -53882,18 +53388,8 @@ $2.calls[$3] = $4
 };
 $2.last = $3
 };
-{
-if (!canvas.__LZdeleted) {
-var $lzsc$9wljzd = "$lzc$set_" + n_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(canvas[$lzsc$9wljzd]) : canvas[$lzsc$9wljzd] instanceof Function) {
-canvas[$lzsc$9wljzd](v_$1)
-} else {
-canvas[n_$0] = v_$1;
-var $lzsc$zchtp6 = canvas["on" + n_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$zchtp6) : $lzsc$zchtp6 instanceof LzEvent) {
-if ($lzsc$zchtp6.ready) {
-$lzsc$zchtp6.sendEvent(v_$1)
-}}}}}}
+canvas.setAttribute(n_$0, v_$1)
+}
 finally {
 var $2 = global["$lzprofiler"];
 if ($2) {
@@ -54296,7 +53792,6 @@ $1.calls[$2] = $3
 $1.last = $2
 };
 lz.Browser.callJS("lz.embed.history.listen('" + id_$0 + "')");
-this.isReady = true;
 this.ready = true;
 if (this.onready.ready) this.onready.sendEvent(true)
 }
@@ -54403,11 +53898,13 @@ var reglist_$2 = this.__LZreg[group_$1];
 if (!reglist_$2) {
 this.__LZreg[group_$1] = reglist_$2 = [];
 reglist_$2.__LZlasthit = null;
-reglist_$2.__LZactive = false
-};
+reglist_$2.__LZactive = false;
+reglist_$2.__LZuids = {}};
+if (reglist_$2.__LZuids[v_$0.__LZUID] != true) {
+reglist_$2.__LZuids[v_$0.__LZUID] = true;
 reglist_$2.push(v_$0);
 this.__LZdestroydel.register(v_$0, "ondestroy")
-}
+}}
 finally {
 var $3 = global["$lzprofiler"];
 if ($3) {
@@ -54439,16 +53936,19 @@ $4.last = $5
 if (v_$0 == null || group_$1 == null) return;
 var reglist_$2 = this.__LZreg[group_$1];
 if (reglist_$2) {
+if (reglist_$2.__LZuids[v_$0.__LZUID]) {
+delete reglist_$2.__LZuids[v_$0.__LZUID];
 for (var i_$3 = 0;i_$3 < reglist_$2.length;i_$3++) {
-if (reglist_$2[i_$3] == v_$0) {
-if (reglist_$2.__LZlasthit == v_$0) {
-if (this.__LZlastmouseup == v_$0) {
+if (reglist_$2[i_$3] === v_$0) {
+if (reglist_$2.__LZlasthit === v_$0) {
+if (this.__LZlastmouseup === v_$0) {
 this.__LZlastmouseup = null
 };
 reglist_$2.__LZlasthit = null
 };
-reglist_$2.splice(i_$3, 1)
-}};
+reglist_$2.splice(i_$3, 1);
+break
+}}};
 if (reglist_$2.length == 0) {
 if (reglist_$2.__LZactive) {
 this.deactivate(group_$1)
@@ -54557,7 +54057,7 @@ var reglist_$1 = this.__LZreg[group_$0];
 if (reglist_$1 && reglist_$1.__LZactive) {
 var agroups_$2 = this.__LZactivegroups;
 for (var i_$3 = 0;i_$3 < agroups_$2.length;++i_$3) {
-if (agroups_$2[i_$3] == reglist_$1) {
+if (agroups_$2[i_$3] === reglist_$1) {
 agroups_$2.splice(i_$3, 1);
 break
 }};
@@ -54565,7 +54065,7 @@ if (agroups_$2.length == 0) {
 this.__LZtrackDel.unregisterAll()
 };
 reglist_$1.__LZactive = false;
-if (this.__LZlastmouseup == reglist_$1.__LZlasthit) {
+if (this.__LZlastmouseup === reglist_$1.__LZlasthit) {
 this.__LZlastmouseup = null
 };
 reglist_$1.__LZlasthit = null
@@ -54602,13 +54102,13 @@ var atemp_$2 = a_$0;
 var btemp_$3 = b_$1;
 while (atemp_$2.nodeLevel < btemp_$3.nodeLevel) {
 btemp_$3 = btemp_$3.immediateparent;
-if (btemp_$3 == a_$0) return b_$1
+if (btemp_$3 === a_$0) return b_$1
 };
 while (btemp_$3.nodeLevel < atemp_$2.nodeLevel) {
 atemp_$2 = atemp_$2.immediateparent;
-if (atemp_$2 == b_$1) return a_$0
+if (atemp_$2 === b_$1) return a_$0
 };
-while (atemp_$2.immediateparent != btemp_$3.immediateparent) {
+while (atemp_$2.immediateparent !== btemp_$3.immediateparent) {
 atemp_$2 = atemp_$2.immediateparent;
 btemp_$3 = btemp_$3.immediateparent
 };
@@ -54720,7 +54220,7 @@ this.__LZtrackgroup(thisgroup_$4, hitlist_$5);
 var lhit_$6 = thisgroup_$4.__LZlasthit;
 if (hitlist_$5.length) {
 var fd_$7 = this.__LZfindTopmost(hitlist_$5);
-if (fd_$7 == lhit_$6) continue;
+if (fd_$7 === lhit_$6) continue;
 foundviews_$1.push(fd_$7)
 } else {
 var fd_$7 = null
@@ -54769,7 +54269,7 @@ var lhit_$3 = agroups_$1[i_$2].__LZlasthit;
 if (lhit_$3) {
 var onmtrackup_$4 = lhit_$3.onmousetrackup;
 if (onmtrackup_$4.ready) {
-if (this.__LZlastmouseup == lhit_$3) {
+if (this.__LZlastmouseup === lhit_$3) {
 this.__LZlastmouseup = null
 } else {
 this.__LZlastmouseup = lhit_$3;
@@ -55065,125 +54565,93 @@ return $lzsc$temp
 })()(LzIdleService);
 lz.IdleService = LzIdleService;
 lz.Idle = LzIdleService.LzIdle;
-Class.make("LzCSSStyleRule", ["parsed", null, "specificity", 0, "properties", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (selector_$0, properties_$1) {
+Class.make("LzCSSStyleRule", ["parsed", null, "specificity", 0, "dynamic", false, "properties", void 0, "_lexorder", void 0, "$lzsc$initialize", (function () {
+var $lzsc$temp = function (selector_$0, properties_$1, source_$2, line_$3) {
 try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",calls:" + $a
 } else {
-$5.calls[$6] = $7
+$8.calls[$9] = $a
 };
-$5.last = $6
+$8.last = $9
 };
 this.parsed = selector_$0;
 if (selector_$0["length"]) {
-var s_$2 = 0;
-for (var i_$3 = 0, l_$4 = selector_$0.length;i_$3 < l_$4;i_$3++) {
-s_$2 += selector_$0[i_$3].s
+var s_$4 = 0;
+for (var i_$5 = 0, l_$6 = selector_$0.length;i_$5 < l_$6;i_$5++) {
+var sel_$7 = selector_$0[i_$5];
+s_$4 += sel_$7.s;
+if (("v" in sel_$7) && sel_$7.a != "name") {
+this.dynamic = true
 };
-this.specificity = s_$2
+while (sel_$7["&"]) {
+sel_$7 = sel_$7["&"];
+if (("v" in sel_$7) && sel_$7.a != "name") {
+this.dynamic = true
+}}};
+this.specificity = s_$4
 } else {
-this.specificity = selector_$0.s
+var sel_$7 = selector_$0;
+this.specificity = sel_$7.s;
+if (("v" in sel_$7) && sel_$7.a != "name") {
+this.dynamic = true
 };
+while (sel_$7["&"]) {
+sel_$7 = sel_$7["&"];
+if (("v" in sel_$7) && sel_$7.a != "name") {
+this.dynamic = true
+}}};
 this.properties = properties_$1
 }
 finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
+var $8 = global["$lzprofiler"];
+if ($8) {
+var $9 = "" + (new Date().getTime() - $8.base);
+var $a = arguments.callee["displayName"];
+if ($8.last == $9) {
+$8.events[$9] += ",returns:" + $a
 } else {
-$5.returns[$6] = $7
+$8.returns[$9] = $a
 };
-$5.last = $6
+$8.last = $9
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "_lexorder", void 0, "_dbg_name", (function () {
+})(), "clone", (function () {
 var $lzsc$temp = function () {
 try {
-var pname;
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",calls:" + $5
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
 } else {
-$3.calls[$4] = $5
+$1.calls[$2] = $3
 };
-$3.last = $4
+$1.last = $2
 };
-pname = (function () {
-var $lzsc$temp = function (rp_$0) {
-try {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",calls:" + $8
-} else {
-$6.calls[$7] = $8
-};
-$6.last = $7
-};
-var rptn_$1 = rp_$0["t"];
-var rpi_$2 = rp_$0["i"];
-var rpa_$3 = rp_$0["a"];
-if (!(rptn_$1 || rpi_$2 || rpa_$3)) {
-return "*"
-};
-var rpv_$4 = rp_$0["v"];
-var rpm_$5 = rp_$0["m"] || "=";
-return (rptn_$1 ? rptn_$1 : "") + (rpi_$2 ? "#" + rpi_$2 : "") + (rpa_$3 ? (rpa_$3 == "styleclass" ? "." + rpv_$4 : "[" + rpa_$3 + (rpv_$4 ? rpm_$5 + rpv_$4 : "") + "]") : "") + (("&" in rp_$0) ? pname(rp_$0["&"]) : "")
+var result_$0 = new LzCSSStyleRule(this.parsed, this.properties, "", 0);
+result_$0._lexorder = this._lexorder;
+return result_$0
 }
 finally {
-var $6 = global["$lzprofiler"];
-if ($6) {
-var $7 = "" + (new Date().getTime() - $6.base);
-var $8 = arguments.callee["displayName"];
-if ($6.last == $7) {
-$6.events[$7] += ",returns:" + $8
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
 } else {
-$6.returns[$7] = $8
+$1.returns[$2] = $3
 };
-$6.last = $7
+$1.last = $2
 }}};
-$lzsc$temp["displayName"] = "pname";
-return $lzsc$temp
-})();
-var rp_$0 = this.parsed;
-if (rp_$0["length"]) {
-var n_$1 = "";
-for (var i_$2 = 0;i_$2 < rp_$0.length;i_$2++) {
-n_$1 += pname(rp_$0[i_$2]) + " "
-};
-n_$1 = n_$1.substring(0, n_$1.length - 1)
-} else {
-var n_$1 = pname(rp_$0)
-};
-return n_$1
-}
-finally {
-var $3 = global["$lzprofiler"];
-if ($3) {
-var $4 = "" + (new Date().getTime() - $3.base);
-var $5 = arguments.callee["displayName"];
-if ($3.last == $4) {
-$3.events[$4] += ",returns:" + $5
-} else {
-$3.returns[$4] = $5
-};
-$3.last = $4
-}}};
-$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#72/19";
+$lzsc$temp["displayName"] = "clone";
 return $lzsc$temp
 })(), "equal", (function () {
 var $lzsc$temp = function (that_$0) {
@@ -55270,6 +54738,49 @@ $8.last = $9
 }}};
 $lzsc$temp["displayName"] = "equal";
 return $lzsc$temp
+})()], null, ["selectorToString", (function () {
+var $lzsc$temp = function (sel_$0) {
+try {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",calls:" + $9
+} else {
+$7.calls[$8] = $9
+};
+$7.last = $8
+};
+var str_$1 = sel_$0["k"];
+if (str_$1) {
+return str_$1
+};
+var seltn_$2 = sel_$0["t"];
+var seli_$3 = sel_$0["i"];
+var sela_$4 = sel_$0["a"];
+if (!(seltn_$2 || seli_$3 || sela_$4)) {
+return "*"
+};
+var selv_$5 = sel_$0["v"];
+var selm_$6 = sel_$0["m"] || "=";
+str_$1 = sel_$0.k = (seltn_$2 ? seltn_$2 : "") + (seli_$3 ? "#" + seli_$3 : "") + (sela_$4 ? (sela_$4 == "styleclass" ? "." + selv_$5 : "[" + sela_$4 + (selv_$5 ? selm_$6 + selv_$5 : "") + "]") : "") + (("&" in sel_$0) ? LzCSSStyleRule.selectorToString(sel_$0["&"]) : "");
+return str_$1
+}
+finally {
+var $7 = global["$lzprofiler"];
+if ($7) {
+var $8 = "" + (new Date().getTime() - $7.base);
+var $9 = arguments.callee["displayName"];
+if ($7.last == $8) {
+$7.events[$8] += ",returns:" + $9
+} else {
+$7.returns[$8] = $9
+};
+$7.last = $8
+}}};
+$lzsc$temp["displayName"] = "selectorToString";
+return $lzsc$temp
 })()]);
 (function () {
 var $lzsc$temp = function ($0) {
@@ -55302,7 +54813,7 @@ $lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#18/1";
 return $lzsc$temp
 })()(LzCSSStyleRule);
 lz.CSSStyleRule = LzCSSStyleRule;
-Class.make("LzCSSStyleDependencies", ["count", 0, "deps", void 0, "$lzsc$initialize", (function () {
+Class.make("LzCSSStyleClass", ["_idRules", void 0, "_nameRules", void 0, "_attrs", void 0, "_attrRules", void 0, "_tags", void 0, "_tagRules", void 0, "_rules", void 0, "$lzsc$initialize", (function () {
 var $lzsc$temp = function () {
 try {
 var $0 = global["$lzprofiler"];
@@ -55316,81 +54827,14 @@ $0.calls[$1] = $2
 };
 $0.last = $1
 };
-this.deps = {}}
-finally {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",returns:" + $2
-} else {
-$0.returns[$1] = $2
-};
-$0.last = $1
-}}};
-$lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})(), "gather", (function () {
-var $lzsc$temp = function (node_$0, attr_$1) {
-try {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
-} else {
-$5.calls[$6] = $7
-};
-$5.last = $6
-};
-if (!(attr_$1 in this.deps)) {
-this.deps[attr_$1] = [node_$0];
-this.count++;
-return
-};
-var nodes_$2 = this.deps[attr_$1];
-for (var i_$3 = 0, l_$4 = nodes_$2.length;i_$3 < l_$4;i_$3++) {
-if (node_$0 === nodes_$2[i_$3]) {
-return
-}};
-this.deps[attr_$1].push(node_$0);
-this.count++
-}
-finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
-} else {
-$5.returns[$6] = $7
-};
-$5.last = $6
-}}};
-$lzsc$temp["displayName"] = "gather";
-return $lzsc$temp
-})()]);
-Class.make("LzCSSStyleClass", ["$lzsc$initialize", (function () {
-var $lzsc$temp = function () {
-try {
-var $0 = global["$lzprofiler"];
-if ($0) {
-var $1 = "" + (new Date().getTime() - $0.base);
-var $2 = arguments.callee["displayName"];
-if ($0.last == $1) {
-$0.events[$1] += ",calls:" + $2
-} else {
-$0.calls[$1] = $2
-};
-$0.last = $1
-};
-this._rules = [];
-this._attrRules = {};
 this._idRules = {};
-this._tagRules = {}}
+this._nameRules = {};
+this._attrs = [];
+this._attrRules = {};
+this._tags = [];
+this._tagRules = {};
+this._rules = []
+}
 finally {
 var $0 = global["$lzprofiler"];
 if ($0) {
@@ -55474,178 +54918,340 @@ return $lzsc$temp
 })(), "getPropertyCache", (function () {
 var $lzsc$temp = function (node_$0) {
 try {
-var $9 = global["$lzprofiler"];
-if ($9) {
-var $a = "" + (new Date().getTime() - $9.base);
-var $b = arguments.callee["displayName"];
-if ($9.last == $a) {
-$9.events[$a] += ",calls:" + $b
+var $z = global["$lzprofiler"];
+if ($z) {
+var $10 = "" + (new Date().getTime() - $z.base);
+var $11 = arguments.callee["displayName"];
+if ($z.last == $10) {
+$z.events[$10] += ",calls:" + $11
 } else {
-$9.calls[$a] = $b
+$z.calls[$10] = $11
 };
-$9.last = $a
+$z.last = $10
 };
-if (!node_$0) return {};
+if (!node_$0) return LzCSSStyleClass.EMTPY_CACHE;
 var pc_$1 = node_$0["__LZPropertyCache"];
 if (pc_$1) {
 return pc_$1
 };
 var ip_$2 = node_$0.immediateparent;
-if (!ip_$2 || ip_$2 === canvas) {
-var ipc_$3 = {}} else {
-var ipc_$3 = ip_$2["__LZPropertyCache"] || this.getPropertyCache(ip_$2)
+if (ip_$2 && ip_$2 !== node_$0) {
+var ppc_$3 = ip_$2["__LZPropertyCache"] || this.getPropertyCache(ip_$2);
+var pipc_$4 = ip_$2["__LZInheritedPropertyCache"]
+} else {
+var ppc_$3 = LzCSSStyleClass.EMTPY_CACHE;
+var pipc_$4 = LzCSSStyleClass.EMTPY_CACHE
 };
-var rules_$4 = node_$0["__LZRuleCache"] || this.getRulesCache(node_$0);
-if (rules_$4.length == 0) {
-return node_$0.__LZPropertyCache = ipc_$3
+var cdesc_$5 = node_$0.$CSSDescriptor;
+var expanders_$6 = cdesc_$5 && cdesc_$5.expanders;
+var cssinherited_$7 = LzCSSStyleClass.CSSInheritableProperties;
+var nodeinherited_$8 = cdesc_$5 && cdesc_$5.inheritable;
+var rules_$9 = node_$0["__LZRuleCache"];
+if (!rules_$9) {
+if (expanders_$6) {
+var inhexp_$a = null;
+var inhexpcount_$b = 0;
+for (var e_$c in expanders_$6) {
+if (expanders_$6.hasOwnProperty(e_$c) && (nodeinherited_$8 && (e_$c in nodeinherited_$8) ? nodeinherited_$8[e_$c] : (e_$c in cssinherited_$7))) {
+if (inhexp_$a == null) {
+inhexp_$a = {}};
+inhexp_$a[e_$c] = true;
+inhexpcount_$b++
+}}};
+rules_$9 = this.getRulesCache(node_$0, inhexp_$a, inhexpcount_$b)
 };
 var pc_$1 = {};
-for (var k_$5 in ipc_$3) {
-pc_$1[k_$5] = ipc_$3[k_$5]
+var ipc_$d = {};
+nextrule: for (var i_$e = rules_$9.length - 1;i_$e >= 0;i_$e--) {
+var rule_$f = rules_$9[i_$e];
+if (rule_$f.dynamic) {
+var rp_$g = rule_$f.parsed;
+var compound_$h = !(!rp_$g["length"]);
+if (compound_$h) {
+rp_$g = rp_$g[rp_$g.length - 1]
 };
-for (var i_$6 = rules_$4.length - 1;i_$6 >= 0;i_$6--) {
-var props_$7 = rules_$4[i_$6].properties;
-for (var pname_$8 in props_$7) {
-pc_$1[pname_$8] = props_$7[pname_$8]
+var tp_$i = rp_$g["a"] ? rp_$g : rp_$g["&"];
+while (tp_$i) {
+var tpa_$j = tp_$i.a;
+if ("v" in tp_$i) {
+var nav_$k = node_$0[tpa_$j];
+nav_$k += "";
+var tpv_$l = tp_$i.v;
+if (!tp_$i["m"]) {
+if (nav_$k != tpv_$l) {
+continue nextrule
+}} else {
+var tpm_$m = tp_$i.m;
+if (tpm_$m == "~=") {
+if (nav_$k != tpv_$l && nav_$k.search("(^| )" + tpv_$l + "( |$)") == -1) {
+continue nextrule
+}} else if (tpm_$m == "|=") {
+if (nav_$k.indexOf(tpv_$l + "-") != 0) {
+continue nextrule
+}}}};
+tp_$i = tp_$i["&"]
+};
+if (compound_$h) {
+if (!this._compoundSelectorApplies(rule_$f.parsed, node_$0, null, false)) {
+continue nextrule
+}}};
+var props_$n = rule_$f.properties;
+for (var pname_$o in props_$n) {
+if (expanders_$6 && (pname_$o in expanders_$6)) {
+var expprops_$p = node_$0[expanders_$6[pname_$o]](pname_$o, props_$n[pname_$o]);
+for (var exppname_$q in expprops_$p) {
+pc_$1[exppname_$q] = ipc_$d[exppname_$q] = expprops_$p[exppname_$q]
 }};
-return node_$0.__LZPropertyCache = pc_$1
+pc_$1[pname_$o] = ipc_$d[pname_$o] = props_$n[pname_$o]
+}};
+var inhprops_$r = true;
+for (var k_$s in pipc_$4) {
+var ival_$t = pipc_$4[k_$s];
+if (!(k_$s in pc_$1)) {
+ipc_$d[k_$s] = ival_$t;
+if (nodeinherited_$8 && (k_$s in nodeinherited_$8) ? nodeinherited_$8[k_$s] : (k_$s in cssinherited_$7)) {
+pc_$1[k_$s] = ival_$t;
+inhprops_$r = true
+}} else if (pc_$1[k_$s] === LzCSSStyleClass.INHERIT) {
+ipc_$d[k_$s] = pc_$1[k_$s] = ival_$t;
+inhprops_$r = true
+}};
+if (rules_$9.length == 0 && !inhprops_$r) {
+pc_$1 = LzCSSStyleClass.EMTPY_CACHE;
+ipc_$d = pipc_$4
+};
+node_$0.__LZPropertyCache = pc_$1;
+var send_$u = false;
+var oipc_$v = node_$0["__LZInheritedPropertyCache"] || LzCSSStyleClass.EMTPY_CACHE;
+node_$0.__LZInheritedPropertyCache = ipc_$d;
+for (var op_$w in oipc_$v) {
+if (oipc_$v[op_$w] !== ipc_$d[op_$w]) {
+send_$u = true;
+break
+}};
+if (!send_$u) {
+for (var np_$x in ipc_$d) {
+if (oipc_$v[np_$x] !== ipc_$d[np_$x]) {
+send_$u = true;
+break
+}}};
+if (send_$u) {
+var evt_$y = node_$0.on__LZInheritedPropertyCache;
+if (evt_$y.ready) {
+evt_$y.sendEvent(ipc_$d)
+}};
+return pc_$1
 }
 finally {
-var $9 = global["$lzprofiler"];
-if ($9) {
-var $a = "" + (new Date().getTime() - $9.base);
-var $b = arguments.callee["displayName"];
-if ($9.last == $a) {
-$9.events[$a] += ",returns:" + $b
+var $z = global["$lzprofiler"];
+if ($z) {
+var $10 = "" + (new Date().getTime() - $z.base);
+var $11 = arguments.callee["displayName"];
+if ($z.last == $10) {
+$z.events[$10] += ",returns:" + $11
 } else {
-$9.returns[$a] = $b
+$z.returns[$10] = $11
 };
-$9.last = $a
+$z.last = $10
 }}};
 $lzsc$temp["displayName"] = "getPropertyCache";
 return $lzsc$temp
 })(), "getRulesCache", (function () {
-var $lzsc$temp = function (node_$0) {
+var $lzsc$temp = function (node_$0, expanders_$1, expandercount_$2) {
 try {
-var $s = global["$lzprofiler"];
-if ($s) {
-var $t = "" + (new Date().getTime() - $s.base);
-var $u = arguments.callee["displayName"];
-if ($s.last == $t) {
-$s.events[$t] += ",calls:" + $u
+var gather_$4;
+var $w = global["$lzprofiler"];
+if ($w) {
+var $x = "" + (new Date().getTime() - $w.base);
+var $y = arguments.callee["displayName"];
+if ($w.last == $x) {
+$w.events[$x] += ",calls:" + $y
 } else {
-$s.calls[$t] = $u
+$w.calls[$x] = $y
 };
-$s.last = $t
+$w.last = $x
 };
-var rules_$1 = node_$0["__LZRuleCache"];
-if (rules_$1) {
-return rules_$1
+gather_$4 = (function () {
+var $lzsc$temp = function (attr_$0, node_$1) {
+try {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",calls:" + $7
+} else {
+$5.calls[$6] = $7
 };
-rules_$1 = new Array();
-var tryRules_$2 = new Array();
+$5.last = $6
+};
+var nodes_$2 = deps[attr_$0];
+if (!nodes_$2) {
+deps[attr_$0] = [node_$1];
+return
+};
+for (var i_$3 = 0, l_$4 = nodes_$2.length;i_$3 < l_$4;i_$3++) {
+if (node_$1 === nodes_$2[i_$3]) {
+return
+}};
+nodes_$2.push(node_$1)
+}
+finally {
+var $5 = global["$lzprofiler"];
+if ($5) {
+var $6 = "" + (new Date().getTime() - $5.base);
+var $7 = arguments.callee["displayName"];
+if ($5.last == $6) {
+$5.events[$6] += ",returns:" + $7
+} else {
+$5.returns[$6] = $7
+};
+$5.last = $6
+}}};
+$lzsc$temp["displayName"] = "gather";
+return $lzsc$temp
+})();
+switch (arguments.length) {
+case 1:
+expanders_$1 = null;;case 2:
+expandercount_$2 = 0
+};
+var rules_$3 = node_$0["__LZRuleCache"];
+if (rules_$3) {
+return rules_$3
+};
+rules_$3 = new Array();
 if (this._rulenum != this._lastSort) {
 this._sortRules()
 };
-var id_$3 = node_$0["id"];
-if (id_$3) {
-var ir_$4 = this._idRules;
-if (id_$3 in ir_$4) {
-tryRules_$2 = tryRules_$2.concat(ir_$4[id_$3])
-}};
-var ar_$5 = this._attrRules;
-for (var k_$6 in ar_$5) {
-if (node_$0[k_$6] !== void 0) {
-tryRules_$2 = tryRules_$2.concat(ar_$5[k_$6])
-}};
-var cr_$7 = this._tagRules;
-for (var tn_$8 in cr_$7) {
-var c_$9 = lz[tn_$8];
-if (c_$9 && (c_$9["$lzsc$isa"] ? c_$9.$lzsc$isa(node_$0) : node_$0 instanceof c_$9)) {
-tryRules_$2 = tryRules_$2.concat(cr_$7[tn_$8])
-}};
-tryRules_$2.concat(this._rules);
-var deps_$a = new LzCSSStyleDependencies();
-var sortNeeded_$b = false;
-var lastSpecificity_$c = Infinity;
-for (var i_$d = 0, l_$e = tryRules_$2.length;i_$d < l_$e;i_$d++) {
-var r_$f = tryRules_$2[i_$d];
-if (!sortNeeded_$b) {
-var rs_$g = r_$f.specificity;
-if (!rs_$g || rs_$g >= lastSpecificity_$c) {
-sortNeeded_$b = true
-} else {
-lastSpecificity_$c = rs_$g
-}};
-var rp_$h = r_$f.parsed;
-var compound_$i = !(!rp_$h["length"]);
-if (compound_$i) {
-rp_$h = rp_$h[rp_$h.length - 1]
+var deps = {};
+var tryRules_$5;
+var state_$6 = "id";
+var substate_$7 = 0;
+var attrs_$8 = this._attrs;
+var tags_$9 = node_$0.constructor.__LZCSSTagSelectors;
+var sortNeeded_$a = false;
+var lastSpecificity_$b = Infinity;
+while (state_$6) {
+step: switch (state_$6) {
+case "id":
+state_$6 = "name";var id_$c = node_$0["id"];if (id_$c && (tryRules_$5 = this._idRules[id_$c])) {
+break step
+};case "name":
+state_$6 = "attr";var name_$d = node_$0["name"];if (name_$d && (tryRules_$5 = this._nameRules[name_$d])) {
+break step
+};case "attr":
+while (substate_$7 < attrs_$8.length) {
+var k_$e = attrs_$8[substate_$7++];
+if (node_$0[k_$e] !== void 0) {
+tryRules_$5 = this._attrRules[k_$e];
+break step
+}};state_$6 = "tag";substate_$7 = 0;;case "tag":
+while (tags_$9 && substate_$7 < tags_$9.length) {
+var tn_$f = tags_$9[substate_$7++];
+if (tryRules_$5 = this._tagRules[tn_$f]) {
+break step
+}};state_$6 = null;substate_$7 = 0;;default:
+tryRules_$5 = this._rules
 };
-var rptn_$j = rp_$h["t"];
-var rpc_$k = rptn_$j ? lz[rptn_$j] : null;
-var rpi_$l = rp_$h["i"];
-var applies_$m = false;
-if ((!rptn_$j || rpc_$k && (rpc_$k["$lzsc$isa"] ? rpc_$k.$lzsc$isa(node_$0) : node_$0 instanceof rpc_$k)) && (!rpi_$l || node_$0["id"] == rpi_$l)) {
-if (!compound_$i) {
-if (!rp_$h["a"] && !rp_$h["&"]) {
-applies_$m = true
+nextrule: for (var i_$g = 0, l_$h = tryRules_$5.length;i_$g < l_$h;i_$g++) {
+var r_$i = tryRules_$5[i_$g];
+if (!sortNeeded_$a) {
+var rs_$j = r_$i.specificity;
+if (rs_$j >= lastSpecificity_$b) {
+sortNeeded_$a = true
 } else {
-var tp_$n = rp_$h["a"] ? rp_$h : rp_$h["&"];
+lastSpecificity_$b = rs_$j
+}};
+var rp_$k = r_$i.parsed;
+var compound_$l = !(!rp_$k["length"]);
+if (compound_$l) {
+rp_$k = rp_$k[rp_$k.length - 1]
+};
+if (!(state_$6 == "id" || state_$6 == "name")) {
+var rptn_$m = rp_$k["t"];
+if (rptn_$m && (!lz[rptn_$m] || !(lz[rptn_$m]["$lzsc$isa"] ? lz[rptn_$m].$lzsc$isa(node_$0) : node_$0 instanceof lz[rptn_$m]))) {
+continue nextrule
+};
+var tp_$n = rp_$k["a"] ? rp_$k : rp_$k["&"];
+while (tp_$n) {
 var tpa_$o = tp_$n.a;
-do {
-applies_$m = false;
-if (node_$0[tpa_$o] !== void 0) {
-if (tpa_$o != "name") {
-deps_$a.gather(node_$0, tpa_$o)
+if (node_$0[tpa_$o] === void 0) {
+continue nextrule
 };
-if (!("v" in tp_$n)) {
-applies_$m = true
-} else {
-var nav_$p = node_$0[tpa_$o];
-nav_$p += "";
-var tpv_$q = tp_$n.v;
+if ("v" in tp_$n) {
+if (tpa_$o == "name") {
 if (!tp_$n["m"]) {
-applies_$m = nav_$p == tpv_$q
-} else {
-var tpm_$r = tp_$n.m;
-if (tpm_$r == "~=") {
-applies_$m = nav_$p == tpv_$q || node_$0.__LZCSSStyleclass && node_$0.__LZCSSStyleclass.indexOf(" " + tpv_$q + " ") >= 0
-} else if (tpm_$r == "|=") {
-applies_$m = nav_$p.indexOf(tpv_$q + "-") == 0
-}}}};
-if (applies_$m && tp_$n["&"]) {
-tp_$n = tp_$n["&"];
-tpa_$o = tp_$n.a
-} else {
-tp_$n = null
-}} while (tp_$n)
+if (node_$0.name != tp_$n.v) {
+continue nextrule
+}} else if (!this._complexAttrMatch(node_$0.name, tp_$n.v, tp_$n.m)) {
+continue nextrule
 }} else {
-applies_$m = this._compoundSelectorApplies(r_$f.parsed, node_$0, deps_$a)
+if (!deps[tpa_$o]) {
+deps[tpa_$o] = [node_$0]
+} else {
+gather_$4(tpa_$o, node_$0)
+}}};
+tp_$n = tp_$n["&"]
 }};
-if (applies_$m) {
-rules_$1.push(r_$f)
+if (compound_$l) {
+if (!this._compoundSelectorApplies(r_$i.parsed, node_$0, gather_$4, false)) {
+continue nextrule
 }};
-if (sortNeeded_$b) {
-rules_$1.sort(this.__compareSpecificity)
+rules_$3.push(r_$i)
+}};
+if (sortNeeded_$a) {
+rules_$3.sort(this.__compareSpecificity)
 };
-node_$0.__LZRuleCache = rules_$1;
-if (deps_$a.count > 0) {
-node_$0.__LZCSSDependencies = deps_$a.deps
+if (expanders_$1 && expandercount_$2 > 0) {
+for (var i_$g = rules_$3.length - 1;i_$g >= 0 && expandercount_$2 > 0;i_$g--) {
+var props_$p = rules_$3[i_$g].properties;
+for (var pname_$q in props_$p) {
+if (pname_$q in expanders_$1) {
+delete expanders_$1[pname_$q];
+expandercount_$2--;
+if (!expandercount_$2) {
+break
+}}}};
+var ip_$r = node_$0.immediateparent;
+while (expandercount_$2 > 0 && ip_$r) {
+var parentrules_$s = this.getRulesCache(ip_$r);
+for (var i_$g = 0, l_$h = parentrules_$s.length;i_$g < l_$h && expandercount_$2 > 0;i_$g++) {
+var prule_$t = parentrules_$s[i_$g];
+var props_$p = prule_$t.properties;
+for (var pname_$q in props_$p) {
+if (pname_$q in expanders_$1) {
+var nprops_$u = {};
+nprops_$u[pname_$q] = props_$p[pname_$q];
+rules_$3.push(new LzCSSStyleRule(prule_$t.parsed, nprops_$u, "", 0));
+delete expanders_$1[pname_$q];
+expandercount_$2--
+}}};
+var next_$v = ip_$r.immediateparent;
+if (next_$v && next_$v != ip_$r) {
+ip_$r = next_$v
+} else {
+break
+}}};
+var ip_$r = node_$0.immediateparent;
+if (ip_$r !== node_$0) {
+deps["__LZInheritedPropertyCache"] = [ip_$r]
 };
-return rules_$1
+node_$0.__applyCSSConstraints(deps);
+node_$0.__LZRuleCache = rules_$3;
+return rules_$3
 }
 finally {
-var $s = global["$lzprofiler"];
-if ($s) {
-var $t = "" + (new Date().getTime() - $s.base);
-var $u = arguments.callee["displayName"];
-if ($s.last == $t) {
-$s.events[$t] += ",returns:" + $u
+var $w = global["$lzprofiler"];
+if ($w) {
+var $x = "" + (new Date().getTime() - $w.base);
+var $y = arguments.callee["displayName"];
+if ($w.last == $x) {
+$w.events[$x] += ",returns:" + $y
 } else {
-$s.returns[$t] = $u
+$w.returns[$x] = $y
 };
-$s.last = $t
+$w.last = $x
 }}};
 $lzsc$temp["displayName"] = "getRulesCache";
 return $lzsc$temp
@@ -55722,130 +55328,134 @@ $e.last = $f
 }}};
 $lzsc$temp["displayName"] = "__compareSpecificity";
 return $lzsc$temp
-})(), "_printRuleArray", (function () {
-var $lzsc$temp = function (arr_$0) {
+})(), "_complexAttrMatch", (function () {
+var $lzsc$temp = function (nav_$0, tpv_$1, tpm_$2) {
 try {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",calls:" + $3
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
 } else {
-$1.calls[$2] = $3
+$3.calls[$4] = $5
 };
-$1.last = $2
-}}
-finally {
-var $1 = global["$lzprofiler"];
-if ($1) {
-var $2 = "" + (new Date().getTime() - $1.base);
-var $3 = arguments.callee["displayName"];
-if ($1.last == $2) {
-$1.events[$2] += ",returns:" + $3
-} else {
-$1.returns[$2] = $3
+$3.last = $4
 };
-$1.last = $2
-}}};
-$lzsc$temp["displayName"] = "_printRuleArray";
-return $lzsc$temp
-})(), "_compoundSelectorApplies", (function () {
-var $lzsc$temp = function (parsedsel_$0, startnode_$1, deps_$2) {
-try {
-var $f = global["$lzprofiler"];
-if ($f) {
-var $g = "" + (new Date().getTime() - $f.base);
-var $h = arguments.callee["displayName"];
-if ($f.last == $g) {
-$f.events[$g] += ",calls:" + $h
-} else {
-$f.calls[$g] = $h
+if (!tpm_$2) {
+return nav_$0 == tpv_$1
+} else if (tpm_$2 == "~=") {
+return nav_$0 == tpv_$1 || nav_$0.search("(^| )" + tpv_$1 + "( |$)") >= 0
+} else if (tpm_$2 == "|=") {
+return nav_$0.indexOf(tpv_$1 + "-") == 0
 };
-$f.last = $g
-};
-for (var node_$3 = startnode_$1, i_$4 = parsedsel_$0.length - 1;i_$4 >= 0 && node_$3 !== canvas;i_$4--, node_$3 = node_$3.parent) {
-var rp_$5 = parsedsel_$0[i_$4];
-var rptn_$6 = rp_$5["t"];
-var rpc_$7 = rptn_$6 ? lz[rptn_$6] : null;
-var rpi_$8 = rp_$5["i"];
-while (node_$3 !== canvas) {
-var applies_$9 = false;
-if ((!rptn_$6 || rpc_$7 && (rpc_$7["$lzsc$isa"] ? rpc_$7.$lzsc$isa(node_$3) : node_$3 instanceof rpc_$7)) && (!rpi_$8 || node_$3["id"] == rpi_$8)) {
-if (!rp_$5["a"] && !rp_$5["&"]) {
-applies_$9 = true
-} else {
-var tp_$a = rp_$5["a"] ? rp_$5 : rp_$5["&"];
-var tpa_$b = tp_$a.a;
-do {
-applies_$9 = false;
-if (node_$3[tpa_$b] !== void 0) {
-if (tpa_$b != "name") {
-deps_$2.gather(node_$3, tpa_$b)
-};
-if (!("v" in tp_$a)) {
-applies_$9 = true
-} else {
-var nav_$c = node_$3[tpa_$b];
-nav_$c += "";
-var tpv_$d = tp_$a.v;
-if (!tp_$a["m"]) {
-applies_$9 = nav_$c == tpv_$d
-} else {
-var tpm_$e = tp_$a.m;
-if (tpm_$e == "~=") {
-applies_$9 = nav_$c == tpv_$d || node_$3.__LZCSSStyleclass && node_$3.__LZCSSStyleclass.indexOf(" " + tpv_$d + " ") >= 0
-} else if (tpm_$e == "|=") {
-applies_$9 = nav_$c.indexOf(tpv_$d + "-") == 0
-}}}};
-if (applies_$9 && tp_$a["&"]) {
-tp_$a = tp_$a["&"];
-tpa_$b = tp_$a.a
-} else {
-tp_$a = null
-}} while (tp_$a)
-};
-if (applies_$9) {
-if (i_$4 == 0) {
-return true
-} else {
-break
-}}};
-if (node_$3 === startnode_$1) {
-return false
-};
-node_$3 = node_$3.parent
-}};
 return false
 }
 finally {
-var $f = global["$lzprofiler"];
-if ($f) {
-var $g = "" + (new Date().getTime() - $f.base);
-var $h = arguments.callee["displayName"];
-if ($f.last == $g) {
-$f.events[$g] += ",returns:" + $h
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
 } else {
-$f.returns[$g] = $h
+$3.returns[$4] = $5
 };
-$f.last = $g
+$3.last = $4
+}}};
+$lzsc$temp["displayName"] = "_complexAttrMatch";
+return $lzsc$temp
+})(), "_compoundSelectorApplies", (function () {
+var $lzsc$temp = function (parsedsel_$0, startnode_$1, gather_$2, anchored_$3) {
+try {
+var $e = global["$lzprofiler"];
+if ($e) {
+var $f = "" + (new Date().getTime() - $e.base);
+var $g = arguments.callee["displayName"];
+if ($e.last == $f) {
+$e.events[$f] += ",calls:" + $g
+} else {
+$e.calls[$f] = $g
+};
+$e.last = $f
+};
+var startindex_$4 = parsedsel_$0.length - 1;
+if (!anchored_$3) {
+if (startnode_$1 === canvas) {
+return false
+};
+startnode_$1 = startnode_$1.immediateparent;
+startindex_$4--
+};
+nextselector: for (var node_$5 = startnode_$1, i_$6 = startindex_$4;i_$6 >= 0 && node_$5;i_$6--, node_$5 = node_$5 === canvas ? null : node_$5.immediateparent) {
+var rp_$7 = parsedsel_$0[i_$6];
+var rptn_$8 = rp_$7["t"];
+var rpi_$9 = rp_$7["i"];
+nextnode: for (;node_$5;node_$5 = node_$5 === canvas || anchored_$3 && node_$5 === startnode_$1 ? null : node_$5.immediateparent) {
+if (rpi_$9 && node_$5["id"] != rpi_$9) {
+continue nextnode
+};
+if (rptn_$8 && (!lz[rptn_$8] || !(lz[rptn_$8]["$lzsc$isa"] ? lz[rptn_$8].$lzsc$isa(node_$5) : node_$5 instanceof lz[rptn_$8]))) {
+continue nextnode
+};
+var tp_$a = rp_$7["a"] ? rp_$7 : rp_$7["&"];
+while (tp_$a) {
+var tpa_$b = tp_$a.a;
+if (node_$5[tpa_$b] === void 0) {
+continue nextnode
+};
+if ("v" in tp_$a) {
+if (gather_$2 && tpa_$b != "name") {
+gather_$2(tpa_$b, node_$5)
+} else {
+var nav_$c = node_$5[tpa_$b];
+nav_$c += "";
+var tpv_$d = tp_$a.v;
+if (!tp_$a["m"]) {
+if (nav_$c != tpv_$d) {
+continue nextnode
+}} else if (!this._complexAttrMatch(nav_$c, tpv_$d, tp_$a.m)) {
+continue nextnode
+}}};
+tp_$a = tp_$a["&"]
+};
+if (i_$6 == 0) {
+return true
+};
+continue nextselector
+};
+return false
+};
+return false
+}
+finally {
+var $e = global["$lzprofiler"];
+if ($e) {
+var $f = "" + (new Date().getTime() - $e.base);
+var $g = arguments.callee["displayName"];
+if ($e.last == $f) {
+$e.events[$f] += ",returns:" + $g
+} else {
+$e.returns[$f] = $g
+};
+$e.last = $f
 }}};
 $lzsc$temp["displayName"] = "_compoundSelectorApplies";
 return $lzsc$temp
-})(), "_rules", void 0, "_attrRules", void 0, "_idRules", void 0, "_tagRules", void 0, "_rulenum", 0, "_lastSort", -1, "_sortRules", (function () {
+})(), "_rulenum", 0, "_lastSort", -1, "_sortRules", (function () {
 var $lzsc$temp = function () {
 try {
 var deleteDuplicates_$0;
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",calls:" + $7
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",calls:" + $5
 } else {
-$5.calls[$6] = $7
+$3.calls[$4] = $5
 };
-$5.last = $6
+$3.last = $4
 };
 deleteDuplicates_$0 = (function () {
 var $lzsc$temp = function (sortedRules_$0) {
@@ -55881,97 +55491,144 @@ $lzsc$temp["displayName"] = "deleteDuplicates";
 return $lzsc$temp
 })();
 if (this._rulenum != this._lastSort) {
-this._rules.sort(this.__compareSpecificity);
 deleteDuplicates_$0(this._rules);
-for (var k_$1 in this._attrRules) {
-var ark_$2 = this._attrRules[k_$1];
-ark_$2.sort(this.__compareSpecificity);
-deleteDuplicates_$0(ark_$2)
-};
 for (var k_$1 in this._idRules) {
-var irk_$3 = this._idRules[k_$1];
-irk_$3.sort(this.__compareSpecificity);
-deleteDuplicates_$0(irk_$3)
+var rk_$2 = this._idRules[k_$1];
+rk_$2.sort(this.__compareSpecificity);
+deleteDuplicates_$0(rk_$2)
+};
+for (var k_$1 in this._nameRules) {
+var rk_$2 = this._nameRules[k_$1];
+rk_$2.sort(this.__compareSpecificity);
+deleteDuplicates_$0(rk_$2)
+};
+for (var k_$1 in this._attrRules) {
+var rk_$2 = this._attrRules[k_$1];
+rk_$2.sort(this.__compareSpecificity);
+deleteDuplicates_$0(rk_$2)
 };
 for (var k_$1 in this._tagRules) {
-var trk_$4 = this._tagRules[k_$1];
-trk_$4.sort(this.__compareSpecificity);
-deleteDuplicates_$0(trk_$4)
+var rk_$2 = this._tagRules[k_$1];
+rk_$2.sort(this.__compareSpecificity);
+deleteDuplicates_$0(rk_$2)
 };
+this._rules.sort(this.__compareSpecificity);
 this._lastSort = this._rulenum
 }}
 finally {
-var $5 = global["$lzprofiler"];
-if ($5) {
-var $6 = "" + (new Date().getTime() - $5.base);
-var $7 = arguments.callee["displayName"];
-if ($5.last == $6) {
-$5.events[$6] += ",returns:" + $7
+var $3 = global["$lzprofiler"];
+if ($3) {
+var $4 = "" + (new Date().getTime() - $3.base);
+var $5 = arguments.callee["displayName"];
+if ($3.last == $4) {
+$3.events[$4] += ",returns:" + $5
 } else {
-$5.returns[$6] = $7
+$3.returns[$4] = $5
 };
-$5.last = $6
+$3.last = $4
 }}};
 $lzsc$temp["displayName"] = "_sortRules";
 return $lzsc$temp
 })(), "_addRule", (function () {
 var $lzsc$temp = function (r_$0) {
 try {
-var $8 = global["$lzprofiler"];
-if ($8) {
-var $9 = "" + (new Date().getTime() - $8.base);
-var $a = arguments.callee["displayName"];
-if ($8.last == $9) {
-$8.events[$9] += ",calls:" + $a
+var $c = global["$lzprofiler"];
+if ($c) {
+var $d = "" + (new Date().getTime() - $c.base);
+var $e = arguments.callee["displayName"];
+if ($c.last == $d) {
+$c.events[$d] += ",calls:" + $e
 } else {
-$8.calls[$9] = $a
+$c.calls[$d] = $e
 };
-$8.last = $9
+$c.last = $d
 };
 r_$0._lexorder = this._rulenum++;
 var lastsel_$1 = r_$0.parsed;
 if (lastsel_$1["length"]) {
 lastsel_$1 = lastsel_$1[lastsel_$1.length - 1]
 };
-if ("i" in lastsel_$1) {
 var id_$2 = lastsel_$1.i;
-var itab_$3 = this._idRules[id_$2];
-if (!itab_$3) {
-itab_$3 = this._idRules[id_$2] = []
+var attr_$3 = lastsel_$1.a;
+var tag_$4 = lastsel_$1.t;
+var match_$5 = lastsel_$1.m;
+var compound_$6 = lastsel_$1["&"];
+if (id_$2 && !(attr_$3 || tag_$4 || compound_$6)) {
+var itab_$7 = this._idRules[id_$2];
+if (!itab_$7) {
+itab_$7 = this._idRules[id_$2] = []
 };
-itab_$3.push(r_$0)
-} else if ("a" in lastsel_$1) {
-var attr_$4 = lastsel_$1.a;
-var atab_$5 = this._attrRules[attr_$4];
-if (!atab_$5) {
-atab_$5 = this._attrRules[attr_$4] = []
+itab_$7.push(r_$0)
+} else if (attr_$3 && !(id_$2 || match_$5 || compound_$6)) {
+var value_$8 = lastsel_$1.v;
+if (value_$8 && attr_$3 == "name") {
+var ntab_$9 = this._nameRules[value_$8];
+if (!ntab_$9) {
+ntab_$9 = this._nameRules[value_$8] = []
 };
-atab_$5.push(r_$0)
-} else if ("t" in lastsel_$1) {
-var tag_$6 = lastsel_$1.t;
-var ttab_$7 = this._tagRules[tag_$6];
-if (!ttab_$7) {
-ttab_$7 = this._tagRules[tag_$6] = []
+ntab_$9.push(r_$0)
+} else {
+var atab_$a = this._attrRules[attr_$3];
+if (!atab_$a) {
+this._attrs.push(attr_$3);
+atab_$a = this._attrRules[attr_$3] = []
 };
-ttab_$7.push(r_$0)
+atab_$a.push(r_$0)
+}} else if (tag_$4) {
+var ttab_$b = this._tagRules[tag_$4];
+if (!ttab_$b) {
+this._tags.push(tag_$4);
+ttab_$b = this._tagRules[tag_$4] = []
+};
+ttab_$b.push(r_$0)
 } else {
 this._rules.push(r_$0)
 }}
 finally {
-var $8 = global["$lzprofiler"];
-if ($8) {
-var $9 = "" + (new Date().getTime() - $8.base);
-var $a = arguments.callee["displayName"];
-if ($8.last == $9) {
-$8.events[$9] += ",returns:" + $a
+var $c = global["$lzprofiler"];
+if ($c) {
+var $d = "" + (new Date().getTime() - $c.base);
+var $e = arguments.callee["displayName"];
+if ($c.last == $d) {
+$c.events[$d] += ",returns:" + $e
 } else {
-$8.returns[$9] = $a
+$c.returns[$d] = $e
 };
-$8.last = $9
+$c.last = $d
 }}};
 $lzsc$temp["displayName"] = "_addRule";
 return $lzsc$temp
-})()]);
+})()], null, ["CSSInheritableProperties", {"azimuth": true, "border-collapse": true, "border-spacing": true, "caption-side": true, "color": true, "cursor": true, "direction": true, "elevation": true, "empty-cells": true, "font-family": true, "font-size": true, "font-style": true, "font-variant": true, "font-weight": true, "font": true, "letter-spacing": true, "line-height": true, "list-style-image": true, "list-style-position": true, "list-style-type": true, "list-style": true, "orphans": true, "pitch-range": true, "pitch": true, "quotes": true, "richness": true, "speak-header": true, "speak-numeral": true, "speak-punctuation": true, "speak": true, "speech-rate": true, "stress": true, "text-indent": true, "text-transform": true, "visibility": true, "voice-family": true, "volume": true, "whitespace": true, "widows": true, "word-spacing": true}, "INHERIT", {toString: (function () {
+var $lzsc$temp = function () {
+try {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",calls:" + $2
+} else {
+$0.calls[$1] = $2
+};
+$0.last = $1
+};
+return "inherit"
+}
+finally {
+var $0 = global["$lzprofiler"];
+if ($0) {
+var $1 = "" + (new Date().getTime() - $0.base);
+var $2 = arguments.callee["displayName"];
+if ($0.last == $1) {
+$0.events[$1] += ",returns:" + $2
+} else {
+$0.returns[$1] = $2
+};
+$0.last = $1
+}}};
+$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#242/35";
+return $lzsc$temp
+})()}, "EMTPY_CACHE", {}]);
 (function () {
 var $lzsc$temp = function ($0) {
 try {
@@ -55999,7 +55656,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#168/1";
+$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#175/1";
 return $lzsc$temp
 })()(LzCSSStyleClass);
 var LzCSSStyle = new LzCSSStyleClass();
@@ -56120,7 +55777,7 @@ $1.returns[$2] = $3
 };
 $1.last = $2
 }}};
-$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#749/1";
+$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#1043/1";
 return $lzsc$temp
 })()(LzCSSStyleDeclaration);
 lz.CSSStyleDeclaration = LzCSSStyleDeclaration;
@@ -56238,7 +55895,7 @@ $lzsc$temp["displayName"] = "insertRule";
 return $lzsc$temp
 })()], LzStyleSheet);
 lz.CSSStyleSheet = LzCSSStyleSheet;
-Class.make("LzFocusService", ["onfocus", LzDeclaredEvent, "onescapefocus", LzDeclaredEvent, "lastfocus", null, "csel", null, "cseldest", null, "$lzsc$initialize", (function () {
+Class.make("LzFocusService", ["onfocus", LzDeclaredEvent, "onescapefocus", LzDeclaredEvent, "lastfocus", null, "csel", null, "cseldest", null, "FOCUS_MANUAL", 0, "FOCUS_KEYBOARD", -1, "FOCUS_KEYBOARD_PREV", -2, "FOCUS_MOUSE", 1, "$lzsc$initialize", (function () {
 var $lzsc$temp = function () {
 try {
 var $0 = global["$lzprofiler"];
@@ -56271,7 +55928,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "upDel", void 0, "downDel", void 0, "lastfocusDel", void 0, "focuswithkey", false, "__LZskipblur", false, "__LZsfnextfocus", -1, "__LZsfrunning", false, "gotKeyUp", (function () {
+})(), "upDel", void 0, "downDel", void 0, "lastfocusDel", void 0, "focusmethod", 0, "focuswithkey", false, "__LZskipblur", false, "__LZsfnextfocus", -1, "__LZsfrunning", false, "focuscount", 0, "gotKeyUp", (function () {
 var $lzsc$temp = function (kC_$0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -56351,7 +56008,9 @@ $1.calls[$2] = $3
 $1.last = $2
 };
 if (v_$0.focusable) {
-this.setFocus(v_$0, false)
+this.setFocus(v_$0, this.FOCUS_MOUSE)
+} else {
+this.clearFocus()
 }}
 finally {
 var $1 = global["$lzprofiler"];
@@ -56385,10 +56044,17 @@ switch (arguments.length) {
 case 1:
 fwkey_$1 = null
 };
+this.focusmethod = this.FOCUS_MANUAL;
+if (fwkey_$1 != null) {
+if (typeof fwkey_$1 == "number") {
+this.focusmethod = fwkey_$1
+} else this.focusmethod = this.FOCUS_KEYBOARD
+};
 if (this.__LZsfrunning) {
 this.__LZsfnextfocus = newsel_$0;
 return
 };
+this.focuscount++;
 if (this.cseldest == newsel_$0) {
 return
 };
@@ -56407,9 +56073,7 @@ prevsel_$2.blurring = true
 this.__LZsfnextfocus = -1;
 this.__LZsfrunning = true;
 this.cseldest = newsel_$0;
-if (fwkey_$1 != null) {
-this.focuswithkey = !(!fwkey_$1)
-};
+this.focuswithkey = this.focusmethod <= this.FOCUS_KEYBOARD;
 if (!this.__LZskipblur) {
 this.__LZskipblur = true;
 if (prevsel_$2 && prevsel_$2.onblur.ready) {
@@ -56421,7 +56085,7 @@ next_$3 = this.getNext(next_$3)
 };
 if (next_$3 != newsel_$0) {
 this.__LZsfrunning = false;
-this.setFocus(next_$3);
+this.setFocus(next_$3, this.focusmethod);
 return
 }}}};
 this.lastfocus = prevsel_$2;
@@ -56442,7 +56106,7 @@ next_$3 = this.getNext(next_$3)
 };
 if (next_$3 != newsel_$0) {
 this.__LZsfrunning = false;
-this.setFocus(next_$3);
+this.setFocus(next_$3, this.focusmethod);
 return
 }}};
 if (this.onfocus.ready) {
@@ -56454,7 +56118,7 @@ next_$3 = this.getNext(next_$3)
 };
 if (next_$3 != newsel_$0) {
 this.__LZsfrunning = false;
-this.setFocus(next_$3);
+this.setFocus(next_$3, this.focusmethod);
 return
 }}};
 this.__LZsfrunning = false
@@ -56692,7 +56356,7 @@ if (v_$4 == null) {
 v_$4 = this.moveSelSubview(sel_$1, movedir_$0, true)
 };
 if (lz.ModeManager.__LZallowFocus(v_$4)) {
-this.setFocus(v_$4, true)
+this.setFocus(v_$4, movedir_$0 == 1 ? this.FOCUS_KEYBOARD : this.FOCUS_KEYBOARD_PREV)
 }}
 finally {
 var $5 = global["$lzprofiler"];
@@ -57079,7 +56743,7 @@ return $lzsc$temp
 })()(LzTimerService);
 lz.TimerService = LzTimerService;
 lz.Timer = LzTimerService.LzTimer;
-Class.make("$lzc$class_lzcontextmenuseparator", ["$ii6lnt1", (function () {
+Class.make("$lzc$class_lzcontextmenuseparator", ["$8l2c51", (function () {
 var $lzsc$temp = function ($0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -57109,7 +56773,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "handle oninit";
 return $lzsc$temp
-})(), "$ii6lnt2", (function () {
+})(), "$8l2c52", (function () {
 var $lzsc$temp = function ($0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -57226,7 +56890,7 @@ $1.last = $2
 };
 with ($0) with ($0.prototype) {
 {
-LzNode.mergeAttributes({$delegates: ["oninit", "$ii6lnt1", null, "ondestroy", "$ii6lnt2", null], height: 10}, $lzc$class_lzcontextmenuseparator.attributes)
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {aaactive: "boolean", aadescription: "string", aaname: "string", aasilent: "boolean", aatabindex: "number", align: "string", backgroundrepeat: "string", bgcolor: "color", cachebitmap: "boolean", capabilities: "string", clickable: "boolean", clickregion: "string", clip: "boolean", contextmenu: "string", cornerradius: "string", cursor: "token", fgcolor: "color", focusable: "boolean", focustrap: "boolean", font: "string", fontsize: "size", fontstyle: "string", frame: "numberExpression", framesloadratio: "number", hasdirectionallayout: "boolean", hassetheight: "boolean", hassetwidth: "boolean", height: "size", layout: "css", loadratio: "number", mask: "string", opacity: "number", pixellock: "boolean", playing: "boolean", resource: "string", resourceheight: "number", resourcewidth: "number", rotation: "numberExpression", shadowangle: "number", shadowblurradius: "number", shadowcolor: "color", shadowdistance: "number", showhandcursor: "boolean", source: "string", stretches: "string", subviews: "string", tintcolor: "string", totalframes: "number", unstretchedheight: "number", unstretchedwidth: "number", usegetbounds: "boolean", valign: "string", visibility: "string", visible: "boolean", width: "size", x: "numberExpression", xoffset: "numberExpression", xscale: "numberExpression", y: "numberExpression", yoffset: "numberExpression", yscale: "numberExpression"}}, $delegates: ["oninit", "$8l2c51", null, "ondestroy", "$8l2c52", null], height: 10}, $lzc$class_lzcontextmenuseparator.attributes)
 }}}
 finally {
 var $1 = global["$lzprofiler"];
@@ -57243,7 +56907,7 @@ $1.last = $2
 $lzsc$temp["displayName"] = "contextmenu.lzx#8/1";
 return $lzsc$temp
 })()($lzc$class_lzcontextmenuseparator);
-Class.make("$lzc$class_lzcontextmenutext", ["$ii6lnt3", (function () {
+Class.make("$lzc$class_lzcontextmenutext", ["$8l2c56", (function () {
 var $lzsc$temp = function ($0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -57274,7 +56938,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "handle onmouseover";
 return $lzsc$temp
-})(), "$ii6lnt4", (function () {
+})(), "$8l2c57", (function () {
 var $lzsc$temp = function ($0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -57305,7 +56969,7 @@ $1.last = $2
 }}};
 $lzsc$temp["displayName"] = "handle onmouseout";
 return $lzsc$temp
-})(), "$ii6lnt5", (function () {
+})(), "$8l2c58", (function () {
 var $lzsc$temp = function ($0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -57389,7 +57053,8 @@ attrs_$b_$1 = null;;case 2:
 children_$c_$2 = null;;case 3:
 async_$d_$3 = false
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, parent_$a_$0, attrs_$b_$1, children_$c_$2, async_$d_$3)
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, parent_$a_$0, attrs_$b_$1, children_$c_$2, async_$d_$3);
+this.sprite.setWidth(this.parent.width - 3)
 }
 finally {
 var $4 = global["$lzprofiler"];
@@ -57422,7 +57087,7 @@ $1.last = $2
 };
 with ($0) with ($0.prototype) {
 {
-LzNode.mergeAttributes({$delegates: ["onmouseover", "$ii6lnt3", null, "onmouseout", "$ii6lnt4", null, "onmousedown", "$ii6lnt5", null], clickable: true, fgcolor: LzColorUtils.convertColor("0x0"), fontsize: 11, fontstyle: "plain"}, $lzc$class_lzcontextmenutext.attributes)
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {antiAliasType: "string", cdata: "cdata", direction: "string", embedfonts: "boolean", gridFit: "string", hscroll: "number", letterspacing: "number", lineheight: "number", maxhscroll: "number", maxlength: "numberExpression", maxscroll: "number", multiline: "boolean", pattern: "string", resize: "boolean", scroll: "number", scrollevents: "boolean", scrollheight: "number", scrollwidth: "number", selectable: "boolean", sharpness: "number", text: "html", textalign: "string", textdecoration: "string", textindent: "number", thickness: "number", xscroll: "number", yscroll: "number"}}, $delegates: ["onmouseover", "$8l2c56", null, "onmouseout", "$8l2c57", null, "onmousedown", "$8l2c58", null], clickable: true, fgcolor: 0, fontsize: 11, fontstyle: "plain"}, $lzc$class_lzcontextmenutext.attributes)
 }}}
 finally {
 var $1 = global["$lzprofiler"];
@@ -57493,7 +57158,7 @@ $1.last = $2
 };
 with ($0) with ($0.prototype) {
 {
-LzNode.mergeAttributes({fgcolor: LzColorUtils.convertColor("0xcccccc"), fontsize: 11, fontstyle: "plain"}, $lzc$class_lzcontextmenudisabled.attributes)
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {antiAliasType: "string", cdata: "cdata", direction: "string", embedfonts: "boolean", gridFit: "string", hscroll: "number", letterspacing: "number", lineheight: "number", maxhscroll: "number", maxlength: "numberExpression", maxscroll: "number", multiline: "boolean", pattern: "string", resize: "boolean", scroll: "number", scrollevents: "boolean", scrollheight: "number", scrollwidth: "number", selectable: "boolean", sharpness: "number", text: "html", textalign: "string", textdecoration: "string", textindent: "number", thickness: "number", xscroll: "number", yscroll: "number"}}, fgcolor: 13421772, fontsize: 11, fontstyle: "plain"}, $lzc$class_lzcontextmenudisabled.attributes)
 }}}
 finally {
 var $1 = global["$lzprofiler"];
@@ -57510,7 +57175,7 @@ $1.last = $2
 $lzsc$temp["displayName"] = "contextmenu.lzx#44/1";
 return $lzsc$temp
 })()($lzc$class_lzcontextmenudisabled);
-Class.make("$lzc$class_ii6lntc", ["$ii6lnt7", (function () {
+Class.make("$lzc$class_8l2c5f", ["$8l2c5a", (function () {
 var $lzsc$temp = function ($0) {
 try {
 var $2 = global["$lzprofiler"];
@@ -57526,17 +57191,8 @@ $2.last = $3
 };
 var $1 = this.parent.container.width + 9;
 if ($1 !== this["width"] || !this.inited) {
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_width"]) : this["$lzc$set_width"] instanceof Function) {
-this["$lzc$set_width"]($1)
-} else {
-this["width"] = $1;
-var $lzsc$j0ja68 = this["onwidth"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$j0ja68) : $lzsc$j0ja68 instanceof LzEvent) {
-if ($lzsc$j0ja68.ready) {
-$lzsc$j0ja68.sendEvent($1)
-}}}}}}}
+this.setAttribute("width", $1)
+}}
 finally {
 var $2 = global["$lzprofiler"];
 if ($2) {
@@ -57551,7 +57207,7 @@ $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "width='${...}'";
 return $lzsc$temp
-})(), "$ii6lnt8", (function () {
+})(), "$8l2c5b", (function () {
 var $lzsc$temp = function () {
 try {
 var $0 = global["$lzprofiler"];
@@ -57587,7 +57243,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "width dependencies";
 return $lzsc$temp
-})(), "$ii6lnt9", (function () {
+})(), "$8l2c5c", (function () {
 var $lzsc$temp = function ($0) {
 try {
 var $2 = global["$lzprofiler"];
@@ -57603,17 +57259,8 @@ $2.last = $3
 };
 var $1 = this.parent.container.height + 9;
 if ($1 !== this["height"] || !this.inited) {
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_height"]) : this["$lzc$set_height"] instanceof Function) {
-this["$lzc$set_height"]($1)
-} else {
-this["height"] = $1;
-var $lzsc$romnp9 = this["onheight"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$romnp9) : $lzsc$romnp9 instanceof LzEvent) {
-if ($lzsc$romnp9.ready) {
-$lzsc$romnp9.sendEvent($1)
-}}}}}}}
+this.setAttribute("height", $1)
+}}
 finally {
 var $2 = global["$lzprofiler"];
 if ($2) {
@@ -57628,7 +57275,7 @@ $2.last = $3
 }}};
 $lzsc$temp["displayName"] = "height='${...}'";
 return $lzsc$temp
-})(), "$ii6lnta", (function () {
+})(), "$8l2c5d", (function () {
 var $lzsc$temp = function () {
 try {
 var $0 = global["$lzprofiler"];
@@ -57664,7 +57311,7 @@ $0.last = $1
 }}};
 $lzsc$temp["displayName"] = "height dependencies";
 return $lzsc$temp
-})(), "$ii6lntb", (function () {
+})(), "$8l2c5e", (function () {
 var $lzsc$temp = function ($0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -57754,7 +57401,7 @@ context_$a_$0.globalAlpha = 0.2;
 context_$a_$0.fill();
 context_$a_$0.beginPath();
 LzKernelUtils.rect(context_$a_$0, 0, 0, this.width - 3, this.height - 3, this.classroot.inset);
-context_$a_$0.globalAlpha = 0.9;
+context_$a_$0.globalAlpha = lz.embed.browser.OS == "Mac" ? 0.97 : 1;
 context_$a_$0.fillStyle = "#FFFFFF";
 context_$a_$0.fill();
 context_$a_$0.globalAlpha = 1;
@@ -57816,7 +57463,40 @@ $4.last = $5
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzView, ["displayName", "<anonymous extends='view'>", "attributes", new LzInheritedHash(LzView.attributes)]);
-Class.make("$lzc$class_lzcontextmenu", ["inset", void 0, "__drawnitems", void 0, "__overnow", void 0, "$ii6lnt6", (function () {
+(function () {
+var $lzsc$temp = function ($0) {
+try {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",calls:" + $3
+} else {
+$1.calls[$2] = $3
+};
+$1.last = $2
+};
+with ($0) with ($0.prototype) {
+{
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {aaactive: "boolean", aadescription: "string", aaname: "string", aasilent: "boolean", aatabindex: "number", align: "string", backgroundrepeat: "string", bgcolor: "color", cachebitmap: "boolean", capabilities: "string", clickable: "boolean", clickregion: "string", clip: "boolean", contextmenu: "string", cornerradius: "string", cursor: "token", fgcolor: "color", focusable: "boolean", focustrap: "boolean", font: "string", fontsize: "size", fontstyle: "string", frame: "numberExpression", framesloadratio: "number", hasdirectionallayout: "boolean", hassetheight: "boolean", hassetwidth: "boolean", height: "size", layout: "css", loadratio: "number", mask: "string", opacity: "number", pixellock: "boolean", playing: "boolean", resource: "string", resourceheight: "number", resourcewidth: "number", rotation: "numberExpression", shadowangle: "number", shadowblurradius: "number", shadowcolor: "color", shadowdistance: "number", showhandcursor: "boolean", source: "string", stretches: "string", subviews: "string", tintcolor: "string", totalframes: "number", unstretchedheight: "number", unstretchedwidth: "number", usegetbounds: "boolean", valign: "string", visibility: "string", visible: "boolean", width: "size", x: "numberExpression", xoffset: "numberExpression", xscale: "numberExpression", y: "numberExpression", yoffset: "numberExpression", yscale: "numberExpression"}}}, $lzc$class_8l2c5f.attributes)
+}}}
+finally {
+var $1 = global["$lzprofiler"];
+if ($1) {
+var $2 = "" + (new Date().getTime() - $1.base);
+var $3 = arguments.callee["displayName"];
+if ($1.last == $2) {
+$1.events[$2] += ",returns:" + $3
+} else {
+$1.returns[$2] = $3
+};
+$1.last = $2
+}}};
+$lzsc$temp["displayName"] = "contextmenu.lzx#134/1";
+return $lzsc$temp
+})()($lzc$class_8l2c5f);
+Class.make("$lzc$class_lzcontextmenu", ["inset", void 0, "__drawnitems", void 0, "__overnow", void 0, "$8l2c59", (function () {
 var $lzsc$temp = function ($0) {
 try {
 var $1 = global["$lzprofiler"];
@@ -57902,41 +57582,9 @@ var pos_$a_$0 = canvas.getMouse();
 if (pos_$a_$0.x > canvas.width - this.width) pos_$a_$0.x = canvas.width - this.width;
 if (pos_$a_$0.y > canvas.height - this.height) pos_$a_$0.y = canvas.height - this.height;
 this.bringToFront();
-{
-var $lzsc$9fij47 = pos_$a_$0.x;
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_x"]) : this["$lzc$set_x"] instanceof Function) {
-this["$lzc$set_x"]($lzsc$9fij47)
-} else {
-this["x"] = $lzsc$9fij47;
-var $lzsc$vlx0hw = this["onx"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$vlx0hw) : $lzsc$vlx0hw instanceof LzEvent) {
-if ($lzsc$vlx0hw.ready) {
-$lzsc$vlx0hw.sendEvent($lzsc$9fij47)
-}}}}};
-{
-var $lzsc$b9wn48 = pos_$a_$0.y;
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_y"]) : this["$lzc$set_y"] instanceof Function) {
-this["$lzc$set_y"]($lzsc$b9wn48)
-} else {
-this["y"] = $lzsc$b9wn48;
-var $lzsc$jxbo0b = this["ony"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$jxbo0b) : $lzsc$jxbo0b instanceof LzEvent) {
-if ($lzsc$jxbo0b.ready) {
-$lzsc$jxbo0b.sendEvent($lzsc$b9wn48)
-}}}}};
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_visible"]) : this["$lzc$set_visible"] instanceof Function) {
-this["$lzc$set_visible"](true)
-} else {
-this["visible"] = true;
-var $lzsc$pvffbk = this["onvisible"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$pvffbk) : $lzsc$pvffbk instanceof LzEvent) {
-if ($lzsc$pvffbk.ready) {
-$lzsc$pvffbk.sendEvent(true)
-}}}}};
+this.setAttribute("x", pos_$a_$0.x);
+this.setAttribute("y", pos_$a_$0.y);
+this.setAttribute("visible", true);
 this.__globalmousedel.register(lz.GlobalMouse, "onmousedown")
 }
 finally {
@@ -57970,17 +57618,8 @@ $1.last = $2
 this.__globalmousedel.unregisterAll();
 var cmenu_$a_$0 = LzMouseKernel.__showncontextmenu;
 if (cmenu_$a_$0) cmenu_$a_$0.__hide();
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_visible"]) : this["$lzc$set_visible"] instanceof Function) {
-this["$lzc$set_visible"](false)
-} else {
-this["visible"] = false;
-var $lzsc$lpink0 = this["onvisible"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$lpink0) : $lzsc$lpink0 instanceof LzEvent) {
-if ($lzsc$lpink0.ready) {
-$lzsc$lpink0.sendEvent(false)
-}}}}}}
+this.setAttribute("visible", false)
+}
 finally {
 var $1 = global["$lzprofiler"];
 if ($1) {
@@ -58023,17 +57662,7 @@ var item_$g_$6 = newitems_$a_$0[i_$c_$2];
 var classref_$h_$7 = lz["lzcontextmenu" + item_$g_$6.type];
 if (classref_$h_$7) {
 var newview_$i_$8 = new classref_$h_$7(this, {data: item_$g_$6.offset, text: item_$g_$6.label});
-{
-if (!newview_$i_$8.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(newview_$i_$8["$lzc$set_y"]) : newview_$i_$8["$lzc$set_y"] instanceof Function) {
-newview_$i_$8["$lzc$set_y"](ypos_$f_$5)
-} else {
-newview_$i_$8["y"] = ypos_$f_$5;
-var $lzsc$52cmt6 = newview_$i_$8["ony"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$52cmt6) : $lzsc$52cmt6 instanceof LzEvent) {
-if ($lzsc$52cmt6.ready) {
-$lzsc$52cmt6.sendEvent(ypos_$f_$5)
-}}}}};
+newview_$i_$8.setAttribute("y", ypos_$f_$5);
 ypos_$f_$5 += newview_$i_$8.height
 }};
 this.items = newitems_$a_$0;
@@ -58192,7 +57821,7 @@ $4.last = $5
 }}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})()], LzView, ["tagname", "lzcontextmenu", "children", [{attrs: {$classrootdepth: 1, $delegates: ["oninit", "$ii6lntb", null, "onwidth", "__doredraw", null, "onheight", "__doredraw", null, "oncontext", "__doredraw", null, "onvisible", "__doredraw", null], height: new LzAlwaysExpr("height", "size", "$ii6lnt9", "$ii6lnta", null), name: "background", width: new LzAlwaysExpr("width", "size", "$ii6lnt7", "$ii6lnt8", null)}, "class": $lzc$class_ii6lntc}, {attrs: {$classrootdepth: 1, name: "container", x: 3, y: 3}, "class": LzView}, {attrs: "container", "class": $lzc$class_userClassPlacement}], "attributes", new LzInheritedHash(LzView.attributes)]);
+})()], LzView, ["tagname", "lzcontextmenu", "children", [{attrs: {$classrootdepth: 1, $delegates: ["oninit", "$8l2c5e", null, "onwidth", "__doredraw", null, "onheight", "__doredraw", null, "oncontext", "__doredraw", null, "onvisible", "__doredraw", null], height: new LzAlwaysExpr("$8l2c5c", "$8l2c5d", null), name: "background", width: new LzAlwaysExpr("$8l2c5a", "$8l2c5b", null)}, "class": $lzc$class_8l2c5f}, {attrs: {$CSSDescriptor: {}, $attributeDescriptor: {types: {aaactive: "boolean", aadescription: "string", aaname: "string", aasilent: "boolean", aatabindex: "number", align: "string", backgroundrepeat: "string", bgcolor: "color", cachebitmap: "boolean", capabilities: "string", clickable: "boolean", clickregion: "string", clip: "boolean", contextmenu: "string", cornerradius: "string", cursor: "token", fgcolor: "color", focusable: "boolean", focustrap: "boolean", font: "string", fontsize: "size", fontstyle: "string", frame: "numberExpression", framesloadratio: "number", hasdirectionallayout: "boolean", hassetheight: "boolean", hassetwidth: "boolean", height: "size", layout: "css", loadratio: "number", mask: "string", opacity: "number", pixellock: "boolean", playing: "boolean", resource: "string", resourceheight: "number", resourcewidth: "number", rotation: "numberExpression", shadowangle: "number", shadowblurradius: "number", shadowcolor: "color", shadowdistance: "number", showhandcursor: "boolean", source: "string", stretches: "string", subviews: "string", tintcolor: "string", totalframes: "number", unstretchedheight: "number", unstretchedwidth: "number", usegetbounds: "boolean", valign: "string", visibility: "string", visible: "boolean", width: "size", x: "numberExpression", xoffset: "numberExpression", xscale: "numberExpression", y: "numberExpression", yoffset: "numberExpression", yscale: "numberExpression"}}, $classrootdepth: 1, name: "container", x: 3, y: 3}, "class": LzView}, {attrs: "container", "class": $lzc$class_userClassPlacement}], "attributes", new LzInheritedHash(LzView.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 try {
@@ -58209,7 +57838,7 @@ $1.last = $2
 };
 with ($0) with ($0.prototype) {
 {
-LzNode.mergeAttributes({$delegates: ["oninit", "$ii6lnt6", null], __drawnitems: {}, __overnow: null, inset: 5, options: {ignorelayout: true}, visible: false}, $lzc$class_lzcontextmenu.attributes)
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {aaactive: "boolean", aadescription: "string", aaname: "string", aasilent: "boolean", aatabindex: "number", align: "string", backgroundrepeat: "string", bgcolor: "color", cachebitmap: "boolean", capabilities: "string", clickable: "boolean", clickregion: "string", clip: "boolean", contextmenu: "string", cornerradius: "string", cursor: "token", defaultplacement: "string", fgcolor: "color", focusable: "boolean", focustrap: "boolean", font: "string", fontsize: "size", fontstyle: "string", frame: "numberExpression", framesloadratio: "number", hasdirectionallayout: "boolean", hassetheight: "boolean", hassetwidth: "boolean", height: "size", inset: "number", layout: "css", loadratio: "number", mask: "string", opacity: "number", pixellock: "boolean", playing: "boolean", resource: "string", resourceheight: "number", resourcewidth: "number", rotation: "numberExpression", shadowangle: "number", shadowblurradius: "number", shadowcolor: "color", shadowdistance: "number", showhandcursor: "boolean", source: "string", stretches: "string", subviews: "string", tintcolor: "string", totalframes: "number", unstretchedheight: "number", unstretchedwidth: "number", usegetbounds: "boolean", valign: "string", visibility: "string", visible: "boolean", width: "size", x: "numberExpression", xoffset: "numberExpression", xscale: "numberExpression", y: "numberExpression", yoffset: "numberExpression", yscale: "numberExpression"}}, $delegates: ["oninit", "$8l2c59", null], __drawnitems: {}, __overnow: null, inset: 5, options: {ignorelayout: true}, visible: false}, $lzc$class_lzcontextmenu.attributes)
 }}}
 finally {
 var $1 = global["$lzprofiler"];

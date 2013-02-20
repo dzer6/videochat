@@ -1,5 +1,5 @@
 <!---
-      @copyright 2005-2009 Laszlo Systems, Inc. All Rights Reserved.
+      @copyright 2005-2011 Laszlo Systems, Inc. All Rights Reserved.
                  Use is subject to license terms.
       @topic Incubator
       @subtopic Components
@@ -60,12 +60,12 @@
             <inputtext name="actual" width="100%" text="$once{classroot.defaulttext}">
                 <handler name="onfocus">
                     Debug.write("focused..");
-                    this.setSelection(0,this.getText().length);
+                    this.setSelection(0,this.text.length);
                 </handler>
                 
                 <handler name="onclick">
                     Debug.write("clicked..");
-                    this.setSelection(0,this.getText().length);
+                    this.setSelection(0,this.text.length);
                 </handler>
                 
                 <attribute name="actuallyTyped" value="" type="string" />
@@ -99,7 +99,7 @@
                     } else if(k== 9 || k == 13) {
                         // tab or enter should complete it...
                          classroot.myFloatBox.setAttribute("visible",false);
-                         var theInput = this.getText();
+                         var theInput = this.text;
                          this.setAttribute("actuallyTyped",theInput);
                          this.setSelection(theInput.length,theInput.length);
                     }
@@ -111,7 +111,7 @@
                     
                         classroot.myFloatBox.setAttribute("visible",true);
                         
-                        var theInput = this.getText();
+                        var theInput = this.text;
                         this.setAttribute("actuallyTyped",theInput);
                         Debug.write( "What was actually typed... "+this.actuallyTyped);
                         

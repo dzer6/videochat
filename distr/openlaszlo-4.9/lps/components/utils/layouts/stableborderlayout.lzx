@@ -96,7 +96,7 @@
 </canvas>]]>
               </example>
               <para>Note that there is no spacing parameter allowed in <classname>stableborderlayout</classname>. Also, notice that each parent 
-              view has a width of 200. In the top view this information is ignored, which is why yellow can be seen extending past the last subview. 
+              view has a width of 200. In the top view this information is preserved, which is why yellow can be seen extending past the last subview. 
               In the bottom view no yellow can be seen because it is covered up by the blue and red views. Finally, take note that the second red 
               view has no width assigned to it, because <classname>stableborderlayout</classname> controls that value directly.</para>
         </text>

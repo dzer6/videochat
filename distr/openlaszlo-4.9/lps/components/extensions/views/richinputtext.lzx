@@ -175,7 +175,7 @@ class $lzc$class_richinputtext extends LzInputText {
   //-----------------------------------------------------------------------------
   // Returns the string represented in the text field.
   // Substitutes \r's with \n's because otherwise flash loses line breaks on
-  // setText(getText()).
+  // setText(text).
   //
   // @return: The string in the text field
   //-----------------------------------------------------------------------------
@@ -358,7 +358,7 @@ class $lzc$class_richinputtext extends LzInputText {
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2008 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                          -->

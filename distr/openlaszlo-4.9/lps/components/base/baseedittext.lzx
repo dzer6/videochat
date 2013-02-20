@@ -50,7 +50,7 @@
         <handler name="ontext" method="doOnText" />
         <method name="doOnText" args="ignore">
             if (! this.ignorecallup) {
-                parent.doSetValue(this.getText(),false,true);
+                parent.doSetValue(this.text,false,true);
             }
             this.ignorecallup = false;
         </method>
@@ -340,7 +340,7 @@
               @return String: the text string in input box. -->
         <method name="getValue">
             if (this._initcomplete) {
-                return (this._field ? this._field.getText() : "");
+                return (this._field ? this._field.text : "");
             } else {
                 return this._initialtext;
             }
@@ -351,7 +351,7 @@
               @return String: the string displayed. -->
         <method name="getText">
             if (this._initcomplete) {
-                return  (this._field ? this._field.getText() : "");
+                return  (this._field ? this._field.text : "");
             } else {
                 return this._initialtext;
             }
@@ -377,7 +377,7 @@
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2006-2010 Laszlo Systems, Inc. All Rights Reserved.               *
+* Copyright 2006-2011 Laszlo Systems, Inc. All Rights Reserved.               *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                          -->

@@ -1,5 +1,5 @@
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2007, 2008 Laszlo Systems, Inc.  All Rights Reserved.                   *
+* Copyright 2007-2008, 2011 Laszlo Systems, Inc.  All Rights Reserved.        *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <library>
@@ -103,11 +103,11 @@
             </handler>
         </button>
         <doc>
-            <tag name="shortdesc"><text>A swf8-specific class for uploading multiple files to a server</text></tag>
+            <tag name="shortdesc"><text>A swf-specific class for uploading multiple files to a server</text></tag>
             <text>
                 <p>
-                A class for uploading a single file using the Flash 8 file upload api. This only works with
-                the swf8 runtime, that is, with lzr=swf8.
+                A class for uploading a single file using the Flash file upload api. This only works with
+                the swf runtime, that is, with lzr=swf10.
                 </p>
                 <p>
                 Using this class requires a service to which to upload. A sample upload jsp is provided,
@@ -115,11 +115,11 @@
                 <a href="http://www.servlets.com/cos/index.html">servlets.com</a> into $TOMCAT_HOME/common/lib
                 and rename lps/components/incubator/uploader/example/upload.jsp.txt to upload.jsp.
                 Restart tomcat, so it will see the new jar, then visit
-                <a href="http://localhost:8080/legals/lps/components/incubator/uploader/example/test-multiplefileupload.lzx?lzr=swf8">
-                    http://localhost:8080/legals/lps/components/incubator/uploader/example/test-multiplefileupload.lzx?lzr=swf8</a>
+                <a href="http://localhost:8080/legals/lps/components/incubator/uploader/example/test-multiplefileupload.lzx?lzr=swf10">
+                    http://localhost:8080/legals/lps/components/incubator/uploader/example/test-multiplefileupload.lzx?lzr=swf10</a>
                 </p>
                 <p>(The terms of the servlets.com license forbid it from being redistributed 
-                with Open Laszlo.)
+                with OpenLaszlo.)
                 </p>                
                 <p>
                     To upload a single file, see <tagname>fileupload</tagname>.

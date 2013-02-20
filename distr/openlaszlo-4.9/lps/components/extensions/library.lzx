@@ -3,8 +3,8 @@
       @subtopic General
   -->
 <library>
-  <include href="views/richinputtext.lzx" />
-  <include href="views/LzTextFormat.lzx" />
+<!--  <include href="views/richinputtext.lzx" />-->
+<!--  <include href="views/LzTextFormat.lzx" />-->
   <include href="html.lzx" />
   <include href="rte.lzx" />
   <include href="drawview.lzx" />

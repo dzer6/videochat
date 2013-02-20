@@ -3,18 +3,20 @@ var $dhtml = true;
 var $as3 = false;
 var $as2 = false;
 var $swf10 = false;
+var $swf11 = false;
 var $j2me = false;
 var $debug = true;
 var $js1 = true;
 var $backtrace = false;
 var $swf7 = false;
 var $swf9 = false;
-var $swf8 = false;
 var $svg = false;
+var $swf8 = false;
+var $mobile = false;
 var $profile = false;
 var _Copyright = "Portions of this file are copyright (c) 2001-2010 by Laszlo Systems, Inc.  All rights reserved.";
 var Debug = {backtraceStack: [], uncaughtBacktraceStack: null, FUNCTION_NAME: "displayName", FUNCTION_FILENAME: "_dbg_filename", FUNCTION_LINENO: "_dbg_lineno"};
-Debug.backtraceStack.maxDepth = 100;
+Debug.backtraceStack.maxDepth = 250;
 var $modules = {};
 $modules.runtime = this;
 $modules.lz = $modules.runtime;
@@ -34,14 +36,14 @@ return __ES3Globals[name_$0]
 };
 return void 0
 };
-$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#95/19";
+$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#109/19";
 return $lzsc$temp
 })();
 var $lzsc$issubclassof = (function () {
 var $lzsc$temp = function (one_$0, other_$1) {
 return one_$0 === other_$1 || (other_$1["$lzsc$isa"] ? other_$1.$lzsc$isa(one_$0.prototype) : one_$0.prototype instanceof other_$1)
 };
-$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#148/26";
+$lzsc$temp["displayName"] = "$lzc$issubclassof";
 return $lzsc$temp
 })();
 var $lzc$validateReferenceDependencies = (function () {
@@ -56,7 +58,7 @@ dependencies_$0[j_$4 + 1] = Debug.formatToString("Unable to create dependency on
 }};
 return dependencies_$0
 };
-$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#177/44";
+$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#187/44";
 return $lzsc$temp
 })();
 var $lzc$getFunctionDependencies = (function () {
@@ -81,7 +83,7 @@ Debug.warn("Error: %w computing dependencies of %.64w.%s", e_$7, context_$2, fnn
 }};
 return deps_$5
 };
-$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#194/36";
+$lzsc$temp["displayName"] = "compiler/LzRuntime.lzs#204/36";
 return $lzsc$temp
 })();
 var Instance = (function () {
@@ -182,13 +184,18 @@ var $lzsc$temp = function () {};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })());
+(function () {
+var $lzsc$temp = function () {
 if (lz.embed.browser.isSafari && lz.embed.browser.version >= "531.21" && lz.embed.browser.version < "533.16") {
 Instance.prototype.addProperty("$lzsc$safarikludge", (function () {
 var $lzsc$temp = function () {};
 $lzsc$temp["displayName"] = "$lzsc$safarikludge";
 return $lzsc$temp
 })())
-};
+}};
+$lzsc$temp["displayName"] = "compiler/Class.lzs#205/5";
+return $lzsc$temp
+})()();
 var Class = {prototype: new Instance(), addProperty: Instance.prototype.addProperty, addProperties: (function () {
 var $lzsc$temp = function (plist_$0) {
 this.prototype.addProperties(plist_$0)
@@ -234,7 +241,7 @@ superclass = mixinsAndSuperclass_$1;
 mixinsAndSuperclass_$1 = null
 } else {
 if (mixinsAndSuperclass_$1) {
-Debug.error("Class.make: invalid superclass %w", mixinsAndSuperclass_$1)
+Debug.error("Class.make: invalid superclass %w for class %s", mixinsAndSuperclass_$1, classname_$0)
 }};
 if (!superclass) {
 superclass = Instance
@@ -420,6 +427,85 @@ Mixin.addStaticProperty._dbg_typename = "Mixin static function";
 Mixin.addProperty._dbg_typename = "Mixin static function";
 Mixin.makeInterstitial._dbg_typename = "Mixin static function";
 Mixin.make._dbg_typename = "Mixin static function";
+Class.make("LzCache", ["size", void 0, "slots", void 0, "destroyable", void 0, "capacity", void 0, "curslot", void 0, "data", null, "$lzsc$initialize", (function () {
+var $lzsc$temp = function (size_$0, slots_$1, destroyable_$2) {
+switch (arguments.length) {
+case 0:
+size_$0 = 16;;case 1:
+slots_$1 = 2;;case 2:
+destroyable_$2 = true
+};
+this.size = size_$0;
+this.slots = slots_$1;
+this.destroyable = destroyable_$2;
+this.clear()
+};
+$lzsc$temp["displayName"] = "$lzsc$initialize";
+return $lzsc$temp
+})(), "clear", (function () {
+var $lzsc$temp = function () {
+this.curslot = 0;
+this.capacity = 0;
+var sl_$0 = this.slots;
+if (!this.data) this.data = new Array(sl_$0);
+var d_$1 = this.data;
+for (var i_$2 = 0;i_$2 < sl_$0;++i_$2) {
+if (this.destroyable) {
+var dobj_$3 = d_$1[i_$2];
+for (var k_$4 in dobj_$3) {
+dobj_$3[k_$4].destroy()
+}};
+d_$1[i_$2] = {}}};
+$lzsc$temp["displayName"] = "clear";
+return $lzsc$temp
+})(), "ensureSlot", (function () {
+var $lzsc$temp = function () {
+if (++this.capacity > this.size) {
+var nexts_$0 = (this.curslot + 1) % this.slots;
+var d_$1 = this.data;
+if (this.destroyable) {
+var dobj_$2 = d_$1[nexts_$0];
+for (var k_$3 in dobj_$2) {
+dobj_$2[k_$3].destroy()
+}};
+d_$1[nexts_$0] = {};
+this.curslot = nexts_$0;
+this.capacity = 1
+}};
+$lzsc$temp["displayName"] = "ensureSlot";
+return $lzsc$temp
+})(), "put", (function () {
+var $lzsc$temp = function (key_$0, val_$1) {
+var old_$2 = this.get(key_$0);
+if (old_$2 === void 0) {
+this.ensureSlot()
+};
+this.data[this.curslot][key_$0] = val_$1;
+return old_$2
+};
+$lzsc$temp["displayName"] = "put";
+return $lzsc$temp
+})(), "get", (function () {
+var $lzsc$temp = function (key_$0) {
+var sl_$1 = this.slots;
+var cs_$2 = this.curslot;
+var d_$3 = this.data;
+for (var i_$4 = 0;i_$4 < sl_$1;++i_$4) {
+var idx_$5 = (cs_$2 + i_$4) % sl_$1;
+var val_$6 = d_$3[idx_$5][key_$0];
+if (val_$6 !== void 0) {
+if (idx_$5 != cs_$2) {
+delete d_$3[idx_$5][key_$0];
+this.ensureSlot();
+d_$3[this.curslot][key_$0] = val_$6
+};
+return val_$6
+}};
+return void 0
+};
+$lzsc$temp["displayName"] = "get";
+return $lzsc$temp
+})()]);
 Class.make("LzDebugConsole", ["saved_msgs", void 0, "canvasConsoleWindow", (function () {
 var $lzsc$temp = function () {
 return null
@@ -440,7 +526,12 @@ str_$1 = "" + msg_$0
 };
 if (navigator.platform == "rhino") {
 try {
-print(str_$1);
+var s_$3 = lz.Type.presentTypeValue("cdata", str_$1, null, null);
+if (s_$3.charAt(s_$3.length - 1) == "\n") {
+print(s_$3.substring(0, s_$3.length - 1))
+} else {
+print(s_$3)
+};
 return
 }
 catch (e_$2) {}};
@@ -474,7 +565,7 @@ switch (arguments.length) {
 case 2:
 attrs_$2 = null
 };
-return undefined
+return rep_$0
 };
 $lzsc$temp["displayName"] = "makeObjectLink";
 return $lzsc$temp
@@ -520,6 +611,12 @@ Debug.displayResult(val_$2)
 Debug.warn("Unable to evaluate %s", expr_$0)
 }};
 $lzsc$temp["displayName"] = "doEval";
+return $lzsc$temp
+})(), "contextMenuItems", (function () {
+var $lzsc$temp = function (menu_$0, target_$1) {
+return null
+};
+$lzsc$temp["displayName"] = "contextMenuItems";
 return $lzsc$temp
 })()]);
 (function () {
@@ -577,32 +674,33 @@ return $lzsc$temp
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#196/1";
+$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#219/1";
 return $lzsc$temp
 })()(LzBootstrapDebugConsole);
 Class.make("LzBootstrapDebugLogger", ["log", (function () {
 var $lzsc$temp = function (msg_$0) {
-if (("console" in global) && typeof console.log == "function") {
-var fn_$1 = "log";
+if (("console" in global) && typeof global.console.log == "function") {
+var console_$1 = global.console;
+var fn_$2 = "log";
 try {
 if (msg_$0 instanceof LzError) {
-fn_$1 = "error"
+fn_$2 = "error"
 } else if (msg_$0 instanceof LzWarning) {
-fn_$1 = "warn"
+fn_$2 = "warn"
 } else if (msg_$0 instanceof LzInfo) {
-fn_$1 = "info"
+fn_$2 = "info"
 } else if (msg_$0 instanceof LzDebug) {
-fn_$1 = "debug"
+fn_$2 = "debug"
 };
-if (typeof console[fn_$1] != "function") {
-fn_$1 = "log"
+if (typeof console_$1[fn_$2] != "function") {
+fn_$2 = "log"
 };
-if (console[fn_$1].length == 0 && (msg_$0 instanceof LzMessage || msg_$0 instanceof LzSourceMessage)) {
-console[fn_$1].apply(console, msg_$0.toArray());
+if (console_$1[fn_$2].length == 0 && (msg_$0 instanceof LzMessage || msg_$0 instanceof LzSourceMessage)) {
+console_$1[fn_$2].apply(console_$1, msg_$0.toArray());
 return
 }}
-catch (e_$2) {};
-console[fn_$1](msg_$0.toString())
+catch (e_$3) {};
+console_$1[fn_$2](msg_$0.toString())
 }};
 $lzsc$temp["displayName"] = "log";
 return $lzsc$temp
@@ -610,7 +708,7 @@ return $lzsc$temp
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#261/1";
+$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#283/1";
 return $lzsc$temp
 })()(LzBootstrapDebugLogger);
 Class.make("LzBootstrapDebugService", ["FUNCTION_NAME", "displayName", "FUNCTION_FILENAME", "_dbg_filename", "FUNCTION_LINENO", "_dbg_lineno", "backtraceStack", [], "uncaughtBacktraceStack", null, "log_all_writes", false, "logger", void 0, "console", void 0, "window", void 0, "environment", {}, "$lzsc$initialize", (function () {
@@ -674,6 +772,12 @@ this.console.addText(msg_$0)
 };
 $lzsc$temp["displayName"] = "__write";
 return $lzsc$temp
+})(), "contextMenuItems", (function () {
+var $lzsc$temp = function (menu_$0, target_$1) {
+return this.console.contextMenuItems(menu_$0, target_$1)
+};
+$lzsc$temp["displayName"] = "contextMenuItems";
+return $lzsc$temp
 })(), "debug", (function () {
 var $lzsc$temp = function () {
 var args_$0 = Array.prototype.slice.call(arguments, 0);
@@ -704,7 +808,9 @@ $lzsc$temp["displayName"] = "error";
 return $lzsc$temp
 })(), "deprecated", (function () {
 var $lzsc$temp = function (obj_$0, method_$1, replacement_$2) {
-Debug.info("%w.%=s is deprecated.  Use %w.%=s instead", obj_$0, method_$1, Debug.methodName(obj_$0, method_$1), obj_$0, replacement_$2, Debug.methodName(obj_$0, replacement_$2))
+var methodstr_$3 = (Function["$lzsc$isa"] ? Function.$lzsc$isa(method_$1) : method_$1 instanceof Function) ? Debug.methodName(obj_$0, method_$1) : method_$1;
+var replacementstr_$4 = (Function["$lzsc$isa"] ? Function.$lzsc$isa(replacement_$2) : replacement_$2 instanceof Function) ? Debug.methodName(obj_$0, replacement_$2) : replacement_$2;
+Debug.info("%w.%=s is deprecated.  Use %w.%=s instead", obj_$0, method_$1, methodstr_$3, obj_$0, replacement_$2, replacementstr_$4)
 };
 $lzsc$temp["displayName"] = "deprecated";
 return $lzsc$temp
@@ -745,11 +851,11 @@ if (this === Debug) {
 return "#Debug"
 } else return null
 };
-$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#541/49";
+$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#585/49";
 return $lzsc$temp
 })()
 }}};
-$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#331/1";
+$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#354/1";
 return $lzsc$temp
 })()(LzBootstrapDebugService);
 var Debug = new LzBootstrapDebugService();
@@ -782,7 +888,7 @@ arguments.callee._dbg_recursive_call = true;
 $reportSourceWarning(filename_$0, lineNumber_$1, "undefined object does not have a property '" + propertyName_$2 + "'", true);
 arguments.callee._dbg_recursive_call = false
 }};
-$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#603/38";
+$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#647/38";
 return $lzsc$temp
 })();
 $reportUndefinedObjectProperty._dbg_recursive_call = false;
@@ -793,7 +899,7 @@ arguments.callee._dbg_recursive_call = true;
 $reportSourceWarning(filename_$0, lineNumber_$1, "reference to undefined property '" + propertyName_$2 + "'", false);
 arguments.callee._dbg_recursive_call = false
 }};
-$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#614/32";
+$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#658/32";
 return $lzsc$temp
 })();
 $reportUndefinedProperty._dbg_recursive_call = false;
@@ -804,7 +910,7 @@ arguments.callee._dbg_recursive_call = true;
 $reportSourceWarning(filename_$0, lineNumber_$1, "reference to undefined variable '" + variableName_$2 + "'", true);
 arguments.callee._dbg_recursive_call = false
 }};
-$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#625/32";
+$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#669/32";
 return $lzsc$temp
 })();
 $reportUndefinedVariable._dbg_recursive_call = false;
@@ -822,7 +928,7 @@ if (typeof name_$2 == "string") msg_$4 += " '" + name_$2 + "'"
 $reportSourceWarning(filename_$0, lineNumber_$1, msg_$4, true);
 arguments.callee._dbg_recursive_call = false
 }};
-$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#636/26";
+$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#680/26";
 return $lzsc$temp
 })();
 $reportNotFunction._dbg_recursive_call = false;
@@ -840,7 +946,7 @@ if (typeof name_$2 == "string") msg_$4 += " '" + name_$2 + "'"
 $reportSourceWarning(filename_$0, lineNumber_$1, msg_$4, true);
 arguments.callee._dbg_recursive_call = false
 }};
-$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#656/30";
+$lzsc$temp["displayName"] = "compiler/LzBootstrapDebugService.lzs#700/30";
 return $lzsc$temp
 })();
 $reportUndefinedMethod._dbg_recursive_call = false;
@@ -856,10 +962,11 @@ this.appendInternal("" + message_$0, message_$0)
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })(), "appendInternal", (function () {
-var $lzsc$temp = function (str_$0, obj_$1) {
+var $lzsc$temp = function (str_$0, obj_$1, attrs_$2) {
 switch (arguments.length) {
 case 1:
-obj_$1 = null
+obj_$1 = null;;case 2:
+attrs_$2 = null
 };
 this.message += str_$0;
 this.length = this.message.length
@@ -998,15 +1105,16 @@ return LzMessage.xmlEscape(this)
 $lzsc$temp["displayName"] = "compiler/LzMessage.lzs#177/27";
 return $lzsc$temp
 })();
-Class.make("LzFormatCallback", ["callback", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (callback_$0) {
-this.callback = callback_$0
+Class.make("LzFormatCallback", ["callback", void 0, "argument", void 0, "$lzsc$initialize", (function () {
+var $lzsc$temp = function (callback_$0, argument_$1) {
+this.callback = callback_$0;
+this.argument = argument_$1
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })(), "call", (function () {
 var $lzsc$temp = function () {
-return this.callback.call(null)
+return this.callback.call(this.argument)
 };
 $lzsc$temp["displayName"] = "call";
 return $lzsc$temp
@@ -1144,10 +1252,33 @@ return quote_$4 + output_$8 + quote_$4
 $lzsc$temp["displayName"] = "stringEscape";
 return $lzsc$temp
 })(), "formatToString", (function () {
-var $lzsc$temp = function (control) {
-var getarg_$7;
-var consumearg_$8;
-getarg_$7 = (function () {
+var $lzsc$temp = function (control_$0) {
+switch (arguments.length) {
+case 0:
+control_$0 = ""
+};
+var args_$1 = Array.prototype.slice.call(arguments, 1);
+var out_$2 = new LzMessage();
+if (!(typeof control_$0 == "string" || (String["$lzsc$isa"] ? String.$lzsc$isa(control_$0) : control_$0 instanceof String)) || args_$1.length > 0 != control_$0.indexOf("%") >= 0) {
+args_$1 = [control_$0].concat(args_$1);
+for (var i_$3 = 0, al_$4 = args_$1.length;i_$3 < al_$4;i_$3++) {
+var arg_$5 = args_$1[i_$3];
+var sep_$6 = i_$3 == al_$4 - 1 ? "\n" : " ";
+out_$2.append(arg_$5);
+out_$2.appendInternal(sep_$6)
+};
+return out_$2
+};
+this.formatToMessage.apply(this, [out_$2, control_$0].concat(args_$1));
+return out_$2
+};
+$lzsc$temp["displayName"] = "formatToString";
+return $lzsc$temp
+})(), "formatToMessage", (function () {
+var $lzsc$temp = function (out_$0, control) {
+var getarg_$4;
+var consumearg_$5;
+getarg_$4 = (function () {
 var $lzsc$temp = function (i_$0) {
 if (i_$0 >= al) {
 return null
@@ -1157,7 +1288,7 @@ return args[i_$0]
 $lzsc$temp["displayName"] = "getarg";
 return $lzsc$temp
 })();
-consumearg_$8 = (function () {
+consumearg_$5 = (function () {
 var $lzsc$temp = function (i_$0) {
 if (i_$0 >= al) {
 Debug.warn("%#0.48w: insufficient arguments", control)
@@ -1166,57 +1297,46 @@ $lzsc$temp["displayName"] = "consumearg";
 return $lzsc$temp
 })();
 switch (arguments.length) {
-case 0:
+case 1:
 control = ""
 };
-var args = Array.prototype.slice.call(arguments, 1);
+var args = Array.prototype.slice.call(arguments, 2);
 var al = args.length;
-if (!(typeof control == "string" || (String["$lzsc$isa"] ? String.$lzsc$isa(control) : control instanceof String)) || al > 0 != control.indexOf("%") >= 0) {
-args = [control].concat(args);
-al++;
-var out_$0 = new LzMessage();
-for (var i_$1 = 0;i_$1 < al;i_$1++) {
-var arg_$2 = args[i_$1];
-var sep_$3 = i_$1 == al - 1 ? "\n" : " ";
-out_$0.append(arg_$2);
-out_$0.appendInternal(sep_$3)
-};
-return out_$0
-};
-var ctrl_$4 = "" + control;
-var argno_$5 = 0;
-var maxarg_$6 = 0;
-var base_$9 = 0, limit_$a = ctrl_$4.length;
-var start_$b = 0, end_$c = 0;
-var out_$0 = new LzMessage();
-while (start_$b < limit_$a) {
-end_$c = ctrl_$4.indexOf("%");
-if (end_$c == -1) {
-out_$0.append(ctrl_$4.substring(start_$b, limit_$a));
+var ctrl_$1 = "" + control;
+var argno_$2 = 0;
+var maxarg_$3 = 0;
+var base_$6 = 0, limit_$7 = ctrl_$1.length;
+var start_$8 = 0, end_$9 = 0;
+while (start_$8 < limit_$7) {
+end_$9 = ctrl_$1.indexOf("%");
+if (end_$9 == -1) {
+out_$0.append(ctrl_$1.substring(start_$8, limit_$7));
 break
 };
-out_$0.append(ctrl_$4.substring(start_$b, end_$c));
-base_$9 = end_$c;
-start_$b = end_$c + 1;
-end_$c = end_$c + 2;
-var sign_$d = "-";
-var pad_$e = " ";
-var alternate_$f = false;
-var length_$g = "";
-var precision_$h = null;
-var directive_$i = null;
-var object_$j = null;
-while (start_$b < limit_$a && directive_$i == null) {
-var char_$k = ctrl_$4.substring(start_$b, end_$c);
-start_$b = end_$c++;
-switch (char_$k) {
+out_$0.append(ctrl_$1.substring(start_$8, end_$9));
+base_$6 = end_$9;
+start_$8 = end_$9 + 1;
+end_$9 = end_$9 + 2;
+var sign_$a = "-";
+var pad_$b = " ";
+var alternate_$c = false;
+var length_$d = "";
+var precision_$e = null;
+var directive_$f = null;
+var object_$g = null;
+var callback_$h = null;
+var attrs_$i = null;
+while (start_$8 < limit_$7 && directive_$f == null) {
+var char_$j = ctrl_$1.substring(start_$8, end_$9);
+start_$8 = end_$9++;
+switch (char_$j) {
 case "-":
-length_$g = char_$k;break;;case "+":
+length_$d = char_$j;break;;case "+":
 case " ":
-sign_$d = char_$k;break;;case "#":
-alternate_$f = true;break;;case "0":
-if (length_$g === "" && precision_$h === null) {
-pad_$e = char_$k;
+sign_$a = char_$j;break;;case "#":
+alternate_$c = true;break;;case "0":
+if (length_$d === "" && precision_$e === null) {
+pad_$b = char_$j;
 break
 };case "1":
 case "2":
@@ -1227,61 +1347,72 @@ case "6":
 case "7":
 case "8":
 case "9":
-if (precision_$h !== null) {
-precision_$h += char_$k
+if (precision_$e !== null) {
+precision_$e += char_$j
 } else {
-length_$g += char_$k
+length_$d += char_$j
 }break;;case "$":
-argno_$5 = length_$g - 1;length_$g = "";break;;case "*":
-if (precision_$h !== null) {
-precision_$h = getarg_$7(argno_$5);
-consumearg_$8(argno_$5++)
+argno_$2 = length_$d - 1;length_$d = "";break;;case "*":
+if (precision_$e !== null) {
+precision_$e = getarg_$4(argno_$2);
+consumearg_$5(argno_$2++)
 } else {
-length_$g = getarg_$7(argno_$5);
-consumearg_$8(argno_$5++)
+length_$d = getarg_$4(argno_$2);
+consumearg_$5(argno_$2++)
 }break;;case ".":
-precision_$h = "";break;;case "h":
+precision_$e = "";break;;case "h":
 case "l":
 break;;case "=":
-object_$j = getarg_$7(argno_$5);consumearg_$8(argno_$5++);break;;case "^":
-object_$j = new LzFormatCallback(getarg_$7(argno_$5));consumearg_$8(argno_$5++);break;;default:
-directive_$i = char_$k;break
+object_$g = getarg_$4(argno_$2);consumearg_$5(argno_$2++);break;;case "^":
+callback_$h = getarg_$4(argno_$2);consumearg_$5(argno_$2++);break;;case "{":
+var close_$k = ctrl_$1.indexOf("}", start_$8);if (close_$k > start_$8) {
+if (attrs_$i == null) {
+attrs_$i = {}};
+attrs_$i.style = ctrl_$1.substring(start_$8, close_$k);
+start_$8 = close_$k + 1;
+end_$9 = start_$8 + 1;
+break
+}directive_$f = char_$j;break;;default:
+directive_$f = char_$j;break
 }};
-var value_$l = getarg_$7(argno_$5);
-if (object_$j == null) {
-object_$j = value_$l
+var value_$l = getarg_$4(argno_$2);
+if (object_$g == null) {
+object_$g = value_$l
+};
+if (callback_$h != null) {
+object_$g = new LzFormatCallback(callback_$h, object_$g)
 };
 var decimals_$m = null;
 var force_$n = false;
-if (precision_$h !== null) {
-decimals_$m = 1 * precision_$h
+if (precision_$e !== null) {
+decimals_$m = 1 * precision_$e
 } else {
-switch (directive_$i) {
+switch (directive_$f) {
 case "F":
 case "E":
 case "G":
 case "f":
 case "e":
 case "g":
-decimals_$m = 6;force_$n = alternate_$f;break;;case "O":
+decimals_$m = 6;force_$n = alternate_$c;break;;case "O":
 case "o":
-if (alternate_$f && value_$l != 0) {
+if (alternate_$c && value_$l != 0) {
 out_$0.append("0")
 }break;;case "X":
 case "x":
-if (alternate_$f && value_$l != 0) {
-out_$0.append("0" + directive_$i)
+if (alternate_$c && value_$l != 0) {
+out_$0.append("0" + directive_$f)
 }break
 }};
 var radix_$o = 10;
-switch (directive_$i) {
+switch (directive_$f) {
 case "o":
 case "O":
 radix_$o = 8;break;;case "x":
 case "X":
 radix_$o = 16;break
 };
-switch (directive_$i) {
+switch (directive_$f) {
 case "U":
 case "O":
 case "X":
@@ -1290,7 +1421,7 @@ case "o":
 case "x":
 if (value_$l < 0) {
 value_$l = -value_$l;
-var wid_$p = Math.abs(parseInt(length_$g, 10));
+var wid_$p = Math.abs(parseInt(length_$d, 10));
 if (isNaN(wid_$p)) {
 wid_$p = this.toNumber(value_$l).toString(radix_$o).length
 };
@@ -1298,7 +1429,7 @@ var max_$q = Math.pow(radix_$o, wid_$p);
 value_$l = max_$q - value_$l
 }break
 };
-switch (directive_$i) {
+switch (directive_$f) {
 case "D":
 case "U":
 case "I":
@@ -1307,30 +1438,33 @@ case "X":
 case "F":
 case "E":
 case "G":
-value_$l = this.toNumber(value_$l);out_$0.appendInternal(this.pad(value_$l, length_$g, decimals_$m, pad_$e, sign_$d, radix_$o, force_$n).toUpperCase(), object_$j);consumearg_$8(argno_$5++);break;;case "c":
+value_$l = this.toNumber(value_$l);out_$0.appendInternal(this.pad(value_$l, length_$d, decimals_$m, pad_$b, sign_$a, radix_$o, force_$n).toUpperCase(), object_$g, attrs_$i);consumearg_$5(argno_$2++);break;;case "c":
 value_$l = String.fromCharCode(value_$l);;case "w":
 {
 var width_$r = decimals_$m || Debug.printLength;
-out_$0.appendInternal(this.pad(Debug.__String(value_$l, true, width_$r, alternate_$f), length_$g, null, pad_$e, sign_$d, radix_$o, force_$n), object_$j);
-consumearg_$8(argno_$5++);
+out_$0.appendInternal(this.pad(Debug.__String(value_$l, true, width_$r, alternate_$c), length_$d, null, pad_$b, sign_$a, radix_$o, force_$n), object_$g, attrs_$i);
+consumearg_$5(argno_$2++);
 break
 };case "s":
-var str_$s;if (Function["$lzsc$isa"] ? Function.$lzsc$isa(value_$l) : value_$l instanceof Function) {
+var str_$s = null;if (Function["$lzsc$isa"] ? Function.$lzsc$isa(value_$l) : value_$l instanceof Function) {
 str_$s = Debug.functionName(value_$l, false);
 if (!str_$s) {
 str_$s = "function () {\u2026}"
 }} else if (typeof value_$l == "number") {
 str_$s = Number(value_$l).toString(radix_$o)
-} else if (directive_$i == "w" && typeof value_$l == "string") {
+} else if (directive_$f == "w") {
+if (typeof value_$l == "string") {
 str_$s = this.stringEscape(value_$l, true)
-} else {
+} else if (LzNode["$lzsc$isa"] ? LzNode.$lzsc$isa(value_$l) : value_$l instanceof LzNode) {
+str_$s = value_$l.nodePath(value_$l, decimals_$m)
+}}if (!str_$s) {
 str_$s = "" + value_$l
-}if (alternate_$f) {
+}if (alternate_$c) {
 var width_$r = decimals_$m || Debug.printLength;
 if (width_$r) {
 str_$s = this.abbreviate(str_$s, width_$r);
 decimals_$m = null
-}}out_$0.appendInternal(this.pad(str_$s, length_$g, decimals_$m, pad_$e, sign_$d, radix_$o, force_$n), object_$j);consumearg_$8(argno_$5++);break;;case "d":
+}}out_$0.appendInternal(this.pad(str_$s, length_$d, decimals_$m, pad_$b, sign_$a, radix_$o, force_$n), object_$g, attrs_$i);consumearg_$5(argno_$2++);break;;case "d":
 case "u":
 case "i":
 case "o":
@@ -1338,28 +1472,28 @@ case "x":
 case "f":
 case "e":
 case "g":
-value_$l = this.toNumber(value_$l);out_$0.appendInternal(this.pad(value_$l, length_$g, decimals_$m, pad_$e, sign_$d, radix_$o, force_$n), object_$j);consumearg_$8(argno_$5++);break;;case "%":
+value_$l = this.toNumber(value_$l);out_$0.appendInternal(this.pad(value_$l, length_$d, decimals_$m, pad_$b, sign_$a, radix_$o, force_$n), object_$g, attrs_$i);consumearg_$5(argno_$2++);break;;case "%":
 out_$0.append("%");break;;default:
-out_$0.append(ctrl_$4.substring(base_$9, start_$b));break
+out_$0.append(ctrl_$1.substring(base_$6, start_$8));break
 };
-ctrl_$4 = ctrl_$4.substring(start_$b, limit_$a);
-base_$9 = 0, limit_$a = ctrl_$4.length;
-start_$b = 0, end_$c = 0;
-if (argno_$5 > maxarg_$6) {
-maxarg_$6 = argno_$5
+ctrl_$1 = ctrl_$1.substring(start_$8, limit_$7);
+base_$6 = 0, limit_$7 = ctrl_$1.length;
+start_$8 = 0, end_$9 = 0;
+if (argno_$2 > maxarg_$3) {
+maxarg_$3 = argno_$2
 }};
-if (maxarg_$6 < al) {
+if (maxarg_$3 < al) {
 Debug.warn("%#0.48w: excess arguments", control);
 out_$0.appendInternal(" ");
-for (;maxarg_$6 < al;maxarg_$6++) {
-var arg_$2 = getarg_$7(maxarg_$6);
-var sep_$3 = maxarg_$6 == al - 1 ? "\n" : " ";
-out_$0.append(arg_$2);
-out_$0.appendInternal(sep_$3)
+for (;maxarg_$3 < al;maxarg_$3++) {
+var arg_$t = getarg_$4(maxarg_$3);
+var sep_$u = maxarg_$3 == al - 1 ? "\n" : " ";
+out_$0.append(arg_$t);
+out_$0.appendInternal(sep_$u)
 }};
 return out_$0
 };
-$lzsc$temp["displayName"] = "formatToString";
+$lzsc$temp["displayName"] = "formatToMessage";
 return $lzsc$temp
 })()], null, ["singleEscapeCharacters", (function () {
 var $lzsc$temp = function (np_$0) {
@@ -1371,22 +1505,39 @@ result_$1[ch_$5.charCodeAt(0)] = rep_$4
 };
 return result_$1
 };
-$lzsc$temp["displayName"] = "compiler/LzFormatter.lzs#269/40";
+$lzsc$temp["displayName"] = "compiler/LzFormatter.lzs#281/40";
 return $lzsc$temp
 })()(["\\b", "\b", "\\t", "\t", "\\n", "\n", "\\v", String.fromCharCode(11), "\\f", "\f", "\\r", "\r", '\\"', '"', "\\'", "'", "\\\\", "\\"])]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "compiler/LzFormatter.lzs#118/1";
+$lzsc$temp["displayName"] = "compiler/LzFormatter.lzs#130/1";
 return $lzsc$temp
 })()(LzFormatter);
-Class.make("LzDebugMessage", ["objects", [], "$lzsc$initialize", (function () {
+Class.make("LzMessageAnnotation", ["start", void 0, "end", void 0, "id", void 0, "attrs", void 0, "$lzsc$initialize", (function () {
+var $lzsc$temp = function (start_$0, end_$1, id_$2, attrs_$3) {
+this.start = start_$0;
+this.end = end_$1;
+this.id = id_$2;
+this.attrs = attrs_$3
+};
+$lzsc$temp["displayName"] = "$lzsc$initialize";
+return $lzsc$temp
+})(), "adjusted", (function () {
+var $lzsc$temp = function (increment_$0) {
+if (increment_$0 == 0) return this;
+return new LzMessageAnnotation(this.start + increment_$0, this.end + increment_$0, this.id, this.attrs)
+};
+$lzsc$temp["displayName"] = "adjusted";
+return $lzsc$temp
+})()]);
+Class.make("LzDebugMessage", ["annotations", [], "$lzsc$initialize", (function () {
 var $lzsc$temp = function (message_$0) {
 switch (arguments.length) {
 case 0:
 message_$0 = null
 };
-this.objects = [];
+this.annotations = [];
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, message_$0)
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
@@ -1394,7 +1545,7 @@ return $lzsc$temp
 })(), "toLowerCase", (function () {
 var $lzsc$temp = function () {
 var msg_$0 = new LzMessage(this.message.toLowerCase());
-msg_$0.objects = this.objects.concat();
+msg_$0.annotations = this.annotations.concat();
 return msg_$0
 };
 $lzsc$temp["displayName"] = "toLowerCase";
@@ -1402,7 +1553,7 @@ return $lzsc$temp
 })(), "toUpperCase", (function () {
 var $lzsc$temp = function () {
 var msg_$0 = new LzMessage(this.message.toUpperCase());
-msg_$0.objects = this.objects.concat();
+msg_$0.annotations = this.annotations.concat();
 return msg_$0
 };
 $lzsc$temp["displayName"] = "toUpperCase";
@@ -1411,14 +1562,15 @@ return $lzsc$temp
 var $lzsc$temp = function () {
 var args_$0 = Array.prototype.slice.call(arguments, 0);
 var msg_$1 = new LzMessage(this.message.concat.apply(this.message, args_$0));
+msg_$1.annotations = this.annotations.concat();
 var offset_$2 = this.message.length;
 for (var i_$3 = 0;i_$3 < args_$0.length;i_$3++) {
 var arg_$4 = args_$0[i_$3];
 if (LzDebugMessage["$lzsc$isa"] ? LzDebugMessage.$lzsc$isa(arg_$4) : arg_$4 instanceof LzDebugMessage) {
-var ao_$5 = arg_$4.objects;
-for (var j_$6 = 0;j_$6 < ao_$5.length;j_$6++) {
-var od_$7 = ao_$5[j_$6];
-msg_$1.objects.push({id: od_$7.id, start: od_$7.start + offset_$2, end: od_$7.end + offset_$2})
+var ao_$5 = arg_$4.annotations;
+for (var j_$6 = 0, l_$7 = ao_$5.length;j_$6 < l_$7;j_$6++) {
+var od_$8 = ao_$5[j_$6];
+msg_$1.annotations.push(od_$8.adjusted(offset_$2))
 }};
 offset_$2 += String(arg_$4).length
 };
@@ -1455,32 +1607,34 @@ return this.message.substring.apply(this.message, args_$0)
 $lzsc$temp["displayName"] = "substring";
 return $lzsc$temp
 })(), "appendInternal", (function () {
-var $lzsc$temp = function (str_$0, obj_$1) {
+var $lzsc$temp = function (str_$0, obj_$1, attrs_$2) {
 switch (arguments.length) {
 case 1:
-obj_$1 = null
+obj_$1 = null;;case 2:
+attrs_$2 = null
 };
-if (obj_$1 != null) {
-var id_$2 = Debug.IDForObject(obj_$1)
-} else {
-var id_$2 = null
-};
-if (id_$2 == null) {
-this.message += str_$0
-} else if (LzDebugMessage["$lzsc$isa"] ? LzDebugMessage.$lzsc$isa(obj_$1) : obj_$1 instanceof LzDebugMessage) {
+if (str_$0 == null && (LzDebugMessage["$lzsc$isa"] ? LzDebugMessage.$lzsc$isa(obj_$1) : obj_$1 instanceof LzDebugMessage)) {
 var arg_$3 = obj_$1;
 var offset_$4 = this.message.length;
 this.message += arg_$3.message;
-var ao_$5 = arg_$3.objects;
-for (var j_$6 = 0;j_$6 < ao_$5.length;j_$6++) {
-var od_$7 = ao_$5[j_$6];
-this.objects.push({id: od_$7.id, start: od_$7.start + offset_$4, end: od_$7.end + offset_$4})
+var ao_$5 = arg_$3.annotations;
+for (var j_$6 = 0, l_$7 = ao_$5.length;j_$6 < l_$7;j_$6++) {
+var od_$8 = ao_$5[j_$6];
+this.annotations.push(od_$8.adjusted(offset_$4))
 }} else {
-var start_$8 = this.message.length;
-this.message += str_$0;
-var end_$9 = this.message.length;
-this.objects.push({id: id_$2, start: start_$8, end: end_$9})
+if (obj_$1 != null) {
+var id_$9 = Debug.IDForObject(obj_$1)
+} else {
+var id_$9 = null
 };
+if (id_$9 == null && attrs_$2 == null) {
+this.message += str_$0
+} else {
+var start_$a = this.message.length;
+this.message += str_$0;
+var end_$b = this.message.length;
+this.annotations.push(new LzMessageAnnotation(start_$a, end_$b, id_$9, attrs_$2))
+}};
 this.length = this.message.length
 };
 $lzsc$temp["displayName"] = "appendInternal";
@@ -1491,7 +1645,9 @@ var args_$0 = Array.prototype.slice.call(arguments, 0);
 var len_$1 = args_$0.length;
 for (var i_$2 = 0;i_$2 < len_$1;i_$2++) {
 var arg_$3 = args_$0[i_$2];
-if (!((String["$lzsc$isa"] ? String.$lzsc$isa(arg_$3) : arg_$3 instanceof String) && arg_$3["constructor"] === String) && ((Object["$lzsc$isa"] ? Object.$lzsc$isa(arg_$3) : arg_$3 instanceof Object) || Debug.isObjectLike(arg_$3) || Debug.IDForObject(arg_$3) != null)) {
+if (LzDebugMessage["$lzsc$isa"] ? LzDebugMessage.$lzsc$isa(arg_$3) : arg_$3 instanceof LzDebugMessage) {
+this.appendInternal(null, arg_$3)
+} else if (!((String["$lzsc$isa"] ? String.$lzsc$isa(arg_$3) : arg_$3 instanceof String) && arg_$3["constructor"] === String) && ((Object["$lzsc$isa"] ? Object.$lzsc$isa(arg_$3) : arg_$3 instanceof Object) || Debug.isObjectLike(arg_$3) || Debug.IDForObject(arg_$3) != null)) {
 var str_$4 = Debug.__String(arg_$3, true, Infinity, true);
 this.appendInternal(str_$4, arg_$3)
 } else {
@@ -1500,17 +1656,21 @@ this.appendInternal(String(arg_$3))
 $lzsc$temp["displayName"] = "append";
 return $lzsc$temp
 })(), "toArray", (function () {
-var $lzsc$temp = function (linkMaker_$0) {
+var $lzsc$temp = function (annotater_$0) {
 switch (arguments.length) {
 case 0:
-linkMaker_$0 = null
+annotater_$0 = null
 };
-if (linkMaker_$0 == null) {
-linkMaker_$0 = (function () {
-var $lzsc$temp = function (rep_$0, id_$1) {
-return Debug.ObjectForID(id_$1)
+if (annotater_$0 == null) {
+annotater_$0 = (function () {
+var $lzsc$temp = function (rep_$0, id_$1, attrs_$2) {
+switch (arguments.length) {
+case 2:
+attrs_$2 = null
 };
-$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#174/19";
+return id_$1 ? Debug.ObjectForID(id_$1) : rep_$0
+};
+$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#220/19";
 return $lzsc$temp
 })()
 };
@@ -1519,21 +1679,18 @@ var base_$2 = 0;
 var limit_$3 = msg_$1.length;
 var start_$4 = 0;
 var end_$5 = 0;
-var objs_$6 = this.objects;
-var id_$7;
-var array_$8 = [];
-var len_$9 = objs_$6.length;
-for (var i_$a = 0;i_$a < len_$9;i_$a++) {
-var annot_$b = objs_$6[i_$a];
-start_$4 = annot_$b.start;
-end_$5 = annot_$b.end;
-id_$7 = annot_$b.id;
-array_$8.push(msg_$1.substring(base_$2, start_$4).toHTML());
-array_$8.push(linkMaker_$0(msg_$1.substring(start_$4, end_$5).toHTML(), id_$7));
+var annotations_$6 = this.annotations;
+var array_$7 = [];
+for (var i_$8 = 0, len_$9 = annotations_$6.length;i_$8 < len_$9;i_$8++) {
+var annot_$a = annotations_$6[i_$8];
+start_$4 = annot_$a.start;
+end_$5 = annot_$a.end;
+array_$7.push(msg_$1.substring(base_$2, start_$4).toHTML());
+array_$7.push(annotater_$0(msg_$1.substring(start_$4, end_$5).toHTML(), annot_$a.id, annot_$a.attrs));
 base_$2 = end_$5
 };
-array_$8.push(msg_$1.substring(base_$2, limit_$3).toHTML());
-return array_$8
+array_$7.push(msg_$1.substring(base_$2, limit_$3).toHTML());
+return array_$7
 };
 $lzsc$temp["displayName"] = "toArray";
 return $lzsc$temp
@@ -1544,7 +1701,7 @@ var $lzsc$temp = function () {
 var args_$0 = Array.prototype.slice.call(arguments, 0);
 return Debug.makeObjectLink.apply(Debug, args_$0)
 };
-$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#204/25";
+$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#249/25";
 return $lzsc$temp
 })()).join(""))
 };
@@ -1554,7 +1711,7 @@ return $lzsc$temp
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#29/1";
+$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#58/1";
 return $lzsc$temp
 })()(LzDebugMessage);
 var LzMessage = LzDebugMessage;
@@ -1641,12 +1798,16 @@ return str_$1
 $lzsc$temp["displayName"] = "locationString";
 return $lzsc$temp
 })(), "toArray", (function () {
-var $lzsc$temp = function () {
-var array_$0 = [this.locationString(this["constructor"].type)];
-if (LzMessage["$lzsc$isa"] ? LzMessage.$lzsc$isa(this.message) : this.message instanceof LzMessage) {
-return array_$0.concat(this.message.toArray())
+var $lzsc$temp = function (annotater_$0) {
+switch (arguments.length) {
+case 0:
+annotater_$0 = null
 };
-return array_$0.concat("" + this.message)
+var array_$1 = [this.locationString(this["constructor"].type)];
+if (LzMessage["$lzsc$isa"] ? LzMessage.$lzsc$isa(this.message) : this.message instanceof LzMessage) {
+return array_$1.concat(this.message.toArray(annotater_$0))
+};
+return array_$1.concat("" + this.message)
 };
 $lzsc$temp["displayName"] = "toArray";
 return $lzsc$temp
@@ -1660,7 +1821,7 @@ return $lzsc$temp
 var $lzsc$temp = function () {
 return this.locationString("") + this.message
 };
-$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#413/19";
+$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#458/19";
 return $lzsc$temp
 })(), "toString", (function () {
 var $lzsc$temp = function () {
@@ -1699,6 +1860,38 @@ return new this(file_$0, line_$1, message_$5, node_$6)
 $lzsc$temp["displayName"] = "format";
 return $lzsc$temp
 })()]);
+(function () {
+var $lzsc$temp = function ($0) {
+with ($0) with ($0.prototype) {
+{
+LzSourceMessage.prototype._dbg_properties = (function () {
+var $lzsc$temp = function (names_$0, limit_$1) {
+var width_$2 = 0;
+if (this.backtrace) {
+names_$0.push("stack");
+width_$2 = this.backtrace._dbg_properties([], Infinity)
+};
+return width_$2
+};
+$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#490/49";
+return $lzsc$temp
+})();
+LzSourceMessage.prototype._dbg_description = (function () {
+var $lzsc$temp = function (key_$0, wid_$1, si_$2, indent_$3) {
+switch (arguments.length) {
+case 3:
+indent_$3 = ""
+};
+if (key_$0 == "stack") {
+return Debug.describeSlots(this.backtrace, wid_$1, si_$2, indent_$3)
+}};
+$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#503/48";
+return $lzsc$temp
+})()
+}}};
+$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#294/1";
+return $lzsc$temp
+})()(LzSourceMessage);
 Class.make("LzWarning", ["$lzsc$initialize", (function () {
 var $lzsc$temp = function (file_$0, line_$1, message_$2, node_$3) {
 switch (arguments.length) {
@@ -1723,6 +1916,23 @@ message_$2 = "";;case 3:
 node_$3 = null
 };
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, file_$0, line_$1, message_$2, node_$3);
+if (!Debug.lastError) {
+if (!Debug.greeting) {
+Debug.greeting = new LzMessage()
+};
+Debug.formatToMessage(Debug.greeting, "  To see more details about any particular error, you can inspect it by %=s on it.\n", this, "clicking");
+if (LzBacktrace["$lzsc$isa"] ? LzBacktrace.$lzsc$isa(this.backtrace) : this.backtrace instanceof LzBacktrace) {
+Debug.formatToMessage(Debug.greeting, "  To report a bug, use %^s to generate a full report for the last error inspected or reported.\n", (function () {
+var $lzsc$temp = function (ignore_$0) {
+Debug.echo("Debug.bugReport()");
+Debug.bugReport()
+};
+$lzsc$temp["displayName"] = "debugger/LzMessage.lzs#545/11";
+return $lzsc$temp
+})(), "Debug.bugReport()")
+} else {
+Debug.formatToMessage(Debug.greeting, "  To report a bug, select the Backtrace option and recompile.\n")
+}};
 Debug.lastError = this
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
@@ -1782,6 +1992,29 @@ return this
 };
 $lzsc$temp["displayName"] = "attachDebugConsole";
 return $lzsc$temp
+})(), "greeting", null, "canvasInitialized", (function () {
+var $lzsc$temp = function () {
+if (!lz.Browser.getInitArg("lzoptions")) {
+return
+};
+if (!this.atFreshLine) {
+this.freshLine();
+this.echo("")
+};
+this.echo("OpenLaszlo Interactive Debugger");
+if (this.greeting) {
+this.echo("");
+this.console.addText(this.greeting);
+this.greeting = null
+};
+this.freshLine();
+this.echo("");
+this.console.addText("  Right click for a menu of common operations.  Right click on any view in your application to inspect it.\n");
+this.echo("");
+this.freshPrompt()
+};
+$lzsc$temp["displayName"] = "canvasInitialized";
+return $lzsc$temp
 })(), "ensureVisible", (function () {
 var $lzsc$temp = function () {
 this.console.ensureVisible()
@@ -1803,7 +2036,8 @@ var $lzsc$temp = function () {
 if (!this.atPrompt) {
 this.freshLine();
 this.console.echo("lzx&gt; ", false);
-this.atPrompt = true
+this.atPrompt = true;
+this.atFreshLine = false
 }};
 $lzsc$temp["displayName"] = "freshPrompt";
 return $lzsc$temp
@@ -1894,13 +2128,18 @@ this.updateOutputState(msg_$0)
 };
 $lzsc$temp["displayName"] = "__write";
 return $lzsc$temp
+})(), "writeMessage", (function () {
+var $lzsc$temp = function (msg_$0) {
+this.freshLine();
+this.__write(msg_$0)
+};
+$lzsc$temp["displayName"] = "writeMessage";
+return $lzsc$temp
 })(), "write", (function () {
 var $lzsc$temp = function () {
 var any_$0 = Array.prototype.slice.call(arguments, 0);
-var msg_$1;
-msg_$1 = this.formatToString.apply(this, any_$0);
-this.freshLine();
-this.__write(msg_$1)
+var msg_$1 = this.formatToString.apply(this, any_$0);
+this.writeMessage(msg_$1)
 };
 $lzsc$temp["displayName"] = "write";
 return $lzsc$temp
@@ -1925,8 +2164,7 @@ var msg_$5 = xtor_$0["format"].apply(xtor_$0, [null, null, control_$1].concat(ar
 var mls_$6 = LzDebugService.messageLevels;
 var t_$7 = xtor_$0["type"];
 if ((t_$7 in mls_$6) ? mls_$6[t_$7] >= mls_$6[this.messageLevel] : true) {
-this.freshLine();
-this.__write(msg_$5)
+this.writeMessage(msg_$5)
 }}
 finally {
 sourceMessage_$3.level = level_$4
@@ -1966,12 +2204,33 @@ return $lzsc$temp
 })(), "inspect", (function () {
 var $lzsc$temp = function (obj_$0) {
 var msg_$1 = this.inspectInternal(obj_$0);
-this.freshLine();
-this.console.addHTMLText(msg_$1);
-this.updateOutputState(msg_$1);
+this.writeMessage(msg_$1);
 return obj_$0
 };
 $lzsc$temp["displayName"] = "inspect";
+return $lzsc$temp
+})(), "showSubviews", (function () {
+var $lzsc$temp = function (view_$0) {
+var msg_$1 = new LzMessage();
+var svs_$2 = view_$0.subviews;
+for (var i_$3 = 0, l_$4 = svs_$2.length;i_$3 < l_$4;i_$3++) {
+this.formatToMessage(msg_$1, "  %w", svs_$2[i_$3]);
+if (i_$3 < l_$4) {
+msg_$1.append("\n")
+}};
+this.writeMessage(msg_$1);
+return svs_$2
+};
+$lzsc$temp["displayName"] = "showSubviews";
+return $lzsc$temp
+})(), "showParent", (function () {
+var $lzsc$temp = function (view_$0) {
+var parent_$1 = view_$0.parent;
+var msg_$2 = this.formatToString("  %w", parent_$1);
+this.writeMessage(msg_$2);
+return parent_$1
+};
+$lzsc$temp["displayName"] = "showParent";
 return $lzsc$temp
 })(), "explainStyleBindings", (function () {
 var $lzsc$temp = function (node_$0, showInherited_$1) {
@@ -1979,53 +2238,120 @@ switch (arguments.length) {
 case 1:
 showInherited_$1 = false
 };
-var style_$2 = LzCSSStyle;
-var pc_$3 = style_$2.getPropertyCache(node_$0);
-var ppc_$4 = style_$2.getPropertyCache(node_$0.immediateparent);
-var rc_$5 = style_$2.getRulesCache(node_$0);
-var ps_$6 = [];
-var sp_$7 = node_$0.__LZCSSProp;
-if (sp_$7) {
-for (var a_$8 in sp_$7) {
-var p_$9 = sp_$7[a_$8];
-if (showInherited_$1 || pc_$3[p_$9] !== ppc_$4[p_$9]) {
-ps_$6.push(p_$9)
-}}};
-ps_$6.sort(this.caseInsensitiveOrdering);
-var rs_$a = [];
-for (var j_$b = 0, m_$c = rc_$5.length;j_$b < m_$c;j_$b++) {
-var r_$d = rc_$5[j_$b];
-var rp_$e = r_$d.properties;
-for (var i_$f = 0, l_$g = ps_$6.length;i_$f < l_$g;i_$f++) {
-var p_$9 = ps_$6[i_$f];
-if (p_$9 in rp_$e) {
-rs_$a.push(r_$d);
-break
-}}};
-var msg_$h = "";
-var vs_$i = [];
-for (var j_$b = 0, m_$c = rs_$a.length;j_$b < m_$c;j_$b++) {
-var r_$d = rs_$a[j_$b];
-var rp_$e = r_$d.properties;
-msg_$h += this.formatToString("/* @%s#%d (specificity %d, order %d) */\n", r_$d[Debug.FUNCTION_FILENAME], r_$d[Debug.FUNCTION_LINENO], r_$d.specificity, r_$d._lexorder).toHTML();
-msg_$h += this.formatToString("%w {\n", r_$d).toHTML();
-for (var i_$f = 0, l_$g = ps_$6.length;i_$f < l_$g;i_$f++) {
-var p_$9 = ps_$6[i_$f];
-if (p_$9 in rp_$e) {
-var x_$j = vs_$i[i_$f];
-msg_$h += this.formatToString("  %s<span style='color:#931391'>%s</span>: ", x_$j ? "<i style='text-decoration: line-through'>" : "", p_$9);
-msg_$h += this.formatToString("%w", rp_$e[p_$9]).toHTML();
-msg_$h += this.formatToString("%s;\n", x_$j ? "</i>" : "");
-vs_$i[i_$f] = true
-}};
-msg_$h += this.formatToString("}\n").toHTML()
+var ap_$2 = node_$0.$attributeDescriptor.properties;
+var at_$3 = node_$0.$attributeDescriptor.types;
+var ps_$4 = [];
+var pa_$5 = {};
+var pt_$6 = {};
+var vs_$7 = {};
+var ovs_$8 = new LzMessage("");
+if (ap_$2) {
+var pc_$9 = LzCSSStyle.getPropertyCache(node_$0);
+for (var a_$a in ap_$2) {
+var pv_$b = node_$0.presentAttribute(a_$a);
+var p_$c = ap_$2[a_$a];
+pa_$5[p_$c] = a_$a;
+pt_$6[p_$c] = at_$3 && at_$3[a_$a] || "expression";
+if (p_$c in pc_$9) {
+if (pv_$b != pc_$9[p_$c] && pv_$b != lz.Type.presentTypeValue(pt_$6[p_$c], lz.Type.acceptTypeValue(pt_$6[p_$c], pc_$9[p_$c], node_$0, p_$c), node_$0, p_$c)) {
+vs_$7[p_$c] = true;
+this.formatToMessage(ovs_$8, "  %{color: #931391}s: %w;\n", p_$c, $lzc$class_PresentationTypeValue.fromValue(pt_$6[p_$c], node_$0[a_$a], node_$0, a_$a))
 };
-this.freshLine();
-this.console.addHTMLText(msg_$h);
-this.updateOutputState(msg_$h);
+ps_$4.push(p_$c)
+}}};
+var msg_$d = new LzMessage("");
+if (ovs_$8.length != 0) {
+msg_$d.append("/* local attribute values */\n{\n");
+msg_$d.append(ovs_$8);
+msg_$d.append("}\n")
+};
+msg_$d.append(this.explainStyleBindingsInternal(node_$0, ps_$4, pa_$5, pt_$6, vs_$7, showInherited_$1));
+this.writeMessage(msg_$d);
 return node_$0
 };
 $lzsc$temp["displayName"] = "explainStyleBindings";
+return $lzsc$temp
+})(), "explainStyleBindingsInternal", (function () {
+var $lzsc$temp = function (node_$0, ps_$1, pa_$2, pt_$3, vs_$4, showInherited_$5, recursive_$6) {
+switch (arguments.length) {
+case 6:
+recursive_$6 = false
+};
+var style_$7 = LzCSSStyle;
+var rc_$8 = style_$7.getRulesCache(node_$0);
+var expanders_$9 = node_$0.$CSSDescriptor && node_$0.$CSSDescriptor.expanders;
+var rs_$a = [];
+var eps_$b = null;
+outer: for (var j_$c = 0, m_$d = rc_$8.length;j_$c < m_$d;j_$c++) {
+var r_$e = rc_$8[j_$c];
+if (r_$e.dynamic) {
+var p_$f = r_$e.parsed;
+if (!(Array["$lzsc$isa"] ? Array.$lzsc$isa(p_$f) : p_$f instanceof Array)) {
+p_$f = [p_$f]
+};
+if (!LzCSSStyle._compoundSelectorApplies(p_$f, node_$0, null, true)) {
+continue outer
+}};
+var rp_$g = r_$e.properties;
+for (var i_$h = 0, l_$i = ps_$1.length;i_$h < l_$i;i_$h++) {
+var p_$f = ps_$1[i_$h];
+if (p_$f in rp_$g) {
+rs_$a.push(r_$e);
+continue outer
+}};
+if (expanders_$9) {
+var applies_$j = false;
+for (var e_$k in expanders_$9) {
+if (e_$k in rp_$g) {
+var erp_$l = node_$0[expanders_$9[e_$k]](e_$k, rp_$g[e_$k]);
+for (var i_$h = 0, l_$i = ps_$1.length;i_$h < l_$i;i_$h++) {
+var p_$f = ps_$1[i_$h];
+if (p_$f in erp_$l) {
+applies_$j = true;
+if (!eps_$b) {
+eps_$b = {}};
+eps_$b[e_$k] = true
+}}}};
+if (applies_$j) {
+rs_$a.push(r_$e);
+continue outer
+}}};
+var msg_$m = new LzMessage("");
+var aps_$n = ps_$1.concat();
+for (var e_$k in eps_$b) {
+aps_$n.push(e_$k)
+};
+aps_$n.sort(this.caseInsensitiveOrdering);
+if (recursive_$6 && rs_$a.length > 0) {
+this.formatToMessage(msg_$m, "/* Inherited from %w */\n", node_$0)
+};
+for (var j_$c = 0, m_$d = rs_$a.length;j_$c < m_$d;j_$c++) {
+var r_$e = rs_$a[j_$c];
+var rp_$g = r_$e.properties;
+this.formatToMessage(msg_$m, "/* @%s#%d (specificity %d, order %d) */\n", r_$e[Debug.FUNCTION_FILENAME], r_$e[Debug.FUNCTION_LINENO], r_$e.specificity, r_$e._lexorder);
+this.formatToMessage(msg_$m, "%w {\n", r_$e);
+for (var i_$h = 0, l_$i = aps_$n.length;i_$h < l_$i;i_$h++) {
+var p_$f = aps_$n[i_$h];
+if (p_$f in rp_$g) {
+var x_$o = vs_$4[p_$f];
+this.formatToMessage(msg_$m, x_$o ? "  %{color: #931391}s: %{text-decoration: line-through; font-style: italic}w;\n" : "  %{color: #931391}s: %w\n", p_$f, $lzc$class_PresentationTypeValue.fromPresentation(pt_$3[p_$f], rp_$g[p_$f], node_$0, pa_$2[p_$f]));
+vs_$4[p_$f] = rp_$g[p_$f] === LzCSSStyleClass.INHERIT ? false : true
+}};
+msg_$m.append("}\n")
+};
+if (showInherited_$5 && node_$0.immediateparent && node_$0 !== node_$0.immediateparent) {
+var left_$p = [];
+for (var i_$h = 0, l_$i = ps_$1.length;i_$h < l_$i;i_$h++) {
+var p_$f = ps_$1[i_$h];
+if (!vs_$4[p_$f]) {
+left_$p.push(p_$f)
+}};
+if (left_$p.length > 0) {
+msg_$m.append(this.explainStyleBindingsInternal(node_$0.immediateparent, left_$p, pa_$2, pt_$3, {}, true, true))
+}};
+return msg_$m
+};
+$lzsc$temp["displayName"] = "explainStyleBindingsInternal";
 return $lzsc$temp
 })(), "objseq", 0, "id_to_object_table", [], "IDForObject", (function () {
 var $lzsc$temp = function (obj_$0, force_$1) {
@@ -2189,7 +2515,7 @@ this.printLength = opl_$8
 }};
 if (this.isStringLike(debug_name_$6)) {
 if (debug_name_$6.charAt(0) == "#") {
-isreadable_$5 = true
+isreadable_$5 = canvas[debug_name_$6.substring(1)] === thing
 };
 s_$7 = this.stringEscape(debug_name_$6)
 } else if (t_$4 == "null" || t_$4 == "number" || t_$4 == "boolean") {
@@ -2223,12 +2549,10 @@ var u_$0 = thing.toString();
 if (typeof u_$0 != "undefined" && u_$0 != "undefined") {
 return u_$0
 }}
-catch (e_$1) {
-return ""
-}};
-$lzsc$temp["displayName"] = "debugger/LzDebug.lzs#1071/24";
+catch (e_$1) {}};
+$lzsc$temp["displayName"] = "debugger/LzDebug.lzs#1196/22";
 return $lzsc$temp
-})()())) {
+})()()) != null) {
 
 } else {
 var names_$c = [];
@@ -2342,13 +2666,13 @@ this.printLength = origPrintLength_$5;
 this.printDepth = origPrintDepth_$6;
 this.printDetectCircular = origPrintDetectCircular_$7
 }};
-if ((isreadable_$a || !readable_$3) && s_$9 && s_$9.length < limit_$2) {
+if ((isreadable_$a || !readable_$3) && s_$9 != null && s_$9.length < limit_$2) {
 return s_$9
 };
 var r_$e = "\xAB";
 r_$e += this.__typeof(thing_$0);
 var room_$f = limit_$2 - r_$e.length - 4;
-if (readable_$3 && (!isreadable_$a || s_$9 && s_$9.length >= room_$f) && id_$b === null) {
+if ((readable_$3 && !isreadable_$a || s_$9 && s_$9.length >= room_$f) && id_$b === null) {
 id_$b = this.IDForObject(thing_$0, true)
 };
 if (readable_$3 && id_$b !== null) {
@@ -2384,106 +2708,167 @@ var esc_$6 = true;
 var pl_$7 = this.inspectPrintLength;
 var pr_$8 = true
 };
-this.inspectContext = obj_$0;
-var id_$9 = this.IDForObject(obj_$0);
-if (isobj_$5 && id_$9 !== null) {
-var pdc_$a = this.printDetectCircular = [];
-var d_$b = this.__StringDescription(obj_$0, true, pl_$7, true, 0);
-pdc_$a[id_$9] = d_$b.readable ? d_$b.description : true
-};
-var name_$c = LzMessage.xmlEscape(this.__String(obj_$0, esc_$6, pl_$7, pr_$8, 0));
+var name_$9 = this.__String(obj_$0, esc_$6, pl_$7, pr_$8, 1);
 if (!isobj_$5) {
-return name_$c
+return name_$9
 };
-var names_$d = [];
-var indices_$e = this.isArrayLike(obj_$0) && !this.isStringLike(obj_$0) ? [] : null;
-this.objectOwnProperties(obj_$0, names_$d, indices_$e, Infinity, si_$2);
-names_$d.sort(this.caseInsensitiveOrdering);
-if (indices_$e) {
-indices_$e.sort(this.numericOrdering)
+this.inspectContext = obj_$0;
+var id_$a = this.IDForObject(obj_$0);
+if (isobj_$5 && id_$a !== null) {
+var pdc_$b = this.printDetectCircular = [];
+pdc_$b[id_$a] = this.__StringDescription(obj_$0, true, pl_$7, true, 0)
 };
-var description_$f = "";
-var nnames_$g = names_$d.length;
-var val_$h;
-var wid_$i = 0;
-if (("markGeneration" in this) && this.markGeneration > 0) {
-for (var i_$j = 0;i_$j < nnames_$g;i_$j++) {
-var keywidth_$k = names_$d[i_$j].length;
-if (keywidth_$k > wid_$i) {
-wid_$i = keywidth_$k
-}}};
-if (indices_$e) {
-var keywidth_$k = ("" + obj_$0.length).length;
-if (keywidth_$k > wid_$i) {
-wid_$i = keywidth_$k
-}};
-var last_$l;
-for (var i_$j = 0;i_$j < nnames_$g;i_$j++) {
-var key_$m = names_$d[i_$j];
-if (key_$m != last_$l) {
-last_$l = key_$m;
-val_$h = obj_$0[key_$m];
-if (si_$2 || !this.internalProperty(String(key_$m)) && !this.internalProperty(this.__typeof(val_$h))) {
-description_$f += "  " + this.computeSlotDescription(obj_$0, key_$m, val_$h, wid_$i) + "\n"
-}}};
-if (indices_$e) {
-for (var i_$j = 0;i_$j < indices_$e.length;i_$j++) {
-var key_$m = indices_$e[i_$j];
-val_$h = obj_$0[key_$m];
-description_$f += "  " + this.computeSlotDescription(obj_$0, key_$m, val_$h, wid_$i) + "\n"
-}};
-if (("markGeneration" in this) && this.markGeneration > 0) {
-var leaked_$n = this.annotation.leaked;
-if (this.isObjectLike(obj_$0) && (Function["$lzsc$isa"] ? Function.$lzsc$isa(obj_$0["hasOwnProperty"]) : obj_$0["hasOwnProperty"] instanceof Function) && obj_$0.hasOwnProperty(leaked_$n) && obj_$0[leaked_$n]) {
-name_$c += " (\xA3" + obj_$0[leaked_$n] + ")"
-}}}
-catch (e_$o) {
-try {
-description_$f = this.formatToString("Error: %0.24#s computing inspectInternal", e_$o).toHTML()
+var description_$c = this.describeSlots(obj_$0, 0, si_$2)
 }
-catch (e_$o) {
-description_$f = "Recursive error computing inspectInternal"
+catch (e_$d) {
+try {
+description_$c = this.formatToString("Error: %0.24#s computing inspectInternal", e_$d)
+}
+catch (e_$d) {
+description_$c = "Recursive error computing inspectInternal"
 }}
 finally {
 this.printDetectCircular = opdc_$4;
 this.inspectContext = octx_$3
 };
-if (description_$f != "") {
-description_$f = " {\n" + description_$f + "}"
+if (("markGeneration" in this) && this.markGeneration > 0) {
+var leaked_$e = this.annotation.leaked;
+if (this.isObjectLike(obj_$0) && (Function["$lzsc$isa"] ? Function.$lzsc$isa(obj_$0["hasOwnProperty"]) : obj_$0["hasOwnProperty"] instanceof Function) && obj_$0.hasOwnProperty(leaked_$e) && obj_$0[leaked_$e]) {
+name_$9 += " (\xA3" + obj_$0[leaked_$e] + ")"
+}};
+var result_$f = new LzMessage(name_$9);
+if (description_$c && description_$c.length) {
+result_$f.append(" {\n");
+result_$f.append(description_$c);
+result_$f.append("\n}")
 };
-return name_$c + description_$f
+return result_$f
 };
 $lzsc$temp["displayName"] = "inspectInternal";
 return $lzsc$temp
+})(), "describeSlots", (function () {
+var $lzsc$temp = function (obj_$0, width_$1, si_$2, indent_$3) {
+switch (arguments.length) {
+case 1:
+width_$1 = 0;;case 2:
+si_$2 = false;;case 3:
+indent_$3 = "  "
+};
+var names_$4 = [];
+var align_$5 = ("markGeneration" in this) && this.markGeneration > 0;
+var keywidth_$6 = 0;
+if (!si_$2 && ("_dbg_properties" in obj_$0) && (Function["$lzsc$isa"] ? Function.$lzsc$isa(obj_$0._dbg_properties) : obj_$0._dbg_properties instanceof Function) && (keywidth_$6 = obj_$0._dbg_properties(names_$4, Infinity))) {
+if (align_$5 && keywidth_$6 > width_$1) {
+width_$1 = keywidth_$6
+}} else {
+var indices_$7 = this.isArrayLike(obj_$0) && !this.isStringLike(obj_$0) ? [] : null;
+this.objectOwnProperties(obj_$0, names_$4, indices_$7, Infinity, si_$2);
+names_$4.sort(this.caseInsensitiveOrdering);
+if (indices_$7) {
+indices_$7.sort(this.numericOrdering)
+}};
+var description_$8 = new LzMessage("");
+var nnames_$9 = names_$4.length;
+var val_$a;
+if (align_$5) {
+for (var i_$b = 0;i_$b < nnames_$9;i_$b++) {
+keywidth_$6 = names_$4[i_$b].length;
+if (keywidth_$6 > width_$1) {
+width_$1 = keywidth_$6
+}}};
+if (indices_$7) {
+keywidth_$6 = ("" + obj_$0.length).length;
+if (keywidth_$6 > width_$1) {
+width_$1 = keywidth_$6
+}};
+var last_$c;
+for (var i_$b = 0;i_$b < nnames_$9;i_$b++) {
+var key_$d = names_$4[i_$b];
+if (key_$d != last_$c) {
+last_$c = key_$d;
+var desc_$e = this.computeSlotDescription(obj_$0, key_$d, width_$1, si_$2, indent_$3);
+if (desc_$e && desc_$e.length) {
+if (description_$8.length) {
+description_$8.append("\n")
+};
+description_$8.append(desc_$e)
+}}};
+if (indices_$7) {
+for (var i_$b = 0;i_$b < indices_$7.length;i_$b++) {
+var key_$d = indices_$7[i_$b];
+var desc_$e = this.computeSlotDescription(obj_$0, key_$d, width_$1, si_$2, indent_$3);
+if (desc_$e && desc_$e.length) {
+if (description_$8.length) {
+description_$8.append("\n")
+};
+description_$8.append(desc_$e)
+}}};
+return description_$8
+};
+$lzsc$temp["displayName"] = "describeSlots";
+return $lzsc$temp
 })(), "computeSlotDescription", (function () {
-var $lzsc$temp = function (obj_$0, key_$1, val_$2, wid_$3) {
-var r_$4 = key_$1 + ":";
-wid_$3++;
+var $lzsc$temp = function (obj_$0, key_$1, width_$2, si_$3, indent_$4) {
+switch (arguments.length) {
+case 4:
+indent_$4 = " "
+};
 try {
+if (("_dbg_description" in obj_$0) && (Function["$lzsc$isa"] ? Function.$lzsc$isa(obj_$0._dbg_description) : obj_$0._dbg_description instanceof Function)) {
+var desc_$5 = obj_$0._dbg_description(key_$1, width_$2, si_$3, indent_$4);
+if (desc_$5 && desc_$5.length) {
+return desc_$5
+}};
+var val_$6 = obj_$0[key_$1];
+if (!si_$3 && (val_$6 === void 0 || (Function["$lzsc$isa"] ? Function.$lzsc$isa(val_$6) : val_$6 instanceof Function) || this.internalProperty(String(key_$1)) || this.internalProperty(this.__typeof(val_$6)))) {
+return
+};
+var label_$7 = indent_$4 + key_$1 + ":";
+var propname_$8 = "";
+if (LzNode["$lzsc$isa"] ? LzNode.$lzsc$isa(obj_$0) : obj_$0 instanceof LzNode) {
+var types_$9 = obj_$0.$attributeDescriptor.types;
+if (types_$9 && types_$9.hasOwnProperty(key_$1)) {
+var attrprops_$a = obj_$0.$attributeDescriptor.properties;
+if (attrprops_$a) {
+var prop_$b = attrprops_$a[key_$1];
+if (prop_$b) {
+var propcache_$c = LzCSSStyle.getPropertyCache(obj_$0);
+if (propcache_$c.hasOwnProperty(prop_$b)) {
+var propval_$d = obj_$0.presentAttribute(key_$1);
+if (propval_$d == propcache_$c[prop_$b]) {
+propname_$8 = prop_$b
+}}}};
+var ptypename_$e = types_$9[key_$1];
+if (ptypename_$e) {
+label_$7 += ptypename_$e;
+val_$6 = $lzc$class_PresentationTypeValue.fromValue(ptypename_$e, val_$6, obj_$0, key_$1)
+}}};
 if (("markGeneration" in this) && this.markGeneration > 0) {
-var annotation_$5 = this.annotation;
-var leaked_$6 = annotation_$5.leaked;
-var why_$7 = annotation_$5.why;
-var wf_$8 = "        ";
-wid_$3 += wf_$8.length;
-if ((Object["$lzsc$isa"] ? Object.$lzsc$isa(val_$2) : val_$2 instanceof Object) && (Function["$lzsc$isa"] ? Function.$lzsc$isa(val_$2["hasOwnProperty"]) : val_$2["hasOwnProperty"] instanceof Function) && val_$2.hasOwnProperty(leaked_$6) && val_$2[leaked_$6] && (!obj_$0.hasOwnProperty(leaked_$6) || val_$2[why_$7].indexOf(obj_$0[why_$7]) == 0)) {
-r_$4 += this.pad(" (\xA3" + val_$2[leaked_$6] + ")", wf_$8.length)
+var annotation_$f = this.annotation;
+var leaked_$g = annotation_$f.leaked;
+var why_$h = annotation_$f.why;
+var wf_$i = "        ";
+width_$2 += wf_$i.length;
+if ((Object["$lzsc$isa"] ? Object.$lzsc$isa(val_$6) : val_$6 instanceof Object) && (Function["$lzsc$isa"] ? Function.$lzsc$isa(val_$6["hasOwnProperty"]) : val_$6["hasOwnProperty"] instanceof Function) && val_$6.hasOwnProperty(leaked_$g) && val_$6[leaked_$g] && (!obj_$0.hasOwnProperty(leaked_$g) || val_$6[why_$h].indexOf(obj_$0[why_$h]) == 0)) {
+label_$7 += this.pad(" (\xA3" + val_$6[leaked_$g] + ")", wf_$i.length, null, " ")
 } else {
-r_$4 += wf_$8
+label_$7 += wf_$i
 }};
-var ostr_$9 = LzMessage.xmlEscape(this.__String(val_$2, true, this.inspectPrintLength, false, this.inspectPrintDepth));
-var id_$a = this.IDForObject(val_$2);
-r_$4 = this.pad(r_$4, wid_$3);
-r_$4 += " " + this.console.makeObjectLink(ostr_$9, id_$a)
+var rep_$j = this.__String(val_$6, true, this.inspectPrintLength, false, this.inspectPrintDepth);
+var result_$k = this.formatToString("%*s ", width_$2, label_$7);
+if (propname_$8) {
+this.formatToMessage(result_$k, "%{color: #931391}s: ", propname_$8)
+};
+this.formatToMessage(result_$k, "%=s", val_$6, rep_$j)
 }
-catch (e_$b) {
+catch (e_$l) {
 try {
-r_$4 += this.formatToString(" Error: %0.24#s computing slot description", e_$b).toHTML()
+result_$k = this.formatToString("  %s: Error: %0.24#s computing description", key_$1, e_$l)
 }
-catch (e_$b) {
-r_$4 += " Error computing description"
+catch (e_$l) {
+result_$k = "Error computing description"
 }};
-return r_$4
+return result_$k
 };
 $lzsc$temp["displayName"] = "computeSlotDescription";
 return $lzsc$temp
@@ -2527,6 +2912,9 @@ $lzsc$temp["displayName"] = "numericOrdering";
 return $lzsc$temp
 })(), "internalProperty", (function () {
 var $lzsc$temp = function (str_$0) {
+if (str_$0 === "constructor") {
+return true
+};
 var ipp_$1 = LzDebugService.internalPropertyPrefixes;
 for (var key_$2 = ipp_$1.length - 1;key_$2 >= 0;key_$2--) {
 if (str_$0.indexOf(ipp_$1[key_$2]) == 0) {
@@ -2575,14 +2963,11 @@ error_$0 = null;;case 1:
 verbose = null
 };
 if (error_$0 == null) {
-try {
-with (this.environment) {
-if (LzSourceMessage["$lzsc$isa"] ? LzSourceMessage.$lzsc$isa(_) : _ instanceof LzSourceMessage) {
-error_$0 = _
+if (this.environment && (LzSourceMessage["$lzsc$isa"] ? LzSourceMessage.$lzsc$isa(this.environment._) : this.environment._ instanceof LzSourceMessage)) {
+error_$0 = Debug.environment._
 } else {
 error_$0 = this.lastError
-}}}
-catch (e_$1) {}};
+}};
 if (typeof error_$0 == "number") {
 error_$0 = this.ObjectForID(error_$0)
 };
@@ -2601,40 +2986,52 @@ var inspected = {};
 this.format("Please copy the following information into your bug report:\n\n---START OF BUG REPORT---\n\nLPS VERSION INFORMATION:\n");
 this.versionInfo();
 this.format("\nERROR MESSAGE: %s", error_$0);
-this.format("\nERROR BACKTRACE:");
-var that = this;
-error_$0.backtrace.map((function () {
-var $lzsc$temp = function (frame_$0) {
-that.format("\n%w", frame_$0);
-if (frame_$0.context) {
-that.format("\n  this: %#w", inspect(frame_$0.context, true))
+error_$0.toArray((function () {
+var $lzsc$temp = function (rep_$0, id_$1, attrs_$2) {
+switch (arguments.length) {
+case 2:
+attrs_$2 = null
 };
-var args_$1 = frame_$0.arguments;
-for (var i_$2 = 0;i_$2 < args_$1.length;i_$2 += 2) {
-that.format("\n  %s: %#w", args_$1[i_$2], inspect(args_$1[i_$2 + 1], verbose))
+if (id_$1 != null) {
+var obj_$3 = Debug.ObjectForID(id_$1);
+inspected[id_$1] = obj_$3
 }};
-$lzsc$temp["displayName"] = "debugger/LzDebug.lzs#1633/7";
+$lzsc$temp["displayName"] = "debugger/LzDebug.lzs#1818/19";
 return $lzsc$temp
 })());
-var keys_$2 = [];
-for (var id_$3 in inspected) {
-keys_$2.push(id_$3)
+this.format("\nERROR BACKTRACE:\n");
+error_$0.backtrace.map((function () {
+var $lzsc$temp = function (frame_$0) {
+if (frame_$0.context) {
+inspect(frame_$0.context, true)
 };
-if (keys_$2.length > 0) {
+var args_$1 = frame_$0.arglist;
+for (var i_$2 = 0;i_$2 < args_$1.length;i_$2 += 2) {
+inspect(args_$1[i_$2 + 1], verbose)
+}};
+$lzsc$temp["displayName"] = "debugger/LzDebug.lzs#1827/7";
+return $lzsc$temp
+})());
+this.format(this.describeSlots(error_$0.backtrace, 0, verbose));
+var keys_$1 = [];
+for (var id_$2 in inspected) {
+keys_$1.push(id_$2)
+};
+if (keys_$1.length > 0) {
 this.format("\n\nOBJECT DETAILS:");
-keys_$2.sort((function () {
+keys_$1.sort((function () {
 var $lzsc$temp = function (a_$0, b_$1) {
 var al_$2 = parseInt(a_$0);
 var bl_$3 = parseInt(b_$1);
 return (al_$2 > bl_$3 ? 1 : 0) - (al_$2 < bl_$3 ? 1 : 0)
 };
-$lzsc$temp["displayName"] = "debugger/LzDebug.lzs#1651/17";
+$lzsc$temp["displayName"] = "debugger/LzDebug.lzs#1845/17";
 return $lzsc$temp
 })());
-for (var i_$4 = 0;i_$4 < keys_$2.length;i_$4++) {
-var obj_$5 = inspected[keys_$2[i_$4]];
+for (var i_$3 = 0;i_$3 < keys_$1.length;i_$3++) {
+var obj_$4 = inspected[keys_$1[i_$3]];
 this.format("\n");
-this.inspect(obj_$5);
+this.inspect(obj_$4);
 this.format("\n")
 }};
 this.format("\n---END OF BUG REPORT---\n")
@@ -2695,7 +3092,7 @@ var $lzsc$temp = function () {
 var bs_$0 = this.backtraceStack;
 try {
 var old_$1 = bs_$0.maxDepth;
-bs_$0.maxDepth *= 1.25;
+bs_$0.maxDepth *= 1.5;
 throw new Error(Debug.error("Stack overflow: %s", Debug.backtrace(bs_$0.length - 50)))
 }
 finally {
@@ -2720,7 +3117,7 @@ return $lzsc$temp
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "debugger/LzDebug.lzs#107/1";
+$lzsc$temp["displayName"] = "debugger/LzDebug.lzs#89/1";
 return $lzsc$temp
 })()(LzDebugService);
 var Debug = new LzDebugService(Debug);
@@ -2765,7 +3162,7 @@ return $lzsc$temp
 var $lzsc$temp = function (expr_$0) {
 try {
 with (Debug.environment) {
-var value_$1 = window.eval("(" + expr_$0 + ")")
+var value_$1 = eval("(" + expr_$0 + ")")
 };
 Debug.displayResult(value_$1)
 }
@@ -2776,7 +3173,7 @@ return
 };
 try {
 with (Debug.environment) {
-var value_$1 = window.eval(expr_$0)
+var value_$1 = eval(expr_$0)
 };
 Debug.displayResult(value_$1)
 }
@@ -2791,11 +3188,19 @@ switch (arguments.length) {
 case 2:
 attrs_$2 = null
 };
-var type_$3 = attrs_$2 && attrs_$2["type"] ? attrs_$2.type : "INSPECT";
+var type_$3 = attrs_$2 && attrs_$2["type"] ? ' class="' + attrs_$2.type + '"' : ' class="INSPECT"';
+var tip_$4 = "";
+var onclick_$5 = "";
+var style_$6 = attrs_$2 && attrs_$2["style"] ? ' style="' + style_$6 + '"' : "";
 if (id_$1 != null) {
-var obj_$4 = Debug.ObjectForID(id_$1);
-var tip_$5 = Debug.formatToString("Inspect %0.32#w", obj_$4).toString().toHTML();
-return '<span class="' + type_$3 + '" title="' + tip_$5 + '" onclick="window.parent.$modules.lz.Debug.objectLinkHandler(event, ' + id_$1 + ')">' + rep_$0 + "</span>"
+try {
+var tip_$4 = Debug.formatToString(' title="Inspect %0.32#w"', Debug.ObjectForID(id_$1)).toString().toHTML()
+}
+catch (e_$7) {};
+onclick_$5 = ' onclick="window.parent.$modules.lz.Debug.objectLinkHandler(event, ' + id_$1 + ')"'
+};
+if (onclick_$5 != "" || style_$6 != "") {
+return "<span" + type_$3 + tip_$4 + onclick_$5 + style_$6 + ">" + rep_$0 + "</span>"
 };
 return rep_$0
 };
@@ -2808,7 +3213,7 @@ with ($0) with ($0.prototype) {}};
 $lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebug.js#12/1";
 return $lzsc$temp
 })()(LzDHTMLDebugConsole);
-Class.make("LzDHTMLDebugService", ["$lzsc$initialize", (function () {
+Class.make("LzDHTMLDebugService", ["__reHTMLElement", RegExp("^\\[object HTML.+?Element\\]$"), "$lzsc$initialize", (function () {
 var $lzsc$temp = function (base_$0) {
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, base_$0);
 var copy_$1 = {backtraceStack: true, uncaughtBacktraceStack: true, logger: true, console: true};
@@ -2832,11 +3237,11 @@ e_$0.cancelBubble = true;
 LzKeyboardKernel.setKeyboardControl(false, true);
 return false
 };
-$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebug.js#148/28";
+$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebug.js#158/28";
 return $lzsc$temp
 })();
 var y_$5 = canvas.height - 230;
-lz.embed.__setAttr(debugdiv_$4, "style", "position:absolute;z-index:10000000;top:" + y_$5 + "px;width:100%;");
+debugdiv_$4.setAttribute("style", "position:absolute;z-index:10000000;top:" + y_$5 + "px;width:100%;");
 canvas.sprite.__LZdiv.appendChild(debugdiv_$4);
 var style_$6 = debugdiv_$4.style;
 style_$6.position = "absolute";
@@ -2883,67 +3288,67 @@ return document.implementation && document.implementation.hasFeature && document
 };
 $lzsc$temp["displayName"] = "hasFeature";
 return $lzsc$temp
-})(), "__StringDescription", (function () {
-var $lzsc$temp = function (thing_$0, escape_$1, limit_$2, readable_$3, depth_$4) {
-var nodeToString;
-nodeToString = (function () {
+})(), "nodeToString", (function () {
 var $lzsc$temp = function (node_$0) {
-var tn_$1 = node_$0.nodeName || "";
-var path_$2 = tn_$1.toLowerCase();
-var sprite_$3 = node_$0.owner;
-var spritedivpath_$4;
-if (sprite_$3 instanceof LzSprite && sprite_$3.owner.sprite === sprite_$3) {
-for (var key_$5 in sprite_$3) {
-if (sprite_$3[key_$5] === node_$0) {
-spritedivpath_$4 = Debug.formatToString("%w/@sprite/@%s", sprite_$3.owner, key_$5)
+var name_$1 = node_$0.nodeName || "";
+var type_$2 = node_$0.nodeType;
+var path_$3 = name_$1.toLowerCase();
+var sprite_$4 = node_$0.owner;
+var spritedivpath_$5;
+if (sprite_$4 instanceof LzSprite && sprite_$4.owner.sprite === sprite_$4) {
+for (var key_$6 in sprite_$4) {
+if (sprite_$4[key_$6] === node_$0) {
+spritedivpath_$5 = Debug.formatToString("%w/@sprite/@%s", sprite_$4.owner, key_$6);
+break
 }}};
-if (node_$0.nodeType == 1) {
-var id_$6 = node_$0.id;
-var cn_$7 = node_$0.className;
-if (id_$6 && !spritedivpath_$4) {
-path_$2 += "#" + encodeURIComponent(id_$6)
-} else if (cn_$7) {
-var more_$8 = cn_$7.indexOf(" ");
-if (more_$8 == -1) {
-more_$8 = cn_$7.length
+if (type_$2 == 1) {
+var id_$7 = node_$0.id;
+var cn_$8 = node_$0.className;
+if (id_$7 && !spritedivpath_$5) {
+path_$3 += "#" + encodeURIComponent(id_$7)
+} else if (cn_$8) {
+var more_$9 = cn_$8.indexOf(" ");
+if (more_$9 == -1) {
+more_$9 = cn_$8.length
 };
-path_$2 += "." + cn_$7.substring(0, more_$8)
+path_$3 += "." + cn_$8.substring(0, more_$9)
 }};
-if (spritedivpath_$4) {
-return spritedivpath_$4 + (path_$2.length > 0 ? "/" + path_$2 : "")
+if (spritedivpath_$5) {
+return spritedivpath_$5 + (path_$3.length > 0 ? "/" + path_$3 : "")
 };
-var parent_$9 = node_$0.parentNode;
-if (parent_$9) {
-var index_$a, count_$b = 0;
-for (var sibling_$c = parent_$9.firstChild;sibling_$c;sibling_$c = sibling_$c.nextSibling) {
-if (tn_$1 == sibling_$c.nodeName) {
-count_$b++;
-if (index_$a) break
+var parent_$a = node_$0.parentNode;
+if (parent_$a) {
+var index_$b, count_$c = 0;
+for (var sibling_$d = parent_$a.firstChild;sibling_$d;sibling_$d = sibling_$d.nextSibling) {
+if (type_$2 == sibling_$d.nodeType && name_$1 == sibling_$d.nodeName) {
+count_$c++;
+if (index_$b) break
 };
-if (node_$0 === sibling_$c) {
-index_$a = count_$b
+if (node_$0 === sibling_$d) {
+index_$b = count_$c
 }};
-if (count_$b > 1) {
-path_$2 += "[" + index_$a + "]"
+if (count_$c > 1) {
+path_$3 += "[" + index_$b + "]"
 };
 try {
-return nodeToString(parent_$9) + "/" + path_$2
+return this.nodeToString(parent_$a) + "/" + path_$3
 }
-catch (e_$d) {
-return "\u2026/" + path_$2
+catch (e_$e) {
+return "\u2026/" + path_$3
 }};
-return path_$2
+return path_$3
 };
 $lzsc$temp["displayName"] = "nodeToString";
 return $lzsc$temp
-})();
+})(), "__StringDescription", (function () {
+var $lzsc$temp = function (thing_$0, escape_$1, limit_$2, readable_$3, depth_$4) {
 try {
-if ((!(!global.window.HTMLElement) ? thing_$0 instanceof HTMLElement : typeof thing_$0 == "object" && !thing_$0.constructor) && !isNaN(Number(thing_$0["nodeType"]))) {
+if (thing_$0 != null && (!(!global.window.HTMLElement) ? thing_$0 instanceof HTMLElement : (!(!global.window.Element) ? thing_$0 instanceof Element && this.__reHTMLElement.test(thing_$0.constructor.toString()) : typeof thing_$0 == "object" && !thing_$0.constructor)) && !isNaN(Number(thing_$0["nodeType"]))) {
 var style_$5 = thing_$0.style.cssText;
 if (style_$5 != "") {
 style_$5 = '[@style="' + style_$5 + '"]'
 };
-return {readable: false, description: nodeToString(thing_$0) + style_$5}} else if (this.hasFeature("mouseevents", "2.0") && (global["MouseEvent"]["$lzsc$isa"] ? global["MouseEvent"].$lzsc$isa(thing_$0) : thing_$0 instanceof global["MouseEvent"])) {
+return {readable: false, description: this.nodeToString(thing_$0) + style_$5}} else if (this.hasFeature("mouseevents", "2.0") && (global["MouseEvent"]["$lzsc$isa"] ? global["MouseEvent"].$lzsc$isa(thing_$0) : thing_$0 instanceof global["MouseEvent"])) {
 var desc_$6 = thing_$0.type;
 if (thing_$0.shiftKey) {
 desc_$6 = "shift-" + desc_$6
@@ -3029,70 +3434,47 @@ names_$1.push(key_$8)
 }}}};
 $lzsc$temp["displayName"] = "objectOwnProperties";
 return $lzsc$temp
-})(), "enableInspectMouseHandlers", (function () {
-var $lzsc$temp = function (div_$0, enable_$1) {
-if (enable_$1) {
-div_$0.prev_onclick = div_$0.onclick;
-div_$0.style.prev_border = div_$0.style.border;
-div_$0.style.prev_margin = div_$0.style.margin;
-div_$0.style.border = "1px solid red";
-div_$0.style.margin = "-1px";
-div_$0.onclick = (function () {
-var $lzsc$temp = function (e_$0) {
-Debug.write("view = ", this.owner.owner)
-};
-$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebug.js#404/21";
-return $lzsc$temp
-})()
-} else {
-div_$0.onclick = div_$0.prev_onclick;
-div_$0.style.border = div_$0.style.prev_border;
-div_$0.style.margin = div_$0.style.prev_margin;
-delete div_$0.prev_onclick;
-delete div_$0.prev_margin;
-delete div_$0.prev_border
-}};
-$lzsc$temp["displayName"] = "enableInspectMouseHandlers";
-return $lzsc$temp
-})(), "showDivs", (function () {
+})(), "showingDivs", false, "showDivs", (function () {
 var $lzsc$temp = function (enable_$0) {
-if (enable_$0 == null) enable_$0 = true;
-Debug._showDivs(canvas, enable_$0)
+if (enable_$0 == null) {
+enable_$0 = !this.showingDivs
+};
+LzSprite.prototype.__setCSSClassProperty(".lzdiv", "outline", (this.showingDivs = enable_$0) ? "1px dotted green" : "")
 };
 $lzsc$temp["displayName"] = "showDivs";
 return $lzsc$temp
-})(), "_showDivs", (function () {
-var $lzsc$temp = function (view_$0, enable_$1) {
-var k_$2 = view_$0.sprite;
-if (k_$2 != null) {
-var div_$3 = k_$2.__LZdiv;
-if (div_$3 != null) {
-this.enableInspectMouseHandlers(div_$3, enable_$1)
-}};
-for (var i_$4 = 0;i_$4 < view_$0.subviews.length;i_$4++) {
-var cv_$5 = view_$0.subviews[i_$4];
-Debug._showDivs(cv_$5, enable_$1)
-}};
-$lzsc$temp["displayName"] = "_showDivs";
+})(), "showingClickDivs", false, "showClickDivs", (function () {
+var $lzsc$temp = function (enable_$0) {
+if (enable_$0 == null) {
+enable_$0 = !this.showingClickDivs
+};
+LzSprite.prototype.__setCSSClassProperty(".lzdiv", "outline", (this.showingClickDivs = enable_$0) ? "1px dashed red" : "")
+};
+$lzsc$temp["displayName"] = "showClickDivs";
 return $lzsc$temp
 })()], LzDebugService);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebug.js#121/1";
+$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebug.js#128/1";
 return $lzsc$temp
 })()(LzDHTMLDebugService);
 var Debug = new LzDHTMLDebugService(Debug);
 var __LzDebug = Debug;
+(function () {
+var $lzsc$temp = function () {
 if (lz.embed.browser.isIE) {
 Error.prototype.toString = (function () {
 var $lzsc$temp = function () {
 return this.name + ": " + this.message
 };
-$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebug.js#460/30";
+$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebug.js#467/32";
 return $lzsc$temp
 })()
-};
+}};
+$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebug.js#465/3";
+return $lzsc$temp
+})()();
 Class.make("LzDebuggerWindowConsoleBridge", ["DebugWindow", void 0, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (view_$0) {
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
@@ -3108,7 +3490,7 @@ $lzsc$temp["displayName"] = "canvasConsoleWindow";
 return $lzsc$temp
 })(), "__reNewline", RegExp("&#xa;|&#xA;|&#10;|\\n", "g"), "addHTMLText", (function () {
 var $lzsc$temp = function (str_$0) {
-this.DebugWindow.addHTMLText(str_$0.replace(this.__reNewline, "<br />"))
+this.DebugWindow.addHTMLText("<span style='white-space: pre'>" + str_$0.replace(this.__reNewline, "<br />") + "</span>")
 };
 $lzsc$temp["displayName"] = "addHTMLText";
 return $lzsc$temp
@@ -3140,12 +3522,23 @@ switch (arguments.length) {
 case 2:
 attrs_$2 = null
 };
-var color_$3 = attrs_$2 && attrs_$2["color"] ? attrs_$2.color : "#0000ff";
-var decoration_$4 = attrs_$2 && attrs_$2["type"] ? "none" : "underline";
+var tip_$3 = "";
+var onclick_$4 = "";
+var color_$5 = attrs_$2 && attrs_$2["color"] ? " color: " + attrs_$2.color + ";" : " color: #0000ff;";
+var decoration_$6 = attrs_$2 && attrs_$2["type"] ? " text-decoration: none;" : "";
+var style_$7 = attrs_$2 && attrs_$2["style"] ? ' style="' + attrs_$2.style + '"' : "";
 if (id_$1 != null) {
-var obj_$5 = Debug.ObjectForID(id_$1);
-var tip_$6 = Debug.formatToString("Inspect %0.32#w", obj_$5).toString().toHTML();
-return '<span style="cursor: pointer; text-decoration: ' + decoration_$4 + "; color: " + color_$3 + '" title="' + tip_$6 + '" onclick="$modules.lz.Debug.objectLinkHandler(event, ' + id_$1 + ')">' + rep_$0 + "</span>"
+if (style_$7 == "") {
+style_$7 = 'style="cursor: pointer; ' + decoration_$6 + color_$5 + '"'
+};
+try {
+var tip_$3 = Debug.formatToString(' title="Inspect %0.32#w"', Debug.ObjectForID(id_$1)).toString().toHTML()
+}
+catch (e_$8) {};
+onclick_$4 = ' onclick="$modules.lz.Debug.objectLinkHandler(event, ' + id_$1 + ')"'
+};
+if (onclick_$4 != "" || style_$7 != "") {
+return "<span " + tip_$3 + onclick_$4 + style_$7 + ">" + rep_$0 + "</span>"
 };
 return rep_$0
 };
@@ -3155,7 +3548,7 @@ return $lzsc$temp
 var $lzsc$temp = function (expr_$0) {
 try {
 with (Debug.environment) {
-var value_$1 = window.eval("(" + expr_$0 + ")")
+var value_$1 = eval("(" + expr_$0 + ")")
 };
 Debug.displayResult(value_$1)
 }
@@ -3166,7 +3559,7 @@ return
 };
 try {
 with (Debug.environment) {
-var value_$1 = window.eval(expr_$0)
+var value_$1 = eval(expr_$0)
 };
 Debug.displayResult(value_$1)
 }
@@ -3175,11 +3568,17 @@ Debug.error("%s", e_$2)
 }}};
 $lzsc$temp["displayName"] = "doEval";
 return $lzsc$temp
+})(), "contextMenuItems", (function () {
+var $lzsc$temp = function (menu_$0, target_$1) {
+return this.DebugWindow.contextMenuItems(menu_$0, target_$1)
+};
+$lzsc$temp["displayName"] = "contextMenuItems";
+return $lzsc$temp
 })()], LzDebugConsole);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebuggerWindowConsoleBridge.js#11/1";
+$lzsc$temp["displayName"] = "debugger/platform/dhtml/LzDebuggerWindowConsoleBridge.js#10/1";
 return $lzsc$temp
 })()(LzDebuggerWindowConsoleBridge);
 Debug.sourceWarningHistory = {};
@@ -3197,7 +3596,7 @@ Debug.__write(warning_$4)
 $lzsc$temp["displayName"] = "debugger/LzCompiler.lzs#28/28";
 return $lzsc$temp
 })();
-Class.make("__LzStackFrame", ["__filename", void 0, "__lineno", void 0, "arguments", void 0, "context", void 0, "callee", void 0, "$lzsc$initialize", (function () {
+Class.make("__LzStackFrame", ["__filename", void 0, "__lineno", void 0, "arglist", void 0, "context", void 0, "callee", void 0, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (args_$0) {
 if (args_$0["this"]) {
 this.context = args_$0["this"]
@@ -3205,7 +3604,7 @@ this.context = args_$0["this"]
 this.callee = args_$0.callee;
 this.__filename = args_$0.filename;
 this.__lineno = args_$0.lineno;
-this.arguments = args_$0.concat()
+this.arglist = args_$0.concat()
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
@@ -3243,18 +3642,65 @@ var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
 {
 __LzStackFrame.prototype._dbg_name = (function () {
-var $lzsc$temp = function () {
-return Debug.formatToString("%0.64s @%s#%d", this.callee, this.__filename, this.__lineno)
+var $lzsc$temp = function (width_$0) {
+switch (arguments.length) {
+case 0:
+width_$0 = 0
 };
-$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#81/40";
+return Debug.formatToString("%*.64s @%s#%d", -width_$0, this.callee, this.__filename, this.__lineno)
+};
+$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#80/40";
 return $lzsc$temp
 })();
-__LzStackFrame.prototype._dbg_typename = "StackFrame"
+__LzStackFrame.prototype._dbg_typename = "StackFrame";
+__LzStackFrame.prototype._dbg_properties = (function () {
+var $lzsc$temp = function (names_$0, limit_$1) {
+var width_$2 = 0;
+if (this.context) {
+names_$0.push("this");
+width_$2 = "this".length
+};
+if (this.arglist.length) {
+names_$0.push("arguments");
+var al_$3 = this.arglist;
+for (var i_$4 = 0, l_$5 = al_$3.length;i_$4 < l_$5;i_$4 += 2) {
+var k_$6 = al_$3[i_$4];
+if (k_$6.length > width_$2) {
+width_$2 = k_$6.length
+}}};
+return width_$2
+};
+$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#90/46";
+return $lzsc$temp
+})();
+__LzStackFrame.prototype._dbg_description = (function () {
+var $lzsc$temp = function (key_$0, width_$1, si_$2, indent_$3) {
+switch (arguments.length) {
+case 3:
+indent_$3 = ""
+};
+var dbg_$4 = Debug;
+if (key_$0 == "this") {
+return dbg_$4.formatToString("%s%*s: %w", indent_$3, width_$1, "this", this.context)
+} else if (key_$0 == "arguments") {
+var args_$5 = this.arglist;
+var msg_$6 = new LzMessage("");
+for (var i_$7 = 0, l_$8 = args_$5.length;i_$7 < l_$8;i_$7 += 2) {
+if (msg_$6.length) {
+msg_$6.append("\n")
+};
+dbg_$4.formatToMessage(msg_$6, "%s%*s: %w", indent_$3, width_$1, args_$5[i_$7], args_$5[i_$7 + 1])
+};
+return msg_$6
+}};
+$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#107/47";
+return $lzsc$temp
+})()
 }}};
 $lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#20/1";
 return $lzsc$temp
 })()(__LzStackFrame);
-Class.make("LzBacktrace", ["length", void 0, "$lzsc$initialize", (function () {
+Class.make("LzBacktrace", ["length", void 0, "__calleeWidth", void 0, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (skip_$0) {
 switch (arguments.length) {
 case 0:
@@ -3263,13 +3709,19 @@ skip_$0 = 0
 var bs_$1 = Debug.backtraceStack;
 var l_$2 = bs_$1.length - skip_$0;
 this.length = l_$2;
-for (var i_$3 = 0;i_$3 < l_$2;i_$3++) {
-var fr_$4 = bs_$1[i_$3];
-if (!fr_$4.hasOwnProperty("__LzStackFrame") || fr_$4["lineno"] != fr_$4.__LzStackFrame.lineno()) {
-fr_$4.__LzStackFrame = new __LzStackFrame(fr_$4)
+var width_$3 = 0;
+for (var i_$4 = 0;i_$4 < l_$2;i_$4++) {
+var fr_$5 = bs_$1[i_$4];
+if (!fr_$5.hasOwnProperty("__LzStackFrame") || fr_$5["lineno"] != fr_$5.__LzStackFrame.lineno()) {
+fr_$5.__LzStackFrame = new __LzStackFrame(fr_$5)
 };
-this[i_$3] = fr_$4.__LzStackFrame
+this[i_$4] = fr_$5.__LzStackFrame;
+var w_$6 = fr_$5.__LzStackFrame.toString().length;
+if (w_$6 > width_$3) {
+width_$3 = w_$6
 }};
+this.__calleeWidth = width_$3
+};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })(), "userStackFrame", (function () {
@@ -3335,14 +3787,64 @@ LzBacktrace.prototype._dbg_name = (function () {
 var $lzsc$temp = function () {
 return this.toStringInternal(Debug.inspectPrintLength)
 };
-$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#188/37";
+$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#224/37";
 return $lzsc$temp
 })();
-LzBacktrace.prototype._dbg_typename = "Backtrace"
+LzBacktrace.prototype._dbg_typename = "Backtrace";
+LzBacktrace.prototype._dbg_properties = (function () {
+var $lzsc$temp = function (names_$0, limit_$1) {
+var width_$2 = 0;
+for (var i_$3 = this.length - 1;limit_$1-- > 0 && i_$3 >= 0;i_$3--) {
+names_$0.push(i_$3);
+var w_$4 = this[i_$3]._dbg_properties([], Infinity);
+if (w_$4 > width_$2) {
+width_$2 = w_$4
+}};
+return width_$2
+};
+$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#234/43";
+return $lzsc$temp
+})();
+LzBacktrace.prototype._dbg_description = (function () {
+var $lzsc$temp = function (key_$0, width_$1, si_$2, indent_$3) {
+switch (arguments.length) {
+case 3:
+indent_$3 = ""
+};
+var val_$4 = this[key_$0];
+if (!((__LzStackFrame["$lzsc$isa"] ? __LzStackFrame.$lzsc$isa(val_$4) : val_$4 instanceof __LzStackFrame) && ("_dbg_description" in val_$4))) {
+return null
+};
+var frame_$5 = val_$4;
+var dbg_$6 = Debug;
+var msg_$7 = new LzMessage(indent_$3);
+msg_$7.append(frame_$5["_dbg_name"](Math.min(24, this.__calleeWidth)));
+var args_$8 = dbg_$6.describeSlots(frame_$5, width_$1, si_$2, indent_$3 + "  ");
+if (args_$8.length > 0) {
+msg_$7.append("\n");
+msg_$7.append(args_$8)
+};
+return msg_$7
+};
+$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#245/44";
+return $lzsc$temp
+})()
 }}};
-$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#105/1";
+$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#136/1";
 return $lzsc$temp
 })()(LzBacktrace);
+Error.prototype._dbg_description = (function () {
+var $lzsc$temp = function (key_$0, width_$1, si_$2, indent_$3) {
+switch (arguments.length) {
+case 3:
+indent_$3 = ""
+};
+if (key_$0 == "stack") {
+return new LzMessage(indent_$3 + "stack:\n" + indent_$3 + indent_$3 + this["stack"].split("\n").join("\n" + indent_$3 + indent_$3))
+}};
+$lzsc$temp["displayName"] = "debugger/LzBacktrace.lzs#265/36";
+return $lzsc$temp
+})();
 Class.make("LzTrace", ["$lzsc$initialize", (function () {
 var $lzsc$temp = function (file_$0, line_$1, message_$2, node_$3) {
 switch (arguments.length) {
@@ -3917,79 +4419,63 @@ $lzsc$temp["displayName"] = "debugger/LzMemory.lzs#604/18";
 return $lzsc$temp
 })();
 Class.make("LzValueExpr");
-Class.make("LzAttributeDescriptor", ["attribute", void 0, "type", void 0, "value", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, value_$2) {
-switch (arguments.length) {
-case 2:
-value_$2 = null
-};
-this.attribute = attribute_$0;
-this.type = type_$1;
-this.value = value_$2
-};
+Class.make("LzInitExpr", ["$lzsc$initialize", (function () {
+var $lzsc$temp = function () {};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzValueExpr);
-Class.make("LzInitExpr", ["$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, value_$2) {
-switch (arguments.length) {
-case 2:
-value_$2 = null
-};
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1, value_$2)
-};
-$lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})()], LzAttributeDescriptor);
 Class.make("LzOnceExpr", ["methodName", void 0, "_dbg_name", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, initMethod_$2, description_$3) {
+var $lzsc$temp = function (initMethod_$0, description_$1) {
 switch (arguments.length) {
-case 3:
-description_$3 = null
+case 1:
+description_$1 = null
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1);
-this.methodName = initMethod_$2;
-this._dbg_name = description_$3
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
+this.methodName = initMethod_$0;
+this._dbg_name = description_$1
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzInitExpr);
 Class.make("LzConstraintExpr", ["$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, constraintMethod_$2, description_$3) {
+var $lzsc$temp = function (constraintMethod_$0, description_$1) {
 switch (arguments.length) {
-case 3:
-description_$3 = null
+case 1:
+description_$1 = null
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1, constraintMethod_$2, description_$3)
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, constraintMethod_$0, description_$1)
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzOnceExpr);
-Class.make("LzStyleConstraintExpr", ["property", void 0, "fallback", void 0, "warn", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, property_$2, fallback_$3, warn_$4) {
+Class.make("LzStyleConstraintExpr", ["$lzsc$initialize", (function () {
+var $lzsc$temp = function (description_$0) {
 switch (arguments.length) {
-case 3:
-fallback_$3 = void 0;;case 4:
-warn_$4 = true
+case 0:
+description_$0 = "=\"$style{'...'}\""
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1, null);
-this.property = property_$2;
-this.type = type_$1;
-this.fallback = fallback_$3;
-this.warn = warn_$4;
-this._dbg_name = attribute_$0 + "\"=$style{'" + property_$2 + "'}\""
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, null, description_$0)
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})()], LzConstraintExpr);
+})()], LzConstraintExpr, ["StyleConstraintExpr", void 0]);
+(function () {
+var $lzsc$temp = function ($0) {
+with ($0) with ($0.prototype) {
+{
+LzStyleConstraintExpr.StyleConstraintExpr = new LzStyleConstraintExpr()
+}}};
+$lzsc$temp["displayName"] = "core/LzDefs.lzs#61/1";
+return $lzsc$temp
+})()(LzStyleConstraintExpr);
 Class.make("LzAlwaysExpr", ["dependenciesName", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (attribute_$0, type_$1, constraintMethod_$2, dependenciesMethod_$3, description_$4) {
+var $lzsc$temp = function (constraintMethod_$0, dependenciesMethod_$1, description_$2) {
 switch (arguments.length) {
-case 4:
-description_$4 = null
+case 2:
+description_$2 = null
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, attribute_$0, type_$1, constraintMethod_$2, description_$4);
-this.dependenciesName = dependenciesMethod_$3
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, constraintMethod_$0, description_$2);
+this.dependenciesName = dependenciesMethod_$1
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
@@ -4008,15 +4494,6 @@ this._dbg_name = "attr(" + this.sourceAttributeName + ")"
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzStyleExpr);
-Class.make("LzStyleIdent", ["sourceValueID", void 0, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (sourceValueID_$0) {
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
-this.sourceValueID = sourceValueID_$0;
-this._dbg_name = sourceValueID_$0
-};
-$lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})()], LzStyleExpr);
 function LzInheritedHash (parent_$0) {
 if (parent_$0) {
 for (var key_$1 in parent_$0) {
@@ -4028,14 +4505,14 @@ var $lzsc$temp = function () {
 if (Object["$lzsc$isa"] ? Object.$lzsc$isa(lz) : lz instanceof Object) {
 
 } else if (!lz) {
-lz = new LzInheritedHash()
-} else {
+lz = new LzInheritedHash();
+lz["ClassAttributeTypes"] = new LzInheritedHash();
+lz.ClassAttributeTypes["Object"] = {}} else {
 Debug.error("Can't create `lz` namespace, already bound to %w", lz)
 }};
-$lzsc$temp["displayName"] = "core/LzDefs.lzs#225/3";
+$lzsc$temp["displayName"] = "core/LzDefs.lzs#158/3";
 return $lzsc$temp
 })()();
-lz.Formatter = LzFormatter;
 Class.make("LzDeclaredEventClass", ["actual", void 0, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (actual_$0) {
 switch (arguments.length) {
@@ -4089,85 +4566,6 @@ return $lzsc$temp
 lz.DeclaredEventClass = LzDeclaredEventClass;
 var LzDeclaredEvent = new LzDeclaredEventClass();
 lz.colors = {aliceblue: 15792383, antiquewhite: 16444375, aqua: 65535, aquamarine: 8388564, azure: 15794175, beige: 16119260, bisque: 16770244, black: 0, blanchedalmond: 16772045, blue: 255, blueviolet: 9055202, brown: 10824234, burlywood: 14596231, cadetblue: 6266528, chartreuse: 8388352, chocolate: 13789470, coral: 16744272, cornflowerblue: 6591981, cornsilk: 16775388, crimson: 14423100, cyan: 65535, darkblue: 139, darkcyan: 35723, darkgoldenrod: 12092939, darkgray: 11119017, darkgreen: 25600, darkgrey: 11119017, darkkhaki: 12433259, darkmagenta: 9109643, darkolivegreen: 5597999, darkorange: 16747520, darkorchid: 10040012, darkred: 9109504, darksalmon: 15308410, darkseagreen: 9419919, darkslateblue: 4734347, darkslategray: 3100495, darkslategrey: 3100495, darkturquoise: 52945, darkviolet: 9699539, deeppink: 16716947, deepskyblue: 49151, dimgray: 6908265, dimgrey: 6908265, dodgerblue: 2003199, firebrick: 11674146, floralwhite: 16775920, forestgreen: 2263842, fuchsia: 16711935, gainsboro: 14474460, ghostwhite: 16316671, gold: 16766720, goldenrod: 14329120, gray: 8421504, green: 32768, greenyellow: 11403055, grey: 8421504, honeydew: 15794160, hotpink: 16738740, indianred: 13458524, indigo: 4915330, ivory: 16777200, khaki: 15787660, lavender: 15132410, lavenderblush: 16773365, lawngreen: 8190976, lemonchiffon: 16775885, lightblue: 11393254, lightcoral: 15761536, lightcyan: 14745599, lightgoldenrodyellow: 16448210, lightgray: 13882323, lightgreen: 9498256, lightgrey: 13882323, lightpink: 16758465, lightsalmon: 16752762, lightseagreen: 2142890, lightskyblue: 8900346, lightslategray: 7833753, lightslategrey: 7833753, lightsteelblue: 11584734, lightyellow: 16777184, lime: 65280, limegreen: 3329330, linen: 16445670, magenta: 16711935, maroon: 8388608, mediumaquamarine: 6737322, mediumblue: 205, mediumorchid: 12211667, mediumpurple: 9662683, mediumseagreen: 3978097, mediumslateblue: 8087790, mediumspringgreen: 64154, mediumturquoise: 4772300, mediumvioletred: 13047173, midnightblue: 1644912, mintcream: 16121850, mistyrose: 16770273, moccasin: 16770229, navajowhite: 16768685, navy: 128, oldlace: 16643558, olive: 8421376, olivedrab: 7048739, orange: 16753920, orangered: 16729344, orchid: 14315734, palegoldenrod: 15657130, palegreen: 10025880, paleturquoise: 11529966, palevioletred: 14381203, papayawhip: 16773077, peachpuff: 16767673, peru: 13468991, pink: 16761035, plum: 14524637, powderblue: 11591910, purple: 8388736, red: 16711680, rosybrown: 12357519, royalblue: 4286945, saddlebrown: 9127187, salmon: 16416882, sandybrown: 16032864, seagreen: 3050327, seashell: 16774638, sienna: 10506797, silver: 12632256, skyblue: 8900331, slateblue: 6970061, slategray: 7372944, slategrey: 7372944, snow: 16775930, springgreen: 65407, steelblue: 4620980, tan: 13808780, teal: 32896, thistle: 14204888, tomato: 16737095, turquoise: 4251856, violet: 15631086, wheat: 16113331, white: 16777215, whitesmoke: 16119285, yellow: 16776960, yellowgreen: 10145074, transparent: null};
-Class.make("LzCache", ["size", void 0, "slots", void 0, "destroyable", void 0, "capacity", void 0, "curslot", void 0, "data", null, "$lzsc$initialize", (function () {
-var $lzsc$temp = function (size_$0, slots_$1, destroyable_$2) {
-switch (arguments.length) {
-case 0:
-size_$0 = 16;;case 1:
-slots_$1 = 2;;case 2:
-destroyable_$2 = true
-};
-this.size = size_$0;
-this.slots = slots_$1;
-this.destroyable = destroyable_$2;
-this.clear()
-};
-$lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})(), "clear", (function () {
-var $lzsc$temp = function () {
-this.curslot = 0;
-this.capacity = 0;
-var sl_$0 = this.slots;
-if (!this.data) this.data = new Array(sl_$0);
-var d_$1 = this.data;
-for (var i_$2 = 0;i_$2 < sl_$0;++i_$2) {
-if (this.destroyable) {
-var dobj_$3 = d_$1[i_$2];
-for (var k_$4 in dobj_$3) {
-dobj_$3[k_$4].destroy()
-}};
-d_$1[i_$2] = {}}};
-$lzsc$temp["displayName"] = "clear";
-return $lzsc$temp
-})(), "ensureSlot", (function () {
-var $lzsc$temp = function () {
-if (++this.capacity > this.size) {
-var nexts_$0 = (this.curslot + 1) % this.slots;
-var d_$1 = this.data;
-if (this.destroyable) {
-var dobj_$2 = d_$1[nexts_$0];
-for (var k_$3 in dobj_$2) {
-dobj_$2[k_$3].destroy()
-}};
-d_$1[nexts_$0] = {};
-this.curslot = nexts_$0;
-this.capacity = 1
-}};
-$lzsc$temp["displayName"] = "ensureSlot";
-return $lzsc$temp
-})(), "put", (function () {
-var $lzsc$temp = function (key_$0, val_$1) {
-var old_$2 = this.get(key_$0);
-if (old_$2 === void 0) {
-this.ensureSlot()
-};
-this.data[this.curslot][key_$0] = val_$1;
-return old_$2
-};
-$lzsc$temp["displayName"] = "put";
-return $lzsc$temp
-})(), "get", (function () {
-var $lzsc$temp = function (key_$0) {
-var sl_$1 = this.slots;
-var cs_$2 = this.curslot;
-var d_$3 = this.data;
-for (var i_$4 = 0;i_$4 < sl_$1;++i_$4) {
-var idx_$5 = (cs_$2 + i_$4) % sl_$1;
-var val_$6 = d_$3[idx_$5][key_$0];
-if (val_$6 !== void 0) {
-if (idx_$5 != cs_$2) {
-delete d_$3[idx_$5][key_$0];
-this.ensureSlot();
-d_$3[this.curslot][key_$0] = val_$6
-};
-return val_$6
-}};
-return void 0
-};
-$lzsc$temp["displayName"] = "get";
-return $lzsc$temp
-})()]);
 Class.make("LzEventable", ["$lzsc$initialize", (function () {
 var $lzsc$temp = function () {};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
@@ -4194,7 +4592,7 @@ if (this.__delegates != null) {
 for (var i_$0 = this.__delegates.length - 1;i_$0 >= 0;i_$0--) {
 var del_$1 = this.__delegates[i_$0];
 if (del_$1.__LZdeleted != true) {
-del_$1.destroy()
+del_$1.destroy(false)
 }};
 this.__delegates = null
 }};
@@ -4217,14 +4615,7 @@ return false
 $lzsc$temp["displayName"] = "__invokeCustomSetter";
 return $lzsc$temp
 })(), "setAttribute", (function () {
-var $lzsc$temp = function (prop_$0, val_$1, ifchanged_$2) {
-switch (arguments.length) {
-case 2:
-ifchanged_$2 = null
-};
-if (ifchanged_$2 !== null) {
-Debug.info("%w.setAttribute(%w, %w, %w):  The third parameter (ifchanged) is deprecated.  Use `if (this.%2$s !== %3$w) this.setAttribute(%2$w, %3$w)` instead", this, prop_$0, val_$1, ifchanged_$2)
-};
+var $lzsc$temp = function (prop_$0, val_$1) {
 if (this.__LZdeleted) {
 return
 };
@@ -4232,16 +4623,32 @@ if (this.customSetters[prop_$0]) {
 if (this.__invokeCustomSetter(prop_$0, val_$1) == true) {
 return
 }};
-var s_$3 = "$lzc$set_" + prop_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[s_$3]) : this[s_$3] instanceof Function) {
-this[s_$3](val_$1)
+var s_$2 = "$lzc$set_" + prop_$0;
+if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[s_$2]) : this[s_$2] instanceof Function) {
+this[s_$2](val_$1)
 } else {
 this[prop_$0] = val_$1;
-var evt_$4 = this["on" + prop_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa(evt_$4) : evt_$4 instanceof LzEvent) {
-if (evt_$4.ready) evt_$4.sendEvent(val_$1)
+var evt_$3 = this["on" + prop_$0];
+if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa(evt_$3) : evt_$3 instanceof LzEvent) {
+if (evt_$3.ready) evt_$3.sendEvent(val_$1)
 }}};
 $lzsc$temp["displayName"] = "setAttribute";
+return $lzsc$temp
+})(), "__setAttr", (function () {
+var $lzsc$temp = function (prop_$0, val_$1) {
+if (this.__LZdeleted) {
+return
+};
+var s_$2 = "$lzc$set_" + prop_$0;
+if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[s_$2]) : this[s_$2] instanceof Function) {
+this[s_$2](val_$1)
+} else {
+this[prop_$0] = val_$1;
+var evt_$3 = this["on" + prop_$0];
+if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa(evt_$3) : evt_$3 instanceof LzEvent) {
+if (evt_$3.ready) evt_$3.sendEvent(val_$1)
+}}};
+$lzsc$temp["displayName"] = "__setAttr";
 return $lzsc$temp
 })()]);
 (function () {
@@ -4277,18 +4684,8 @@ var dest_$2 = this.dest;
 var oldvalue_$3 = target_$1[dest_$2];
 var newvalue_$4 = target_$1[this.source];
 if (newvalue_$4 !== oldvalue_$3 || !target_$1.inited) {
-{
-if (!target_$1.__LZdeleted) {
-var $lzsc$fjcgmu = "$lzc$set_" + dest_$2;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(target_$1[$lzsc$fjcgmu]) : target_$1[$lzsc$fjcgmu] instanceof Function) {
-target_$1[$lzsc$fjcgmu](newvalue_$4)
-} else {
-target_$1[dest_$2] = newvalue_$4;
-var $lzsc$e5xbzw = target_$1["on" + dest_$2];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$e5xbzw) : $lzsc$e5xbzw instanceof LzEvent) {
-if ($lzsc$e5xbzw.ready) {
-$lzsc$e5xbzw.sendEvent(newvalue_$4)
-}}}}}}};
+target_$1.setAttribute(dest_$2, newvalue_$4)
+}};
 $lzsc$temp["displayName"] = "bind";
 return $lzsc$temp
 })()], LzEventable);
@@ -4362,7 +4759,7 @@ Class.make("$lz$class_PresentationType", ["_dbg_typename", "type", "_dbg_name", 
 var $lzsc$temp = function () {
 return this.constructor.lzxtype
 };
-$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#157/19";
+$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#157/21";
 return $lzsc$temp
 })(), "accept", (function () {
 var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
@@ -4377,6 +4774,58 @@ return String(value_$0)
 $lzsc$temp["displayName"] = "present";
 return $lzsc$temp
 })()], null, ["nullValue", null]);
+Class.make("$lzc$class_PresentationTypeValue", ["__type", void 0, "value", void 0, "__node", void 0, "__attribute", void 0, "$lzsc$initialize", (function () {
+var $lzsc$temp = function (typename_$0, value_$1, node_$2, attribute_$3) {
+this.__type = lz.Type.PresentationTypes[typename_$0];
+if (!this.__type) {
+Debug.debug("Unknown presentation type %w", typename_$0);
+this.__type = lz.Type.PresentationTypes["expression"]
+};
+this.value = value_$1;
+this.__node = node_$2;
+this.__attribute = attribute_$3
+};
+$lzsc$temp["displayName"] = "$lzsc$initialize";
+return $lzsc$temp
+})(), "_dbg_typename", (function () {
+var $lzsc$temp = function () {
+return this.__type._dbg_name() + " value"
+};
+$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#220/27";
+return $lzsc$temp
+})(), "toString", (function () {
+var $lzsc$temp = function () {
+return this.__type.present(this.value, this.__node, this.__attribute)
+};
+$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#224/22";
+return $lzsc$temp
+})(), "valueOf", (function () {
+var $lzsc$temp = function () {
+return this.value
+};
+$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#226/21";
+return $lzsc$temp
+})()], null, ["simpleTypes", {"boolean": true, "number": true, "string": true}, "fromValue", (function () {
+var $lzsc$temp = function (typename_$0, value_$1, node_$2, attribute_$3) {
+var ptype_$4 = lz.Type.PresentationTypes[typename_$0];
+if (!ptype_$4) {
+Debug.debug("Unknown presentation type %w", typename_$0);
+return value_$1
+};
+if ($lzc$class_PresentationTypeValue.simpleTypes.hasOwnProperty(ptype_$4.constructor.lzxtype)) {
+return value_$1
+};
+return new $lzc$class_PresentationTypeValue(typename_$0, value_$1, node_$2, attribute_$3)
+};
+$lzsc$temp["displayName"] = "fromValue";
+return $lzsc$temp
+})(), "fromPresentation", (function () {
+var $lzsc$temp = function (typename_$0, presentation_$1, node_$2, attribute_$3) {
+return $lzc$class_PresentationTypeValue.fromValue(typename_$0, lz.Type.acceptTypeValue(typename_$0, presentation_$1, node_$2, attribute_$3), node_$2, attribute_$3)
+};
+$lzsc$temp["displayName"] = "fromPresentation";
+return $lzsc$temp
+})()]);
 Class.make("$lz$class_StringPresentationType", ["accept", (function () {
 var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
 return String(value_$0)
@@ -4385,10 +4834,13 @@ $lzsc$temp["displayName"] = "accept";
 return $lzsc$temp
 })()], $lz$class_PresentationType, ["lzxtype", "string", "nullValue", ""]);
 lz.Type.addType("string", new $lz$class_StringPresentationType());
+lz.Type.addTypeAlias("ID", "string");
+lz.Type.addTypeAlias("token", "string");
 lz.Type.addTypeAlias("html", "string");
-Class.make("$lz$class_TextPresentationType", ["accept", (function () {
+lz.Type.addTypeAlias("text", "string");
+Class.make("$lz$class_CDATAPresentationType", ["accept", (function () {
 var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
-var escChars_$3 = $lz$class_TextPresentationType.xmlEscapes;
+var escChars_$3 = $lz$class_CDATAPresentationType.xmlEscapes;
 var result_$4 = "";
 for (var i_$5 = 0, l_$6 = value_$0.length;i_$5 < l_$6;i_$5++) {
 var c_$7 = value_$0.charAt(i_$5);
@@ -4406,7 +4858,7 @@ var c_$6 = value_$0.charAt(i_$4);
 if (c_$6 == "&") {
 var e_$7 = value_$0.indexOf(";", i_$4);
 if (e_$7 > i_$4) {
-var p_$8 = value_$0.substring(i_$4, e_$7);
+var p_$8 = value_$0.substring(i_$4 + 1, e_$7);
 switch (p_$8) {
 case "amp":
 break;;case "lt":
@@ -4424,8 +4876,8 @@ return result_$3
 };
 $lzsc$temp["displayName"] = "present";
 return $lzsc$temp
-})()], $lz$class_PresentationType, ["lzxtype", "text", "nullValue", "", "xmlEscapes", {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;"}]);
-lz.Type.addTypeAlias("text", "string");
+})()], $lz$class_PresentationType, ["lzxtype", "cdata", "nullValue", "", "xmlEscapes", {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;"}]);
+lz.Type.addType("cdata", new $lz$class_CDATAPresentationType());
 Class.make("$lz$class_BooleanPresentationType", ["accept", (function () {
 var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
 switch (value_$0.toLowerCase()) {
@@ -4504,19 +4956,19 @@ $lzsc$temp["displayName"] = "accept";
 return $lzsc$temp
 })()], $lz$class_PresentationType, ["nullValue", null, "lzxtype", "size"]);
 lz.Type.addType("size", new $lz$class_SizePresentationType());
-Class.make("$lz$class_CSSDeclarationPresentationType", ["PropRE", new RegExp("^\\s*(\\S*)\\s*:\\s*(\\S*)\\s*$"), "HyphenRE", new RegExp("-(\\w)", "g"), "CapitalRE", new RegExp("[:upper:]", "g"), "accept", (function () {
+Class.make("$lz$class_CSSDeclarationPresentationType", ["PropRE", new RegExp("^\\s*(\\S*)\\s*:\\s*(\\S*)\\s*$"), "HyphenRE", new RegExp("-(\\w)", "g"), "CapitalRE", new RegExp("[A-Z]", "g"), "accept", (function () {
 var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
-var props_$3 = value_$0.split(",");
+var props_$3 = value_$0.split(";");
 var result_$4 = {};
 for (var i_$5 = 0, len_$6 = props_$3.length;i_$5 < len_$6;i_$5++) {
 var prop_$7 = props_$3[i_$5];
 var parts_$8 = prop_$7.match(this.PropRE);
 if (parts_$8.length = 3) {
 var attr_$9 = parts_$8[1].replace(this.HyphenRE, (function () {
-var $lzsc$temp = function (m_$0, p_$1) {
-return p_$1[1].toUpperCase()
+var $lzsc$temp = function (m_$0, p1_$1) {
+return p1_$1.toUpperCase()
 };
-$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#417/52";
+$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#481/52";
 return $lzsc$temp
 })());
 result_$4[attr_$9] = parts_$8[2]
@@ -4530,10 +4982,10 @@ var $lzsc$temp = function (value_$0, node_$1, attribute_$2) {
 var props_$3 = [];
 for (var attr_$4 in value_$0) {
 var prop_$5 = attr_$4.replace(this.CapitalRE, (function () {
-var $lzsc$temp = function (m_$0, p_$1) {
-return "-" + p_$1[1].toLowerCase()
+var $lzsc$temp = function (m_$0) {
+return "-" + m_$0.toLowerCase()
 };
-$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#426/47";
+$lzsc$temp["displayName"] = "core/PresentationTypes.lzs#490/47";
 return $lzsc$temp
 })());
 props_$3.push(prop_$5 + ": " + value_$0[attr_$4])
@@ -4550,7 +5002,7 @@ return (attr_$0 in this.__LzValueExprs) && !(LzStyleConstraintExpr["$lzsc$isa"] 
 };
 $lzsc$temp["displayName"] = "__LZhasConstraint";
 return $lzsc$temp
-})(), "$lzsc$initialize", (function () {
+})(), "$attributeDescriptor", {}, "$CSSDescriptor", {}, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (parent_$0, attrs_$1, children_$2, instcall_$3) {
 switch (arguments.length) {
 case 0:
@@ -4562,91 +5014,95 @@ instcall_$3 = false
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
 this.__LZUID = "__U" + ++LzNode.__UIDs;
 this.__LZdeferDelegates = true;
+var handled_$4 = [];
 if (attrs_$1) {
 if (attrs_$1["$lzc$bind_id"]) {
+handled_$4.push("$lzc$bind_id");
 this.$lzc$bind_id = attrs_$1.$lzc$bind_id
 };
 if (attrs_$1["$lzc$bind_name"]) {
+handled_$4.push("$lzc$bind_name");
 this.$lzc$bind_name = attrs_$1.$lzc$bind_name
 }};
-var bindid_$4 = this.$lzc$bind_id;
-if (bindid_$4) {
-bindid_$4.call(null, this)
+var bindid_$5 = this.$lzc$bind_id;
+if (bindid_$5) {
+bindid_$5.call(null, this)
 };
-var bindname_$5 = this.$lzc$bind_name;
-if (bindname_$5) {
-bindname_$5.call(null, this)
+var bindname_$6 = this.$lzc$bind_name;
+if (bindname_$6) {
+bindname_$6.call(null, this)
 };
 this._instanceAttrs = attrs_$1;
 this._instanceChildren = children_$2;
-var iargs_$6 = new LzInheritedHash(this["constructor"].attributes);
+var iargs_$7 = new LzInheritedHash(this["constructor"].attributes);
 if (!(LzState["$lzsc$isa"] ? LzState.$lzsc$isa(this) : this instanceof LzState)) {
-for (var key_$7 in iargs_$6) {
-var expr_$8 = iargs_$6[key_$7];
-if (expr_$8 && (LzAttributeDescriptor["$lzsc$isa"] ? LzAttributeDescriptor.$lzsc$isa(expr_$8) : expr_$8 instanceof LzAttributeDescriptor)) {
-var val_$9 = expr_$8.value
-} else {
-var val_$9 = expr_$8
-};
-if (!(expr_$8 && (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(expr_$8) : expr_$8 instanceof LzInitExpr))) {
-var setr_$a = "$lzc$set_" + key_$7;
+for (var key_$8 in iargs_$7) {
+var expr_$9 = iargs_$7[key_$8];
+if (!(expr_$9 && (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(expr_$9) : expr_$9 instanceof LzInitExpr))) {
+var setr_$a = "$lzc$set_" + key_$8;
 if (!this[setr_$a]) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(val_$9) : val_$9 instanceof Function) {
-this.addProperty(key_$7, val_$9)
-} else if (val_$9 !== void 0) {
-this[key_$7] = val_$9
+if (Function["$lzsc$isa"] ? Function.$lzsc$isa(expr_$9) : expr_$9 instanceof Function) {
+this.addProperty(key_$8, expr_$9)
+} else if (expr_$9 !== void 0) {
+this[key_$8] = expr_$9
 };
-delete iargs_$6[key_$7];
+delete iargs_$7[key_$8];
 continue
 }};
-if (this[key_$7] === void 0) {
-this[key_$7] = null
+if (this[key_$8] === void 0) {
+this[key_$8] = null
 }}};
 if (attrs_$1) {
-LzNode.mergeAttributes(attrs_$1, iargs_$6)
+LzNode.mergeAttributes(attrs_$1, iargs_$7)
 };
-if (bindid_$4) {
-iargs_$6.$lzc$bind_id = LzNode._ignoreAttribute
+if (iargs_$7["$attributeDescriptor"]) {
+handled_$4.push("$attributeDescriptor");
+this.$attributeDescriptor = iargs_$7.$attributeDescriptor
 };
-if (bindname_$5) {
-iargs_$6.$lzc$bind_name = LzNode._ignoreAttribute
+if (iargs_$7["$CSSDescriptor"]) {
+handled_$4.push("$CSSDescriptor");
+this.$CSSDescriptor = iargs_$7.$CSSDescriptor
+};
+var ignore_$b = LzNode._ignoreAttribute;
+for (var i_$c = 0, l_$d = handled_$4.length;i_$c < l_$d;i_$c++) {
+iargs_$7[handled_$4[i_$c]] = ignore_$b
 };
 this.__LZisnew = !instcall_$3;
-var classChildren_$b = this["constructor"]["children"];
-if (Array["$lzsc$isa"] ? Array.$lzsc$isa(classChildren_$b) : classChildren_$b instanceof Array) {
-children_$2 = LzNode.mergeChildren(children_$2, classChildren_$b)
+var classChildren_$e = this["constructor"]["children"];
+if (Array["$lzsc$isa"] ? Array.$lzsc$isa(classChildren_$e) : classChildren_$e instanceof Array) {
+children_$2 = LzNode.mergeChildren(children_$2, classChildren_$e)
 };
-if (iargs_$6["datapath"] != null) {
-delete iargs_$6["$datapath"]
+if (iargs_$7["datapath"] != null) {
+delete iargs_$7["$datapath"]
 };
-var cargs_$c = this.__LzValueExprs = {};
-for (var key_$7 in iargs_$6) {
-var val_$9 = iargs_$6[key_$7];
-if (LzValueExpr["$lzsc$isa"] ? LzValueExpr.$lzsc$isa(val_$9) : val_$9 instanceof LzValueExpr) {
-cargs_$c[key_$7] = val_$9;
-delete iargs_$6[key_$7]
+var cargs_$f = this.__LzValueExprs = {};
+for (var key_$8 in iargs_$7) {
+var val_$g = iargs_$7[key_$8];
+if (LzValueExpr["$lzsc$isa"] ? LzValueExpr.$lzsc$isa(val_$g) : val_$g instanceof LzValueExpr) {
+cargs_$f[key_$8] = val_$g;
+delete iargs_$7[key_$8]
 }};
 try {
-this.construct(parent_$0, iargs_$6)
+this.construct(parent_$0, iargs_$7)
 }
-catch (e_$d) {
-if (e_$d === LzNode.__LzEarlyAbort) {
+catch (e_$h) {
+if (e_$h === LzNode.__LzEarlyAbort) {
 return
 } else {
-throw e_$d
+throw e_$h
 }};
-for (var key_$7 in cargs_$c) {
-iargs_$6[key_$7] = cargs_$c[key_$7]
+for (var key_$8 in cargs_$f) {
+iargs_$7[key_$8] = cargs_$f[key_$8]
 };
 this.__LzValueExprs = null;
-this.__LZapplyArgs(iargs_$6, true);
+this.__LZapplyArgs(iargs_$7, true);
 if (this.__LZdeleted) {
 return
 };
 this.__LZdeferDelegates = false;
-var evq_$e = this.__LZdelegatesQueue;
-if (evq_$e) {
-LzDelegate.__LZdrainDelegatesQueue(evq_$e);
+var evq_$i = this.__LZdelegatesQueue;
+if (evq_$i) {
+LzDelegate.__LZdrainDelegatesQueue(evq_$i);
 this.__LZdelegatesQueue = null
 };
 if (this.onconstruct.ready) this.onconstruct.sendEvent(this);
@@ -4657,7 +5113,7 @@ this.__LZinstantiationDone()
 }};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "oninit", LzDeclaredEvent, "onconstruct", LzDeclaredEvent, "ondata", LzDeclaredEvent, "clonenumber", null, "onclonenumber", LzDeclaredEvent, "__LZinstantiated", false, "__LZpreventSubInit", null, "__LZresolveDict", null, "__LZsourceLocation", null, "__LZUID", void 0, "__LZPropertyCache", null, "__LZCSSProp", null, "__LZCSSType", null, "__LZCSSFallback", null, "__LZRuleCache", null, "__LZconstraintdelegates", null, "isinited", false, "inited", false, "oninited", LzDeclaredEvent, "subnodes", null, "datapath", null, "$lzc$set_datapath", (function () {
+})(), "oninit", LzDeclaredEvent, "onconstruct", LzDeclaredEvent, "ondata", LzDeclaredEvent, "clonenumber", null, "onclonenumber", LzDeclaredEvent, "__LZinstantiated", false, "__LZpreventSubInit", null, "__LZresolveDict", null, "__LZsourceLocation", null, "__LZUID", void 0, "__LZPropertyCache", null, "__LZInheritedPropertyCache", null, "on__LZInheritedPropertyCache", LzDeclaredEvent, "__LZRuleCache", null, "__LZconstraintdelegates", null, "isinited", false, "inited", false, "oninited", LzDeclaredEvent, "subnodes", null, "datapath", null, "$lzc$set_datapath", (function () {
 var $lzsc$temp = function (dp_$0) {
 if (null != this.datapath && dp_$0 !== LzNode._ignoreAttribute) {
 this.datapath.setXPath(dp_$0)
@@ -4685,11 +5141,15 @@ this.onstyleclass.sendEvent(classes_$0)
 }};
 $lzsc$temp["displayName"] = "$lzc$set_styleclass";
 return $lzsc$temp
+})(), "_hasStyleClass", (function () {
+var $lzsc$temp = function (name_$0) {
+return this.__LZCSSStyleclass == null ? this.styleclass == name_$0 : this.__LZCSSStyleclass.indexOf(" " + name_$0 + " ") >= 0
+};
+$lzsc$temp["displayName"] = "_hasStyleClass";
+return $lzsc$temp
 })(), "__LZCSSDependencies", null, "__applyCSSConstraints", (function () {
-var $lzsc$temp = function () {
-var dependencies_$0 = this.__LZCSSDependencies;
+var $lzsc$temp = function (dependencies_$0) {
 if (dependencies_$0) {
-this.__LZCSSDependencies = null;
 var cdel_$1 = this.__applyCSSConstraintDel;
 if (cdel_$1) {
 cdel_$1.unregisterAll()
@@ -4715,93 +5175,89 @@ switch (arguments.length) {
 case 0:
 ignore_$0 = null
 };
-var oldpropmap_$1 = LzCSSStyle.getPropertyCache(this);
-this.__LZRuleCache = null;
+var oldpropmap_$1 = this.__LZPropertyCache;
 this.__LZPropertyCache = null;
 var newpropmap_$2 = LzCSSStyle.getPropertyCache(this);
-var attrmap_$3 = this.__LZCSSProp;
-var typemap_$4 = this.__LZCSSType;
-var fallbackmap_$5 = this.__LZCSSFallback;
-for (var attr_$6 in attrmap_$3) {
-var prop_$7 = attrmap_$3[attr_$6];
-if (oldpropmap_$1[prop_$7] != newpropmap_$2[prop_$7]) {
-this.__LZstyleBindAttribute(attr_$6, prop_$7, typemap_$4[attr_$6], fallbackmap_$5[attr_$6])
-}};
-this.__applyCSSConstraints()
+var attrs_$3 = this.__LZCSSStyledAttrs;
+if (attrs_$3) {
+if (oldpropmap_$1) {
+var attrprop_$4 = this.$attributeDescriptor.properties;
+var restyles_$5 = null;
+for (var i_$6 = 0, l_$7 = attrs_$3.length;i_$6 < l_$7;i_$6++) {
+var attr_$8 = attrs_$3[i_$6];
+var prop_$9 = attrprop_$4[attr_$8];
+if (oldpropmap_$1[prop_$9] != newpropmap_$2[prop_$9]) {
+if (!restyles_$5) {
+restyles_$5 = []
 };
+restyles_$5.push(attr_$8)
+}};
+if (restyles_$5) {
+this.applyStyleConstraints(restyles_$5, true)
+}} else {
+this.applyStyleConstraints(attrs_$3, true)
+}}};
 $lzsc$temp["displayName"] = "__reapplyCSS";
 return $lzsc$temp
-})(), "__LZstyleBindAttribute", (function () {
-var $lzsc$temp = function (attr_$0, prop_$1, type_$2, fallback_$3, warn_$4) {
+})(), "__LZCSSStyledAttrs", null, "applyStyleConstraints", (function () {
+var $lzsc$temp = function (attrs_$0, reapply_$1) {
 switch (arguments.length) {
-case 3:
-fallback_$3 = void 0;;case 4:
-warn_$4 = true
+case 1:
+reapply_$1 = false
 };
-var pc_$5 = this["__LZPropertyCache"] || LzCSSStyle.getPropertyCache(this);
-if (!(prop_$1 in pc_$5) && fallback_$3 === void 0 && warn_$4 != false) {
-Debug.warn("%w.%s: No applicable value for CSS property %w and there is no default.", this, attr_$0, prop_$1);
-pc_$5[prop_$1] = void 0
+if (!reapply_$1) {
+this.__LZCSSStyledAttrs = attrs_$0
 };
-if (!this.__LZCSSProp) {
-this.__LZCSSProp = {}};
-this.__LZCSSProp[attr_$0] = prop_$1;
-if (!this.__LZCSSType) {
-this.__LZCSSType = {}};
-this.__LZCSSType[attr_$0] = type_$2;
-if (!this.__LZCSSFallback) {
-this.__LZCSSFallback = {}};
-this.__LZCSSFallback[attr_$0] = fallback_$3;
-var styleValue_$6 = pc_$5[prop_$1];
-if (typeof styleValue_$6 == "string" && styleValue_$6.length > 2 && styleValue_$6.indexOf("0x") == 0 && !isNaN(styleValue_$6)) {
-Debug.warn("%w.%s: Invalid value for CSS property %w: `%#w`.  Use: `#%06x`.", this, attr_$0, prop_$1, styleValue_$6, Number(styleValue_$6));
-styleValue_$6 = Number(styleValue_$6)
+var pc_$2 = this["__LZPropertyCache"] || LzCSSStyle.getPropertyCache(this);
+var desc_$3 = this.$attributeDescriptor;
+var props_$4 = desc_$3.properties;
+var types_$5 = desc_$3.types;
+var fallbacks_$6 = desc_$3.fallbacks;
+for (var i_$7 = 0, l_$8 = attrs_$0.length;i_$7 < l_$8;i_$7++) {
+var attr_$9 = attrs_$0[i_$7];
+var prop_$a = props_$4[attr_$9];
+var type_$b = types_$5 && types_$5[attr_$9] || "expression";
+var fallback_$c = fallbacks_$6 && fallbacks_$6[attr_$9];
+var warn_$d = !(fallbacks_$6 && fallbacks_$6.hasOwnProperty(attr_$9));
+if (!prop_$a) {
+Debug.error("Compiler error: %w.%s: no corresponding CSS property found in %w", this, attr_$9, props_$4);
+if (attr_$9 in pc_$2) {
+prop_$a = attr_$9
+}} else if (!(prop_$a in pc_$2) && fallback_$c === void 0 && warn_$d != false) {
+var ipc_$e = this.__LZInheritedPropertyCache;
+if (pc_$2 === LzCSSStyleClass.EMTPY_CACHE) {
+pc_$2 = this.__LZPropertyCache = {}};
+if (prop_$a in ipc_$e) {
+Debug.warn("%w.%s: No applicable value for CSS property %w, however there is an inheritable value `%w`.\n" + "    Use `<attribute name='%s' style='%s' inherit='true' />` to inherit that value and silence this warning.", this, attr_$9, prop_$a, $lzc$class_PresentationTypeValue.fromPresentation(type_$b, ipc_$e[prop_$a], this, attr_$9), attr_$9, prop_$a);
+pc_$2[prop_$a] = ipc_$e[prop_$a]
+} else {
+Debug.warn("%w.%s: No applicable value for CSS property %w and there is no default.\n" + "    Use `<attribute name='%s' style='%s' value='...' /> to provide a default and silence this warning.", this, attr_$9, prop_$a, attr_$9, prop_$a);
+pc_$2[prop_$a] = void 0
 };
-if (LzStyleExpr["$lzsc$isa"] ? LzStyleExpr.$lzsc$isa(styleValue_$6) : styleValue_$6 instanceof LzStyleExpr) {
-if (LzStyleAttr["$lzsc$isa"] ? LzStyleAttr.$lzsc$isa(styleValue_$6) : styleValue_$6 instanceof LzStyleAttr) {
-var sa_$7 = styleValue_$6;
-var source_$8 = sa_$7.sourceAttributeName;
-var binder_$9 = new LzStyleAttrBinder(this, attr_$0, source_$8);
+Debug.info("Use `Debug.explainStyleBindings(%w%s)` for more information.", this, (prop_$a in ipc_$e) ? ", true" : "")
+};
+var styleValue_$f = pc_$2[prop_$a];
+if (LzStyleExpr["$lzsc$isa"] ? LzStyleExpr.$lzsc$isa(styleValue_$f) : styleValue_$f instanceof LzStyleExpr) {
+if (LzStyleAttr["$lzsc$isa"] ? LzStyleAttr.$lzsc$isa(styleValue_$f) : styleValue_$f instanceof LzStyleAttr) {
+var sa_$g = styleValue_$f;
+var source_$h = sa_$g.sourceAttributeName;
+var binder_$i = new LzStyleAttrBinder(this, attr_$9, source_$h);
 if (!this.__LZconstraintdelegates) {
 this.__LZconstraintdelegates = []
 };
-this.__LZconstraintdelegates.push(new LzDelegate(binder_$9, "bind", this, "on" + source_$8));
-binder_$9.bind()
-} else if (LzStyleIdent["$lzsc$isa"] ? LzStyleIdent.$lzsc$isa(styleValue_$6) : styleValue_$6 instanceof LzStyleIdent) {
-var si_$a = styleValue_$6;
-this.acceptAttribute(attr_$0, type_$2, si_$a.sourceValueID)
+this.__LZconstraintdelegates.push(new LzDelegate(binder_$i, "bind", this, "on" + source_$h));
+binder_$i.bind()
 } else {
-Debug.error("Unknown style expression %w", styleValue_$6)
-}} else if (styleValue_$6 !== void 0) {
-if (this[attr_$0] !== styleValue_$6) {
-{
-if (!this.__LZdeleted) {
-var $lzsc$3qildn = "$lzc$set_" + attr_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$3qildn]) : this[$lzsc$3qildn] instanceof Function) {
-this[$lzsc$3qildn](styleValue_$6)
+Debug.error("Unknown style expression %w", styleValue_$f)
+}} else if (styleValue_$f !== void 0) {
+this.acceptAttribute(attr_$9, type_$b, styleValue_$f)
+} else if (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(fallback_$c) : fallback_$c instanceof LzInitExpr) {
+this.applyConstraintExpr(fallback_$c)
 } else {
-this[attr_$0] = styleValue_$6;
-var $lzsc$ytke7s = this["on" + attr_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$ytke7s) : $lzsc$ytke7s instanceof LzEvent) {
-if ($lzsc$ytke7s.ready) {
-$lzsc$ytke7s.sendEvent(styleValue_$6)
-}}}}}}} else if (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(fallback_$3) : fallback_$3 instanceof LzInitExpr) {
-this.applyConstraintExpr(fallback_$3)
-} else {
-if (this[attr_$0] !== fallback_$3) {
-{
-if (!this.__LZdeleted) {
-var $lzsc$oyqonh = "$lzc$set_" + attr_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$oyqonh]) : this[$lzsc$oyqonh] instanceof Function) {
-this[$lzsc$oyqonh](fallback_$3)
-} else {
-this[attr_$0] = fallback_$3;
-var $lzsc$m7v22k = this["on" + attr_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$m7v22k) : $lzsc$m7v22k instanceof LzEvent) {
-if ($lzsc$m7v22k.ready) {
-$lzsc$m7v22k.sendEvent(fallback_$3)
-}}}}}}}};
-$lzsc$temp["displayName"] = "__LZstyleBindAttribute";
+if (this[attr_$9] !== fallback_$c) {
+this.setAttribute(attr_$9, fallback_$c)
+}}}};
+$lzsc$temp["displayName"] = "applyStyleConstraints";
 return $lzsc$temp
 })(), "construct", (function () {
 var $lzsc$temp = function (parent_$0, args_$1) {
@@ -4923,108 +5379,114 @@ lz.Instantiator.completeTrickle(this)
 }}};
 $lzsc$temp["displayName"] = "completeInstantiation";
 return $lzsc$temp
-})(), "ignoreplacement", false, "$lzc$set_$delegates", -1, "$lzc$set_$classrootdepth", -1, "$lzc$set_$datapath", -1, "__LZapplyArgs", (function () {
+})(), "ignoreplacement", false, "$lzc$set_$delegates", -1, "$lzc$set_$classrootdepth", -1, "$lzc$set_$datapath", -1, "$lzc$set_$CSSDescriptor", -1, "$lzc$set_$attributeDescriptor", -1, "__LZapplyArgs", (function () {
 var $lzsc$temp = function (args_$0, constcall_$1) {
 var ignore_$2 = LzNode._ignoreAttribute;
-var oset_$3 = {};
-var hasset_$4 = null;
-var inits_$5 = null;
-var constraints_$6 = null;
+var styleconstraint_$3 = LzStyleConstraintExpr.StyleConstraintExpr;
+var oset_$4 = {};
+var hasset_$5 = null;
+var inits_$6 = null;
+var constraints_$7 = null;
+var styles_$8 = null;
 if ("name" in args_$0) {
 this.$lzc$set_name(args_$0.name);
 delete args_$0.name
 };
-for (var key_$7 in args_$0) {
-var expr_$8 = args_$0[key_$7];
-if (expr_$8 && (LzAttributeDescriptor["$lzsc$isa"] ? LzAttributeDescriptor.$lzsc$isa(expr_$8) : expr_$8 instanceof LzAttributeDescriptor)) {
-var val_$9 = expr_$8.value
+for (var key_$9 in args_$0) {
+var expr_$a = args_$0[key_$9];
+if (oset_$4[key_$9] || expr_$a === ignore_$2) continue;
+oset_$4[key_$9] = true;
+var setr_$b = "$lzc$set_" + key_$9;
+if (expr_$a && (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(expr_$a) : expr_$a instanceof LzInitExpr)) {
+if (expr_$a instanceof LzConstraintExpr) {
+if (expr_$a === styleconstraint_$3) {
+if (styles_$8 == null) {
+styles_$8 = []
+};
+styles_$8.push(key_$9)
 } else {
-var val_$9 = expr_$8
+if (constraints_$7 == null) {
+constraints_$7 = []
 };
-if (oset_$3[key_$7] || val_$9 === ignore_$2) continue;
-oset_$3[key_$7] = true;
-var setr_$a = "$lzc$set_" + key_$7;
-if (expr_$8 && (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(expr_$8) : expr_$8 instanceof LzInitExpr)) {
-if (expr_$8 instanceof LzConstraintExpr) {
-if (constraints_$6 == null) {
-constraints_$6 = []
+constraints_$7.push(expr_$a)
+}} else if (expr_$a instanceof LzOnceExpr) {
+if (inits_$6 == null) {
+inits_$6 = []
 };
-constraints_$6.push(expr_$8)
-} else if (expr_$8 instanceof LzOnceExpr) {
-if (inits_$5 == null) {
-inits_$5 = []
-};
-inits_$5.push(expr_$8)
+inits_$6.push(expr_$a)
 } else {
-Debug.debug("Unknown init expr: %w", expr_$8)
+Debug.debug("Unknown init expr: %w", expr_$a)
 };
-if (this[key_$7] === void 0) {
-this[key_$7] = null
-}} else if (!this[setr_$a]) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(val_$9) : val_$9 instanceof Function) {
-this.addProperty(key_$7, val_$9)
-} else if (val_$9 !== void 0) {
-this[key_$7] = val_$9
+if (this[key_$9] === void 0) {
+this[key_$9] = null
+}} else if (!this[setr_$b]) {
+if (Function["$lzsc$isa"] ? Function.$lzsc$isa(expr_$a) : expr_$a instanceof Function) {
+this.addProperty(key_$9, expr_$a)
+} else if (expr_$a !== void 0) {
+this[key_$9] = expr_$a
 };
 if (!constcall_$1) {
-var thisevent_$b = this["on" + key_$7];
-if (thisevent_$b) {
-if (thisevent_$b.ready) {
-thisevent_$b.sendEvent(args_$0[key_$7])
-}}}} else if (this[setr_$a] != -1) {
-if (hasset_$4 == null) {
-hasset_$4 = []
+var thisevent_$c = this["on" + key_$9];
+if (thisevent_$c) {
+if (thisevent_$c.ready) {
+thisevent_$c.sendEvent(args_$0[key_$9])
+}}}} else if (this[setr_$b] != -1) {
+if (hasset_$5 == null) {
+hasset_$5 = []
 };
-hasset_$4.push(setr_$a, val_$9);
-if (this[key_$7] === void 0) {
-this[key_$7] = null
+hasset_$5.push(setr_$b, expr_$a);
+if (this[key_$9] === void 0) {
+this[key_$9] = null
 }}};
 if ("$delegates" in args_$0) {
-var $c = args_$0.$delegates;
-var cdels_$d = this.__LZconstraintdelegates;
-var resarray_$e;
-for (var i_$f = 0, l_$g = $c.length;i_$f < l_$g;i_$f += 3) {
-if ($c[i_$f + 2]) {
-if (resarray_$e == null) {
-resarray_$e = []
+var $d = args_$0.$delegates;
+var cdels_$e = this.__LZconstraintdelegates;
+var resarray_$f;
+for (var i_$g = 0, l_$h = $d.length;i_$g < l_$h;i_$g += 3) {
+if ($d[i_$g + 2]) {
+if (resarray_$f == null) {
+resarray_$f = []
 };
-resarray_$e.push($c[i_$f], $c[i_$f + 1], $c[i_$f + 2])
+resarray_$f.push($d[i_$g], $d[i_$g + 1], $d[i_$g + 2])
 } else {
-var m_$h = $c[i_$f + 1];
-if (!cdels_$d) {
-cdels_$d = this.__LZconstraintdelegates = []
+var m_$i = $d[i_$g + 1];
+if (!cdels_$e) {
+cdels_$e = this.__LZconstraintdelegates = []
 };
-cdels_$d.push(new LzDelegate(this, m_$h, this, $c[i_$f]))
+cdels_$e.push(new LzDelegate(this, m_$i, this, $d[i_$g]))
 }};
-if (resarray_$e != null) {
-this.__LZstoreAttr(resarray_$e, "$delegates")
+if (resarray_$f != null) {
+this.__LZstoreAttr(resarray_$f, "$delegates")
 }};
 if ("$classrootdepth" in args_$0) {
-var $i = args_$0.$classrootdepth;
-if ($i) {
-var p_$j = this.parent;
-while (--$i > 0) {
-p_$j = p_$j.parent
+var $j = args_$0.$classrootdepth;
+if ($j) {
+var p_$k = this.parent;
+while (--$j > 0) {
+p_$k = p_$k.parent
 };
-this.classroot = p_$j
+this.classroot = p_$k
 }};
 if (("$datapath" in args_$0) && args_$0.$datapath !== ignore_$2) {
-var $k = args_$0.$datapath;
-if (!($k instanceof Object)) {
-Debug.debug("`$datapath` is non-object %w?", $k)
+var $l = args_$0.$datapath;
+if (!($l instanceof Object)) {
+Debug.debug("`$datapath` is non-object %w?", $l)
 };
-this.makeChild($k, true)
+this.makeChild($l, true)
 };
-if (hasset_$4) {
-for (var i_$f = 0, l_$g = hasset_$4.length;i_$f < l_$g;i_$f += 2) {
+if (hasset_$5) {
+for (var i_$g = 0, l_$h = hasset_$5.length;i_$g < l_$h;i_$g += 2) {
 if (this.__LZdeleted) return;
-this[hasset_$4[i_$f]](hasset_$4[i_$f + 1])
+this[hasset_$5[i_$g]](hasset_$5[i_$g + 1])
 }};
-if (inits_$5 != null) {
-this.__LZstoreAttr(inits_$5, "$inits")
+if (inits_$6 != null) {
+this.__LZstoreAttr(inits_$6, "$inits")
 };
-if (constraints_$6 != null) {
-this.__LZstoreAttr(constraints_$6, "$constraints")
+if (constraints_$7 != null) {
+this.__LZstoreAttr(constraints_$7, "$constraints")
+};
+if (styles_$8 != null) {
+this.__LZstoreAttr(styles_$8, "$styles")
 }};
 $lzsc$temp["displayName"] = "__LZapplyArgs";
 return $lzsc$temp
@@ -5119,15 +5581,16 @@ for (var i_$2 = 0, l_$3 = inits_$1.length;i_$2 < l_$3;i_$2++) {
 this[inits_$1[i_$2].methodName](null);
 if (this.__LZdeleted) return
 }};
-var constraints_$4 = rdict_$0["$constraints"];
-if (constraints_$4 != null) {
-for (var i_$2 = 0, l_$3 = constraints_$4.length;i_$2 < l_$3;i_$2++) {
-this.applyConstraintExpr(constraints_$4[i_$2]);
+var styles_$4 = rdict_$0["$styles"];
+if (styles_$4 != null) {
+this.applyStyleConstraints(styles_$4)
+};
+var constraints_$5 = rdict_$0["$constraints"];
+if (constraints_$5 != null) {
+for (var i_$2 = 0, l_$3 = constraints_$5.length;i_$2 < l_$3;i_$2++) {
+this.applyConstraintExpr(constraints_$5[i_$2]);
 if (this.__LZdeleted) return
 }};
-if (this.__LZCSSDependencies != null) {
-this.__applyCSSConstraints()
-};
 if (this["__LZresolveOtherReferences"]) {
 this.__LZresolveOtherReferences(rdict_$0)
 };
@@ -5146,22 +5609,28 @@ cdels_$1 = this.__LZconstraintdelegates = []
 };
 var l_$2 = delarr_$0.length;
 for (var i_$3 = 0;i_$3 < l_$2;i_$3 += 3) {
-var sendermethodname_$4 = delarr_$0[i_$3 + 2];
-var sender_$5 = sendermethodname_$4 != null ? this[sendermethodname_$4]() : null;
-if (sender_$5 == null) sender_$5 = this;
-var meth_$6 = delarr_$0[i_$3 + 1];
-cdels_$1.push(new LzDelegate(this, meth_$6, sender_$5, delarr_$0[i_$3]))
+var sendergetter_$4 = delarr_$0[i_$3 + 2];
+var sender_$5 = sendergetter_$4 != null ? this[sendergetter_$4]() : null;
+var evt_$6 = delarr_$0[i_$3];
+var meth_$7 = delarr_$0[i_$3 + 1];
+if (sender_$5 == null) {
+var name_$8 = new LzMessage();
+Debug.formatToMessage(name_$8, "<handler name='%s'", evt_$6);
+var method_$9 = Debug.methodName(this, this[meth_$7]);
+if (method_$9.indexOf("$") != 0) {
+Debug.formatToMessage(name_$8, " method='%=s'", this[meth_$7], method_$9)
+};
+var ref_$a = Debug.methodName(this, this[sendergetter_$4]);
+if (ref_$a.indexOf("get ") == 0) {
+ref_$a = ref_$a.substring(4)
+};
+Debug.formatToMessage(name_$8, " reference='%=s'>", this[sendergetter_$4], ref_$a);
+Debug.error("Unable to install %.48w/%#w, reference context does not exist!", this, name_$8);
+continue
+};
+cdels_$1.push(new LzDelegate(this, meth_$7, sender_$5, evt_$6))
 }};
 $lzsc$temp["displayName"] = "__LZsetDelegates";
-return $lzsc$temp
-})(), "applyConstraint", (function () {
-var $lzsc$temp = function (attribute_$0, constraint_$1, dependencies_$2) {
-Debug.deprecated(this, arguments.callee, this.applyConstraintMethod);
-var constraintMethodName_$3 = "$cf" + this.$cfn++;
-this.addProperty(constraintMethodName_$3, constraint_$1);
-return this.applyConstraintMethod(constraintMethodName_$3, dependencies_$2)
-};
-$lzsc$temp["displayName"] = "applyConstraint";
 return $lzsc$temp
 })(), "applyConstraintMethod", (function () {
 var $lzsc$temp = function (constraintMethodName_$0, dependencies_$1) {
@@ -5185,34 +5654,29 @@ $lzsc$temp["displayName"] = "applyConstraintMethod";
 return $lzsc$temp
 })(), "applyConstraintExpr", (function () {
 var $lzsc$temp = function (expr_$0) {
-if (expr_$0 instanceof LzStyleConstraintExpr) {
-var se_$1 = expr_$0;
-this.__LZstyleBindAttribute(se_$1.attribute, se_$1.property, se_$1.type, se_$1.fallback, se_$1.warn);
-return
-};
-var constraintMethodName_$2 = expr_$0.methodName;
-if (!(Function["$lzsc$isa"] ? Function.$lzsc$isa(this[constraintMethodName_$2]) : this[constraintMethodName_$2] instanceof Function)) {
+var constraintMethodName_$1 = expr_$0.methodName;
+if (!(Function["$lzsc$isa"] ? Function.$lzsc$isa(this[constraintMethodName_$1]) : this[constraintMethodName_$1] instanceof Function)) {
 Debug.error("Bad constraint %w on %w", expr_$0, this);
 return
 };
-var dependencies_$3 = null;
+var dependencies_$2 = null;
 if (expr_$0 instanceof LzAlwaysExpr) {
-var c_$4 = expr_$0;
-var dependenciesMethodName_$5 = c_$4.dependenciesName;
-if (!(Function["$lzsc$isa"] ? Function.$lzsc$isa(this[dependenciesMethodName_$5]) : this[dependenciesMethodName_$5] instanceof Function)) {
+var c_$3 = expr_$0;
+var dependenciesMethodName_$4 = c_$3.dependenciesName;
+if (!(Function["$lzsc$isa"] ? Function.$lzsc$isa(this[dependenciesMethodName_$4]) : this[dependenciesMethodName_$4] instanceof Function)) {
 Debug.error("Bad dependencies for constraint %.64w.%w", this, expr_$0)
 } else {
 try {
-dependencies_$3 = this[dependenciesMethodName_$5]();
-for (var i_$6 = 0, l_$7 = dependencies_$3.length;i_$6 < l_$7;i_$6 += 2) {
-var dp_$8 = dependencies_$3[i_$6];
-if (dp_$8 != null && !(LzEventable["$lzsc$isa"] ? LzEventable.$lzsc$isa(dp_$8) : dp_$8 instanceof LzEventable)) {
-dependencies_$3[i_$6] = null
+dependencies_$2 = this[dependenciesMethodName_$4]();
+for (var i_$5 = 0, l_$6 = dependencies_$2.length;i_$5 < l_$6;i_$5 += 2) {
+var dp_$7 = dependencies_$2[i_$5];
+if (dp_$7 != null && !(LzEventable["$lzsc$isa"] ? LzEventable.$lzsc$isa(dp_$7) : dp_$7 instanceof LzEventable)) {
+dependencies_$2[i_$5] = null
 }}}
-catch (e_$9) {
-Debug.error("Error: %w computing dependencies for constraint %.64w.%w", e_$9, this, expr_$0)
+catch (e_$8) {
+Debug.error("Error: %w computing dependencies for constraint %.64w.%w", e_$8, this, expr_$0)
 }}};
-this.applyConstraintMethod(constraintMethodName_$2, dependencies_$3)
+this.applyConstraintMethod(constraintMethodName_$1, dependencies_$2)
 };
 $lzsc$temp["displayName"] = "applyConstraintExpr";
 return $lzsc$temp
@@ -5287,13 +5751,6 @@ this.name = name_$0
 };
 $lzsc$temp["displayName"] = "$lzc$set_name";
 return $lzsc$temp
-})(), "setDatapath", (function () {
-var $lzsc$temp = function (dp_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_datapath(dp_$0)
-};
-$lzsc$temp["displayName"] = "setDatapath";
-return $lzsc$temp
 })(), "data", null, "$lzc$set_data", (function () {
 var $lzsc$temp = function (data_$0) {
 this.data = data_$0;
@@ -5304,17 +5761,6 @@ dp_$1.setPointer(data_$0)
 if (this.ondata.ready) this.ondata.sendEvent(data_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_data";
-return $lzsc$temp
-})(), "setData", (function () {
-var $lzsc$temp = function (data_$0, ignore_$1) {
-switch (arguments.length) {
-case 1:
-ignore_$1 = null
-};
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_data(data_$0)
-};
-$lzsc$temp["displayName"] = "setData";
 return $lzsc$temp
 })(), "applyData", (function () {
 var $lzsc$temp = function (data_$0) {};
@@ -5505,18 +5951,7 @@ moreargs_$4 = null
 };
 if (duration_$2 == 0) {
 var val_$5 = isRelative_$3 ? this[prop_$0] + to_$1 : to_$1;
-{
-if (!this.__LZdeleted) {
-var $lzsc$m5lv62 = "$lzc$set_" + prop_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$m5lv62]) : this[$lzsc$m5lv62] instanceof Function) {
-this[$lzsc$m5lv62](val_$5)
-} else {
-this[prop_$0] = val_$5;
-var $lzsc$13ptjt = this["on" + prop_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$13ptjt) : $lzsc$13ptjt instanceof LzEvent) {
-if ($lzsc$13ptjt.ready) {
-$lzsc$13ptjt.sendEvent(val_$5)
-}}}}};
+this.__setAttr(prop_$0, val_$5);
 return null
 };
 var args_$6 = {attribute: prop_$0, to: to_$1, duration: duration_$2, relative: isRelative_$3, target: this};
@@ -5533,14 +5968,15 @@ $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
 })(), "getDebugIdentification", (function () {
 var $lzsc$temp = function () {
-var s_$0 = this["constructor"].tagname;
+var c_$0 = this["constructor"];
+var s_$1 = c_$0 && c_$0.hasOwnProperty("tagname") ? c_$0.tagname : "anonymous";
 if (this["name"] != null) {
-s_$0 += " name: " + this.name
+s_$1 += " name: " + this.name
 };
 if (this["id"] != null) {
-s_$0 += " id: " + this.id
+s_$1 += " id: " + this.id
 };
-return s_$0
+return s_$1
 };
 $lzsc$temp["displayName"] = "getDebugIdentification";
 return $lzsc$temp
@@ -5550,11 +5986,11 @@ switch (arguments.length) {
 case 1:
 limit_$1 = Infinity
 };
-if (node_$0 === canvas) {
-return ""
-};
 if (node_$0 === Debug.inspectContext) {
 return "."
+};
+if (node_$0 === canvas) {
+return "#canvas"
 };
 var nid_$2 = node_$0.id;
 if (typeof nid_$2 == "string" && globalValue(nid_$2) === node_$0) {
@@ -5566,76 +6002,63 @@ return "#" + nn_$3
 };
 var parent_$4 = node_$0.immediateparent || node_$0.parent;
 var path_$5 = "";
-if (parent_$4 != null) {
-if (typeof nn_$3 == "string" && parent_$4[nn_$3] === node_$0) {
+if (typeof nn_$3 == "string" && (parent_$4 == null || parent_$4[nn_$3] === node_$0)) {
 path_$5 = "@" + nn_$3
 } else {
 var nct_$6 = node_$0.constructor.tagname;
-if (!nct_$6) {
-path_$5 = "anonymous"
-} else {
-path_$5 = nct_$6;
-var sn_$7 = parent_$4.subnodes;
-var index_$8, count_$9 = 0;
-for (var i_$a = 0, len_$b = sn_$7.length;i_$a < len_$b;i_$a++) {
-var sibling_$c = sn_$7[i_$a];
-if (nct_$6 == sibling_$c.constructor.tagname) {
-count_$9++;
-if (index_$8) break
-};
-if (node_$0 === sibling_$c) {
-index_$8 = count_$9
+path_$5 = nct_$6 || "anonymous";
+var cn_$7 = node_$0.styleclass;
+if (cn_$7) {
+var more_$8 = cn_$7.indexOf(" ");
+if (more_$8 != -1) {
+cn_$7 = cn_$7.substring(0, more_$8)
 }};
-if (count_$9 > 1) {
-path_$5 += "[" + index_$8 + "]"
-}}};
+var index_$9, count_$a = 0;
+if (parent_$4 != null) {
+var sn_$b = parent_$4.subnodes;
+for (var i_$c = 0, len_$d = sn_$b.length;i_$c < len_$d;i_$c++) {
+var sibling_$e = sn_$b[i_$c];
+if (nct_$6 == sibling_$e.constructor.tagname) {
+count_$a++;
+if (index_$9) break;
+if (node_$0 === sibling_$e) {
+index_$9 = count_$a
+}}}};
+if (cn_$7) {
+path_$5 += "." + cn_$7
+};
+if (count_$a > 1) {
+path_$5 += "[" + index_$9 + "]"
+}};
 if (path_$5.length >= limit_$1) {
 return "\u2026"
 };
 try {
-return this.nodePath(parent_$4, limit_$1 - path_$5.length - 1) + "/" + path_$5
+return (parent_$4 == null ? "?" : (parent_$4 === canvas ? "" : this.nodePath(parent_$4, limit_$1 - path_$5.length - 1))) + "/" + path_$5
 }
-catch (e_$d) {
+catch (e_$f) {};
 return "\u2026/" + path_$5
-}};
-return path_$5
 };
 $lzsc$temp["displayName"] = "nodePath";
-return $lzsc$temp
-})(), "acceptTypeValue", (function () {
-var $lzsc$temp = function (type_$0, value_$1, node_$2, attribute_$3) {
-Debug.deprecated(this, arguments.callee, lz.Type.acceptTypeValue);
-return lz.Type.acceptTypeValue(type_$0, value_$1, node_$2, attribute_$3)
-};
-$lzsc$temp["displayName"] = "acceptTypeValue";
 return $lzsc$temp
 })(), "acceptAttribute", (function () {
 var $lzsc$temp = function (name_$0, type_$1, value_$2) {
 value_$2 = lz.Type.acceptTypeValue(type_$1, value_$2, this, name_$0);
 if (this[name_$0] !== value_$2) {
-{
-if (!this.__LZdeleted) {
-var $lzsc$8m5o1m = "$lzc$set_" + name_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$8m5o1m]) : this[$lzsc$8m5o1m] instanceof Function) {
-this[$lzsc$8m5o1m](value_$2)
-} else {
-this[name_$0] = value_$2;
-var $lzsc$oopj22 = this["on" + name_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$oopj22) : $lzsc$oopj22 instanceof LzEvent) {
-if ($lzsc$oopj22.ready) {
-$lzsc$oopj22.sendEvent(value_$2)
-}}}}}}};
+this.setAttribute(name_$0, value_$2)
+}};
 $lzsc$temp["displayName"] = "acceptAttribute";
-return $lzsc$temp
-})(), "presentTypeValue", (function () {
-var $lzsc$temp = function (type_$0, value_$1, node_$2, attribute_$3) {
-Debug.deprecated(this, arguments.callee, lz.Type.presentTypeValue);
-return lz.Type.presentTypeValue(type_$0, value_$1, node_$2, attribute_$3)
-};
-$lzsc$temp["displayName"] = "presentTypeValue";
 return $lzsc$temp
 })(), "presentAttribute", (function () {
 var $lzsc$temp = function (name_$0, type_$1) {
+switch (arguments.length) {
+case 1:
+type_$1 = null
+};
+if (!type_$1) {
+var types_$2 = this.$attributeDescriptor.types;
+type_$1 = types_$2 && types_$2[name_$0] || "expression"
+};
 return lz.Type.presentTypeValue(type_$1, this[name_$0], this, name_$0)
 };
 $lzsc$temp["displayName"] = "presentAttribute";
@@ -5689,32 +6112,44 @@ return true
 };
 $lzsc$temp["displayName"] = "__invokeCustomSetter";
 return $lzsc$temp
-})()], LzEventable, ["tagname", "node", "attributes", new LzInheritedHash(), "mergeAttributes", (function () {
+})()], LzEventable, ["tagname", "node", "__LZCSSTagSelectors", ["node"], "attributes", new LzInheritedHash(), "mergeAttributes", (function () {
+var $lzsc$temp = function (attrs_$0, dattrs_$1) {
+var ignore_$2 = LzNode._ignoreAttribute;
+for (var k_$3 in attrs_$0) {
+var attrk_$4 = attrs_$0[k_$3];
+if (attrk_$4 === ignore_$2) {
+delete dattrs_$1[k_$3]
+} else if (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(attrk_$4) : attrk_$4 instanceof LzInitExpr) {
+dattrs_$1[k_$3] = attrk_$4
+} else {
+if (Object["$lzsc$isa"] ? Object.$lzsc$isa(attrk_$4) : attrk_$4 instanceof Object) {
+var dattrk_$5 = dattrs_$1[k_$3];
+if (Object["$lzsc$isa"] ? Object.$lzsc$isa(dattrk_$5) : dattrk_$5 instanceof Object) {
+if ((Array["$lzsc$isa"] ? Array.$lzsc$isa(attrk_$4) : attrk_$4 instanceof Array) && (Array["$lzsc$isa"] ? Array.$lzsc$isa(dattrk_$5) : dattrk_$5 instanceof Array)) {
+dattrs_$1[k_$3] = attrk_$4.concat(dattrk_$5);
+continue
+} else if ((attrk_$4.constructor === Object || (LzInheritedHash["$lzsc$isa"] ? LzInheritedHash.$lzsc$isa(attrk_$4) : attrk_$4 instanceof LzInheritedHash)) && (dattrk_$5.constructor === Object || (LzInheritedHash["$lzsc$isa"] ? LzInheritedHash.$lzsc$isa(dattrk_$5) : dattrk_$5 instanceof LzInheritedHash))) {
+var tmp_$6 = new LzInheritedHash(dattrk_$5);
+for (var j_$7 in attrk_$4) {
+tmp_$6[j_$7] = attrk_$4[j_$7]
+};
+dattrs_$1[k_$3] = tmp_$6;
+continue
+}}};
+dattrs_$1[k_$3] = attrk_$4
+}};
+return dattrs_$1
+};
+$lzsc$temp["displayName"] = "mergeAttributes";
+return $lzsc$temp
+})(), "mergeAttributeTypes", (function () {
 var $lzsc$temp = function (attrs_$0, dattrs_$1) {
 for (var k_$2 in attrs_$0) {
-var attrk_$3 = attrs_$0[k_$2];
-if (attrk_$3 === LzNode._ignoreAttribute) {
-delete dattrs_$1[k_$2]
-} else if (LzInitExpr["$lzsc$isa"] ? LzInitExpr.$lzsc$isa(attrk_$3) : attrk_$3 instanceof LzInitExpr) {
-dattrs_$1[k_$2] = attrk_$3
-} else {
-if (Object["$lzsc$isa"] ? Object.$lzsc$isa(attrk_$3) : attrk_$3 instanceof Object) {
-var dattrk_$4 = dattrs_$1[k_$2];
-if (Object["$lzsc$isa"] ? Object.$lzsc$isa(dattrk_$4) : dattrk_$4 instanceof Object) {
-if ((Array["$lzsc$isa"] ? Array.$lzsc$isa(attrk_$3) : attrk_$3 instanceof Array) && (Array["$lzsc$isa"] ? Array.$lzsc$isa(dattrk_$4) : dattrk_$4 instanceof Array)) {
-dattrs_$1[k_$2] = attrk_$3.concat(dattrk_$4);
-continue
-} else if ((attrk_$3.constructor === Object || (LzInheritedHash["$lzsc$isa"] ? LzInheritedHash.$lzsc$isa(attrk_$3) : attrk_$3 instanceof LzInheritedHash)) && (dattrk_$4.constructor === Object || (LzInheritedHash["$lzsc$isa"] ? LzInheritedHash.$lzsc$isa(dattrk_$4) : dattrk_$4 instanceof LzInheritedHash))) {
-var tmp_$5 = new LzInheritedHash(dattrk_$4);
-for (var j_$6 in attrk_$3) {
-tmp_$5[j_$6] = attrk_$3[j_$6]
+dattrs_$1[k_$2] = attrs_$0[k_$2]
 };
-dattrs_$1[k_$2] = tmp_$5;
-continue
-}}};
-dattrs_$1[k_$2] = attrk_$3
-}}};
-$lzsc$temp["displayName"] = "mergeAttributes";
+return dattrs_$1
+};
+$lzsc$temp["displayName"] = "mergeAttributeTypes";
 return $lzsc$temp
 })(), "mergeChildren", (function () {
 var $lzsc$temp = function (children_$0, superclasschildren_$1) {
@@ -5729,13 +6164,13 @@ return $lzsc$temp
 var $lzsc$temp = function () {
 return "Early Abort"
 };
-$lzsc$temp["displayName"] = "core/LzNode.lzs#362/43";
+$lzsc$temp["displayName"] = "core/LzNode.lzs#382/43";
 return $lzsc$temp
 })()}, "sourceLocatorTable", {}, "_ignoreAttribute", {toString: (function () {
 var $lzsc$temp = function () {
 return "_ignoreAttribute"
 };
-$lzsc$temp["displayName"] = "core/LzNode.lzs#1173/44";
+$lzsc$temp["displayName"] = "core/LzNode.lzs#1224/44";
 return $lzsc$temp
 })()}, "__UIDs", 0]);
 (function () {
@@ -5744,17 +6179,18 @@ with ($0) with ($0.prototype) {
 {
 LzNode.prototype._dbg_name = (function () {
 var $lzsc$temp = function () {
+if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this.nodePath) : this.nodePath instanceof Function) {
 var dn_$0 = this.nodePath(this, Debug.printLength);
-if (dn_$0 != "") {
+if (dn_$0) {
 return dn_$0
-};
+}};
 var ts_$1 = this.toString();
 if (ts_$1 == this.getDebugIdentification()) {
 return ""
 } else {
 return ts_$1
 }};
-$lzsc$temp["displayName"] = "core/LzNode.lzs#2358/34";
+$lzsc$temp["displayName"] = "core/LzNode.lzs#2382/34";
 return $lzsc$temp
 })()
 }}};
@@ -5906,12 +6342,24 @@ return "Delegate for " + this.c + " calls " + this.m + " " + this.__delegateID
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
 })(), "__tracked", false, "__LZdeleted", false, "destroy", (function () {
-var $lzsc$temp = function () {
+var $lzsc$temp = function (checktracked_$0) {
+switch (arguments.length) {
+case 0:
+checktracked_$0 = true
+};
 if (this.__LZdeleted == true) return;
 this.__LZdeleted = true;
 if (this.hasevents) this.unregisterAll();
 this.hasevents = false;
 this.__events = null;
+if (checktracked_$0 && this.__tracked) {
+this.__tracked = false;
+var _dels_$1 = this.c.__delegates;
+for (var i_$2 = _dels_$1.length - 1;i_$2 >= 0;i_$2--) {
+if (_dels_$1[i_$2] === this) {
+_dels_$1.splice(i_$2, 1);
+break
+}}};
 this.c = null;
 this.m = null
 };
@@ -5958,7 +6406,7 @@ with ($0) with ($0.prototype) {
 LzDelegate.prototype._dbg_name = (function () {
 var $lzsc$temp = function () {
 var name_$0 = Debug.formatToString("%.48w/<handler", this.c);
-var method_$1 = Debug.functionName(this.m);
+var method_$1 = Debug.methodName(this.c, this.m);
 if (method_$1.indexOf("$") != 0) {
 name_$0 += " method=" + Debug.stringEscape(method_$1, true)
 };
@@ -5975,7 +6423,7 @@ name_$0 += " \u2026"
 name_$0 += ">";
 return name_$0
 };
-$lzsc$temp["displayName"] = "events/LaszloEvents.lzs#406/36";
+$lzsc$temp["displayName"] = "events/LaszloEvents.lzs#416/36";
 return $lzsc$temp
 })()
 }}};
@@ -6101,11 +6549,11 @@ LzEvent.prototype._dbg_name = (function () {
 var $lzsc$temp = function () {
 return Debug.formatToString("%0.48w/<event name='%s'>", this._dbg_eventSender, this._dbg_eventName)
 };
-$lzsc$temp["displayName"] = "events/LaszloEvents.lzs#699/31";
+$lzsc$temp["displayName"] = "events/LaszloEvents.lzs#709/31";
 return $lzsc$temp
 })()
 }}};
-$lzsc$temp["displayName"] = "events/LaszloEvents.lzs#516/1";
+$lzsc$temp["displayName"] = "events/LaszloEvents.lzs#526/1";
 return $lzsc$temp
 })()(LzEvent);
 lz.Event = LzEvent;
@@ -6206,34 +6654,43 @@ toprightradius_$6 = null;;case 7:
 bottomrightradius_$7 = null;;case 8:
 bottomleftradius_$8 = null
 };
-var maxsize_$9 = Math.min(width_$3, height_$4) * 0.5;
-topleftradius_$5 = LzKernelUtils.range(topleftradius_$5 || 0, maxsize_$9, 0);
-if (bottomleftradius_$8 == null) {
-bottomleftradius_$8 = bottomrightradius_$7 = toprightradius_$6 = topleftradius_$5
-} else {
-bottomleftradius_$8 = LzKernelUtils.range(bottomleftradius_$8 || 0, maxsize_$9, 0);
-bottomrightradius_$7 = LzKernelUtils.range(bottomrightradius_$7 || 0, maxsize_$9, 0);
-toprightradius_$6 = LzKernelUtils.range(toprightradius_$6 || 0, maxsize_$9, 0)
+if (isNaN(topleftradius_$5)) topleftradius_$5 = 0;
+if (toprightradius_$6 == null || isNaN(toprightradius_$6)) toprightradius_$6 = topleftradius_$5;
+if (bottomleftradius_$8 == null || isNaN(bottomleftradius_$8)) bottomleftradius_$8 = toprightradius_$6;
+if (bottomrightradius_$7 == null || isNaN(bottomrightradius_$7)) bottomrightradius_$7 = topleftradius_$5;
+LzKernelUtils.roundrect(context_$0, x_$1, y_$2, width_$3, height_$4, topleftradius_$5, toprightradius_$6, bottomrightradius_$7, bottomleftradius_$8, topleftradius_$5, toprightradius_$6, bottomrightradius_$7, bottomleftradius_$8)
 };
-var curvemethod_$a = context_$0["curveTo"] ? "curveTo" : "quadraticCurveTo";
-context_$0.moveTo(x_$1, y_$2 + topleftradius_$5);
-context_$0.lineTo(x_$1, y_$2 + height_$4 - bottomleftradius_$8);
-if (bottomleftradius_$8 != 0) {
-context_$0[curvemethod_$a](x_$1, y_$2 + height_$4, x_$1 + bottomleftradius_$8, y_$2 + height_$4)
-};
-context_$0.lineTo(x_$1 + width_$3 - bottomrightradius_$7, y_$2 + height_$4);
-if (bottomrightradius_$7 != 0) {
-context_$0[curvemethod_$a](x_$1 + width_$3, y_$2 + height_$4, x_$1 + width_$3, y_$2 + height_$4 - bottomrightradius_$7)
-};
-context_$0.lineTo(x_$1 + width_$3, y_$2 + toprightradius_$6);
-if (toprightradius_$6 != 0) {
-context_$0[curvemethod_$a](x_$1 + width_$3, y_$2, x_$1 + width_$3 - toprightradius_$6, y_$2)
-};
-context_$0.lineTo(x_$1 + topleftradius_$5, y_$2);
-if (topleftradius_$5 != 0) {
-context_$0[curvemethod_$a](x_$1, y_$2, x_$1, y_$2 + topleftradius_$5)
-}};
 $lzsc$temp["displayName"] = "rect";
+return $lzsc$temp
+})(), "roundrect", (function () {
+var $lzsc$temp = function (context_$0, x_$1, y_$2, width_$3, height_$4, tlh_$5, trh_$6, brh_$7, blh_$8, tlv_$9, trv_$a, brv_$b, blv_$c) {
+var max_$d = Math.max, min_$e = Math.min;
+var f_$f = min_$e(width_$3 / max_$d(tlh_$5 + trh_$6, blh_$8 + brh_$7), height_$4 / max_$d(tlv_$9 + trv_$a, blv_$c + brv_$b));
+if (f_$f > 1) {
+f_$f = 1
+};
+if (f_$f < -1) {
+f_$f = -1
+};
+var curvemethod_$g = context_$0["curveTo"] ? "curveTo" : "quadraticCurveTo";
+context_$0.moveTo(x_$1, y_$2 + tlv_$9 * f_$f);
+context_$0.lineTo(x_$1, y_$2 + height_$4 - blv_$c * f_$f);
+if (blv_$c || blh_$8) {
+context_$0[curvemethod_$g](x_$1, y_$2 + height_$4, x_$1 + blh_$8 * f_$f, y_$2 + height_$4)
+};
+context_$0.lineTo(x_$1 + width_$3 - brh_$7 * f_$f, y_$2 + height_$4);
+if (brh_$7 || brv_$b) {
+context_$0[curvemethod_$g](x_$1 + width_$3, y_$2 + height_$4, x_$1 + width_$3, y_$2 + height_$4 - brv_$b * f_$f)
+};
+context_$0.lineTo(x_$1 + width_$3, y_$2 + trv_$a * f_$f);
+if (trv_$a || trh_$6) {
+context_$0[curvemethod_$g](x_$1 + width_$3, y_$2, x_$1 + width_$3 - trh_$6 * f_$f, y_$2)
+};
+context_$0.lineTo(x_$1 + tlh_$5 * f_$f, y_$2);
+if (tlh_$5 || tlv_$9) {
+context_$0[curvemethod_$g](x_$1, y_$2, x_$1, y_$2 + tlv_$9 * f_$f)
+}};
+$lzsc$temp["displayName"] = "roundrect";
 return $lzsc$temp
 })(), "parselzoptions", (function () {
 var $lzsc$temp = function (lzopts_$0) {
@@ -6290,7 +6747,7 @@ var scope_$4 = callbacks_$1[i_$3];
 var funcname_$5 = callbacks_$1[i_$3 + 1];
 scope_$4[funcname_$5](now_$2)
 }};
-$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#15/16";
+$lzsc$temp["displayName"] = "handle idle";
 return $lzsc$temp
 })(), __intervalID: null, addCallback: (function () {
 var $lzsc$temp = function (scope_$0, funcname_$1) {
@@ -6304,7 +6761,7 @@ return
 if (kernel_$2.__intervalID == null) {
 kernel_$2.__intervalID = setInterval(LzIdleKernel.__update, 1000 / kernel_$2.__fps)
 }};
-$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#29/19";
+$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#30/19";
 return $lzsc$temp
 })(), removeCallback: (function () {
 var $lzsc$temp = function (scope_$0, funcname_$1) {
@@ -6320,7 +6777,7 @@ kernel_$2.__intervalID = null
 };
 return removed_$5
 }}};
-$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#45/22";
+$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#46/22";
 return $lzsc$temp
 })(), __fps: 30, setFrameRate: (function () {
 var $lzsc$temp = function (fps_$0) {
@@ -6329,7 +6786,7 @@ if (LzIdleKernel.__intervalID != null) {
 clearInterval(LzIdleKernel.__intervalID);
 LzIdleKernel.__intervalID = setInterval(LzIdleKernel.__update, 1000 / fps_$0)
 }};
-$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#67/20";
+$lzsc$temp["displayName"] = "kernel/LzIdleKernel.lzs#68/20";
 return $lzsc$temp
 })()};
 Class.make("LzLibraryCleanup", ["lib", null, "$lzsc$initialize", (function () {
@@ -6498,7 +6955,7 @@ if (k_$3 >= 0) {
 if (k_$3 == 9) {
 e_$0.cancelBubble = true;
 return false
-} else if (LzKeyboardKernel.__cancelKeys && (k_$3 == 13 || k_$3 == 0 || k_$3 == 37 || k_$3 == 38 || k_$3 == 39 || k_$3 == 40 || k_$3 == 8)) {
+} else if (LzKeyboardKernel.__cancelKeys && (k_$3 == 13 || k_$3 == 32 || k_$3 == 0 || k_$3 == 37 || k_$3 == 38 || k_$3 == 39 || k_$3 == 40 || k_$3 == 8)) {
 e_$0.cancelBubble = true;
 return false
 }}};
@@ -6637,7 +7094,7 @@ activationdiv_$1.onmouseout()
 $lzsc$temp["displayName"] = "kernel/dhtml/LzKeyboardKernel.js#210/26";
 return $lzsc$temp
 })()};
-var LzMouseKernel = {__lastMouseDown: null, __lastMouseOver: null, __x: 0, __y: 0, owner: null, __showncontextmenu: null, __mouseEvent: (function () {
+var LzMouseKernel = {__lastMouseDown: null, __lastMouseOver: null, __lastMouseOut: null, __x: 0, __y: 0, owner: null, __showncontextmenu: null, __mouseEvent: (function () {
 var $lzsc$temp = function (e_$0) {
 e_$0 = e_$0 || window.event;
 var target_$1 = e_$0.target || e_$0.srcElement;
@@ -6646,54 +7103,48 @@ if (window["LzKeyboardKernel"] && LzKeyboardKernel["__updateControlKeys"]) {
 LzKeyboardKernel.__updateControlKeys(e_$0)
 };
 if (LzSprite.prototype.capabilities.touchevents) {
-var maxfingers_$3 = 1;
-if (eventname_$2 === "ontouchstart") {
-eventname_$2 = "onmousedown"
-} else if (eventname_$2 === "ontouchmove") {
+if (eventname_$2 === "ontouchmove") {
 eventname_$2 = "onmousemove"
-} else if (eventname_$2 === "ontouchend") {
-eventname_$2 = "onmouseup";
-maxfingers_$3 = 0
 };
-if (e_$0.touches.length != maxfingers_$3) {
+if (e_$0.touches.length != 1) {
 return true
 }};
-var lzinputproto_$4 = window["LzInputTextSprite"] && LzInputTextSprite.prototype;
-if (lzinputproto_$4 && lzinputproto_$4.__lastshown != null) {
+var lzinputproto_$3 = window["LzInputTextSprite"] && LzInputTextSprite.prototype;
+if (lzinputproto_$3 && lzinputproto_$3.__lastshown != null) {
 if (LzSprite.quirks.fix_ie_clickable) {
-lzinputproto_$4.__hideIfNotFocused(eventname_$2)
+lzinputproto_$3.__hideIfNotFocused(eventname_$2)
 } else if (eventname_$2 != "onmousemove") {
-lzinputproto_$4.__hideIfNotFocused()
+lzinputproto_$3.__hideIfNotFocused()
 }};
 if (eventname_$2 === "onmousemove") {
 LzMouseKernel.__sendMouseMove(e_$0);
-if (lzinputproto_$4 && lzinputproto_$4.__lastshown != null) {
+if (lzinputproto_$3 && lzinputproto_$3.__lastshown != null) {
 if (target_$1 && target_$1.owner && !(target_$1.owner instanceof LzInputTextSprite)) {
-if (!lzinputproto_$4.__lastshown.__isMouseOver()) {
-lzinputproto_$4.__lastshown.__hide()
+if (!lzinputproto_$3.__lastshown.__isMouseOver()) {
+lzinputproto_$3.__lastshown.__hide()
 }}}} else if (eventname_$2 === "oncontextmenu" || e_$0.button == 2) {
 return LzMouseKernel.__handleContextMenu(e_$0)
 } else {
 LzMouseKernel.__sendEvent(eventname_$2)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#23/20";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#25/20";
 return $lzsc$temp
 })(), __sendEvent: (function () {
-var $lzsc$temp = function (eventname_$0, view_$1) {
+var $lzsc$temp = function (eventname_$0, view_$1, value_$2) {
 if (eventname_$0 === "onclick" && view_$1 == null) {
 return
 };
 if (LzMouseKernel.__callback) {
-LzMouseKernel.__scope[LzMouseKernel.__callback](eventname_$0, view_$1)
+LzMouseKernel.__scope[LzMouseKernel.__callback](eventname_$0, view_$1, value_$2)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#82/19";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#86/19";
 return $lzsc$temp
 })(), __callback: null, __scope: null, setCallback: (function () {
 var $lzsc$temp = function (scope_$0, funcname_$1) {
 this.__scope = scope_$0;
 this.__callback = funcname_$1
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#96/19";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#100/19";
 return $lzsc$temp
 })(), __mousecontrol: false, setMouseControl: (function () {
 var $lzsc$temp = function (ison_$0) {
@@ -6708,7 +7159,7 @@ method_$1(document, "mousemove", LzMouseKernel, "__mouseEvent")
 };
 document.oncontextmenu = ison_$0 ? LzMouseKernel.__mouseEvent : null
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#102/23";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#106/23";
 return $lzsc$temp
 })(), __showhand: "pointer", showHandCursor: (function () {
 var $lzsc$temp = function (show_$0) {
@@ -6716,7 +7167,7 @@ var c_$1 = show_$0 === true ? "pointer" : "default";
 this.__showhand = c_$1;
 LzMouseKernel.setCursorGlobal(c_$1)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#131/22";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#135/22";
 return $lzsc$temp
 })(), setCursorGlobal: (function () {
 var $lzsc$temp = function (n_$0) {
@@ -6729,7 +7180,7 @@ LzSprite.prototype.__setCSSClassProperty(".lzdiv", "cursor", n_$0);
 LzSprite.prototype.__setCSSClassProperty(".lzcanvasdiv", "cursor", n_$0);
 LzSprite.prototype.__setCSSClassProperty(".lzcanvasclickdiv", "cursor", n_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#142/23";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#146/23";
 return $lzsc$temp
 })(), restoreCursor: (function () {
 var $lzsc$temp = function () {
@@ -6742,27 +7193,27 @@ LzSprite.prototype.__setCSSClassProperty(".lzdiv", "cursor", "default");
 LzSprite.prototype.__setCSSClassProperty(".lzcanvasdiv", "cursor", "default");
 LzSprite.prototype.__setCSSClassProperty(".lzcanvasclickdiv", "cursor", "default")
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#159/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#163/21";
 return $lzsc$temp
 })(), lock: (function () {
 var $lzsc$temp = function () {
 LzMouseKernel.__amLocked = true
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#174/12";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#178/12";
 return $lzsc$temp
 })(), unlock: (function () {
 var $lzsc$temp = function () {
 LzMouseKernel.__amLocked = false;
 LzMouseKernel.restoreCursor()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#182/14";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#186/14";
 return $lzsc$temp
 })(), disableMouseTemporarily: (function () {
 var $lzsc$temp = function () {
 this.setGlobalClickable(false);
 this.__resetonmouseover = true
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#187/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#191/31";
 return $lzsc$temp
 })(), __resetonmouseover: false, __resetMouse: (function () {
 var $lzsc$temp = function () {
@@ -6770,7 +7221,7 @@ if (this.__resetonmouseover) {
 this.__resetonmouseover = false;
 this.setGlobalClickable(true)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#192/20";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#196/20";
 return $lzsc$temp
 })(), __globalClickable: true, setGlobalClickable: (function () {
 var $lzsc$temp = function (isclickable_$0) {
@@ -6782,7 +7233,7 @@ LzSprite.prototype.__setCSSClassProperty(".lzclickdiv", "display", isclickable_$
 };
 if (el_$1) el_$1.style.display = isclickable_$0 ? "" : "none"
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#199/26";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#203/26";
 return $lzsc$temp
 })(), __sendMouseMove: (function () {
 var $lzsc$temp = function (e_$0, offsetx_$1, offsety_$2) {
@@ -6817,68 +7268,75 @@ return returnvalue_$4
 };
 return false
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#210/23";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#214/23";
 return $lzsc$temp
 })(), __contextmenumouse2: false, __handleContextMenu: (function () {
 var $lzsc$temp = function (e_$0) {
 LzMouseKernel.__sendMouseMove(e_$0);
-var cmenu_$1 = LzMouseKernel.__findContextMenu(e_$0);
-if (cmenu_$1) {
-var eventname_$2 = "on" + e_$0.type;
-var showbuiltins_$3 = cmenu_$1.kernel.showbuiltins;
-var viamouse2_$4 = false;
+var target_$1 = e_$0.target || e_$0.srcElement;
+if (target_$1 instanceof HTMLInputElement || target_$1 instanceof HTMLTextAreaElement) {
+return true
+};
+var cmenu_$2 = LzMouseKernel.__findContextMenu(e_$0);
+if (cmenu_$2) {
+var eventname_$3 = "on" + e_$0.type;
+var showbuiltins_$4 = cmenu_$2.kernel.showbuiltins;
+var viamouse2_$5 = false;
 if (LzSprite.prototype.quirks.has_dom2_mouseevents) {
-if (eventname_$2 === "oncontextmenu") {
+if (eventname_$3 === "oncontextmenu") {
 if (LzMouseKernel.__contextmenumouse2) {
 LzMouseKernel.__contextmenumouse2 = false;
 return false
-}} else if (eventname_$2 === "onmousedown" && e_$0.button == 2) {
-viamouse2_$4 = true
+}} else if (eventname_$3 === "onmousedown" && e_$0.button == 2) {
+viamouse2_$5 = true
 } else {
 return true
-}} else if (eventname_$2 !== "oncontextmenu") {
+}} else if (eventname_$3 !== "oncontextmenu") {
 return true
 };
-var target_$5 = e_$0.target || e_$0.srcElement;
-if (target_$5 && target_$5.owner && showbuiltins_$3 !== true) {
-LzMouseKernel.__contextmenumouse2 = viamouse2_$4;
+var target_$1 = e_$0.target || e_$0.srcElement;
+if (target_$1 && target_$1.owner && showbuiltins_$4 !== true) {
+LzMouseKernel.__contextmenumouse2 = viamouse2_$5;
 if (LzMouseKernel.__showncontextmenu) {
 LzContextMenuKernel.lzcontextmenu.hide()
 } else {
-cmenu_$1.kernel.__show()
+var targetview_$6 = target_$1.owner instanceof LzSprite ? target_$1.owner.owner : null;
+cmenu_$2.kernel.__show(targetview_$6)
 };
 return false
 }};
 return true
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#251/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#255/27";
 return $lzsc$temp
 })(), __findContextMenu: (function () {
 var $lzsc$temp = function (e_$0) {
 var cmenu_$1 = LzSprite.__rootSprite.__contextmenu;
 var quirks_$2 = LzSprite.quirks;
 if (document.elementFromPoint) {
-var swf8mode_$3 = quirks_$2.swf8_contextmenu;
 if (window.pageXOffset) {
-var x_$4 = e_$0.pageX - window.top.pageXOffset;
-var y_$5 = e_$0.pageY - window.top.pageYOffset
+var x_$3 = e_$0.pageX - window.top.pageXOffset;
+var y_$4 = e_$0.pageY - window.top.pageYOffset
 } else {
-var x_$4 = e_$0.clientX;
-var y_$5 = e_$0.clientY
+var x_$3 = e_$0.clientX;
+var y_$4 = e_$0.clientY
 };
-var rootdiv_$6 = LzSprite.__rootSprite.__LZdiv;
+var rootdiv_$5 = LzSprite.__rootSprite.__LZdiv;
+var clickSprite_$6 = (e_$0.srcElement || e_$0.target).owner;
 var arr_$7 = [];
 if (quirks_$2.fix_contextmenu) {
-arr_$7.push(rootdiv_$6, rootdiv_$6.style.display);
-var rootprevZ_$8 = rootdiv_$6.style.zIndex;
-rootdiv_$6.style.zIndex = -1000;
-var rootclickdiv_$9 = LzSprite.__rootSprite.__LZclickcontainerdiv;
+arr_$7.push(rootdiv_$5, rootdiv_$5.style.display);
+var rootprevZ_$8 = rootdiv_$5.style.zIndex;
+rootdiv_$5.style.zIndex = -1000;
+var rootclickdiv_$9;
+if (quirks_$2.fix_clickable) {
+rootclickdiv_$9 = LzSprite.__rootSprite.__LZclickcontainerdiv;
 var clickprevZ_$a = rootclickdiv_$9.style.zIndex;
 arr_$7.push(rootclickdiv_$9, rootclickdiv_$9.style.display);
 rootclickdiv_$9.style.zIndex = -9999
-};
+}};
 do {
-var elem_$b = document.elementFromPoint(x_$4, y_$5);
+var elem_$b = document.elementFromPoint(x_$3, y_$4);
 if (!elem_$b) {
 break
 } else {
@@ -6888,21 +7346,18 @@ if (!owner_$c) {
 } else if (owner_$c.__contextmenu) {
 cmenu_$1 = owner_$c.__contextmenu;
 break
-} else if (quirks_$2.ie_elementfrompoint && owner_$c.scrolldiv === elem_$b) {
-
-} else if (swf8mode_$3 && (owner_$c.__LZdiv === elem_$b && owner_$c.bgcolor != null || owner_$c instanceof LzTextSprite)) {
-break
-};
+} else if (quirks_$2.ie_elementfrompoint && owner_$c.scrolldiv === elem_$b) {};
 arr_$7.push(elem_$b, elem_$b.style.display);
 elem_$b.style.display = "none"
-}} while (elem_$b !== rootdiv_$6 && elem_$b.tagName != "HTML");
+}} while (elem_$b !== rootdiv_$5 && elem_$b.tagName != "HTML");
 for (var i_$d = arr_$7.length - 1;i_$d >= 0;i_$d -= 2) {
 arr_$7[i_$d - 1].style.display = arr_$7[i_$d]
 };
 if (quirks_$2.fix_contextmenu) {
-rootdiv_$6.style.zIndex = rootprevZ_$8;
+rootdiv_$5.style.zIndex = rootprevZ_$8;
+if (quirks_$2.fix_clickable) {
 rootclickdiv_$9.style.zIndex = clickprevZ_$a
-}} else {
+}}} else {
 var sprite_$e = (e_$0.srcElement || e_$0.target).owner;
 if (sprite_$e) {
 while (sprite_$e.__parent) {
@@ -6916,7 +7371,7 @@ sprite_$e = sprite_$e.__parent
 }}};
 return cmenu_$1
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#303/25";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzMouseKernel.js#315/25";
 return $lzsc$temp
 })()};
 Class.make("LzBrowserKernel", null, null, ["loadURL", (function () {
@@ -7063,203 +7518,8 @@ this.aadescriptionDiv = null;
 this.__csscache = {};
 var quirks_$2 = this.quirks;
 if (isroot_$1) {
-this.isroot = true;
-LzSprite.__rootSprite = this;
-var div = document.createElement("div");
-div.className = "lzcanvasdiv";
-quirks_$2["scrollbar_width"] = LzSprite._getScrollbarWidth();
-if (quirks_$2.ie6_improve_memory_performance) {
-try {
-document.execCommand("BackgroundImageCache", false, true)
-}
-catch (err_$3) {}};
-var p_$4 = lz.embed.__propcache;
-var rootcontainer_$5 = LzSprite.__rootSpriteContainer = p_$4.appenddiv;
-var appcontainer_$6 = rootcontainer_$5;
-rootcontainer_$5.style.margin = 0;
-rootcontainer_$5.style.padding = 0;
-rootcontainer_$5.style.border = "0 none";
-rootcontainer_$5.style.overflow = "hidden";
-rootcontainer_$5.style.textAlign = "left";
-if (quirks_$2["container_divs_require_overflow"]) {
-appcontainer_$6 = document.createElement("div");
-appcontainer_$6.className = "lzappoverflow";
-rootcontainer_$5.appendChild(appcontainer_$6);
-appcontainer_$6.owner = this;
-LzSprite.__rootSpriteOverflowContainer = appcontainer_$6
-};
-if (quirks_$2.fix_contextmenu) {
-var cxdiv_$7 = document.createElement("div");
-cxdiv_$7.className = "lzcanvascontextdiv";
-cxdiv_$7.id = "lzcanvascontextdiv";
-appcontainer_$6.appendChild(cxdiv_$7);
-cxdiv_$7.owner = this;
-this.__LZcontextcontainerdiv = cxdiv_$7
-};
-if (p_$4.bgcolor) {
-div.style.backgroundColor = p_$4.bgcolor;
-this.bgcolor = p_$4.bgcolor
-};
-if (p_$4.id) {
-this._id = p_$4.id
-};
-if (p_$4.url) {
-this._url = p_$4.url
-};
-var options_$8 = p_$4.options;
-if (options_$8) {
-this.options = options_$8
-};
-LzSprite.blankimage = options_$8.serverroot + LzSprite.blankimage;
-if (quirks_$2.use_css_sprites && options_$8.usemastersprite) {
-quirks_$2.use_css_master_sprite = options_$8.usemastersprite;
-var mastersprite = LzResourceLibrary && LzResourceLibrary.__allcss && LzResourceLibrary.__allcss.path;
-if (mastersprite) {
-LzSprite.__masterspriteurl = LzSprite.__rootSprite.options.approot + mastersprite;
-var masterspriteimg_$9 = new Image();
-masterspriteimg_$9.src = mastersprite;
-masterspriteimg_$9.onerror = (function () {
-var $lzsc$temp = function () {
-Debug.warn("Error loading master sprite:", mastersprite)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#105/47";
-return $lzsc$temp
-})()
-}};
-LzSprite.__defaultStyles.writeCSS(quirks_$2.write_css_with_createstylesheet);
-appcontainer_$6.appendChild(div);
-this.__LZdiv = div;
-if (quirks_$2.fix_clickable) {
-var cdiv_$a = document.createElement("div");
-cdiv_$a.className = "lzcanvasclickdiv";
-cdiv_$a.id = "lzcanvasclickdiv";
-appcontainer_$6.appendChild(cdiv_$a);
-this.__LZclickcontainerdiv = cdiv_$a;
-LzSprite.__setClickable(true, appcontainer_$6)
-};
-if (quirks_$2["css_hide_canvas_during_init"]) {
-var cssname_$b = "display";
-var cssval_$c = "none";
-if (quirks_$2["safari_visibility_instead_of_display"]) {
-cssname_$b = "visibility";
-cssval_$c = "hidden"
-};
-this.__LZdiv.style[cssname_$b] = cssval_$c;
-if (quirks_$2["fix_clickable"]) this.__LZclickcontainerdiv.style[cssname_$b] = cssval_$c;
-if (quirks_$2["fix_contextmenu"]) this.__LZcontextcontainerdiv.style[cssname_$b] = cssval_$c
-};
-if (quirks_$2.activate_on_mouseover) {
-div.mouseisover = false;
-div.onmouseover = (function () {
-var $lzsc$temp = function (e_$0) {
-if (LzSprite.quirks.keyboardlistentotop_in_frame) {
-if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
-LzSprite.quirks.keyboardlistentotop = true;
-LzKeyboardKernel.setKeyboardControl(true)
-}};
-if (LzSprite.quirks.focus_on_mouseover) {
-if (LzSprite.prototype.getSelectedText() == "") {
-div.focus()
-}};
-if (LzInputTextSprite.prototype.__focusedSprite == null) LzKeyboardKernel.setKeyboardControl(true);
-LzMouseKernel.setMouseControl(true);
-this.mouseisover = true
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#142/31";
-return $lzsc$temp
-})();
-div.onmouseout = (function () {
-var $lzsc$temp = function (e_$0) {
-if (!e_$0) {
-e_$0 = window.event;
-var el_$1 = e_$0.toElement
+this.__setupRoot()
 } else {
-var el_$1 = e_$0.relatedTarget
-};
-var quirks_$2 = LzSprite.quirks;
-if (quirks_$2.inputtext_anonymous_div) {
-try {
-el_$1 && el_$1.parentNode
-}
-catch (e_$0) {
-return
-}};
-var mousein_$3 = false;
-if (el_$1) {
-var cm_$4 = LzContextMenuKernel.lzcontextmenu;
-if (el_$1.owner && el_$1.className.indexOf("lz") == 0) {
-mousein_$3 = true
-} else if (cm_$4 && (el_$1 === cm_$4 || el_$1.parentNode === cm_$4)) {
-mousein_$3 = true
-}};
-if (mousein_$3) {
-var wasClickable_$5 = LzMouseKernel.__globalClickable;
-if (quirks_$2.fix_ie_clickable) {
-LzMouseKernel.setGlobalClickable(true)
-};
-if (quirks_$2.focus_on_mouseover) {
-if (LzInputTextSprite.prototype.__lastshown == null) {
-if (LzSprite.prototype.getSelectedText() == "") {
-div.focus()
-}}};
-LzKeyboardKernel.setKeyboardControl(true);
-LzMouseKernel.setMouseControl(true);
-LzMouseKernel.__resetMouse();
-this.mouseisover = true;
-if (quirks_$2.fix_clickable && !wasClickable_$5 && LzMouseKernel.__globalClickable) {
-var target_$6 = e_$0.target || e_$0.srcElement;
-if (target_$6) {
-var owner_$7 = target_$6["owner"];
-if (LzSprite["$lzsc$isa"] ? LzSprite.$lzsc$isa(owner_$7) : owner_$7 instanceof LzSprite) {
-owner_$7 = owner_$7["owner"]
-};
-if (LzView["$lzsc$isa"] ? LzView.$lzsc$isa(owner_$7) : owner_$7 instanceof LzView) {
-LzMouseKernel.__sendEvent("onmouseout", owner_$7)
-}}}} else {
-if (quirks_$2.focus_on_mouseover) {
-if (LzInputTextSprite.prototype.__lastshown == null) {
-if (LzSprite.prototype.getSelectedText() == "") {
-div.blur()
-}}};
-LzKeyboardKernel.setKeyboardControl(false);
-LzMouseKernel.setMouseControl(false);
-this.mouseisover = false
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#159/30";
-return $lzsc$temp
-})();
-if (LzSprite.quirks.keyboardlistentotop_in_frame) {
-window.onfocus = (function () {
-var $lzsc$temp = function (e_$0) {
-if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
-div.onmouseover()
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#248/34";
-return $lzsc$temp
-})()
-};
-LzSprite.__mouseActivationDiv = div
-};
-LzFontManager.__createContainerDiv();
-if (quirks_$2.prevent_selection) {
-document.onselectstart = (function () {
-var $lzsc$temp = function (e_$0) {
-if (!e_$0) {
-e_$0 = window.event;
-var targ_$1 = e_$0.srcElement
-} else {
-var targ_$1 = e_$0.srcElement.parentNode
-};
-if (targ_$1.owner instanceof LzTextSprite) {
-if (!targ_$1.owner.selectable) {
-return false
-}} else {
-return false
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#266/38";
-return $lzsc$temp
-})()
-}} else {
 this.__LZdiv = document.createElement("div");
 this.__LZdiv.className = "lzdiv"
 };
@@ -7267,7 +7527,7 @@ this.__LZdiv.owner = this;
 if (quirks_$2.ie_leak_prevention) {
 this.__sprites[this.uid] = this
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#18/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#18/16";
 return $lzsc$temp
 })();
 LzSprite.prototype._dbg_typename = "LzSprite";
@@ -7284,10 +7544,322 @@ y_$3 += d_$1.offsetTop
 };
 return Debug.formatToString("%w/@sprite [%s x %s]*[1 0 %s, 0 1 %s, 0 0 1]", this.owner.sprite === this ? this.owner : "(orphan)", div_$0.offsetWidth || 0, div_$0.offsetHeight || 0, x_$2 || 0, y_$3 || 0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#306/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#47/36";
 return $lzsc$temp
 })();
-LzSprite.__defaultStyles = {lzdiv: {position: "absolute", borderStyle: "solid", borderWidth: 0}, lzclickdiv: {position: "absolute", borderStyle: "solid", borderColor: "transparent", borderWidth: 0}, lzcanvasdiv: {position: "absolute"}, lzcanvasclickdiv: {zIndex: 100000, position: "absolute"}, lzcanvascontextdiv: {position: "absolute"}, lzappoverflow: {position: "absolute", overflow: "hidden"}, lztextcontainer: {position: "absolute", cursor: "default"}, lzinputtextcontainer: {position: "absolute", overflow: "hidden"}, lzinputtextcontainer_click: {position: "absolute"}, lztext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", whiteSpace: "nowrap", position: "absolute", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none"}, lzswftext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", whiteSpace: "nowrap", position: "absolute", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordBreak: "break-all", padding: "2px"}, lzinputtext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", whiteSpace: "nowrap"}, lzswfinputtext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordBreak: "break-all", outline: "none", paddingTop: "1px", paddingBottom: "3px", paddingRight: "3px", paddingLeft: "1px", whiteSpace: "nowrap"}, lzswfinputtextmultiline: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", overflow: "hidden", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordBreak: "break-all", outline: "none", whiteSpace: "pre-wrap", paddingTop: "1px", paddingBottom: "3px", paddingRight: "3px", paddingLeft: "1px"}, lztextlink: {cursor: "pointer"}, lzaccessibilitydiv: {display: "none"}, lzcontext: {position: "absolute", borderStyle: "solid", borderColor: "transparent", borderWidth: 0}, lzimg: {position: "absolute", backgroundRepeat: "no-repeat", border: "0 none"}, lzgraphicscanvas: {position: "absolute"}, "#lzTextSizeCache": {position: "absolute", top: "-20000px", left: "-20000px"}, writeCSS: (function () {
+LzSprite.prototype.uid = 0;
+LzSprite.prototype.__LZdiv = null;
+LzSprite.prototype.__setupRoot = (function () {
+var $lzsc$temp = function (e_$0) {
+var quirks_$1 = this.quirks;
+this.isroot = true;
+LzSprite.__rootSprite = this;
+var div_$2 = document.createElement("div");
+div_$2.className = "lzcanvasdiv";
+quirks_$1["scrollbar_width"] = LzSprite._getScrollbarWidth();
+if (quirks_$1.ie6_improve_memory_performance) {
+try {
+document.execCommand("BackgroundImageCache", false, true)
+}
+catch (err_$3) {}};
+var p_$4 = lz.embed.__propcache;
+var rootcontainer_$5 = LzSprite.__rootSpriteContainer = p_$4.appenddiv;
+var appcontainer_$6 = rootcontainer_$5;
+rootcontainer_$5.style.margin = 0;
+rootcontainer_$5.style.padding = 0;
+rootcontainer_$5.style.border = "0 none";
+rootcontainer_$5.style.overflow = "hidden";
+rootcontainer_$5.style.textAlign = "left";
+if (quirks_$1["container_divs_require_overflow"]) {
+appcontainer_$6 = document.createElement("div");
+appcontainer_$6.className = "lzappoverflow";
+rootcontainer_$5.appendChild(appcontainer_$6);
+appcontainer_$6.owner = this;
+LzSprite.__rootSpriteOverflowContainer = appcontainer_$6
+};
+if (quirks_$1.fix_contextmenu) {
+var cxdiv_$7 = document.createElement("div");
+cxdiv_$7.className = "lzcanvascontextdiv";
+cxdiv_$7.id = "lzcanvascontextdiv";
+appcontainer_$6.appendChild(cxdiv_$7);
+cxdiv_$7.owner = this;
+this.__LZcontextcontainerdiv = cxdiv_$7
+};
+if (p_$4.bgcolor) {
+div_$2.style.backgroundColor = p_$4.bgcolor;
+this.bgcolor = p_$4.bgcolor
+};
+if (p_$4.id) {
+this._id = p_$4.id
+};
+if (p_$4.url) {
+this._url = p_$4.url
+};
+var options_$8 = p_$4.options;
+if (options_$8) {
+this.options = options_$8
+};
+LzSprite.blankimage = options_$8.serverroot + LzSprite.blankimage;
+if (quirks_$1.use_css_sprites && options_$8.usemastersprite) {
+quirks_$1.use_css_master_sprite = options_$8.usemastersprite;
+var mastersprite = LzResourceLibrary && LzResourceLibrary.__allcss && LzResourceLibrary.__allcss.path;
+if (mastersprite) {
+LzSprite.__masterspriteurl = LzSprite.__rootSprite.options.approot + mastersprite;
+var masterspriteimg_$9 = new Image();
+masterspriteimg_$9.src = mastersprite;
+masterspriteimg_$9.onerror = (function () {
+var $lzsc$temp = function () {
+Debug.warn("Error loading master sprite:", mastersprite)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#159/47";
+return $lzsc$temp
+})()
+}};
+LzSprite.__defaultStyles.writeCSS(quirks_$1.write_css_with_createstylesheet);
+appcontainer_$6.appendChild(div_$2);
+this.__LZdiv = div_$2;
+if (quirks_$1.fix_clickable) {
+var cdiv_$a = document.createElement("div");
+cdiv_$a.className = "lzcanvasclickdiv";
+cdiv_$a.id = "lzcanvasclickdiv";
+appcontainer_$6.appendChild(cdiv_$a);
+cdiv_$a.owner = this;
+this.__LZclickcontainerdiv = cdiv_$a;
+LzSprite.__setClickable(true, cdiv_$a)
+} else {
+LzSprite.__setClickable(true, div_$2);
+LzSprite.__setActivateOnMouseoverForNoClickDiv(div_$2)
+};
+if (quirks_$1["css_hide_canvas_during_init"]) {
+var cssname_$b = "display";
+var cssval_$c = "none";
+if (quirks_$1["safari_visibility_instead_of_display"]) {
+cssname_$b = "visibility";
+cssval_$c = "hidden"
+};
+this.__LZdiv.style[cssname_$b] = cssval_$c;
+if (quirks_$1["fix_clickable"]) this.__LZclickcontainerdiv.style[cssname_$b] = cssval_$c;
+if (quirks_$1["fix_contextmenu"]) this.__LZcontextcontainerdiv.style[cssname_$b] = cssval_$c
+};
+if (quirks_$1.fix_clickable) {
+if (quirks_$1.activate_on_mouseover) {
+LzSprite.__setActivateOnMouseover(div_$2)
+}};
+LzFontManager.__createContainerDiv();
+if (quirks_$1.prevent_selection) {
+document.onselectstart = (function () {
+var $lzsc$temp = function (e_$0) {
+if (!e_$0) {
+e_$0 = window.event;
+var targ_$1 = e_$0.srcElement
+} else {
+var targ_$1 = e_$0.srcElement.parentNode
+};
+if (targ_$1.owner instanceof LzTextSprite) {
+if (!targ_$1.owner.selectable) {
+return false
+}} else {
+return false
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#211/38";
+return $lzsc$temp
+})()
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#79/34";
+return $lzsc$temp
+})();
+LzSprite.__setActivateOnMouseover = (function () {
+var $lzsc$temp = function (div) {
+div.mouseisover = false;
+div.onmouseup = LzSprite.__globalClickDispatcher;
+div.onmousedown = LzSprite.__globalClickDispatcher;
+div.onclick = LzSprite.__globalClickDispatcher;
+div.onmouseover = (function () {
+var $lzsc$temp = function (e_$0) {
+if (LzSprite.quirks.keyboardlistentotop_in_frame) {
+if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
+LzSprite.quirks.keyboardlistentotop = true;
+LzKeyboardKernel.setKeyboardControl(true)
+}};
+if (LzSprite.quirks.focus_on_mouseover) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.focus()
+}};
+if (LzInputTextSprite.prototype.__focusedSprite == null) LzKeyboardKernel.setKeyboardControl(true);
+LzMouseKernel.setMouseControl(true);
+this.mouseisover = true;
+LzSprite.__globalClickDispatcher(e_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#244/23";
+return $lzsc$temp
+})();
+div.onmouseout = (function () {
+var $lzsc$temp = function (e_$0) {
+e_$0 = e_$0 || window.event;
+var el_$1 = e_$0.target || e_$0.srcElement;
+var quirks_$2 = LzSprite.quirks;
+if (quirks_$2.inputtext_anonymous_div) {
+try {
+el_$1 && el_$1.parentNode
+}
+catch (e_$0) {
+return
+}};
+var mousein_$3 = false;
+var owner_$4 = el_$1.owner;
+if (el_$1) {
+var cm_$5 = LzContextMenuKernel.lzcontextmenu;
+if (owner_$4 && el_$1.className.indexOf("lz") == 0) {
+mousein_$3 = true
+} else if (cm_$5 && (el_$1 === cm_$5 || el_$1.parentNode === cm_$5)) {
+mousein_$3 = true
+}};
+if (mousein_$3) {
+var wasClickable_$6 = LzMouseKernel.__globalClickable;
+if (quirks_$2.fix_ie_clickable) {
+LzMouseKernel.setGlobalClickable(true)
+};
+if (quirks_$2.focus_on_mouseover) {
+if (LzInputTextSprite.prototype.__lastshown == null) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.focus()
+}}};
+LzKeyboardKernel.setKeyboardControl(true);
+LzMouseKernel.setMouseControl(true);
+LzMouseKernel.__resetMouse();
+this.mouseisover = true;
+if (quirks_$2.fix_clickable && !wasClickable_$6 && LzMouseKernel.__globalClickable) {
+if (owner_$4) {
+if (LzSprite["$lzsc$isa"] ? LzSprite.$lzsc$isa(owner_$4) : owner_$4 instanceof LzSprite) {
+owner_$4 = owner_$4["owner"]
+};
+if (LzView["$lzsc$isa"] ? LzView.$lzsc$isa(owner_$4) : owner_$4 instanceof LzView) {
+LzMouseKernel.__sendEvent("onmouseout", owner_$4)
+}}}} else {
+if (quirks_$2.focus_on_mouseover) {
+if (LzInputTextSprite.prototype.__lastshown == null) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.blur()
+}}};
+LzKeyboardKernel.setKeyboardControl(false);
+LzMouseKernel.setMouseControl(false);
+this.mouseisover = false
+};
+LzSprite.__globalClickDispatcher(e_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#263/22";
+return $lzsc$temp
+})();
+if (LzSprite.quirks.keyboardlistentotop_in_frame) {
+window.onfocus = (function () {
+var $lzsc$temp = function (e_$0) {
+if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
+div.onmouseover()
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#350/26";
+return $lzsc$temp
+})()
+};
+LzSprite.__mouseActivationDiv = div
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#236/37";
+return $lzsc$temp
+})();
+LzSprite.__setActivateOnMouseoverForNoClickDiv = (function () {
+var $lzsc$temp = function (div) {
+div.mouseisover = false;
+div.onmouseover = (function () {
+var $lzsc$temp = function (e_$0) {
+if (LzSprite.quirks.keyboardlistentotop_in_frame) {
+if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
+LzSprite.quirks.keyboardlistentotop = true;
+LzKeyboardKernel.setKeyboardControl(true)
+}};
+if (LzSprite.quirks.focus_on_mouseover) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.focus()
+}};
+if (LzInputTextSprite.prototype.__focusedSprite == null) LzKeyboardKernel.setKeyboardControl(true);
+LzMouseKernel.setMouseControl(true);
+this.mouseisover = true;
+LzSprite.__clickDispatcher(e_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#370/23";
+return $lzsc$temp
+})();
+div.onmouseout = (function () {
+var $lzsc$temp = function (e_$0) {
+e_$0 = e_$0 || window.event;
+var el_$1 = e_$0.target || e_$0.srcElement;
+var quirks_$2 = LzSprite.quirks;
+if (quirks_$2.inputtext_anonymous_div) {
+try {
+el_$1 && el_$1.parentNode
+}
+catch (e_$0) {
+return
+}};
+var mousein_$3 = false;
+var owner_$4 = el_$1.owner;
+if (el_$1) {
+var cm_$5 = LzContextMenuKernel.lzcontextmenu;
+if (owner_$4 && el_$1.className.indexOf("lz") == 0) {
+mousein_$3 = true
+} else if (cm_$5 && (el_$1 === cm_$5 || el_$1.parentNode === cm_$5)) {
+mousein_$3 = true
+}};
+if (mousein_$3) {
+var wasClickable_$6 = LzMouseKernel.__globalClickable;
+if (quirks_$2.fix_ie_clickable) {
+LzMouseKernel.setGlobalClickable(true)
+};
+if (quirks_$2.focus_on_mouseover) {
+if (LzInputTextSprite.prototype.__lastshown == null) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.focus()
+}}};
+LzKeyboardKernel.setKeyboardControl(true);
+LzMouseKernel.setMouseControl(true);
+LzMouseKernel.__resetMouse();
+this.mouseisover = true;
+if (quirks_$2.fix_clickable && !wasClickable_$6 && LzMouseKernel.__globalClickable) {
+if (owner_$4) {
+if (LzSprite["$lzsc$isa"] ? LzSprite.$lzsc$isa(owner_$4) : owner_$4 instanceof LzSprite) {
+owner_$4 = owner_$4["owner"]
+};
+if (LzView["$lzsc$isa"] ? LzView.$lzsc$isa(owner_$4) : owner_$4 instanceof LzView) {
+LzMouseKernel.__sendEvent("onmouseout", owner_$4)
+}}}} else {
+if (quirks_$2.focus_on_mouseover) {
+if (LzInputTextSprite.prototype.__lastshown == null) {
+if (LzSprite.prototype.getSelectedText() == "") {
+div.blur()
+}}};
+LzKeyboardKernel.setKeyboardControl(false);
+LzMouseKernel.setMouseControl(false);
+this.mouseisover = false
+};
+LzSprite.__clickDispatcher(e_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#389/22";
+return $lzsc$temp
+})();
+if (LzSprite.quirks.keyboardlistentotop_in_frame) {
+window.onfocus = (function () {
+var $lzsc$temp = function (e_$0) {
+if (LzSprite.__rootSprite.options.cancelkeyboardcontrol != true) {
+div.onmouseover()
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#476/26";
+return $lzsc$temp
+})()
+};
+LzSprite.__mouseActivationDiv = div
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-define.js#362/50";
+return $lzsc$temp
+})();
+LzSprite.__defaultStyles = {lzdiv: {position: "absolute", borderStyle: "solid", borderWidth: 0, pointerEvents: "none"}, lzclickdiv: {position: "absolute", borderStyle: "solid", borderColor: "transparent", borderWidth: 0}, lzcanvasdiv: {position: "absolute"}, lzcanvasclickdiv: {zIndex: 100000, position: "absolute"}, lzcanvascontextdiv: {position: "absolute"}, lzappoverflow: {position: "absolute", overflow: "hidden"}, lztextcontainer: {position: "absolute", cursor: "default", pointerEvents: "none"}, lzinputtextcontainer: {position: "absolute", overflow: "hidden"}, lzinputtextcontainer_click: {position: "absolute"}, lztext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", whiteSpace: "nowrap", position: "absolute", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", pointerEvents: "none"}, lzswftext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", whiteSpace: "pre", position: "absolute", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordWrap: "break-word", MsWordBreak: "keep-all", padding: "2px", pointerEvents: "none"}, lzinputtext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", whiteSpace: "nowrap", pointerEvents: "auto"}, lzswfinputtext: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordWrap: "break-word", MsWordBreak: "keep-all", outline: "none", paddingTop: "1px", paddingBottom: "3px", paddingRight: "3px", paddingLeft: "1px", whiteSpace: "nowrap", pointerEvents: "auto"}, lzswfinputtextmultiline: {fontFamily: "Verdana,Vera,sans-serif", fontStyle: "normal", fontWeight: "normal", fontSize: "11px", width: "100%", height: "100%", borderWidth: 0, backgroundColor: "transparent", position: "absolute", overflow: "hidden", lineHeight: "1.2em", textAlign: "left", textIndent: 0, letterSpacing: 0, textDecoration: "none", wordWrap: "break-word", MsWordWrap: "break-word", MsWordBreak: "keep-all", outline: "none", whiteSpace: "pre-wrap", paddingTop: "1px", paddingBottom: "3px", paddingRight: "3px", paddingLeft: "1px", resize: "none", pointerEvents: "auto"}, lztextlink: {cursor: "pointer"}, lzaccessibilitydiv: {display: "none"}, lzcontext: {position: "absolute", borderStyle: "solid", borderColor: "transparent", borderWidth: 0, pointerEvents: "auto"}, lzimg: {position: "absolute", backgroundRepeat: "no-repeat", border: "0 none", pointerEvents: "none"}, lzgraphicscanvas: {position: "absolute"}, "#lzTextSizeCache": {position: "absolute", top: "-20000px", left: "-20000px"}, writeCSS: (function () {
 var $lzsc$temp = function (isIE_$0) {
 var rules_$1 = [];
 var css_$2 = "";
@@ -7309,29 +7881,83 @@ ss_$6.owningElement.id = "lzstyles";
 ss_$6.cssText = css_$2
 }} else {
 var o_$7 = document.createElement("style");
-lz.embed.__setAttr(o_$7, "type", "text/css");
+o_$7.setAttribute("type", "text/css");
 o_$7.appendChild(document.createTextNode(css_$2));
 document.getElementsByTagName("head")[0].appendChild(o_$7)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#503/15";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#208/15";
 return $lzsc$temp
 })(), __re: new RegExp("[A-Z]", "g"), hyphenate: (function () {
 var $lzsc$temp = function (n_$0) {
 return n_$0.replace(this.__re, this.__replace)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#534/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#239/16";
 return $lzsc$temp
 })(), __replace: (function () {
 var $lzsc$temp = function (found_$0) {
 return "-" + found_$0.toLowerCase()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#537/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#242/16";
 return $lzsc$temp
 })()};
 LzSprite.__styleNames = {borderRadius: "borderRadius", userSelect: "userSelect", transformOrigin: "transformOrigin", transform: "transform", boxShadow: "boxShadow"};
-LzSprite.prototype.uid = 0;
-LzSprite.quirks = {fix_clickable: true, fix_ie_background_height: false, fix_ie_clickable: false, ie_alpha_image_loader: false, ie_leak_prevention: false, prevent_selection: false, ie_elementfrompoint: false, invisible_parent_image_sizing_fix: false, emulate_flash_font_metrics: true, inner_html_strips_newlines: true, inner_html_no_entity_apos: false, css_hide_canvas_during_init: true, firefox_autocomplete_bug: false, hand_pointer_for_clickable: true, alt_key_sends_control: false, safari_textarea_subtract_scrollbar_height: false, no_cursor_colresize: false, safari_visibility_instead_of_display: false, preload_images_only_once: false, absolute_position_accounts_for_offset: false, canvas_div_cannot_be_clipped: false, inputtext_parents_cannot_contain_clip: false, set_height_for_multiline_inputtext: false, ie_opacity: false, text_measurement_use_insertadjacenthtml: false, text_content_use_inner_text: false, text_selection_use_range: false, document_size_use_offsetheight: false, text_ie_carriagereturn: false, ie_paste_event: false, safari_paste_event: false, text_event_charcode: true, keypress_function_keys: true, ie_timer_closure: false, keyboardlistentotop: false, document_size_compute_correct_height: false, ie_mouse_events: false, activate_on_mouseover: true, ie6_improve_memory_performance: false, text_height_includes_padding: false, inputtext_size_includes_margin: false, listen_for_mouseover_out: true, focus_on_mouseover: true, textstyle_on_textdiv: false, textdeco_on_textdiv: false, use_css_sprites: true, preload_images: true, scrollbar_width: 15, inputtext_strips_newlines: false, swf8_contextmenu: true, inputtext_anonymous_div: false, clipped_scrollbar_causes_display_turd: false, hasmetakey: true, textgrabsinputtextfocus: false, input_highlight_bug: false, autoscroll_textarea: false, fix_contextmenu: true, size_blank_to_zero: true, has_dom2_mouseevents: false, container_divs_require_overflow: false, fix_ie_css_syntax: false, match_swf_letter_spacing: false, use_css_master_sprite: false, write_css_with_createstylesheet: false, inputtext_use_background_image: false, show_img_before_changing_size: false, use_filter_for_dropshadow: false, keyboardlistentotop_in_frame: false, forcemeasurescrollheight: false, resize2dcanvas: false, textmeasurementalphastring: false, textlinksneedmouseevents: false, dont_clip_clickdivs: false, explicitly_set_border_radius: false, prevent_selection_with_onselectstart: false};
-LzSprite.prototype.capabilities = {rotation: false, scalecanvastopercentage: false, readcanvassizefromsprite: true, opacity: true, colortransform: false, audio: false, accessibility: true, htmlinputtext: false, advancedfonts: false, bitmapcaching: false, persistence: false, clickregion: false, minimize_opacity_changes: false, history: true, runtimemenus: false, setclipboard: false, proxypolicy: false, linescrolling: false, allowfullscreen: false, setid: true, globalfocustrap: false, "2dcanvas": true, dropshadows: false, cornerradius: false, rgba: false, css2boxmodel: true, medialoading: true, backgroundrepeat: true, touchevents: false, directional_layout: false, scaling: false, customcontextmenu: true};
+LzSprite.prototype.__copystyles = (function () {
+var $lzsc$temp = function (from_$0, to_$1) {
+var sprite_$2 = from_$0.owner;
+var left_$3 = sprite_$2._x;
+if (left_$3) {
+to_$1.style.left = left_$3
+};
+var top_$4 = sprite_$2._y;
+if (top_$4) {
+to_$1.style.top = top_$4
+};
+var display_$5 = sprite_$2.__csscache.__LZdivdisplay || "";
+if (display_$5) {
+to_$1.style.display = display_$5
+};
+to_$1.style.zIndex = sprite_$2._z || from_$0.style.zIndex;
+if (sprite_$2._transform) {
+var stylename_$6 = LzSprite.__styleNames.transform;
+to_$1.style[stylename_$6] = sprite_$2._transform
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#256/35";
+return $lzsc$temp
+})();
+LzSprite.prototype.__csscache;
+LzSprite.prototype.setCSS = (function () {
+var $lzsc$temp = function (name_$0, value_$1, isdimension_$2) {
+if (isdimension_$2) value_$1 = this.CSSDimension(value_$1);
+var callback_$3 = this["set_" + name_$0];
+if (callback_$3) {
+callback_$3.call(this, value_$1)
+} else {
+this.applyCSS(name_$0, value_$1);
+if (this.__LZclickcontainerdiv) {
+this.applyCSS(name_$0, value_$1, "__LZclickcontainerdiv")
+};
+if (this.__LZcontextcontainerdiv) {
+this.applyCSS(name_$0, value_$1, "__LZcontextcontainerdiv")
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#284/29";
+return $lzsc$temp
+})();
+LzSprite.prototype.applyCSS = (function () {
+var $lzsc$temp = function (name_$0, value_$1, divname_$2) {
+if (!divname_$2) divname_$2 = "__LZdiv";
+var key_$3 = divname_$2 + name_$0;
+var cache_$4 = this.__csscache;
+if (cache_$4[key_$3] === value_$1) {
+return
+};
+var styleobject_$5 = this[divname_$2].style;
+cache_$4[key_$3] = styleobject_$5[name_$0] = value_$1
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-style.js#307/31";
+return $lzsc$temp
+})();
+LzSprite.quirks = {fix_clickable: true, fix_ie_background_height: false, fix_ie_clickable: false, ie_alpha_image_loader: false, ie_leak_prevention: false, prevent_selection: false, ie_elementfrompoint: false, invisible_parent_image_sizing_fix: false, emulate_flash_font_metrics: true, inner_html_strips_newlines: true, inner_html_no_entity_apos: false, css_hide_canvas_during_init: true, firefox_autocomplete_bug: false, hand_pointer_for_clickable: true, alt_key_sends_control: false, safari_textarea_subtract_scrollbar_height: false, no_cursor_colresize: false, safari_visibility_instead_of_display: false, preload_images_only_once: false, absolute_position_accounts_for_offset: false, canvas_div_cannot_be_clipped: false, inputtext_parents_cannot_contain_clip: false, set_height_for_multiline_inputtext: false, ie_opacity: false, text_measurement_use_insertadjacenthtml: false, text_content_use_inner_text: false, text_selection_use_range: false, document_size_use_offsetheight: false, text_ie_carriagereturn: false, ie_paste_event: false, safari_paste_event: false, text_event_charcode: true, keypress_function_keys: true, ie_timer_closure: false, keyboardlistentotop: false, document_size_compute_correct_height: false, ie_mouse_events: false, activate_on_mouseover: true, ie6_improve_memory_performance: false, text_height_includes_padding: false, inputtext_size_includes_margin: false, listen_for_mouseover_out: true, focus_on_mouseover: true, textstyle_on_textdiv: false, textdeco_on_textdiv: false, use_css_sprites: true, preload_images: true, scrollbar_width: 15, inputtext_strips_newlines: false, inputtext_anonymous_div: false, clipped_scrollbar_causes_display_turd: false, hasmetakey: true, textgrabsinputtextfocus: false, input_highlight_bug: false, autoscroll_textarea: false, fix_contextmenu: true, has_dom2_mouseevents: false, container_divs_require_overflow: false, fix_ie_css_syntax: false, match_swf_letter_spacing: false, use_css_master_sprite: false, write_css_with_createstylesheet: false, inputtext_use_background_image: false, show_img_before_changing_size: false, use_filter_for_dropshadow: false, keyboardlistentotop_in_frame: false, forcemeasurescrollheight: false, resize2dcanvas: false, textmeasurementalphastring: false, textlinksneedmouseevents: false, explicitly_set_border_radius: false, prevent_selection_with_onselectstart: false};
+LzSprite.prototype.capabilities = {rotation: false, scalecanvastopercentage: false, readcanvassizefromsprite: true, opacity: true, colortransform: false, audio: false, accessibility: true, htmlinputtext: false, advancedfonts: false, bitmapcaching: false, persistence: false, clickregion: false, minimize_opacity_changes: false, history: true, runtimemenus: false, setclipboard: false, proxypolicy: false, linescrolling: false, allowfullscreen: false, setid: true, globalfocustrap: false, "2dcanvas": true, dropshadows: false, cornerradius: false, rgba: false, css2boxmodel: true, medialoading: true, backgroundrepeat: true, touchevents: false, directional_layout: false, scaling: false, customcontextmenu: true, screenorientation: false, directional_layout: true};
 LzSprite.__updateQuirks = (function () {
 var $lzsc$temp = function () {
 var quirks_$0 = LzSprite.quirks;
@@ -7348,13 +7974,18 @@ quirks_$0["ie6_improve_memory_performance"] = true
 } else {
 quirks_$0["prevent_selection"] = true;
 quirks_$0["invisible_parent_image_sizing_fix"] = true;
-if (browser_$4.osversion >= 6) {
+if (browser_$4.osversion >= 6 && browser_$4.version < 9) {
 quirks_$0["ie_alpha_image_loader"] = true
 };
-if (browser_$4.version > 7) {
+if (browser_$4.version == 8) {
 quirks_$0["resize2dcanvas"] = true
 }};
-quirks_$0["ie_opacity"] = true;
+if (browser_$4.version >= 9) {
+capabilities_$1["cornerradius"] = true
+};
+if (browser_$4.version <= 8) {
+quirks_$0["ie_opacity"] = true
+};
 quirks_$0["ie_timer_closure"] = true;
 quirks_$0["ie_leak_prevention"] = true;
 quirks_$0["fix_ie_clickable"] = true;
@@ -7382,7 +8013,6 @@ quirks_$0["hasmetakey"] = false;
 quirks_$0["inputtext_use_background_image"] = true;
 quirks_$0["show_img_before_changing_size"] = true;
 quirks_$0["use_filter_for_dropshadow"] = true;
-quirks_$0["forcemeasurescrollheight"] = true;
 defaultStyles_$3["lzswfinputtext"].resize = "none";
 defaultStyles_$3["lzswfinputtextmultiline"].resize = "none";
 capabilities_$1["dropshadows"] = true;
@@ -7420,7 +8050,7 @@ quirks_$0["keypress_function_keys"] = false;
 if (browser_$4.version < 523.15) {
 quirks_$0["keyboardlistentotop"] = true
 };
-if (window.top !== window) {
+if (browser_$4.isSafari && browser_$4.version < 533.16 && window.top !== window) {
 quirks_$0["keyboardlistentotop_in_frame"] = true
 };
 if (browser_$4.version >= 530.19) {
@@ -7428,12 +8058,12 @@ capabilities_$1["threedtransform"] = true
 };
 if (browser_$4.isIphone) {
 quirks_$0["canvas_div_cannot_be_clipped"] = true;
-capabilities_$1["touchevents"] = true
+capabilities_$1["touchevents"] = true;
+capabilities_$1["screenorientation"] = true
 };
 quirks_$0["inputtext_strips_newlines"] = true;
 quirks_$0["prevent_selection"] = true;
 quirks_$0["container_divs_require_overflow"] = true;
-quirks_$0["forcemeasurescrollheight"] = true;
 defaultStyles_$3.lzswfinputtext.paddingTop = "0px";
 defaultStyles_$3.lzswfinputtext.paddingBottom = "2px";
 defaultStyles_$3.lzswfinputtext.paddingLeft = "1px";
@@ -7443,6 +8073,8 @@ defaultStyles_$3.lzswfinputtextmultiline.paddingBottom = "2px";
 defaultStyles_$3.lzswfinputtextmultiline.paddingLeft = "2px";
 defaultStyles_$3.lzswfinputtextmultiline.paddingRight = "2px"
 } else if (browser_$4.isOpera) {
+stylenames_$2.transform = "OTransform";
+stylenames_$2.transformOrigin = "OTransformOrigin";
 quirks_$0["invisible_parent_image_sizing_fix"] = true;
 quirks_$0["no_cursor_colresize"] = true;
 quirks_$0["absolute_position_accounts_for_offset"] = true;
@@ -7456,7 +8088,10 @@ if (browser_$4.version >= 10.6) {
 defaultStyles_$3.lzswftext.wordWrap = "normal";
 defaultStyles_$3.lzswfinputtext.wordWrap = "normal";
 defaultStyles_$3.lzswfinputtextmultiline.wordWrap = "normal";
-quirks_$0["dont_clip_clickdivs"] = true
+quirks_$0["container_divs_require_overflow"] = true
+};
+if (browser_$4.version >= 10.6) {
+capabilities_$1["rotation"] = true
 }} else if (browser_$4.isFirefox) {
 stylenames_$2.borderRadius = "MozBorderRadius";
 stylenames_$2.boxShadow = "MozBoxShadow";
@@ -7497,7 +8132,8 @@ quirks_$0["alt_key_sends_control"] = true;
 quirks_$0["match_swf_letter_spacing"] = true
 };
 if (browser_$4.OS == "Android") {
-capabilities_$1["touchevents"] = true
+capabilities_$1["touchevents"] = true;
+capabilities_$1["screenorientation"] = true
 };
 if (quirks_$0["hand_pointer_for_clickable"]) {
 defaultStyles_$3.lzclickdiv.cursor = "pointer"
@@ -7518,345 +8154,37 @@ quirks_$0["has_dom2_mouseevents"] = true
 };
 if (quirks_$0["match_swf_letter_spacing"]) {
 defaultStyles_$3.lzswftext.letterSpacing = defaultStyles_$3.lzswfinputtext.letterSpacing = defaultStyles_$3.lzswfinputtextmultiline.letterSpacing = "0.01em"
+};
+if (!browser_$4.isIE) {
+quirks_$0["fix_clickable"] = false;
+quirks_$0["activate_on_mouseover"] = false;
+document.oncontextmenu = LzMouseKernel.__mouseEvent
 }};
 LzSprite.prototype.quirks = quirks_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#684/27";
-return $lzsc$temp
-})();
-LzSprite._getScrollbarWidth = (function () {
-var $lzsc$temp = function () {
-var div_$0 = document.createElement("div");
-div_$0.style.width = "50px";
-div_$0.style.height = "50px";
-div_$0.style.overflow = "hidden";
-div_$0.style.position = "absolute";
-div_$0.style.top = "-200px";
-div_$0.style.left = "-200px";
-var div2_$1 = document.createElement("div");
-div2_$1.style.height = "100px";
-div_$0.appendChild(div2_$1);
-var body_$2 = document.body;
-body_$2.appendChild(div_$0);
-var w1_$3 = div_$0.clientWidth;
-div_$0.style.overflowY = "scroll";
-var w2_$4 = div_$0.clientWidth;
-LzSprite.prototype.__discardElement(div_$0);
-return w1_$3 - w2_$4
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1009/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-quirks.js#152/27";
 return $lzsc$temp
 })();
 LzSprite.__updateQuirks();
-LzSprite.setRootX = (function () {
-var $lzsc$temp = function (v_$0) {
-var rootcontainer_$1 = LzSprite.__rootSpriteContainer;
-rootcontainer_$1.style.position = "absolute";
-rootcontainer_$1.style.left = LzSprite.prototype.CSSDimension(v_$0);
-setTimeout(LzScreenKernel.__resizeEvent, 0)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1046/21";
-return $lzsc$temp
-})();
-LzSprite.setRootWidth = (function () {
-var $lzsc$temp = function (v_$0) {
-LzSprite.__rootSpriteContainer.style.width = LzSprite.prototype.CSSDimension(v_$0);
-setTimeout(LzScreenKernel.__resizeEvent, 0)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1060/25";
-return $lzsc$temp
-})();
-LzSprite.setRootY = (function () {
-var $lzsc$temp = function (v_$0) {
-var rootcontainer_$1 = LzSprite.__rootSpriteContainer;
-rootcontainer_$1.style.position = "absolute";
-rootcontainer_$1.style.top = LzSprite.prototype.CSSDimension(v_$0);
-setTimeout(LzScreenKernel.__resizeEvent, 0)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1072/21";
-return $lzsc$temp
-})();
-LzSprite.setRootHeight = (function () {
-var $lzsc$temp = function (v_$0) {
-LzSprite.__rootSpriteContainer.style.height = LzSprite.prototype.CSSDimension(v_$0);
-setTimeout(LzScreenKernel.__resizeEvent, 0)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1086/26";
-return $lzsc$temp
-})();
-LzSprite.prototype.__LZdiv = null;
-LzSprite.prototype.__LZimg = null;
 LzSprite.prototype.__LZclick = null;
-LzSprite.prototype.x = null;
-LzSprite.prototype.y = null;
-LzSprite.prototype.opacity = 1;
-LzSprite.prototype.width = null;
-LzSprite.prototype.height = null;
-LzSprite.prototype.playing = false;
 LzSprite.prototype.clickable = false;
-LzSprite.prototype.frame = 1;
-LzSprite.prototype.frames = null;
-LzSprite.blankimage = "lps/includes/blank.gif";
-LzSprite.prototype.resource = null;
-LzSprite.prototype.source = null;
-LzSprite.prototype.visible = true;
-LzSprite.prototype.clip = null;
-LzSprite.prototype.stretches = null;
-LzSprite.prototype.resourceWidth = null;
-LzSprite.prototype.resourceHeight = null;
-LzSprite.prototype.cursor = null;
-LzSprite.prototype._w = "0pt";
-LzSprite.prototype._h = "0pt";
-LzSprite.prototype.__LZcontext = null;
-LzSprite.prototype.initted = false;
-LzSprite.prototype.init = (function () {
-var $lzsc$temp = function (v_$0) {
-this.setVisible(v_$0);
-if (this.isroot) {
-if (this.quirks["css_hide_canvas_during_init"]) {
-var cssname_$1 = "display";
-if (this.quirks["safari_visibility_instead_of_display"]) {
-cssname_$1 = "visibility"
-};
-this.__LZdiv.style[cssname_$1] = "";
-if (this.quirks["fix_clickable"]) this.__LZclickcontainerdiv.style[cssname_$1] = "";
-if (this.quirks["fix_contextmenu"]) this.__LZcontextcontainerdiv.style[cssname_$1] = ""
-};
-if (this._id) {
-lz.embed[this._id]._ready(this.owner)
-}};
-this.initted = true
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1143/27";
-return $lzsc$temp
-})();
-LzSprite.prototype.__topZ = 1;
-LzSprite.prototype.__parent = null;
-LzSprite.prototype.__children = null;
-LzSprite.__warnonce = {};
-LzSprite.prototype.addChildSprite = (function () {
-var $lzsc$temp = function (sprite_$0) {
-if (sprite_$0.__parent != null) return;
-if (this.stretches != null && LzSprite.__warnonce.stretches != true) {
-Debug.warn("Due to limitations in the DHTML runtime, stretches will only apply to the view %w, and doesn't affect child views.", this.owner);
-LzSprite.__warnonce.stretches = true
-};
-sprite_$0.__parent = this;
-if (this.__children) {
-this.__children.push(sprite_$0)
-} else {
-this.__children = [sprite_$0]
-};
-this.__LZdiv.appendChild(sprite_$0.__LZdiv);
-if (sprite_$0.__LZclickcontainerdiv) {
-if (!this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv = this.__createContainerDivs("click")
-};
-this.__LZclickcontainerdiv.appendChild(sprite_$0.__LZclickcontainerdiv)
-};
-sprite_$0.__setZ(++this.__topZ)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1185/37";
-return $lzsc$temp
-})();
-LzSprite.prototype.setResource = (function () {
-var $lzsc$temp = function (r_$0) {
-if (this.resource == r_$0) return;
-this.resource = r_$0;
-if (r_$0.indexOf("http:") == 0 || r_$0.indexOf("https:") == 0) {
-this.skiponload = false;
-this.setSource(r_$0);
-return
-};
-var res_$1 = LzResourceLibrary[r_$0];
-if (res_$1) {
-this.resourceWidth = res_$1.width;
-this.resourceHeight = res_$1.height;
-if (this.quirks.use_css_sprites) {
-if (this.quirks.use_css_master_sprite && res_$1.spriteoffset != null) {
-this.__csssprite = LzSprite.__masterspriteurl;
-this.__cssspriteoffset = res_$1.spriteoffset
-} else if (res_$1.sprite) {
-this.__csssprite = this.getBaseUrl(res_$1) + res_$1.sprite;
-this.__cssspriteoffset = 0
-}} else {
-this.__csssprite = null;
-if (this.__bgimage) this.__setBGImage(null)
-}};
-var urls_$2 = this.getResourceUrls(r_$0);
-this.owner.resourceevent("totalframes", urls_$2.length);
-this.frames = urls_$2;
-if (this.quirks.preload_images && !(this.stretches == null && this.__csssprite)) {
-this.__preloadFrames()
-};
-this.skiponload = true;
-this.setSource(urls_$2[0], true)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1215/34";
-return $lzsc$temp
-})();
-LzSprite.prototype.getResourceUrls = (function () {
-var $lzsc$temp = function (resourcename_$0) {
-var urls_$1 = [];
-var res_$2 = LzResourceLibrary[resourcename_$0];
-if (!res_$2) {
-Debug.warn("Could not find resource named %#s", resourcename_$0);
-return urls_$1
-};
-var baseurl_$3 = this.getBaseUrl(res_$2);
-for (var i_$4 = 0;i_$4 < res_$2.frames.length;i_$4++) {
-urls_$1[i_$4] = baseurl_$3 + res_$2.frames[i_$4]
-};
-return urls_$1
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1257/38";
-return $lzsc$temp
-})();
-LzSprite.prototype.getBaseUrl = (function () {
-var $lzsc$temp = function (resource_$0) {
-return LzSprite.__rootSprite.options[resource_$0.ptype == "sr" ? "serverroot" : "approot"]
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1277/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.CSSDimension = LzKernelUtils.CSSDimension;
-LzSprite.prototype.loading = false;
-LzSprite.prototype.setSource = (function () {
-var $lzsc$temp = function (url_$0, usecache_$1) {
-if (url_$0 == null || url_$0 == "null") {
-this.unload();
-return
-};
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && url_$0 != null) {
-this.__restoreSize()
-}};
-if (usecache_$1 == "reset") {
-usecache_$1 = false
-} else if (usecache_$1 != true) {
-this.skiponload = false;
-this.resource = url_$0;
-if (this.playing) this.stop();
-this.__updateLoadStatus(0);
-this.__csssprite = null;
-if (this.__bgimage) this.__setBGImage(null)
-};
-if (usecache_$1 == "memorycache") {
-usecache_$1 = true
-};
-if (this.loading) {
-if (this.__ImgPool && this.source) {
-this.__ImgPool.flush(this.source)
-};
-this.__destroyImage(null, this.__LZimg);
-this.__LZimg = null
-};
-this.source = url_$0;
-if (this.backgroundrepeat) {
-this.__createIMG();
-this.__setBGImage(url_$0);
-this.__updateBackgroundRepeat();
-this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload});
-return
-} else if (this.stretches == null && this.__csssprite) {
-this.__createIMG();
-this.__updateStretches();
-this.__setBGImage(this.__csssprite);
-this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload});
-return
-};
-if (!this.quirks.preload_images) {
-this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload})
-};
-this.loading = true;
-if (!this.__ImgPool) {
-this.__ImgPool = new LzPool(LzSprite.prototype.__getImage, LzSprite.prototype.__gotImage, LzSprite.prototype.__destroyImage, this)
-};
-var im_$2 = this.__ImgPool.get(url_$0, usecache_$1 != true);
-this.__bindImage(im_$2);
-if (this.loading) {
-if (this.skiponload && this.quirks.ie_alpha_image_loader) this.__updateIEAlpha(im_$2)
-} else {
-if (this.quirks.ie_alpha_image_loader) {
-this.__updateIEAlpha(im_$2)
-} else if (this.stretches) {
-this.__updateStretches()
-}};
-if (this.clickable) this.setClickable(true)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1288/32";
-return $lzsc$temp
-})();
-LzSprite.prototype.__bindImage = (function () {
-var $lzsc$temp = function (im_$0) {
-if (this.__LZimg && this.__LZimg.owner) {
-this.__LZdiv.replaceChild(im_$0, this.__LZimg);
-this.__LZimg = im_$0
-} else {
-this.__LZimg = im_$0;
-this.__LZdiv.appendChild(this.__LZimg)
-};
-if (this.cornerradius != null) {
-this.__applyCornerRadius(im_$0)
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1374/34";
-return $lzsc$temp
-})();
-LzSprite.prototype.__setBGImage = (function () {
-var $lzsc$temp = function (url_$0) {
-if (this.__LZimg) {
-var bgurl_$1 = url_$0 ? "url('" + url_$0 + "')" : null;
-this.__bgimage = this.__LZimg.style.backgroundImage = bgurl_$1
-};
-if (bgurl_$1 != null) {
-var y_$2 = -this.__cssspriteoffset || 0;
-this.__LZimg.style.backgroundPosition = "0 " + y_$2 + "px"
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1389/35";
-return $lzsc$temp
-})();
-LzSprite.prototype.__createIMG = (function () {
-var $lzsc$temp = function () {
-if (!this.__LZimg) {
-var im_$0 = document.createElement("img");
-im_$0.className = "lzimg";
-im_$0.owner = this;
-im_$0.src = LzSprite.blankimage;
-this.__bindImage(im_$0)
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1400/34";
-return $lzsc$temp
-})();
-if (LzSprite.quirks.ie_alpha_image_loader) {
-LzSprite.prototype.__updateIEAlpha = (function () {
-var $lzsc$temp = function (who_$0) {
-var w_$1 = this.resourceWidth;
-var h_$2 = this.resourceHeight;
-if (this.stretches == "both") {
-w_$1 = "100%";
-h_$2 = "100%"
-} else if (this.stretches == "width") {
-w_$1 = "100%"
-} else if (this.stretches == "height") {
-h_$2 = "100%"
-};
-if (w_$1 == null) w_$1 = this.width == null ? "100%" : this.CSSDimension(this.width);
-if (h_$2 == null) h_$2 = this.height == null ? "100%" : this.CSSDimension(this.height);
-who_$0.style.width = w_$1;
-who_$0.style.height = h_$2
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1417/42";
-return $lzsc$temp
-})()
-};
+LzSprite.prototype.__mouseisdown = false;
 LzSprite.prototype.setClickable = (function () {
 var $lzsc$temp = function (c_$0) {
 c_$0 = !(!c_$0);
 if (this.clickable === c_$0) return;
-if (!this.__LZclickcontainerdiv) {
+if (this.quirks.fix_clickable && !this.__LZclickcontainerdiv) {
 this.__LZclickcontainerdiv = this.__createContainerDivs("click")
 };
-if (this.__LZimg != null) {
+if (!this.quirks.fix_clickable) {
+if (c_$0) {
+this.__LZdiv.style.pointerEvents = "auto";
+this.__LZdiv.style.cursor = "pointer"
+} else {
+this.__LZdiv.style.pointerEvents = "none";
+this.__LZdiv.style.cursor = "default"
+}};
+if (this.quirks.fix_clickable && this.__LZimg != null) {
 if (!this.__LZclick) {
 if (this.quirks.fix_ie_clickable) {
 this.__LZclick = document.createElement("img");
@@ -7902,7 +8230,7 @@ this.__LZclick.style.display = c_$0 ? "" : "none"
 }}};
 this.clickable = c_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1440/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#26/35";
 return $lzsc$temp
 })();
 LzSprite.__setClickable = (function () {
@@ -7912,8 +8240,7 @@ div_$1._clickable = c_$0;
 var f_$2 = c_$0 ? LzSprite.__clickDispatcher : null;
 if (LzSprite.prototype.capabilities.touchevents) {
 div_$1.ontouchstart = f_$2;
-div_$1.ontouchmove = f_$2;
-div_$1.ontouchend = f_$2
+div_$1.ongesturestart = f_$2
 } else {
 div_$1.onclick = f_$2;
 div_$1.onmousedown = f_$2;
@@ -7927,14 +8254,71 @@ if (LzSprite.quirks.ie_mouse_events) {
 div_$1.ondrag = f_$2;
 div_$1.ondblclick = f_$2
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1517/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#114/27";
+return $lzsc$temp
+})();
+LzSprite.__touchstart = (function () {
+var $lzsc$temp = function (c_$0, div_$1) {
+var f_$2 = c_$0 ? LzSprite.__clickDispatcher : null;
+div_$1.ontouchmove = f_$2;
+div_$1.ontouchend = f_$2;
+div_$1.ontouchcancel = f_$2
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#144/25";
+return $lzsc$temp
+})();
+LzSprite.__gesturestart = (function () {
+var $lzsc$temp = function (c_$0, div_$1) {
+var f_$2 = c_$0 ? LzSprite.__clickDispatcher : null;
+div_$1.ongesturechange = f_$2;
+div_$1.ongestureend = f_$2
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#155/27";
+return $lzsc$temp
+})();
+LzSprite.__globalClickDispatcher = (function () {
+var $lzsc$temp = function (e_$0) {
+e_$0 = e_$0 || window.event;
+if (!e_$0) return;
+if (lz.embed.browser.isIE && e_$0.button == 2) {
+return LzMouseKernel.__handleContextMenu(e_$0)
+};
+var target_$1 = e_$0.target || e_$0.srcElement;
+var owner_$2 = target_$1 && target_$1.owner;
+var returnvalue_$3;
+if (!owner_$2) {
+return
+} else if (owner_$2.selectable && owner_$2 instanceof LzTextSprite) {
+returnvalue_$3 = LzSprite.__clickDispatcher(e_$0)
+};
+var eventname_$4 = "on" + e_$0.type;
+if (eventname_$4 == "onmouseup") {
+var lastmousedown_$5 = LzMouseKernel.__lastMouseDown;
+if (lastmousedown_$5 && lastmousedown_$5 !== owner_$2) {
+lastmousedown_$5.__globalmouseup(e_$0)
+}} else if (eventname_$4 == "onmousedown") {
+var focusedsprite_$6 = LzInputTextSprite.prototype.__focusedSprite;
+if (focusedsprite_$6 && focusedsprite_$6 !== owner_$2) {
+focusedsprite_$6.deselect()
+}} else if (eventname_$4 == "onmouseover") {
+if (LzMouseKernel.__lastMouseOut == null && LzMouseKernel.__lastMouseOver == null) return;
+LzMouseKernel.__lastMouseOver = null
+} else if (eventname_$4 == "onmouseout") {
+if (LzMouseKernel.__lastMouseOut == null && LzMouseKernel.__lastMouseOver == null) return;
+LzMouseKernel.__lastMouseOut = null
+};
+LzMouseKernel.__sendEvent(eventname_$4, owner_$2.owner);
+return returnvalue_$3
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#168/36";
 return $lzsc$temp
 })();
 LzSprite.__clickDispatcher = (function () {
 var $lzsc$temp = function (e_$0) {
 e_$0 = e_$0 || window.event;
+if (!e_$0) return;
 e_$0.cancelBubble = true;
-if (e_$0.button === 2) {
+if (lz.embed.browser.isIE && e_$0.button == 2) {
 return LzMouseKernel.__handleContextMenu(e_$0)
 };
 if (LzKeyboardKernel && LzKeyboardKernel["__updateControlKeys"]) {
@@ -7947,67 +8331,72 @@ return
 };
 var target_$1 = e_$0.target || e_$0.srcElement;
 var owner_$2 = target_$1 && target_$1.owner;
-if (!owner_$2) {
-return
-};
+if (!owner_$2) return;
 var eventname_$3 = "on" + e_$0.type;
 if (LzSprite.quirks.ie_mouse_events) {
-if (eventname_$3 === "onmouseenter") {
+if (eventname_$3 == "onmouseenter") {
 eventname_$3 = "onmouseover"
-} else if (eventname_$3 === "onmouseleave") {
+} else if (eventname_$3 == "onmouseleave") {
 eventname_$3 = "onmouseout"
-} else if (eventname_$3 === "ondblclick") {
+} else if (eventname_$3 == "ondblclick") {
 owner_$2.__mouseEvent("onmousedown");
 owner_$2.__mouseEvent("onmouseup");
 owner_$2.__mouseEvent("onclick");
 return false
-} else if (eventname_$3 === "ondrag") {
+} else if (eventname_$3 == "ondrag") {
 return false
 }};
 if (LzSprite.prototype.capabilities.touchevents) {
-if (eventname_$3 === "ontouchstart") {
+if (eventname_$3 == "ongesturestart") {
+LzSprite.__gesturestart(true, target_$1);
+return
+} else if (eventname_$3 == "ongesturechange") {
+LzMouseKernel.__sendEvent("ongesture", owner_$2.owner, {scale: e_$0.scale, rotation: e_$0.rotation});
+return
+} else if (eventname_$3 == "ongestureend") {
+LzSprite.__gesturestart(false, target_$1);
+return
+} else if (eventname_$3 == "ontouchstart") {
 if (e_$0.touches.length != 1) {
+LzMouseKernel.__sendEvent("ontouch", owner_$2.owner, e_$0.touches);
 return true
 };
+LzSprite.__touchstart(true, target_$1);
 eventname_$3 = "onmousedown";
-owner_$2.__mouseEvent("onmouseover");
-owner_$2.__mouseEvent("onmousedown")
-} else if (eventname_$3 === "ontouchmove") {
+owner_$2.__mouseEvent("onmouseover")
+} else if (eventname_$3 == "ontouchmove") {
 if (e_$0.touches.length != 1) {
+LzMouseKernel.__sendEvent("ontouch", owner_$2.owner, e_$0.touches);
 return true
 };
 LzMouseKernel.__sendMouseMove(e_$0);
-eventname_$3 = "onmousemove"
-} else if (eventname_$3 === "ontouchend") {
-if (e_$0.touches.length != 0) {
-return true
+var mouseisover_$4 = owner_$2.__isMouseOver();
+var lastmouseisover_$5 = LzMouseKernel.__lastMouseOver === owner_$2;
+if (!mouseisover_$4 && lastmouseisover_$5) {
+owner_$2.__mouseEvent("onmouseout")
+} else if (mouseisover_$4 && !lastmouseisover_$5) {
+owner_$2.__mouseEvent("onmouseover")
 };
+eventname_$3 = "onmousemove"
+} else if (eventname_$3 == "ontouchend" || eventname_$3 == "ontouchcancel") {
+LzSprite.__touchstart(false, target_$1);
 eventname_$3 = "onmouseup";
 e_$0.cancelBubble = false;
-var callback_$4 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onmouseout"]);
-setTimeout(callback_$4, 0);
-var callback_$4 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onclick"]);
-setTimeout(callback_$4, 0)
+if (!owner_$2.__isMouseOver()) {
+var callback_$6 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onmouseupoutside"]);
+setTimeout(callback_$6, 0)
+};
+var callback_$6 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onmouseout"]);
+setTimeout(callback_$6, 0);
+callback_$6 = lz.BrowserUtils.getcallbackfunc(owner_$2, "__mouseEvent", ["onclick"]);
+setTimeout(callback_$6, 0)
 } else {
 return true
 }};
-if (owner_$2.isroot === true) {
-if (eventname_$3 === "onmouseup") {
-var lastmousedown_$5 = LzMouseKernel.__lastMouseDown;
-if (lastmousedown_$5 && lastmousedown_$5 !== owner_$2) {
-lastmousedown_$5.__globalmouseup(e_$0)
-};
-var focusedsprite_$6 = LzInputTextSprite.prototype.__focusedSprite;
-if (focusedsprite_$6 && focusedsprite_$6 !== owner_$2) {
-focusedsprite_$6.deselect()
-}};
-LzMouseKernel.__sendEvent(eventname_$3, null);
-return false
-};
-if (owner_$2 instanceof LzInputTextSprite && owner_$2.selectable === true) {
-if (eventname_$3 === "onmousedown") {
+if (owner_$2 instanceof LzInputTextSprite && owner_$2.selectable == true) {
+if (eventname_$3 == "onmousedown") {
 LzInputTextSprite.prototype.__focusedSprite = owner_$2
-} else if (eventname_$3 === "onmouseout") {
+} else if (eventname_$3 == "onmouseout") {
 if (!owner_$2.__isMouseOver()) {
 owner_$2.__hide()
 }} else {
@@ -8020,15 +8409,14 @@ return
 };
 if (eventname_$3 == "onmousedown") {
 owner_$2.__mouseisdown = true;
-LzMouseKernel.__lastMouseDown = owner_$2
-} else if (eventname_$3 === "onmouseup") {
-var lastmousedown_$5 = LzMouseKernel.__lastMouseDown;
-if (lastmousedown_$5 && lastmousedown_$5 !== owner_$2) {
-lastmousedown_$5.__globalmouseup(e_$0)
-};
-var focusedsprite_$6 = LzInputTextSprite.prototype.__focusedSprite;
-if (focusedsprite_$6 && focusedsprite_$6 !== owner_$2) {
-focusedsprite_$6.deselect()
+LzMouseKernel.__lastMouseDown = owner_$2;
+var focusedsprite_$7 = LzInputTextSprite.prototype.__focusedSprite;
+if (focusedsprite_$7 && focusedsprite_$7 !== owner_$2) {
+focusedsprite_$7.deselect()
+}} else if (eventname_$3 == "onmouseup") {
+var lastmousedown_$8 = LzMouseKernel.__lastMouseDown;
+if (lastmousedown_$8 && lastmousedown_$8 !== owner_$2) {
+lastmousedown_$8.__globalmouseup(e_$0)
 };
 if (LzMouseKernel.__lastMouseDown !== owner_$2) {
 return
@@ -8040,10 +8428,9 @@ e_$0.cancelBubble = false
 };
 return owner_$2.__mouseEvent(eventname_$3) || false
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1549/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#239/30";
 return $lzsc$temp
 })();
-LzSprite.prototype.__mouseisdown = false;
 LzSprite.prototype.__mouseEvent = (function () {
 var $lzsc$temp = function (eventname_$0) {
 if (eventname_$0 == "onmousedown") {
@@ -8056,10 +8443,12 @@ if (this.quirks.activate_on_mouseover) {
 var activationdiv_$2 = LzSprite.__mouseActivationDiv;
 if (!activationdiv_$2.mouseisover) {
 activationdiv_$2.onmouseover()
-}}};
+}}} else if (eventname_$0 == "onmouseout") {
+LzMouseKernel.__lastMouseOut = this
+};
 if (this.owner.mouseevent) {
 if (LzMouseKernel.__lastMouseDown) {
-if (eventname_$0 === "onmouseover" || eventname_$0 === "onmouseout") {
+if (eventname_$0 == "onmouseover" || eventname_$0 == "onmouseout") {
 var sendevents_$3 = LzMouseKernel.__lastMouseDown === this;
 if (eventname_$0 == "onmouseover") {
 LzMouseKernel.__lastMouseOver = this
@@ -8079,7 +8468,7 @@ return
 }};
 LzMouseKernel.__sendEvent(eventname_$0, this.owner)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1745/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#436/35";
 return $lzsc$temp
 })();
 LzSprite.prototype.__isMouseOver = (function () {
@@ -8089,7 +8478,7 @@ var visible_$2 = this.__findParents("visible", false, true);
 if (visible_$2.length) return false;
 return p_$1.x >= 0 && p_$1.y >= 0 && p_$1.x < this.width && p_$1.y < this.height
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1815/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#508/36";
 return $lzsc$temp
 })();
 LzSprite.prototype.__globalmouseup = (function () {
@@ -8105,207 +8494,221 @@ LzMouseKernel.__lastMouseOver.__mouseEvent("onmouseover")
 };
 LzMouseKernel.__lastMouseDown = null
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1827/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#520/38";
 return $lzsc$temp
 })();
-LzSprite.prototype.xoffset = 0;
-LzSprite.prototype._xoffset = 0;
-LzSprite.prototype.setX = (function () {
-var $lzsc$temp = function (x_$0) {
-if (x_$0 == null || x_$0 == this.x && this._xoffset == this.xoffset) return;
-this.__poscacheid = -1;
-this._xoffset = this.xoffset;
-this.x = x_$0;
-x_$0 = this.CSSDimension(x_$0 + this.xoffset);
-if (this._x != x_$0) {
-this._x = x_$0;
-this.__LZdiv.style.left = x_$0;
-if (this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.left = x_$0
-};
-if (this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.left = x_$0
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1850/27";
-return $lzsc$temp
-})();
-LzSprite.prototype.setWidth = (function () {
-var $lzsc$temp = function (w_$0) {
-if (w_$0 < 0 || this.width == w_$0) return;
-this.width = w_$0;
-w_$0 = this.CSSDimension(w_$0);
-if (this._w != w_$0) {
-this._w = w_$0;
-var size_$1 = w_$0;
-var quirks_$2 = this.quirks;
-if (quirks_$2.size_blank_to_zero) {
-if (this.bgcolor == null && this.source == null && !this.clip && !(this instanceof LzTextSprite) && !this.shadow && !this.borderwidth) {
-this.__sizedtozero = true;
-size_$1 = 0
-}};
-this.applyCSS("width", size_$1);
-if (this.__LZcontext) this.__LZcontext.style.width = w_$0;
-if (this.clip) this.__updateClip();
-if (this.isroot) {
-if (quirks_$2.container_divs_require_overflow) {
-LzSprite.__rootSpriteOverflowContainer.style.width = w_$0
-}} else {
-if (this.stretches) this.__updateStretches();
-if (this.backgroundrepeat) this.__updateBackgroundRepeat();
-if (this.__LZclick) this.__LZclick.style.width = w_$0;
-if (this.__LZcanvas) this.__resizecanvas()
-};
-return w_$0
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1868/31";
-return $lzsc$temp
-})();
-LzSprite.prototype.yoffset = 0;
-LzSprite.prototype._yoffset = 0;
-LzSprite.prototype.setY = (function () {
-var $lzsc$temp = function (y_$0) {
-if (y_$0 == null || y_$0 == this.y && this._yoffset == this.yoffset) return;
-this.__poscacheid = -1;
-this.y = y_$0;
-this._yoffset = this.yoffset;
-y_$0 = this.CSSDimension(y_$0 + this.yoffset);
-if (this._y != y_$0) {
-this._y = y_$0;
-this.__LZdiv.style.top = y_$0;
-if (this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.top = y_$0
-};
-if (this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.top = y_$0
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1905/27";
-return $lzsc$temp
-})();
-LzSprite.prototype.setHeight = (function () {
-var $lzsc$temp = function (h_$0) {
-if (h_$0 < 0 || this.height == h_$0) return;
-this.height = h_$0;
-h_$0 = this.CSSDimension(h_$0);
-if (this._h != h_$0) {
-this._h = h_$0;
-var size_$1 = h_$0;
-var quirks_$2 = this.quirks;
-if (quirks_$2.size_blank_to_zero) {
-if (this.bgcolor == null && this.source == null && !this.clip && !(this instanceof LzTextSprite) && !this.shadow && !this.borderwidth) {
-this.__sizedtozero = true;
-size_$1 = 0
-}};
-this.applyCSS("height", size_$1);
-if (this.__LZcontext) this.__LZcontext.style.height = h_$0;
-if (this.clip) this.__updateClip();
-if (this.isroot) {
-if (quirks_$2.container_divs_require_overflow) {
-LzSprite.__rootSpriteOverflowContainer.style.height = h_$0
-}} else {
-if (this.stretches) this.__updateStretches();
-if (this.backgroundrepeat) this.__updateBackgroundRepeat();
-if (this.__LZclick) this.__LZclick.style.height = h_$0;
-if (this.__LZcanvas) this.__resizecanvas()
-};
-return h_$0
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1924/32";
-return $lzsc$temp
-})();
-LzSprite.prototype.setMaxLength = (function () {
-var $lzsc$temp = function (v_$0) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1962/35";
-return $lzsc$temp
-})();
-LzSprite.prototype.setPattern = (function () {
-var $lzsc$temp = function (v_$0) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1969/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.setVisible = (function () {
-var $lzsc$temp = function (v_$0) {
-if (this.visible === v_$0) return;
-this.visible = v_$0;
-var divdisplay_$1 = v_$0 ? "" : "none";
-this.applyCSS("display", divdisplay_$1);
-if (this.quirks.fix_clickable) {
-if (this.quirks.fix_ie_clickable && this.__LZclick) {
-this.__LZclick.style.display = v_$0 && this.clickable ? "" : "none"
-};
-if (this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.display = divdisplay_$1
-};
-if (this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.display = divdisplay_$1
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1973/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.setBGColor = (function () {
-var $lzsc$temp = function (c_$0) {
-if (c_$0 != null && !this.capabilities.rgba) {
-c_$0 = c_$0 | 0
-};
-if (this.bgcolor == c_$0) return;
-this.bgcolor = c_$0;
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && c_$0 != null) {
-this.__restoreSize()
-}};
-this.__LZdiv.style.backgroundColor = c_$0 == null ? "transparent" : LzColorUtils.torgb(c_$0);
-if (this.quirks.fix_ie_background_height) {
-if (this.height != null && this.height < 2) {
-this.setSource(LzSprite.blankimage, true)
-} else if (!this._fontSize) {
-this.__LZdiv.style.fontSize = 0
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#1996/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.__restoreSize = (function () {
+LzSprite.prototype.aafocus = (function () {
 var $lzsc$temp = function () {
-if (this.__sizedtozero) {
-this.__sizedtozero = false;
-this.applyCSS("width", this._w);
-this.applyCSS("height", this._h)
+try {
+if (this.__LZdiv != null) {
+this.__LZdiv.blur();
+this.__LZdiv.focus()
+}}
+catch (e_$0) {}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-event.js#546/30";
+return $lzsc$temp
+})();
+LzSprite.prototype.__LZimg = null;
+LzSprite.prototype.playing = false;
+LzSprite.prototype.frame = 1;
+LzSprite.prototype.frames = null;
+LzSprite.blankimage = "lps/includes/blank.gif";
+LzSprite.prototype.resourceurl = null;
+LzSprite.prototype.resource = null;
+LzSprite.prototype.source = null;
+LzSprite.prototype.stretches = null;
+LzSprite.prototype.resourceWidth = null;
+LzSprite.prototype.resourceHeight = null;
+LzSprite.prototype.cursor = null;
+LzSprite.prototype.loading = false;
+LzSprite.prototype.setResource = (function () {
+var $lzsc$temp = function (r_$0) {
+if (this.resource == r_$0) return;
+this.resource = r_$0;
+if (r_$0.indexOf("http:") == 0 || r_$0.indexOf("https:") == 0) {
+this.skiponload = false;
+this.setSource(r_$0);
+return
+};
+var res_$1 = LzResourceLibrary[r_$0];
+var urls_$2 = this.getResourceUrls(r_$0);
+if (res_$1) {
+this.resourceWidth = res_$1.width;
+this.resourceHeight = res_$1.height;
+if (this.quirks.use_css_sprites) {
+if (this.quirks.use_css_master_sprite && res_$1.spriteoffset != null) {
+this.__csssprite = LzSprite.__masterspriteurl;
+this.__cssspriteoffset = res_$1.spriteoffset
+} else if (res_$1.sprite) {
+this.__csssprite = this.getBaseUrl(res_$1) + res_$1.sprite;
+this.__cssspriteoffset = 0
+} else if (urls_$2 && urls_$2.length == 1) {
+this.__csssprite = urls_$2[0]
+}} else {
+this.__csssprite = null;
+if (this.__bgimage) this.__setBGImage(null)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2018/36";
+this.owner.resourceevent("totalframes", urls_$2.length);
+this.frames = urls_$2;
+if (this.quirks.preload_images && !(this.stretches == null && this.__csssprite)) {
+this.__preloadFrames()
+};
+this.skiponload = true;
+this.setSource(urls_$2[0], true)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#38/34";
 return $lzsc$temp
 })();
-LzSprite.prototype.__filters = null;
-LzSprite.prototype.setFilter = (function () {
-var $lzsc$temp = function (name_$0, value_$1) {
-if (this.__filters == null) {
-this.__filters = {}};
-this.__filters[name_$0] = value_$1;
-var filterstr_$2 = "";
-for (var i_$3 in this.__filters) {
-filterstr_$2 += this.__filters[i_$3]
+LzSprite.prototype.getResourceUrls = (function () {
+var $lzsc$temp = function (resourcename_$0) {
+var urls_$1 = [];
+var res_$2 = LzResourceLibrary[resourcename_$0];
+if (!res_$2) {
+Debug.warn("Could not find resource named %#s", resourcename_$0);
+return urls_$1
 };
-return filterstr_$2
+var baseurl_$3 = this.getBaseUrl(res_$2);
+for (var i_$4 = 0;i_$4 < res_$2.frames.length;i_$4++) {
+urls_$1[i_$4] = baseurl_$3 + res_$2.frames[i_$4]
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2029/32";
+return urls_$1
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#85/38";
 return $lzsc$temp
 })();
-LzSprite.prototype.setOpacity = (function () {
-var $lzsc$temp = function (o_$0) {
-if (this.opacity == o_$0 || o_$0 < 0) return;
-this.opacity = o_$0;
-var factor_$1 = 100;
-if (this.capabilities.minimize_opacity_changes) {
-factor_$1 = 10
+LzSprite.prototype.setSource = (function () {
+var $lzsc$temp = function (url_$0, usecache_$1) {
+if (url_$0 == null || url_$0 == "null") {
+this.unload();
+return
 };
-o_$0 = (o_$0 * factor_$1 | 0) / factor_$1;
-if (o_$0 != this._opacity) {
-this._opacity = o_$0;
-if (this.quirks.ie_opacity) {
-this.__LZdiv.style.filter = this.setFilter("opacity", o_$0 == 1 ? "" : "alpha(opacity=" + (o_$0 * 100 | 0) + ")")
+var rawurl_$2 = url_$0;
+if (url_$0.indexOf("http:") == 0 && url_$0.indexOf("http://") != 0) {
+url_$0 = url_$0.substring(5)
+};
+if (usecache_$1 == "reset") {
+usecache_$1 = false
+} else if (usecache_$1 != true) {
+this.skiponload = false;
+this.resource = rawurl_$2;
+this.resourceurl = url_$0;
+if (this.playing) this.stop();
+this.__updateLoadStatus(0);
+this.__csssprite = null;
+if (this.__bgimage) this.__setBGImage(null)
+};
+if (usecache_$1 == "memorycache") {
+usecache_$1 = true
+};
+if (this.loading) {
+if (this.__ImgPool && this.source) {
+this.__ImgPool.flush(this.source)
+};
+this.__destroyImage(null, this.__LZimg);
+this.__LZimg = null
+};
+this.source = rawurl_$2;
+if (this.backgroundrepeat) {
+this.__createIMG();
+this.__setBGImage(url_$0);
+this.__updateBackgroundRepeat();
+this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload});
+return
+} else if (this.stretches == null && this.__csssprite) {
+this.__createIMG();
+this.__LZimg.src = LzSprite.blankimage;
+this.__updateStretches();
+this.__setBGImage(this.__csssprite);
+this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload});
+return
+};
+if (!this.quirks.preload_images) {
+this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: this.skiponload})
+};
+this.loading = true;
+if (!this.__ImgPool) {
+this.__ImgPool = new LzPool(LzSprite.prototype.__getImage, LzSprite.prototype.__gotImage, LzSprite.prototype.__destroyImage, this)
+};
+var im_$3 = this.__ImgPool.get(url_$0, usecache_$1 != true);
+this.__bindImage(im_$3);
+if (this.loading) {
+if (this.skiponload && this.quirks.ie_alpha_image_loader) this.__updateIEAlpha(im_$3)
 } else {
-this.__LZdiv.style.opacity = o_$0 == 1 ? "" : o_$0
+if (this.quirks.ie_alpha_image_loader) {
+this.__updateIEAlpha(im_$3)
+} else if (this.stretches) {
+this.__updateStretches()
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2042/33";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#105/32";
 return $lzsc$temp
 })();
+LzSprite.prototype.__bindImage = (function () {
+var $lzsc$temp = function (im_$0) {
+if (this.__LZimg && this.__LZimg.owner) {
+this.__LZdiv.replaceChild(im_$0, this.__LZimg);
+this.__LZimg = im_$0
+} else {
+this.__LZimg = im_$0;
+this.__LZdiv.appendChild(this.__LZimg)
+};
+if (this.cornerradius != null) {
+this.__applyCornerRadius(im_$0)
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#194/34";
+return $lzsc$temp
+})();
+LzSprite.prototype.__setBGImage = (function () {
+var $lzsc$temp = function (url_$0) {
+if (this.__LZimg) {
+var bgurl_$1 = url_$0 ? "url('" + url_$0 + "')" : null;
+this.__bgimage = this.__LZimg.style.backgroundImage = bgurl_$1
+};
+if (bgurl_$1 != null) {
+var y_$2 = -this.__cssspriteoffset || 0;
+this.__LZimg.style.backgroundPosition = "0 " + y_$2 + "px"
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#209/35";
+return $lzsc$temp
+})();
+LzSprite.prototype.__createIMG = (function () {
+var $lzsc$temp = function () {
+if (!this.__LZimg) {
+var im_$0 = document.createElement("img");
+im_$0.className = "lzimg";
+im_$0.owner = this;
+im_$0.src = LzSprite.blankimage;
+this.__bindImage(im_$0)
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#220/34";
+return $lzsc$temp
+})();
+(function () {
+var $lzsc$temp = function () {
+if (LzSprite.quirks.ie_alpha_image_loader) {
+LzSprite.prototype.__updateIEAlpha = (function () {
+var $lzsc$temp = function (who_$0) {
+var w_$1 = this.resourceWidth;
+var h_$2 = this.resourceHeight;
+if (this.stretches == "both") {
+w_$1 = "100%";
+h_$2 = "100%"
+} else if (this.stretches == "width") {
+w_$1 = "100%"
+} else if (this.stretches == "height") {
+h_$2 = "100%"
+};
+if (w_$1 == null) w_$1 = this.width == null ? "100%" : this.CSSDimension(this.width);
+if (h_$2 == null) h_$2 = this.height == null ? "100%" : this.CSSDimension(this.height);
+who_$0.style.width = w_$1;
+who_$0.style.height = h_$2
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#239/42";
+return $lzsc$temp
+})()
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#231/3";
+return $lzsc$temp
+})()();
 LzSprite.prototype.play = (function () {
 var $lzsc$temp = function (f_$0) {
 if (!this.frames || this.frames.length < 2) return;
@@ -8316,9 +8719,10 @@ this.__setFrame(f_$0)
 if (this.playing == true) return;
 this.playing = true;
 this.owner.resourceevent("play", null, true);
+this.owner.resourceevent("playing", true);
 LzIdleKernel.addCallback(this, "__incrementFrame")
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2063/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#264/27";
 return $lzsc$temp
 })();
 LzSprite.prototype.stop = (function () {
@@ -8327,13 +8731,14 @@ if (!this.frames || this.frames.length < 2) return;
 if (this.playing == true) {
 this.playing = false;
 this.owner.resourceevent("stop", null, true);
+this.owner.resourceevent("playing", false);
 LzIdleKernel.removeCallback(this, "__incrementFrame")
 };
 f_$0 = f_$0 | 0;
 if (!isNaN(f_$0)) {
 this.__setFrame(f_$0)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2076/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#278/27";
 return $lzsc$temp
 })();
 LzSprite.prototype.__incrementFrame = (function () {
@@ -8341,11 +8746,16 @@ var $lzsc$temp = function () {
 var newframe_$0 = this.frame + 1 > this.frames.length ? 1 : this.frame + 1;
 this.__setFrame(newframe_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2093/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#296/39";
 return $lzsc$temp
 })();
+(function () {
+var $lzsc$temp = function () {
 if (LzSprite.quirks.preload_images_only_once) {
-LzSprite.prototype.__preloadurls = {}};
+LzSprite.prototype.__preloadurls = {}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#302/3";
+return $lzsc$temp
+})()();
 LzSprite.prototype.__preloadFrames = (function () {
 var $lzsc$temp = function () {
 if (!this.__ImgPool) {
@@ -8364,24 +8774,7 @@ var im_$3 = this.__ImgPool.get(src_$2, false, true);
 if (this.quirks.ie_alpha_image_loader) {
 this.__updateIEAlpha(im_$3)
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2105/38";
-return $lzsc$temp
-})();
-LzSprite.prototype.__findParents = (function () {
-var $lzsc$temp = function (prop_$0, value_$1, onlyone_$2) {
-var parents_$3 = [];
-var root_$4 = LzSprite.__rootSprite;
-var sprite_$5 = this;
-while (sprite_$5 && sprite_$5 !== root_$4) {
-if (sprite_$5[prop_$0] == value_$1) {
-parents_$3.push(sprite_$5);
-if (onlyone_$2) return parents_$3
-};
-sprite_$5 = sprite_$5.__parent
-};
-return parents_$3
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2130/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#310/38";
 return $lzsc$temp
 })();
 LzSprite.prototype.__imgonload = (function () {
@@ -8407,7 +8800,7 @@ var $lzsc$temp = function (i_$0) {
 this.resourceWidth = i_$0.width;
 this.resourceHeight = i_$0.height
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2171/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#359/21";
 return $lzsc$temp
 })();
 this.__processHiddenParents(f_$2, i_$0)
@@ -8433,25 +8826,7 @@ this.__clearImageEvents(this.__LZimg)
 } else {
 this.__clearImageEvents(i_$0)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2147/34";
-return $lzsc$temp
-})();
-LzSprite.prototype.__processHiddenParents = (function () {
-var $lzsc$temp = function (method_$0) {
-var sprites_$1 = this.__findParents("visible", false);
-var l_$2 = sprites_$1.length;
-for (var n_$3 = 0;n_$3 < l_$2;n_$3++) {
-sprites_$1[n_$3].__LZdiv.style.display = ""
-};
-var args_$4 = Array.prototype.slice.call(arguments, 1);
-var result_$5 = method_$0.apply(this, args_$4);
-for (var n_$3 = 0;n_$3 < l_$2;n_$3++) {
-var sprite_$6 = sprites_$1[n_$3];
-sprite_$6.__LZdiv.style.display = sprite_$6.__csscache.__LZdivdisplay || ""
-};
-return result_$5
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2216/45";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#335/34";
 return $lzsc$temp
 })();
 LzSprite.prototype.__imgonerror = (function () {
@@ -8484,7 +8859,7 @@ this.__clearImageEvents(this.__LZimg)
 } else {
 this.__clearImageEvents(i_$0)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2240/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#400/35";
 return $lzsc$temp
 })();
 LzSprite.prototype.__imgontimeout = (function () {
@@ -8514,7 +8889,7 @@ this.__clearImageEvents(this.__LZimg)
 } else {
 this.__clearImageEvents(i_$0)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2280/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#440/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.__updateLoadStatus = (function () {
@@ -8522,7 +8897,7 @@ var $lzsc$temp = function (val_$0) {
 this.owner.resourceevent("loadratio", val_$0);
 this.owner.resourceevent("framesloadratio", val_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2317/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#477/41";
 return $lzsc$temp
 })();
 LzSprite.prototype.__destroyImage = (function () {
@@ -8542,7 +8917,7 @@ LzSprite.prototype.__discardElement(img_$1)
 if (LzSprite.quirks.preload_images_only_once) {
 LzSprite.prototype.__preloadurls[url_$0] = null
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2331/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#491/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.__clearImageEvents = (function () {
@@ -8565,7 +8940,7 @@ img_$0.onload = null
 };
 img_$0.__cleared = true
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2354/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#514/41";
 return $lzsc$temp
 })();
 LzSprite.prototype.__gotImage = (function () {
@@ -8578,7 +8953,7 @@ this.owner[obj_$1.__lastcondition](obj_$1.sizer, true)
 } else {
 this.owner[obj_$1.__lastcondition](obj_$1, true)
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2380/33";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#540/33";
 return $lzsc$temp
 })();
 LzSprite.prototype.__getImage = (function () {
@@ -8596,7 +8971,7 @@ im.sizer.onload = (function () {
 var $lzsc$temp = function () {
 im.sizer.tId = setTimeout(this.onloadforeal, 1)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2411/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#571/31";
 return $lzsc$temp
 })();
 im.sizer.onloadforeal = lz.BrowserUtils.getcallbackfunc(this.owner, "__imgonload", [im.sizer]);
@@ -8626,47 +9001,7 @@ im.src = url_$0
 if (im) im.__lastcondition = "__imgonload";
 return im
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2398/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.setClip = (function () {
-var $lzsc$temp = function (c_$0) {
-if (this.clip === c_$0) return;
-this.clip = c_$0;
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && c_$0) {
-this.__restoreSize()
-}};
-this.__updateClip()
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2448/30";
-return $lzsc$temp
-})();
-LzSprite.prototype._clip = "";
-LzSprite.prototype.__updateClip = (function () {
-var $lzsc$temp = function () {
-var quirks_$0 = this.quirks;
-if (this.isroot && this.quirks.canvas_div_cannot_be_clipped) return;
-var clipcss_$1 = "";
-if (this.clip && this.width != null && this.width >= 0 && this.height != null && this.height >= 0) {
-clipcss_$1 = "rect(0px " + this._w + " " + this._h + " 0px)"
-} else if (this._clip) {
-clipcss_$1 = quirks_$0.fix_ie_css_syntax ? "rect(auto auto auto auto)" : ""
-};
-if (clipcss_$1 !== this._clip) {
-this._clip = clipcss_$1;
-this.__LZdiv.style.clip = clipcss_$1
-} else {
-return
-};
-if (quirks_$0.fix_clickable && quirks_$0.dont_clip_clickdivs != true) {
-if (this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.clip = clipcss_$1
-}};
-if (quirks_$0.fix_contextmenu && this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.clip = clipcss_$1
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2464/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#558/33";
 return $lzsc$temp
 })();
 LzSprite.prototype.stretchResource = (function () {
@@ -8681,7 +9016,7 @@ this.__setFrame(this.frame, true)
 };
 this.__updateStretches()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2504/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#619/38";
 return $lzsc$temp
 })();
 LzSprite.prototype.__updateStretches = (function () {
@@ -8712,12 +9047,727 @@ img_$1.height = this.resourceHeight
 if (quirks_$0.show_img_before_changing_size) {
 imgstyle_$2.display = olddisplay_$3
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2522/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#637/40";
+return $lzsc$temp
+})();
+LzSprite.prototype.setCursor = (function () {
+var $lzsc$temp = function (c_$0) {
+if (this.quirks.no_cursor_colresize) {
+return
+};
+if (c_$0 === this.cursor) return;
+if (this.clickable !== true) this.setClickable(true);
+this.cursor = c_$0;
+if (this.quirks.fix_clickable) {
+this.__LZclick.style.cursor = LzSprite.__defaultStyles.hyphenate(c_$0)
+} else {
+this.__LZdiv.style.cursor = LzSprite.__defaultStyles.hyphenate(c_$0)
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#676/32";
+return $lzsc$temp
+})();
+LzSprite.prototype.__setFrame = (function () {
+var $lzsc$temp = function (f_$0, force_$1) {
+if (f_$0 < 1) {
+f_$0 = 1
+} else if (f_$0 > this.frames.length) {
+f_$0 = this.frames.length
+};
+var skipevent_$2 = false;
+if (force_$1) {
+skipevent_$2 = f_$0 == this.frame
+} else if (f_$0 == this.frame) {
+return
+};
+this.frame = f_$0;
+var url_$3 = this.frames[this.frame - 1];
+if (this.backgroundrepeat) {
+this.__setBGImage(url_$3);
+this.__updateBackgroundRepeat()
+} else if (this.stretches == null && this.__csssprite) {
+if (!this.__bgimage) {
+this.__createIMG();
+this.__setBGImage(this.__csssprite)
+};
+var x_$4 = (this.frame - 1) * -this.resourceWidth;
+var y_$5 = -this.__cssspriteoffset || 0;
+this.__LZimg.style.backgroundPosition = x_$4 + "px " + y_$5 + "px"
+} else {
+this.setSource(url_$3, true)
+};
+if (skipevent_$2) return;
+this.owner.resourceevent("frame", this.frame);
+if (this.frames.length == this.frame) {
+this.owner.resourceevent("lastframe", null, true)
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#695/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.updateResourceSize = (function () {
+var $lzsc$temp = function () {
+this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: true})
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#737/41";
+return $lzsc$temp
+})();
+LzSprite.prototype.unload = (function () {
+var $lzsc$temp = function () {
+this.resourceurl = null;
+this.resource = null;
+this.source = null;
+this.resourceWidth = null;
+this.resourceHeight = null;
+if (this.__ImgPool) {
+this.__ImgPool.destroy();
+this.__ImgPool = null
+};
+if (this.__LZimg) {
+this.__destroyImage(null, this.__LZimg);
+this.__LZimg = null
+};
+this.__updateLoadStatus(0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#741/29";
+return $lzsc$temp
+})();
+LzSprite.prototype.backgroundrepeat = null;
+LzSprite.prototype.tilex = false;
+LzSprite.prototype.tiley = false;
+LzSprite.prototype.setBackgroundRepeat = (function () {
+var $lzsc$temp = function (backgroundrepeat_$0) {
+if (this.backgroundrepeat == backgroundrepeat_$0) return;
+var x_$1 = false;
+var y_$2 = false;
+if (backgroundrepeat_$0 == "repeat") {
+x_$1 = y_$2 = true
+} else if (backgroundrepeat_$0 == "repeat-x") {
+x_$1 = true
+} else if (backgroundrepeat_$0 == "repeat-y") {
+y_$2 = true
+};
+this.tilex = x_$1;
+this.tiley = y_$2;
+this.backgroundrepeat = backgroundrepeat_$0;
+if (!this.__LZimg) this.__createIMG();
+this.__updateBackgroundRepeat();
+if (backgroundrepeat_$0) {
+this.__setBGImage(this.source);
+this.__LZimg.src = LzSprite.blankimage
+} else {
+if (this.__bgimage) this.__setBGImage(null);
+backgroundrepeat_$0 = "";
+this.skiponload = true;
+this.setSource(this.source, "reset")
+};
+this.__LZdiv.style.backgroundRepeat = backgroundrepeat_$0
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#762/42";
+return $lzsc$temp
+})();
+LzSprite.prototype.__updateBackgroundRepeat = (function () {
+var $lzsc$temp = function () {
+if (this.__LZimg) {
+this.__LZimg.style.backgroundRepeat = this.backgroundrepeat;
+this.__LZimg.style.backgroundPosition = "0 0";
+this.__LZimg.width = this.backgroundrepeat ? this.width : this.resourceWidth;
+this.__LZimg.height = this.backgroundrepeat ? this.height : this.resourceHeight
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-resource.js#791/47";
+return $lzsc$temp
+})();
+LzSprite.prototype.getContext = (function () {
+var $lzsc$temp = function () {
+if (this.__LZcanvas && this.__LZcanvas.getContext) {
+return this.__LZcanvas.getContext("2d")
+};
+var canvas_$0 = document.createElement("canvas");
+canvas_$0.owner = this;
+this.__LZcanvas = canvas_$0;
+canvas_$0.className = "lzgraphicscanvas";
+if (this.__LZdiv.firstChild) {
+this.__LZdiv.insertBefore(canvas_$0, this.__LZdiv.firstChild)
+} else {
+this.__LZdiv.appendChild(canvas_$0)
+};
+canvas_$0.setAttribute("width", this.width);
+canvas_$0.setAttribute("height", this.height);
+if (this.cornerradius != null) {
+this.__applyCornerRadius(canvas_$0)
+};
+if (lz.embed.browser.isIE) {
+this.__maxTries = 10;
+this.__initcanvasie()
+} else {
+return canvas_$0.getContext("2d")
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#19/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.setContextCallback = (function () {
+var $lzsc$temp = function (callbackscope_$0, callbackname_$1) {
+this.__canvascallbackscope = callbackscope_$0;
+this.__canvascallbackname = callbackname_$1
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#55/41";
+return $lzsc$temp
+})();
+LzSprite.prototype.setDefaultContextMenu = (function () {
+var $lzsc$temp = function (cmenu_$0) {
+LzSprite.__rootSprite.__contextmenu = cmenu_$0
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#66/44";
+return $lzsc$temp
+})();
+LzSprite.prototype.setContextMenu = (function () {
+var $lzsc$temp = function (cmenu_$0) {
+this.__contextmenu = cmenu_$0;
+if (!this.quirks.fix_contextmenu || this.__LZcontext) return;
+var cxdiv_$1 = document.createElement("div");
+cxdiv_$1.className = "lzcontext";
+if (!this.quirks.fix_clickable) {
+cxdiv_$1.onmousedown = LzSprite.__contextClickDispatcher
+};
+if (!this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv = this.__createContainerDivs("context")
+};
+this.__LZcontextcontainerdiv.appendChild(cxdiv_$1);
+this.__LZcontext = cxdiv_$1;
+this.__LZcontext.style.width = this._w;
+this.__LZcontext.style.height = this._h;
+cxdiv_$1.owner = this
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#77/37";
+return $lzsc$temp
+})();
+LzSprite.prototype.getContextMenu = (function () {
+var $lzsc$temp = function () {
+return this.__contextmenu
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#106/37";
+return $lzsc$temp
+})();
+LzSprite.__contextClickDispatcher = (function () {
+var $lzsc$temp = function (e_$0) {
+e_$0 = e_$0 || window.event;
+if (!e_$0) return;
+if (lz.embed.browser.isIE && e_$0.button == 2) {
+return LzMouseKernel.__handleContextMenu(e_$0)
+};
+var cmenu_$1 = LzMouseKernel.__showncontextmenu;
+if (cmenu_$1) {
+LzContextMenuKernel.lzcontextmenu.hide()
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-contextmenu.js#114/37";
+return $lzsc$temp
+})();
+LzSprite.prototype.x = null;
+LzSprite.prototype.y = null;
+LzSprite.prototype.width = null;
+LzSprite.prototype.height = null;
+LzSprite.prototype._w = "0pt";
+LzSprite.prototype._h = "0pt";
+LzSprite.prototype.__topZ = 1;
+LzSprite.prototype.xoffset = 0;
+LzSprite.prototype._xoffset = 0;
+LzSprite.prototype.setX = (function () {
+var $lzsc$temp = function (x_$0) {
+if (x_$0 == null || x_$0 == this.x && this._xoffset == this.xoffset) return;
+this.__poscacheid = -1;
+this._xoffset = this.xoffset;
+this.x = x_$0;
+x_$0 = this.CSSDimension(x_$0 + this.xoffset);
+if (this._x != x_$0) {
+this._x = x_$0;
+this.__LZdiv.style.left = x_$0;
+if (this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.left = x_$0
+};
+if (this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.left = x_$0
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#41/27";
+return $lzsc$temp
+})();
+LzSprite.prototype.setWidth = (function () {
+var $lzsc$temp = function (w_$0) {
+if (w_$0 < 0 || this.width == w_$0) return;
+this.width = w_$0;
+w_$0 = this.CSSDimension(w_$0);
+if (this._w != w_$0) {
+this._w = w_$0;
+var size_$1 = w_$0;
+var quirks_$2 = this.quirks;
+this.applyCSS("width", size_$1);
+if (this.__LZcontext) this.__LZcontext.style.width = w_$0;
+if (this.clip) this.__updateClip();
+if (this.isroot) {
+if (quirks_$2.container_divs_require_overflow) {
+LzSprite.__rootSpriteOverflowContainer.style.width = w_$0
+}} else {
+if (this.stretches) this.__updateStretches();
+if (this.backgroundrepeat) this.__updateBackgroundRepeat();
+if (this.__LZclick) this.__LZclick.style.width = w_$0;
+if (this.__LZcanvas) this.__resizecanvas()
+};
+return w_$0
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#59/31";
+return $lzsc$temp
+})();
+LzSprite.prototype.yoffset = 0;
+LzSprite.prototype._yoffset = 0;
+LzSprite.prototype.setY = (function () {
+var $lzsc$temp = function (y_$0) {
+if (y_$0 == null || y_$0 == this.y && this._yoffset == this.yoffset) return;
+this.__poscacheid = -1;
+this.y = y_$0;
+this._yoffset = this.yoffset;
+y_$0 = this.CSSDimension(y_$0 + this.yoffset);
+if (this._y != y_$0) {
+this._y = y_$0;
+this.__LZdiv.style.top = y_$0;
+if (this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.top = y_$0
+};
+if (this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.top = y_$0
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#89/27";
+return $lzsc$temp
+})();
+LzSprite.prototype.setHeight = (function () {
+var $lzsc$temp = function (h_$0) {
+if (h_$0 < 0 || this.height == h_$0) return;
+this.height = h_$0;
+h_$0 = this.CSSDimension(h_$0);
+if (this._h != h_$0) {
+this._h = h_$0;
+var size_$1 = h_$0;
+var quirks_$2 = this.quirks;
+this.applyCSS("height", size_$1);
+if (this.__LZcontext) this.__LZcontext.style.height = h_$0;
+if (this.clip) this.__updateClip();
+if (this.isroot) {
+if (quirks_$2.container_divs_require_overflow) {
+LzSprite.__rootSpriteOverflowContainer.style.height = h_$0
+}} else {
+if (this.stretches) this.__updateStretches();
+if (this.backgroundrepeat) this.__updateBackgroundRepeat();
+if (this.__LZclick) this.__LZclick.style.height = h_$0;
+if (this.__LZcanvas) this.__resizecanvas()
+};
+return h_$0
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#108/32";
+return $lzsc$temp
+})();
+LzSprite.prototype.getWidth = (function () {
+var $lzsc$temp = function () {
+var w_$0 = this.__LZdiv.clientWidth;
+return w_$0 == 0 ? this.width : w_$0
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#137/31";
+return $lzsc$temp
+})();
+LzSprite.prototype.getHeight = (function () {
+var $lzsc$temp = function () {
+var h_$0 = this.__LZdiv.clientHeight;
+return h_$0 == 0 ? this.height : h_$0
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#143/32";
+return $lzsc$temp
+})();
+LzSprite.prototype.bringToFront = (function () {
+var $lzsc$temp = function () {
+if (!this.__parent) {
+Debug.warn("bringToFront with no parent");
+return
+};
+var c_$0 = this.__parent.__children;
+if (c_$0.length < 2) return;
+c_$0.sort(LzSprite.prototype.__zCompare);
+this.sendInFrontOf(c_$0[c_$0.length - 1])
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#150/35";
+return $lzsc$temp
+})();
+LzSprite.prototype.__setZ = (function () {
+var $lzsc$temp = function (z_$0) {
+this.__LZdiv.style.zIndex = z_$0;
+var quirks_$1 = this.quirks;
+if (quirks_$1.fix_clickable && this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.zIndex = z_$0
+};
+if (quirks_$1.fix_contextmenu && this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.zIndex = z_$0
+};
+this.__z = z_$0
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#168/29";
+return $lzsc$temp
+})();
+LzSprite.prototype.__zCompare = (function () {
+var $lzsc$temp = function (a_$0, b_$1) {
+if (a_$0.__z < b_$1.__z) return -1;
+if (a_$0.__z > b_$1.__z) return 1;
+return 0
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#183/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.sendToBack = (function () {
+var $lzsc$temp = function () {
+if (!this.__parent) {
+Debug.warn("sendToBack with no parent");
+return
+};
+var c_$0 = this.__parent.__children;
+if (c_$0.length < 2) return;
+c_$0.sort(LzSprite.prototype.__zCompare);
+this.sendBehind(c_$0[0])
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#191/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.sendBehind = (function () {
+var $lzsc$temp = function (behindSprite_$0) {
+if (!behindSprite_$0 || behindSprite_$0 === this) return;
+if (!this.__parent) {
+Debug.warn("sendBehind with no parent");
+return
+};
+var c_$1 = this.__parent.__children;
+if (c_$1.length < 2) return;
+c_$1.sort(LzSprite.prototype.__zCompare);
+var behindZ_$2 = false;
+for (var i_$3 = 0;i_$3 < c_$1.length;i_$3++) {
+var s_$4 = c_$1[i_$3];
+if (s_$4 == behindSprite_$0) behindZ_$2 = behindSprite_$0.__z;
+if (behindZ_$2 != false) {
+s_$4.__setZ(++s_$4.__z)
+}};
+this.__setZ(behindZ_$2)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#206/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.sendInFrontOf = (function () {
+var $lzsc$temp = function (frontSprite_$0) {
+if (!frontSprite_$0 || frontSprite_$0 === this) return;
+if (!this.__parent) {
+Debug.warn("sendInFrontOf with no parent");
+return
+};
+var c_$1 = this.__parent.__children;
+if (c_$1.length < 2) return;
+c_$1.sort(LzSprite.prototype.__zCompare);
+var frontZ_$2 = false;
+for (var i_$3 = 0;i_$3 < c_$1.length;i_$3++) {
+var s_$4 = c_$1[i_$3];
+if (frontZ_$2 != false) {
+s_$4.__setZ(++s_$4.__z)
+};
+if (s_$4 == frontSprite_$0) frontZ_$2 = frontSprite_$0.__z + 1
+};
+this.__setZ(frontZ_$2)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#232/36";
+return $lzsc$temp
+})();
+LzSprite.prototype.getZ = (function () {
+var $lzsc$temp = function () {
+return this.__z
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite-dimension.js#263/27";
+return $lzsc$temp
+})();
+LzSprite._getScrollbarWidth = (function () {
+var $lzsc$temp = function () {
+var div_$0 = document.createElement("div");
+div_$0.style.width = "50px";
+div_$0.style.height = "50px";
+div_$0.style.overflow = "hidden";
+div_$0.style.position = "absolute";
+div_$0.style.top = "-200px";
+div_$0.style.left = "-200px";
+var div2_$1 = document.createElement("div");
+div2_$1.style.height = "100px";
+div_$0.appendChild(div2_$1);
+var body_$2 = document.body;
+body_$2.appendChild(div_$0);
+var w1_$3 = div_$0.clientWidth;
+div_$0.style.overflowY = "scroll";
+var w2_$4 = div_$0.clientWidth;
+LzSprite.prototype.__discardElement(div_$0);
+return w1_$3 - w2_$4
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#19/31";
+return $lzsc$temp
+})();
+LzSprite.setRootX = (function () {
+var $lzsc$temp = function (v_$0) {
+var rootcontainer_$1 = LzSprite.__rootSpriteContainer;
+rootcontainer_$1.style.position = "absolute";
+rootcontainer_$1.style.left = LzSprite.prototype.CSSDimension(v_$0);
+setTimeout(LzScreenKernel.__resizeEvent, 0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#52/21";
+return $lzsc$temp
+})();
+LzSprite.setRootWidth = (function () {
+var $lzsc$temp = function (v_$0) {
+LzSprite.__rootSpriteContainer.style.width = LzSprite.prototype.CSSDimension(v_$0);
+setTimeout(LzScreenKernel.__resizeEvent, 0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#66/25";
+return $lzsc$temp
+})();
+LzSprite.setRootY = (function () {
+var $lzsc$temp = function (v_$0) {
+var rootcontainer_$1 = LzSprite.__rootSpriteContainer;
+rootcontainer_$1.style.position = "absolute";
+rootcontainer_$1.style.top = LzSprite.prototype.CSSDimension(v_$0);
+setTimeout(LzScreenKernel.__resizeEvent, 0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#78/21";
+return $lzsc$temp
+})();
+LzSprite.setRootHeight = (function () {
+var $lzsc$temp = function (v_$0) {
+LzSprite.__rootSpriteContainer.style.height = LzSprite.prototype.CSSDimension(v_$0);
+setTimeout(LzScreenKernel.__resizeEvent, 0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#92/26";
+return $lzsc$temp
+})();
+LzSprite.prototype.opacity = 1;
+LzSprite.prototype.visible = true;
+LzSprite.prototype.clip = null;
+LzSprite.prototype.__LZcontext = null;
+LzSprite.prototype.initted = false;
+LzSprite.prototype.init = (function () {
+var $lzsc$temp = function (v_$0) {
+this.setVisible(v_$0);
+if (this.isroot) {
+if (this.quirks["css_hide_canvas_during_init"]) {
+var cssname_$1 = "display";
+if (this.quirks["safari_visibility_instead_of_display"]) {
+cssname_$1 = "visibility"
+};
+this.__LZdiv.style[cssname_$1] = "";
+if (this.quirks["fix_clickable"]) this.__LZclickcontainerdiv.style[cssname_$1] = "";
+if (this.quirks["fix_contextmenu"]) this.__LZcontextcontainerdiv.style[cssname_$1] = ""
+};
+if (this._id) {
+lz.embed[this._id]._ready(this.owner)
+}};
+this.initted = true
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#121/27";
+return $lzsc$temp
+})();
+LzSprite.prototype.__parent = null;
+LzSprite.prototype.__children = null;
+LzSprite.__warnonce = {};
+LzSprite.prototype.addChildSprite = (function () {
+var $lzsc$temp = function (sprite_$0) {
+if (sprite_$0.__parent != null) return;
+if (this.stretches != null && LzSprite.__warnonce.stretches != true) {
+Debug.warn("Due to limitations in the DHTML runtime, stretches will only apply to the view %w, and doesn't affect child views.", this.owner);
+LzSprite.__warnonce.stretches = true
+};
+sprite_$0.__parent = this;
+if (this.__children) {
+this.__children.push(sprite_$0)
+} else {
+this.__children = [sprite_$0]
+};
+this.__LZdiv.appendChild(sprite_$0.__LZdiv);
+if (sprite_$0.__LZclickcontainerdiv) {
+if (!this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv = this.__createContainerDivs("click");
+if (this.clip) this.__updateClip()
+};
+this.__LZclickcontainerdiv.appendChild(sprite_$0.__LZclickcontainerdiv)
+};
+sprite_$0.__setZ(++this.__topZ)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#159/37";
+return $lzsc$temp
+})();
+LzSprite.prototype.getBaseUrl = (function () {
+var $lzsc$temp = function (resource_$0) {
+return LzSprite.__rootSprite.options[resource_$0.ptype == "sr" ? "serverroot" : "approot"]
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#190/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.CSSDimension = LzKernelUtils.CSSDimension;
+LzSprite.prototype.setMaxLength = (function () {
+var $lzsc$temp = function (v_$0) {};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#204/35";
+return $lzsc$temp
+})();
+LzSprite.prototype.setPattern = (function () {
+var $lzsc$temp = function (v_$0) {};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#211/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.setVisible = (function () {
+var $lzsc$temp = function (v_$0) {
+if (this.visible === v_$0) return;
+this.visible = v_$0;
+this.applyCSS("display", this.visible && this.opacity != 0 ? "" : "none");
+var clickdisplay_$1 = v_$0 ? "" : "none";
+if (this.quirks.fix_clickable) {
+if (this.quirks.fix_ie_clickable && this.__LZclick) {
+this.__LZclick.style.display = v_$0 && this.clickable ? "" : "none"
+};
+if (this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.display = clickdisplay_$1
+}};
+if (this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.display = clickdisplay_$1
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#215/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.setBGColor = (function () {
+var $lzsc$temp = function (c_$0) {
+if (c_$0 != null && !this.capabilities.rgba) {
+switch (LzColorUtils.alphafrominternal(c_$0)) {
+case 0:
+c_$0 = null;break;;default:
+{
+LzView.__warnCapability("rgba values for view.bgcolor", "rgba")
+};case 1:
+c_$0 = LzColorUtils.colorfrominternal(c_$0);break
+}};
+if (this.bgcolor === c_$0) return;
+this.bgcolor = c_$0;
+this.__LZdiv.style.backgroundColor = c_$0 === null ? "transparent" : LzColorUtils.torgb(c_$0);
+if (this.quirks.fix_ie_background_height) {
+if (this.height != null && this.height < 2) {
+this.setSource(LzSprite.blankimage, true)
+} else if (!this._fontSize) {
+this.__LZdiv.style.fontSize = 0
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#244/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.__filters = null;
+LzSprite.prototype.setFilter = (function () {
+var $lzsc$temp = function (name_$0, value_$1) {
+if (this.__filters == null) {
+this.__filters = {}};
+this.__filters[name_$0] = value_$1;
+var filterstr_$2 = "";
+for (var i_$3 in this.__filters) {
+filterstr_$2 += this.__filters[i_$3]
+};
+return filterstr_$2
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#276/32";
+return $lzsc$temp
+})();
+LzSprite.prototype.setOpacity = (function () {
+var $lzsc$temp = function (o_$0) {
+if (lz.embed.browser.isIE && o_$0 == 0) {
+o_$0 = 0.01
+};
+if (this.opacity == o_$0 || o_$0 < 0) return;
+var updateVisibility_$1 = this.opacity == 0 || o_$0 == 0;
+this.opacity = o_$0;
+var factor_$2 = 100;
+if (this.capabilities.minimize_opacity_changes) {
+factor_$2 = 10
+};
+o_$0 = (o_$0 * factor_$2 | 0) / factor_$2;
+if (o_$0 != this._opacity) {
+this._opacity = o_$0;
+if (this.quirks.ie_opacity) {
+this.__LZdiv.style.filter = this.setFilter("opacity", o_$0 == 1 ? "" : "alpha(opacity=" + (o_$0 * 100 | 0) + ")")
+} else {
+this.__LZdiv.style.opacity = o_$0 == 1 ? "" : o_$0
+};
+if (updateVisibility_$1) {
+this.applyCSS("display", this.visible && this.opacity != 0 ? "" : "none")
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#289/33";
+return $lzsc$temp
+})();
+LzSprite.prototype.__findParents = (function () {
+var $lzsc$temp = function (prop_$0, value_$1, onlyone_$2) {
+var parents_$3 = [];
+var root_$4 = LzSprite.__rootSprite;
+var sprite_$5 = this;
+while (sprite_$5 && sprite_$5 !== root_$4) {
+if (sprite_$5[prop_$0] == value_$1) {
+parents_$3.push(sprite_$5);
+if (onlyone_$2) return parents_$3
+};
+sprite_$5 = sprite_$5.__parent
+};
+return parents_$3
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#325/36";
+return $lzsc$temp
+})();
+LzSprite.prototype.__processHiddenParents = (function () {
+var $lzsc$temp = function (method_$0) {
+var sprites_$1 = this.__findParents("visible", false);
+var l_$2 = sprites_$1.length;
+for (var n_$3 = 0;n_$3 < l_$2;n_$3++) {
+sprites_$1[n_$3].__LZdiv.style.display = ""
+};
+var args_$4 = Array.prototype.slice.call(arguments, 1);
+var result_$5 = method_$0.apply(this, args_$4);
+for (var n_$3 = 0;n_$3 < l_$2;n_$3++) {
+var sprite_$6 = sprites_$1[n_$3];
+sprite_$6.__LZdiv.style.display = sprite_$6.__csscache.__LZdivdisplay || ""
+};
+return result_$5
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#347/45";
+return $lzsc$temp
+})();
+LzSprite.prototype.setClip = (function () {
+var $lzsc$temp = function (c_$0) {
+if (this.clip === c_$0) return;
+this.clip = c_$0;
+this.__updateClip()
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#368/30";
+return $lzsc$temp
+})();
+LzSprite.prototype._clip = "";
+LzSprite.prototype.__updateClip = (function () {
+var $lzsc$temp = function () {
+var quirks_$0 = this.quirks;
+if (this.isroot && this.quirks.canvas_div_cannot_be_clipped) return;
+if (this.width == null || this.height == null) return;
+var clipcss_$1 = "";
+if (this.clip && this.width >= 0 && this.height >= 0) {
+clipcss_$1 = "rect(0px " + this._w + " " + this._h + " 0px)"
+} else if (this._clip) {
+clipcss_$1 = quirks_$0.fix_ie_css_syntax ? "rect(auto auto auto auto)" : ""
+};
+if (clipcss_$1 !== this._clip) {
+this._clip = clipcss_$1;
+this.__LZdiv.style.clip = clipcss_$1
+};
+if (quirks_$0.fix_clickable && this.__LZclickcontainerdiv) {
+this.__LZclickcontainerdiv.style.clip = clipcss_$1
+};
+if (quirks_$0.fix_contextmenu && this.__LZcontextcontainerdiv) {
+this.__LZcontextcontainerdiv.style.clip = clipcss_$1
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#379/35";
 return $lzsc$temp
 })();
 LzSprite.prototype.predestroy = (function () {
 var $lzsc$temp = function () {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2553/33";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#408/33";
 return $lzsc$temp
 })();
 LzSprite.prototype.destroy = (function () {
@@ -8750,7 +9800,10 @@ if (this.__LZdiv) {
 if (this.isroot) {
 if (this.quirks.activate_on_mouseover) {
 this.__LZdiv.onmouseover = null;
-this.__LZdiv.onmouseout = null
+this.__LZdiv.onmouseout = null;
+this.__LZdiv.onmouseup = null;
+this.__LZdiv.onmousedown = null;
+this.__LZdiv.onclick = null
 };
 if (LzSprite.quirks.prevent_selection) {
 this.__LZdiv.onselectstart = null
@@ -8790,14 +9843,14 @@ delete this.__sprites[this.uid]
 if (this.isroot) {
 lz.BrowserUtils.scopes = null
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2556/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#411/30";
 return $lzsc$temp
 })();
 LzSprite.prototype.getMouse = (function () {
 var $lzsc$temp = function () {
 var p_$0 = this.__getPos();
 return {x: LzMouseKernel.__x - p_$0.x, y: LzMouseKernel.__y - p_$0.y}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2643/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#501/31";
 return $lzsc$temp
 })();
 LzSprite.prototype.__poscache = null;
@@ -8836,37 +9889,7 @@ this.__poscache = pos_$7
 }};
 return pos_$7
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2665/31";
-return $lzsc$temp
-})();
-LzSprite.prototype.getWidth = (function () {
-var $lzsc$temp = function () {
-var w_$0 = this.__LZdiv.clientWidth;
-return w_$0 == 0 ? this.width : w_$0
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2712/31";
-return $lzsc$temp
-})();
-LzSprite.prototype.getHeight = (function () {
-var $lzsc$temp = function () {
-var h_$0 = this.__LZdiv.clientHeight;
-return h_$0 == 0 ? this.height : h_$0
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2718/32";
-return $lzsc$temp
-})();
-LzSprite.prototype.setCursor = (function () {
-var $lzsc$temp = function (c_$0) {
-if (this.quirks.no_cursor_colresize) {
-return
-};
-if (c_$0 === this.cursor) return;
-if (this.clickable !== true) this.setClickable(true);
-this.cursor = c_$0;
-if (this.quirks.fix_clickable) {
-this.__LZclick.style.cursor = LzSprite.__defaultStyles.hyphenate(c_$0)
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2731/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#523/31";
 return $lzsc$temp
 })();
 LzSprite.prototype.setShowHandCursor = (function () {
@@ -8876,225 +9899,23 @@ this.setCursor("pointer")
 } else {
 this.setCursor("default")
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2749/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#575/40";
 return $lzsc$temp
 })();
 LzSprite.prototype.getDisplayObject = (function () {
 var $lzsc$temp = function () {
 return this.__LZdiv
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2757/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#583/39";
 return $lzsc$temp
 })();
 LzSprite.prototype.__LZcanvas = null;
-LzSprite.prototype.getContext = (function () {
-var $lzsc$temp = function () {
-if (this.__LZcanvas && this.__LZcanvas.getContext) {
-return this.__LZcanvas.getContext("2d")
-};
-var canvas_$0 = document.createElement("canvas");
-canvas_$0.owner = this;
-this.__LZcanvas = canvas_$0;
-canvas_$0.className = "lzgraphicscanvas";
-if (this.__LZdiv.firstChild) {
-this.__LZdiv.insertBefore(canvas_$0, this.__LZdiv.firstChild)
-} else {
-this.__LZdiv.appendChild(canvas_$0)
-};
-lz.embed.__setAttr(canvas_$0, "width", this.width);
-lz.embed.__setAttr(canvas_$0, "height", this.height);
-if (this.cornerradius != null) {
-this.__applyCornerRadius(canvas_$0)
-};
-if (lz.embed.browser.isIE) {
-this.__maxTries = 10;
-this.__initcanvasie()
-} else {
-return canvas_$0.getContext("2d")
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2764/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.setContextCallback = (function () {
-var $lzsc$temp = function (callbackscope_$0, callbackname_$1) {
-this.__canvascallbackscope = callbackscope_$0;
-this.__canvascallbackname = callbackname_$1
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2800/41";
-return $lzsc$temp
-})();
-LzSprite.prototype.bringToFront = (function () {
-var $lzsc$temp = function () {
-if (!this.__parent) {
-Debug.warn("bringToFront with no parent");
-return
-};
-var c_$0 = this.__parent.__children;
-if (c_$0.length < 2) return;
-c_$0.sort(LzSprite.prototype.__zCompare);
-this.sendInFrontOf(c_$0[c_$0.length - 1])
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2806/35";
-return $lzsc$temp
-})();
-LzSprite.prototype.__setZ = (function () {
-var $lzsc$temp = function (z_$0) {
-this.__LZdiv.style.zIndex = z_$0;
-var quirks_$1 = this.quirks;
-if (quirks_$1.fix_clickable && this.__LZclickcontainerdiv) {
-this.__LZclickcontainerdiv.style.zIndex = z_$0
-};
-if (quirks_$1.fix_contextmenu && this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv.style.zIndex = z_$0
-};
-this.__z = z_$0
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2824/29";
-return $lzsc$temp
-})();
-LzSprite.prototype.__zCompare = (function () {
-var $lzsc$temp = function (a_$0, b_$1) {
-if (a_$0.__z < b_$1.__z) return -1;
-if (a_$0.__z > b_$1.__z) return 1;
-return 0
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2839/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.sendToBack = (function () {
-var $lzsc$temp = function () {
-if (!this.__parent) {
-Debug.warn("sendToBack with no parent");
-return
-};
-var c_$0 = this.__parent.__children;
-if (c_$0.length < 2) return;
-c_$0.sort(LzSprite.prototype.__zCompare);
-this.sendBehind(c_$0[0])
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2847/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.sendBehind = (function () {
-var $lzsc$temp = function (behindSprite_$0) {
-if (!behindSprite_$0 || behindSprite_$0 === this) return;
-if (!this.__parent) {
-Debug.warn("sendBehind with no parent");
-return
-};
-var c_$1 = this.__parent.__children;
-if (c_$1.length < 2) return;
-c_$1.sort(LzSprite.prototype.__zCompare);
-var behindZ_$2 = false;
-for (var i_$3 = 0;i_$3 < c_$1.length;i_$3++) {
-var s_$4 = c_$1[i_$3];
-if (s_$4 == behindSprite_$0) behindZ_$2 = behindSprite_$0.__z;
-if (behindZ_$2 != false) {
-s_$4.__setZ(++s_$4.__z)
-}};
-this.__setZ(behindZ_$2)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2862/33";
-return $lzsc$temp
-})();
-LzSprite.prototype.sendInFrontOf = (function () {
-var $lzsc$temp = function (frontSprite_$0) {
-if (!frontSprite_$0 || frontSprite_$0 === this) return;
-if (!this.__parent) {
-Debug.warn("sendInFrontOf with no parent");
-return
-};
-var c_$1 = this.__parent.__children;
-if (c_$1.length < 2) return;
-c_$1.sort(LzSprite.prototype.__zCompare);
-var frontZ_$2 = false;
-for (var i_$3 = 0;i_$3 < c_$1.length;i_$3++) {
-var s_$4 = c_$1[i_$3];
-if (frontZ_$2 != false) {
-s_$4.__setZ(++s_$4.__z)
-};
-if (s_$4 == frontSprite_$0) frontZ_$2 = frontSprite_$0.__z + 1
-};
-this.__setZ(frontZ_$2)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2888/36";
-return $lzsc$temp
-})();
-LzSprite.prototype.__setFrame = (function () {
-var $lzsc$temp = function (f_$0, force_$1) {
-if (f_$0 < 1) {
-f_$0 = 1
-} else if (f_$0 > this.frames.length) {
-f_$0 = this.frames.length
-};
-var skipevent_$2 = false;
-if (force_$1) {
-skipevent_$2 = f_$0 == this.frame
-} else if (f_$0 == this.frame) {
-return
-};
-this.frame = f_$0;
-var url_$3 = this.frames[this.frame - 1];
-if (this.backgroundrepeat) {
-this.__setBGImage(url_$3);
-this.__updateBackgroundRepeat()
-} else if (this.stretches == null && this.__csssprite) {
-if (!this.__bgimage) {
-this.__createIMG();
-this.__setBGImage(this.__csssprite)
-};
-var x_$4 = (this.frame - 1) * -this.resourceWidth;
-var y_$5 = -this.__cssspriteoffset || 0;
-this.__LZimg.style.backgroundPosition = x_$4 + "px " + y_$5 + "px"
-} else {
-this.setSource(url_$3, true)
-};
-if (skipevent_$2) return;
-this.owner.resourceevent("frame", this.frame);
-if (this.frames.length == this.frame) this.owner.resourceevent("lastframe", null, true)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2918/33";
-return $lzsc$temp
-})();
 LzSprite.prototype.__discardElement = (function () {
 var $lzsc$temp = function (element_$0) {
 if (this.__skipdiscards) return;
 if (element_$0.parentNode) element_$0.parentNode.removeChild(element_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2961/39";
-return $lzsc$temp
-})();
-LzSprite.prototype.getZ = (function () {
-var $lzsc$temp = function () {
-return this.__z
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2970/27";
-return $lzsc$temp
-})();
-LzSprite.prototype.updateResourceSize = (function () {
-var $lzsc$temp = function () {
-this.owner.resourceload({width: this.resourceWidth, height: this.resourceHeight, resource: this.resource, skiponload: true})
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2974/41";
-return $lzsc$temp
-})();
-LzSprite.prototype.unload = (function () {
-var $lzsc$temp = function () {
-this.resource = null;
-this.source = null;
-this.resourceWidth = null;
-this.resourceHeight = null;
-if (this.__ImgPool) {
-this.__ImgPool.destroy();
-this.__ImgPool = null
-};
-if (this.__LZimg) {
-this.__destroyImage(null, this.__LZimg);
-this.__LZimg = null
-};
-this.__updateLoadStatus(0)
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2978/29";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#593/39";
 return $lzsc$temp
 })();
 LzSprite.prototype.__setCSSClassProperty = (function () {
@@ -9104,46 +9925,21 @@ var sheets_$4 = document.styleSheets;
 var sl_$5 = sheets_$4.length - 1;
 for (var i_$6 = sl_$5;i_$6 >= 0;i_$6--) {
 var rules_$7 = sheets_$4[i_$6][rulename_$3];
+if (rules_$7 && rules_$7["length"]) {
 var rl_$8 = rules_$7.length - 1;
 for (var j_$9 = rl_$8;j_$9 >= 0;j_$9--) {
 if (rules_$7[j_$9].selectorText == classname_$0) {
 rules_$7[j_$9].style[name_$1] = value_$2
-}}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#2997/44";
-return $lzsc$temp
-})();
-LzSprite.prototype.setDefaultContextMenu = (function () {
-var $lzsc$temp = function (cmenu_$0) {
-LzSprite.__rootSprite.__contextmenu = cmenu_$0
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3017/44";
-return $lzsc$temp
-})();
-LzSprite.prototype.setContextMenu = (function () {
-var $lzsc$temp = function (cmenu_$0) {
-this.__contextmenu = cmenu_$0;
-if (!this.quirks.fix_contextmenu || this.__LZcontext) return;
-var cxdiv_$1 = document.createElement("div");
-cxdiv_$1.className = "lzcontext";
-if (!this.__LZcontextcontainerdiv) {
-this.__LZcontextcontainerdiv = this.__createContainerDivs("context")
-};
-this.__LZcontextcontainerdiv.appendChild(cxdiv_$1);
-this.__LZcontext = cxdiv_$1;
-this.__LZcontext.style.width = this._w;
-this.__LZcontext.style.height = this._h;
-cxdiv_$1.owner = this
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3026/37";
+}}} else {
+Debug.debug("__setCSSClassProperty----unexpected css-", classname_$0, rulename_$3, rules_$7)
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#602/44";
 return $lzsc$temp
 })();
 LzSprite.prototype.__createContainerDivs = (function () {
 var $lzsc$temp = function (typestring_$0) {
 var propname_$1 = "__LZ" + typestring_$0 + "containerdiv";
 var copyclip_$2 = true;
-if (this.quirks.dont_clip_clickdivs && typestring_$0 === "click") {
-copyclip_$2 = false
-};
 if (this[propname_$1]) {
 return this[propname_$1]
 };
@@ -9156,7 +9952,7 @@ var parentcontainer_$7 = sprite_$5.__parent && sprite_$5.__parent[propname_$1];
 if (parentcontainer_$7) {
 parentcontainer_$7.appendChild(newdiv_$6)
 };
-this.__copystyles(sprite_$5.__LZdiv, newdiv_$6, copyclip_$2);
+this.__copystyles(sprite_$5.__LZdiv, newdiv_$6);
 if (sprite_$5._id && !newdiv_$6.id) {
 newdiv_$6.id = typestring_$0 + sprite_$5._id
 };
@@ -9165,40 +9961,7 @@ sprite_$5[propname_$1] = newdiv_$6
 };
 return newdiv_$6
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3046/44";
-return $lzsc$temp
-})();
-LzSprite.prototype.__copystyles = (function () {
-var $lzsc$temp = function (from_$0, to_$1, copyclip_$2) {
-copyclip_$2 = copyclip_$2 == null ? true : copyclip_$2;
-var sprite_$3 = from_$0.owner;
-var left_$4 = sprite_$3._x;
-if (left_$4) {
-to_$1.style.left = left_$4
-};
-var top_$5 = sprite_$3._y;
-if (top_$5) {
-to_$1.style.top = top_$5
-};
-var display_$6 = sprite_$3.__csscache.__LZdivdisplay || "";
-if (display_$6) {
-to_$1.style.display = display_$6
-};
-to_$1.style.zIndex = sprite_$3._z || from_$0.style.zIndex;
-if (copyclip_$2 && sprite_$3._clip) {
-to_$1.style.clip = sprite_$3._clip
-};
-if (sprite_$3._transform) {
-to_$1.style[stylename] = sprite_$3._transform
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3105/35";
-return $lzsc$temp
-})();
-LzSprite.prototype.getContextMenu = (function () {
-var $lzsc$temp = function () {
-return this.__contextmenu
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3134/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#622/44";
 return $lzsc$temp
 })();
 LzSprite.prototype.rotation = 0;
@@ -9209,7 +9972,7 @@ this.rotation = r_$0;
 this._rotation = "rotate(" + r_$0 + "deg) ";
 this.__updateTransform()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3139/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#673/34";
 return $lzsc$temp
 })();
 LzSprite.prototype._transform = "";
@@ -9226,65 +9989,14 @@ this.__LZclickcontainerdiv.style[stylename_$2] = css_$1
 if (this.__LZcontextcontainerdiv) {
 this.__LZcontextcontainerdiv.style[stylename_$2] = css_$1
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3147/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#681/40";
 return $lzsc$temp
 })();
-LzSprite.prototype.backgroundrepeat = null;
-LzSprite.prototype.tilex = false;
-LzSprite.prototype.tiley = false;
-LzSprite.prototype.setBackgroundRepeat = (function () {
-var $lzsc$temp = function (backgroundrepeat_$0) {
-if (this.backgroundrepeat == backgroundrepeat_$0) return;
-var x_$1 = false;
-var y_$2 = false;
-if (backgroundrepeat_$0 == "repeat") {
-x_$1 = y_$2 = true
-} else if (backgroundrepeat_$0 == "repeat-x") {
-x_$1 = true
-} else if (backgroundrepeat_$0 == "repeat-y") {
-y_$2 = true
-};
-this.tilex = x_$1;
-this.tiley = y_$2;
-this.backgroundrepeat = backgroundrepeat_$0;
-if (!this.__LZimg) this.__createIMG();
-this.__updateBackgroundRepeat();
-if (backgroundrepeat_$0) {
-this.__setBGImage(this.source);
-this.__LZimg.src = LzSprite.blankimage
-} else {
-if (this.__bgimage) this.__setBGImage(null);
-backgroundrepeat_$0 = "";
-this.skiponload = true;
-this.setSource(this.source, "reset")
-};
-this.__LZdiv.style.backgroundRepeat = backgroundrepeat_$0
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3165/42";
-return $lzsc$temp
-})();
-LzSprite.prototype.__updateBackgroundRepeat = (function () {
+(function () {
 var $lzsc$temp = function () {
-if (this.__LZimg) {
-this.__LZimg.style.backgroundRepeat = this.backgroundrepeat;
-this.__LZimg.style.backgroundPosition = "0 0";
-this.__LZimg.width = this.backgroundrepeat ? this.width : this.resourceWidth;
-this.__LZimg.height = this.backgroundrepeat ? this.height : this.resourceHeight
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3194/47";
-return $lzsc$temp
-})();
+var __cleanUpForIE_$0;
 if (LzSprite.quirks.ie_leak_prevention) {
 LzSprite.prototype.__sprites = {};
-function __cleanUpForIE () {
-LzTextSprite.prototype.__cleanupdivs();
-LzTextSprite.prototype._sizecache = {};
-var obj_$0 = LzSprite.prototype.__sprites;
-for (var i_$1 in obj_$0) {
-obj_$0[i_$1].destroy();
-obj_$0[i_$1] = null
-};
-LzSprite.prototype.__sprites = {}};
 lz.embed.attachEventHandler(window, "beforeunload", window, "__cleanUpForIE");
 LzSprite.prototype.__discardElement = (function () {
 var $lzsc$temp = function (element_$0) {
@@ -9301,10 +10013,13 @@ document.body.appendChild(garbageBin_$1)
 garbageBin_$1.appendChild(element_$0);
 garbageBin_$1.innerHTML = ""
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3221/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#715/43";
 return $lzsc$temp
 })()
-};
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#696/3";
+return $lzsc$temp
+})()();
 LzSprite.prototype.getSelectedText = (function () {
 var $lzsc$temp = function () {
 if (window.getSelection) {
@@ -9314,7 +10029,7 @@ return document.selection.createRange().text.toString()
 } else if (document.getSelection) {
 return document.getSelection()
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3245/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#740/38";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAADescription = (function () {
@@ -9324,19 +10039,19 @@ if (aadiv_$1 == null) {
 this.aadescriptionDiv = aadiv_$1 = document.createElement("LABEL");
 aadiv_$1.className = "lzaccessibilitydiv";
 if (!this.__LZdiv.id) this.__LZdiv.id = "sprite_" + this.uid;
-lz.embed.__setAttr(aadiv_$1, "for", this.__LZdiv.id);
+aadiv_$1.setAttribute("for", this.__LZdiv.id);
 this.__LZdiv.appendChild(aadiv_$1)
 };
 aadiv_$1.innerHTML = s_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3259/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#754/39";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAccessible = (function () {
 var $lzsc$temp = function (accessible_$0) {
 LzSprite.__rootSprite.accessible = accessible_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3279/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#774/36";
 return $lzsc$temp
 })();
 LzSprite.prototype._accProps = null;
@@ -9344,33 +10059,22 @@ LzSprite.prototype.setAAActive = (function () {
 var $lzsc$temp = function (s_$0) {
 this.__LzAccessibilityActive = s_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3296/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#791/34";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAASilent = (function () {
 var $lzsc$temp = function (s_$0) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3306/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#801/34";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAAName = (function () {
 var $lzsc$temp = function (s_$0) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3315/32";
-return $lzsc$temp
-})();
-LzSprite.prototype.aafocus = (function () {
-var $lzsc$temp = function () {
-try {
-if (this.__LZdiv != null) {
-this.__LZdiv.blur();
-this.__LZdiv.focus()
-}}
-catch (e_$0) {}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3323/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#810/32";
 return $lzsc$temp
 })();
 LzSprite.prototype.setAATabIndex = (function () {
 var $lzsc$temp = function (s_$0) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3337/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#818/36";
 return $lzsc$temp
 })();
 LzSprite.prototype.sendAAEvent = (function () {
@@ -9380,7 +10084,7 @@ if (this.__LZdiv != null) {
 this.__LZdiv.focus()
 }}
 catch (e_$3) {}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3344/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#825/34";
 return $lzsc$temp
 })();
 LzSprite.prototype.setID = (function () {
@@ -9390,15 +10094,15 @@ if (!this.__LZdiv.id) this.__LZdiv.id = this._dbg_typename + id_$0;
 if (this.__LZclickcontainerdiv && !this.__LZclickcontainerdiv.id) this.__LZclickcontainerdiv.id = "click" + id_$0;
 if (this.__LZcontextcontainerdiv && !this.__LZcontextcontainerdiv.id) this.__LZcontextcontainerdiv.id = this.__LZcontextcontainerdiv.id = "context" + id_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3353/28";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#834/28";
 return $lzsc$temp
 })();
 LzSprite.prototype.__resizecanvas = (function () {
 var $lzsc$temp = function () {
 if (this.width > 0 && this.height > 0) {
 if (this.__LZcanvas) {
-lz.embed.__setAttr(this.__LZcanvas, "width", this.width);
-lz.embed.__setAttr(this.__LZcanvas, "height", this.height);
+this.__LZcanvas.setAttribute("width", this.width);
+this.__LZcanvas.setAttribute("height", this.height);
 this.__docanvascallback()
 };
 if (this.__LZcanvas && this["_canvashidden"]) {
@@ -9408,7 +10112,7 @@ this.applyCSS("display", "", "__LZcanvas")
 this._canvashidden = true;
 this.applyCSS("display", "none", "__LZcanvas")
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3360/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#841/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.__docanvascallback = (function () {
@@ -9421,7 +10125,7 @@ var canvassize_$1 = this.__LZcanvas.firstChild;
 canvassize_$1.style.width = this._w;
 canvassize_$1.style.height = this._h
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3378/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#859/41";
 return $lzsc$temp
 })();
 LzSprite.prototype.__initcanvasie = (function () {
@@ -9438,7 +10142,7 @@ if (--this.__maxTries > 0) {
 var callback_$1 = lz.BrowserUtils.getcallbackstr(this, "__initcanvasie");
 this.__canvasTId = setTimeout(callback_$1, 50)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3391/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#872/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.__getShadowCSS = (function () {
@@ -9451,26 +10155,29 @@ shadowdistance_$1 = Math.round(shadowdistance_$1);
 shadowblurradius_$3 = Math.round(shadowblurradius_$3);
 shadowangle_$2 = Math.round(shadowangle_$2)
 };
+var inset_$4 = shadowblurradius_$3 < 0 ? "inset " : "";
+if (inset_$4 !== "") {
+shadowblurradius_$3 = -shadowblurradius_$3
+};
 if (this.quirks.use_filter_for_dropshadow) {
+var rgbcolor_$5 = LzColorUtils.inttohex(LzColorUtils.colorfrominternal(shadowcolor_$0));
 if (shadowdistance_$1 == 0) {
-this.xoffset = this.yoffset = -shadowblurradius_$3;
-this.applyCSS("left", this.x + this.xoffset);
-this.applyCSS("top", this.y + this.yoffset);
-if (shadowblurradius_$3 > 0) {
-var hexcolor_$4 = LzColorUtils.inttohex(shadowcolor_$0);
-return "progid:DXImageTransform.Microsoft.Glow(Color='" + hexcolor_$4 + "',Strength=" + shadowblurradius_$3 + ")"
-}} else {
+this.applyCSS("left", this.x - shadowblurradius_$3);
+this.applyCSS("top", this.y - shadowblurradius_$3);
+return "progid:DXImageTransform.Microsoft.Glow(Color='" + rgbcolor_$5 + "',Strength=" + shadowblurradius_$3 + ")"
+} else {
+this.applyCSS("left", this.x);
+this.applyCSS("top", this.y);
 shadowangle_$2 += 90;
-var hexcolor_$4 = LzColorUtils.inttohex(shadowcolor_$0);
-return "progid:DXImageTransform.Microsoft.Shadow(Color='" + hexcolor_$4 + "',Direction=" + shadowangle_$2 + ",Strength=" + shadowdistance_$1 + ")"
+return "progid:DXImageTransform.Microsoft.Shadow(Color='" + rgbcolor_$5 + "',Direction=" + shadowangle_$2 + ",Strength=" + shadowdistance_$1 + ")"
 }} else {
-var radians_$5 = shadowangle_$2 * Math.PI / 180;
-var xoffset_$6 = this.CSSDimension(Math.cos(radians_$5) * shadowdistance_$1);
-var yoffset_$7 = this.CSSDimension(Math.sin(radians_$5) * shadowdistance_$1);
-var rgbcolor_$8 = LzColorUtils.torgb(shadowcolor_$0);
-return rgbcolor_$8 + " " + xoffset_$6 + " " + yoffset_$7 + " " + this.CSSDimension(shadowblurradius_$3)
+var radians_$6 = shadowangle_$2 * Math.PI / 180;
+var xoffset_$7 = this.CSSDimension(Math.cos(radians_$6) * shadowdistance_$1);
+var yoffset_$8 = this.CSSDimension(Math.sin(radians_$6) * shadowdistance_$1);
+var rgbcolor_$5 = LzColorUtils.cssfrominternal(shadowcolor_$0);
+return inset_$4 + rgbcolor_$5 + " " + xoffset_$7 + " " + yoffset_$8 + " " + this.CSSDimension(shadowblurradius_$3)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3409/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#890/37";
 return $lzsc$temp
 })();
 LzSprite.prototype.shadow = null;
@@ -9488,24 +10195,26 @@ this.__LZdiv.style[cssname_$5] = "";
 this.__LZcanvas.style[cssname_$5] = newshadow_$4
 } else {
 this.__LZdiv.style[cssname_$5] = newshadow_$4
-}};
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero) {
-this.__restoreSize()
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3450/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#937/35";
 return $lzsc$temp
 })();
 LzSprite.prototype.cornerradius = null;
+LzSprite.prototype.cornerradius_h = null;
+LzSprite.prototype.cornerradius_v = null;
 LzSprite.prototype.setCornerRadius = (function () {
 var $lzsc$temp = function (radii_$0) {
 var css_$1 = "";
 for (var i_$2 = 0, l_$3 = radii_$0.length;i_$2 < l_$3;i_$2++) {
 radii_$0[i_$2] = this.CSSDimension(radii_$0[i_$2])
 };
-css_$1 = radii_$0.join(" ");
+var css1_$4 = radii_$0.slice(0, 4).join(" ");
+var css2_$5 = radii_$0.slice(4).join(" ");
+css_$1 = css1_$4 + " / " + css2_$5;
 if (css_$1 == this.cornerradius) return;
 this.cornerradius = css_$1;
+this.cornerradius_h = css1_$4;
+this.cornerradius_v = css2_$5;
 this.__applyCornerRadius(this.__LZdiv);
 if (this.__LZclick) {
 this.__applyCornerRadius(this.__LZclick)
@@ -9519,54 +10228,23 @@ this.__applyCornerRadius(this.__LZcanvas)
 if (this.__LZimg) {
 this.__applyCornerRadius(this.__LZimg)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3477/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#962/38";
 return $lzsc$temp
 })();
 LzSprite.prototype.__applyCornerRadius = (function () {
 var $lzsc$temp = function (div_$0) {
 var stylenames_$1 = LzSprite.__styleNames;
 if (this.quirks.explicitly_set_border_radius) {
-var radii_$2 = this.cornerradius.split(" ");
-div_$0.style[stylenames_$1.borderTopLeftRadius] = radii_$2[0];
-div_$0.style[stylenames_$1.borderTopRightRadius] = radii_$2[1];
-div_$0.style[stylenames_$1.borderBottomRightRadius] = radii_$2[2];
-div_$0.style[stylenames_$1.borderBottomLeftRadius] = radii_$2[3]
+var hradii_$2 = this.cornerradius_h.split(" ");
+var vradii_$3 = this.cornerradius_v.split(" ");
+div_$0.style[stylenames_$1.borderTopLeftRadius] = hradii_$2[0] + " " + vradii_$3[0];
+div_$0.style[stylenames_$1.borderTopRightRadius] = hradii_$2[1] + " " + vradii_$3[1];
+div_$0.style[stylenames_$1.borderBottomRightRadius] = hradii_$2[2] + " " + vradii_$3[2];
+div_$0.style[stylenames_$1.borderBottomLeftRadius] = hradii_$2[3] + " " + vradii_$3[3]
 } else {
 div_$0.style[stylenames_$1.borderRadius] = this.cornerradius
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3502/42";
-return $lzsc$temp
-})();
-LzSprite.prototype.__csscache;
-LzSprite.prototype.setCSS = (function () {
-var $lzsc$temp = function (name_$0, value_$1, isdimension_$2) {
-if (isdimension_$2) value_$1 = this.CSSDimension(value_$1);
-var callback_$3 = this["set_" + name_$0];
-if (callback_$3) {
-callback_$3.call(this, value_$1)
-} else {
-this.applyCSS(name_$0, value_$1);
-if (this.__LZclickcontainerdiv) {
-this.applyCSS(name_$0, value_$1, "__LZclickcontainerdiv")
-};
-if (this.__LZcontextcontainerdiv) {
-this.applyCSS(name_$0, value_$1, "__LZcontextcontainerdiv")
-}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3520/29";
-return $lzsc$temp
-})();
-LzSprite.prototype.applyCSS = (function () {
-var $lzsc$temp = function (name_$0, value_$1, divname_$2) {
-if (!divname_$2) divname_$2 = "__LZdiv";
-var key_$3 = divname_$2 + name_$0;
-var cache_$4 = this.__csscache;
-if (cache_$4[key_$3] === value_$1) {
-return
-};
-var styleobject_$5 = this[divname_$2].style;
-cache_$4[key_$3] = styleobject_$5[name_$0] = value_$1
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3543/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#991/42";
 return $lzsc$temp
 })();
 LzSprite.prototype.set_borderColor = (function () {
@@ -9574,49 +10252,139 @@ var $lzsc$temp = function (color_$0) {
 if (color_$0 == null) color_$0 = "";
 this.__LZdiv.style.borderColor = color_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3573/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1007/38";
 return $lzsc$temp
 })();
-LzSprite.prototype.borderwidth = 0;
-LzSprite.prototype.set_borderWidth = (function () {
+LzSprite.prototype.set_borderWidth_internal = (function () {
+var $lzsc$temp = function (side_$0, width_$1) {
+if (width_$1 == 0) {
+width_$1 = ""
+};
+var stylename_$2 = "border" + side_$0 + "Width";
+this.__LZdiv.style[stylename_$2] = width_$1;
+if (this.__LZclick) {
+this.__LZclick.style[stylename_$2] = width_$1
+};
+if (this.__LZcontext) {
+this.__LZcontext.style[stylename_$2] = width_$1
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1012/47";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_borderTopWidth = (function () {
 var $lzsc$temp = function (width_$0) {
-if (this.borderwidth === width_$0) return;
-this.borderwidth = width_$0;
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && width_$0 != null) {
-this.__restoreSize()
-}};
-if (width_$0 == 0) {
-width_$0 = ""
+this.set_borderWidth_internal("Top", width_$0)
 };
-this.__LZdiv.style.borderWidth = width_$0;
-if (this.__LZclick) {
-this.__LZclick.style.borderWidth = width_$0
-};
-if (this.__LZcontext) {
-this.__LZcontext.style.borderWidth = width_$0
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3579/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1028/41";
 return $lzsc$temp
 })();
-LzSprite.prototype.set_padding = (function () {
-var $lzsc$temp = function (padding_$0) {
-if (this.padding === padding_$0) return;
-this.padding = padding_$0;
-if (this.quirks.size_blank_to_zero) {
-if (this.__sizedtozero && padding_$0 != null) {
-this.__restoreSize()
-}};
-if (padding_$0 == 0) {
-padding_$0 = ""
+LzSprite.prototype.set_borderRightWidth = (function () {
+var $lzsc$temp = function (width_$0) {
+this.set_borderWidth_internal("Right", width_$0)
 };
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1029/43";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_borderBottomWidth = (function () {
+var $lzsc$temp = function (width_$0) {
+this.set_borderWidth_internal("Bottom", width_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1030/44";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_borderLeftWidth = (function () {
+var $lzsc$temp = function (width_$0) {
+this.set_borderWidth_internal("Left", width_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1031/42";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_padding_internal = (function () {
+var $lzsc$temp = function (side_$0, padding_$1) {
+if (padding_$1 == 0) {
+padding_$1 = ""
+};
+var stylename_$2 = "padding" + side_$0;
+this.__LZdiv.style[stylename_$2] = padding_$1;
 if (this.__LZclick) {
-this.__LZclick.style.padding = padding_$0
+this.__LZclick.style[stylename_$2] = padding_$1
 };
 if (this.__LZcontext) {
-this.__LZcontext.style.padding = padding_$0
+this.__LZcontext.style[stylename_$2] = padding_$1
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3602/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1033/43";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_paddingTop = (function () {
+var $lzsc$temp = function (padding_$0) {
+this.set_padding_internal("Top", padding_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1049/37";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_paddingRight = (function () {
+var $lzsc$temp = function (padding_$0) {
+this.set_padding_internal("Right", padding_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1050/39";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_paddingBottom = (function () {
+var $lzsc$temp = function (padding_$0) {
+this.set_padding_internal("Bottom", padding_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1051/40";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_paddingLeft = (function () {
+var $lzsc$temp = function (padding_$0) {
+this.set_padding_internal("Left", padding_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1052/38";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_margin_internal = (function () {
+var $lzsc$temp = function (side_$0, margin_$1) {
+if (margin_$1 == 0) {
+margin_$1 = ""
+};
+var stylename_$2 = "margin" + side_$0;
+this.__LZdiv.style[stylename_$2] = margin_$1;
+if (this.__LZclick) {
+this.__LZclick.style[stylename_$2] = margin_$1
+};
+if (this.__LZcontext) {
+this.__LZcontext.style[stylename_$2] = margin_$1
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1054/42";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_marginTop = (function () {
+var $lzsc$temp = function (margin_$0) {
+this.set_margin_internal("Top", margin_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1070/36";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_marginRight = (function () {
+var $lzsc$temp = function (margin_$0) {
+this.set_margin_internal("Right", margin_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1071/38";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_marginBottom = (function () {
+var $lzsc$temp = function (margin_$0) {
+this.set_margin_internal("Bottom", margin_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1072/39";
+return $lzsc$temp
+})();
+LzSprite.prototype.set_marginLeft = (function () {
+var $lzsc$temp = function (margin_$0) {
+this.set_margin_internal("Left", margin_$0)
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1073/37";
 return $lzsc$temp
 })();
 LzSprite.medialoadtimeout = 30000;
@@ -9624,12 +10392,12 @@ LzSprite.setMediaLoadTimeout = (function () {
 var $lzsc$temp = function (ms_$0) {
 LzSprite.medialoadtimeout = ms_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3625/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1076/32";
 return $lzsc$temp
 })();
 LzSprite.setMediaErrorTimeout = (function () {
 var $lzsc$temp = function (ms_$0) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3629/33";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1080/33";
 return $lzsc$temp
 })();
 LzSprite.prototype.xscale = 1;
@@ -9640,7 +10408,7 @@ this.xscale = xscale_$0;
 this._xscale = "scaleX(" + xscale_$0 + ") ";
 this.__updateTransform()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3634/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1085/32";
 return $lzsc$temp
 })();
 LzSprite.prototype.yscale = 1;
@@ -9651,14 +10419,13 @@ this.yscale = yscale_$0;
 this._yscale = "scaleY(" + yscale_$0 + ") ";
 this.__updateTransform()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzSprite.js#3642/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/lzsprite/LzSprite.js#1093/32";
 return $lzsc$temp
 })();
-Class.make("LzLibrary", ["loaded", false, "loading", false, "sprite", null, "href", void 0, "stage", "late", "onload", LzDeclaredEvent, "construct", (function () {
+Class.make("LzLibrary", ["loaded", false, "loading", false, "href", void 0, "stage", "late", "onload", LzDeclaredEvent, "construct", (function () {
 var $lzsc$temp = function (parent_$0, args_$1) {
 this.stage = args_$1.stage;
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["construct"] || this.nextMethod(arguments.callee, "construct")).call(this, parent_$0, args_$1);
-this.sprite = new LzSprite(this, false, args_$1);
 LzLibrary.libraries[args_$1.name] = this
 };
 $lzsc$temp["displayName"] = "construct";
@@ -9673,10 +10440,6 @@ $lzsc$temp["displayName"] = "init";
 return $lzsc$temp
 })(), "destroy", (function () {
 var $lzsc$temp = function () {
-if (this.sprite) {
-this.sprite.destroy();
-this.sprite = null
-};
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["destroy"] || this.nextMethod(arguments.callee, "destroy")).call(this)
 };
 $lzsc$temp["displayName"] = "destroy";
@@ -9693,7 +10456,7 @@ if (this.loading || this.loaded) {
 return
 };
 this.loading = true;
-lz.embed.__dhtmlLoadLibrary(this.href)
+lz.embed.loadJSLib(this.href)
 };
 $lzsc$temp["displayName"] = "load";
 return $lzsc$temp
@@ -9856,13 +10619,20 @@ this.__updatefieldsize()
 $lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#129/38";
 return $lzsc$temp
 })();
+LzTextSprite.prototype.setDirection = (function () {
+var $lzsc$temp = function (dir_$0) {
+this.scrolldiv.style.direction = dir_$0.toUpperCase()
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#141/40";
+return $lzsc$temp
+})();
 LzTextSprite.prototype.setTextColor = (function () {
 var $lzsc$temp = function (c_$0) {
 if (this.textcolor === c_$0) return;
 this.textcolor = c_$0;
 this.__LZdiv.style.color = LzColorUtils.inttohex(c_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#137/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#145/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.lineHeight = null;
@@ -9900,7 +10670,7 @@ scrolldiv_$5.style.height = hp_$6
 };
 return on_$0 && this.scrolling
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#154/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#162/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.scrollevents = false;
@@ -9909,7 +10679,7 @@ var $lzsc$temp = function (on_$0) {
 this.scrollevents = this.setScrolling(on_$0);
 this.__updatefieldsize()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#193/42";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#201/42";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__updatefieldsizeTID = null;
@@ -9924,7 +10694,7 @@ clearTimeout(this.__updatefieldsizeTID)
 };
 this.__updatefieldsizeTID = setTimeout(cstr_$1, 0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#204/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#212/44";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__fontLoaded = (function () {
@@ -9932,7 +10702,7 @@ var $lzsc$temp = function () {
 this._cachevalue = this._cacheStyleKey = this._cacheTextKey = null;
 this.__updatefieldsize()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#216/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#224/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__updatefieldsizeCallback = (function () {
@@ -9948,14 +10718,14 @@ this.__updatefieldprop("scrollTop");
 this.__updatefieldprop("scrollWidth");
 this.__updatefieldprop("scrollLeft")
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#222/52";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#230/52";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setMaxLength = (function () {
 var $lzsc$temp = function (val_$0) {
 return
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#242/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#250/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__updatefieldprop = (function () {
@@ -9965,7 +10735,7 @@ if (this[name_$0] !== val_$1 || name_$0 == "scrollHeight") {
 this[name_$0] = val_$1;
 this.owner.scrollevent(name_$0, val_$1)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#247/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#255/44";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setText = (function () {
@@ -9982,7 +10752,7 @@ this.text = t_$0;
 this.scrolldiv.innerHTML = t_$0;
 this.__updatefieldsize()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#261/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#269/34";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.multiline = false;
@@ -9990,7 +10760,7 @@ LzTextSprite.prototype.setMultiline = (function () {
 var $lzsc$temp = function (m_$0) {
 this.multiline = m_$0;
 if (m_$0) {
-var whitespace_$1 = "normal";
+var whitespace_$1 = "pre-wrap";
 this.applyCSS("overflow", "hidden", "scrolldiv")
 } else {
 var whitespace_$1 = this.className === "lzswfinputtextmultiline" ? "pre-wrap" : "nowrap";
@@ -10005,7 +10775,7 @@ this.__hpadding = m_$0 ? 3 : 4
 };
 this.setText(this.text, true)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#289/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#298/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setPattern = (function () {
@@ -10017,7 +10787,7 @@ this.restrict = RegExp(val_$0.substring(0, val_$0.length - 1) + "|[\\r\\n]", "g"
 } else {
 Debug.error('LzTextSprite.setPattern argument %w must be of the form "[...]*"', val_$0)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#321/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#330/37";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getTextWidth = (function () {
@@ -10036,7 +10806,7 @@ width_$1 += this.__wpadding
 };
 return width_$1
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#340/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#349/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getLineHeight = (function () {
@@ -10053,7 +10823,7 @@ var lineheight_$2 = this.getTextDimension("lineheight")
 this._lineHeight = lineheight_$2;
 return lineheight_$2
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#363/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#372/40";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getTextfieldHeight = (function () {
@@ -10078,10 +10848,12 @@ fieldHeight_$1 += this.__hpadding
 };
 return fieldHeight_$1
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#384/45";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#393/45";
 return $lzsc$temp
 })();
 LzTextSprite.prototype._sizecache = {counter: 0};
+(function () {
+var $lzsc$temp = function () {
 if (LzSprite.quirks.ie_leak_prevention) {
 LzTextSprite.prototype.__divstocleanup = [];
 LzTextSprite.prototype.__cleanupdivs = (function () {
@@ -10094,10 +10866,13 @@ func_$1(obj_$0[i_$3])
 };
 LzTextSprite.prototype.__divstocleanup = []
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#424/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#434/44";
 return $lzsc$temp
 })()
-};
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#431/3";
+return $lzsc$temp
+})()();
 LzTextSprite.prototype._cacheStyleKey = null;
 LzTextSprite.prototype._cacheTextKey = null;
 LzTextSprite.prototype._cachevalue = null;
@@ -10132,11 +10907,11 @@ this._cacheStyleKey = styleKey_$5;
 if (dimension_$0 != "lineheight") {
 this._cacheTextKey = string_$1
 };
-var style_$7 = "padding:0px;overflow:visible;width:" + width_$2 + ";height:auto;" + (this._fontSize ? "font-size:" + this._fontSize + ";" : "") + (this._fontWeight ? "font-weight:" + this._fontWeight + ";" : "") + (this._fontStyle ? "font-style:" + this._fontStyle + ";" : "") + (this._fontFamily ? "font-family:" + this._fontFamily + ";" : "") + (this._fontSize ? "font-size:" + this._fontSize + ";" : "") + (this._letterSpacing ? "letter-spacing:" + this._letterSpacing + ";" : "") + (this._whiteSpace ? "white-space:" + this._whiteSpace + ";" : "");
+var style_$7 = "padding:0px;overflow:visible;width:" + width_$2 + ";height:auto;" + (this._fontSize ? "font-size:" + this._fontSize + ";" : "") + (this._fontWeight ? "font-weight:" + this._fontWeight + ";" : "") + (this._fontStyle ? "font-style:" + this._fontStyle + ";" : "") + (this._fontFamily ? "font-family:" + this._fontFamily + ";" : "") + (this._fontSize ? "font-size:" + this._fontSize + ";" : "") + (this._letterSpacing ? "letter-spacing:" + this._letterSpacing + ";" : "") + (this._whiteSpace ? "white-space:" + (dimension_$0 == "width" ? "pre" : this._whiteSpace) + ";" : "");
 this._cachevalue = LzFontManager.getSize(dimension_$0, className_$4, style_$7, this.scrolldivtagname, string_$1);
 return this._cachevalue[dimension_$0]
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#445/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#456/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setSelectable = (function () {
@@ -10150,8 +10925,14 @@ this.__LZdiv.onselectstart = handler_$1
 var selectstyle_$2 = s_$0 ? "text" : "none";
 var stylename_$3 = LzSprite.__styleNames.userSelect;
 this.__LZdiv.style[stylename_$3] = selectstyle_$2
-}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#512/40";
+};
+if (!this.quirks.fix_clickable) {
+if (s_$0) {
+this.scrolldiv.style.pointerEvents = "auto"
+} else {
+this.scrolldiv.style.pointerEvents = "none"
+}}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#524/40";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$__mouseEvent = LzSprite.prototype.__mouseEvent;
@@ -10160,7 +10941,7 @@ var $lzsc$temp = function (eventname_$0) {
 this.$LzSprite$__mouseEvent(eventname_$0);
 return this.selectable
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#529/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#549/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__onselectstartHandler = (function () {
@@ -10169,14 +10950,14 @@ e_$0 = e_$0 || window.event;
 e_$0.cancelBubble = true;
 return true
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#539/49";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#559/49";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__cancelhandler = (function () {
 var $lzsc$temp = function () {
 return false
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#546/42";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#566/42";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setResize = (function () {
@@ -10184,7 +10965,7 @@ var $lzsc$temp = function (r_$0) {
 this.resize = r_$0;
 this.applyCSS("overflow", r_$0 ? "" : "hidden", "scrolldiv")
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#550/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#570/36";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setSelection = (function () {
@@ -10218,7 +10999,7 @@ var sel_$6 = window.getSelection();
 sel_$6.removeAllRanges();
 sel_$6.addRange(range_$2)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#555/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#575/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__findNodeByOffset = (function () {
@@ -10236,7 +11017,7 @@ return node_$1
 };
 node_$1 = node_$1.nextSibling
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#588/45";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#608/45";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__getGlobalRange = (function () {
@@ -10260,7 +11041,7 @@ range_$1.setEnd(userSelection_$0.focusNode, userSelection_$0.focusOffset);
 return range_$1
 }}}
 catch (e_$2) {}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#605/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#625/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__textareaToRange = (function () {
@@ -10287,7 +11068,7 @@ textarea_$0.moveToBookmark(bookmark_$1);
 textarea_$0.select();
 return range_$6
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#632/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#652/44";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__getRangeOwner = (function () {
@@ -10300,7 +11081,7 @@ return range_$0.parentElement().owner
 } else {
 if (range_$0.startContainer.parentNode == range_$0.endContainer.parentNode) return range_$0.startContainer.parentNode.owner
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#665/42";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#685/42";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.__getOffset = (function () {
@@ -10314,7 +11095,7 @@ offset_$1 += 1
 }};
 return offset_$1
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#677/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#697/38";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getSelectionPosition = (function () {
@@ -10333,7 +11114,7 @@ return range_$0.startOffset + offset_$1
 }} else {
 return -1
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#690/47";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#710/47";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getSelectionSize = (function () {
@@ -10352,42 +11133,42 @@ return range_$0.endOffset - range_$0.startOffset
 } else {
 return -1
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#708/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#728/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getScroll = (function () {
 var $lzsc$temp = function () {
 Debug.warn("LzTextSprite.getScroll is not implemented yet.")
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#726/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#746/36";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getMaxScroll = (function () {
 var $lzsc$temp = function () {
 Debug.warn("LzTextSprite.getMaxScroll is not implemented yet.")
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#733/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#753/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setScroll = (function () {
 var $lzsc$temp = function () {
 Debug.warn("LzTextSprite.setScroll is not implemented yet.")
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#740/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#760/36";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setYScroll = (function () {
 var $lzsc$temp = function (n_$0) {
 this.scrolldiv.scrollTop = this.scrollTop = -n_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#747/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#767/37";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setXScroll = (function () {
 var $lzsc$temp = function (n_$0) {
 this.scrolldiv.scrollLeft = this.scrollLeft = -n_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#751/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#771/37";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$setX = LzSprite.prototype.setX;
@@ -10412,7 +11193,7 @@ scrolldiv_$3.style.paddingRight = scrolldiv_$3.style.paddingBottom = "0"
 scrolldiv_$3.scrollLeft = oldLeft_$4;
 scrolldiv_$3.scrollTop = oldTop_$5
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#756/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#776/31";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$setY = LzSprite.prototype.setY;
@@ -10437,7 +11218,7 @@ scrolldiv_$3.style.paddingRight = scrolldiv_$3.style.paddingBottom = "0"
 scrolldiv_$3.scrollLeft = oldLeft_$4;
 scrolldiv_$3.scrollTop = oldTop_$5
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#780/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#800/31";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$setWidth = LzSprite.prototype.setWidth;
@@ -10449,6 +11230,9 @@ var nw_$1 = this.$LzSprite$setWidth(w_$0);
 if (nw_$1 == null) return;
 var scrolldivwidth_$2 = w_$0 >= this.__wpadding ? w_$0 - this.__wpadding : 0;
 if (this.scrolling) {
+if (this instanceof LzInputTextSprite && lz.embed.browser.isFirefox) {
+scrolldivwidth_$2 += 3
+};
 scrolldivwidth_$2 += this.quirks.scrollbar_width
 };
 var clipwidth_$3 = scrolldivwidth_$2;
@@ -10469,7 +11253,7 @@ scrolldiv_$7.style.clip = "rect(0 " + wp_$9 + " " + hp_$8 + " 0)"
 }};
 return scrolldivwidth_$2
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#805/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#825/35";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$setHeight = LzSprite.prototype.setHeight;
@@ -10481,8 +11265,10 @@ var nh_$1 = this.$LzSprite$setHeight(h_$0);
 if (nh_$1 == null) return;
 var ht_$2 = h_$0 >= this.__hpadding ? h_$0 - this.__hpadding : 0;
 if (this.scrolling || this.classname == "lzswfinputtextmultiline") {
-ht_$2 += this.quirks.scrollbar_width
-};
+ht_$2 += this.quirks.scrollbar_width;
+if (this instanceof LzInputTextSprite && lz.embed.browser.isFirefox) {
+ht_$2 += 2
+}};
 var cdim_$3 = this.CSSDimension;
 var hp_$4 = cdim_$3(ht_$2);
 if (hp_$4 !== this.__heightcss) {
@@ -10493,14 +11279,15 @@ if (this.scrolling) {
 var wp_$6 = cdim_$3(this.width || 0);
 scrolldiv_$5.style.clip = "rect(0 " + wp_$6 + " " + hp_$4 + " 0)"
 }};
+this.__updatefieldsize();
 return ht_$2
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#853/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#878/36";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.enableClickableLinks = (function () {
 var $lzsc$temp = function (enabled_$0) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#897/47";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#929/47";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.makeTextLink = (function () {
@@ -10509,7 +11296,7 @@ LzTextSprite.addLinkID(this);
 var uid_$2 = this.uid;
 return '<span class="lztextlink" onclick="javascript:$modules.lz.__callTextLink(\'' + uid_$2 + "', '" + value_$1 + "')\">" + str_$0 + "</span>"
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#900/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#932/39";
 return $lzsc$temp
 })();
 $modules.lz.__callTextLink = (function () {
@@ -10518,7 +11305,7 @@ var sprite_$2 = LzTextSprite.linkIDMap[spriteID_$0];
 if (sprite_$2 != null) {
 sprite_$2.owner.ontextlink.sendEvent(val_$1)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#907/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#939/30";
 return $lzsc$temp
 })();
 LzTextSprite.linkIDMap = [];
@@ -10526,14 +11313,14 @@ LzTextSprite.addLinkID = (function () {
 var $lzsc$temp = function (sprite_$0) {
 LzTextSprite.linkIDMap[sprite_$0.uid] = sprite_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#919/26";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#951/26";
 return $lzsc$temp
 })();
 LzTextSprite.deleteLinkID = (function () {
 var $lzsc$temp = function (UID_$0) {
 delete LzTextSprite.linkIDMap[UID_$0]
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#924/29";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#956/29";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.$LzSprite$destroy = LzSprite.prototype.destroy;
@@ -10542,7 +11329,7 @@ var $lzsc$temp = function () {
 LzTextSprite.deleteLinkID(this.owner.getUID());
 this.$LzSprite$destroy(this)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#929/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#961/34";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setTextAlign = (function () {
@@ -10551,7 +11338,7 @@ if (this._textAlign != align_$0) {
 this._textAlign = align_$0;
 this.scrolldiv.style.textAlign = align_$0
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#934/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#966/39";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setTextIndent = (function () {
@@ -10566,7 +11353,7 @@ if (negInd_$2) {
 this.scrolldiv.style.paddingLeft = indent_$0 >= 0 ? "" : indentPx_$1.substr(1);
 var nw_$3 = this.setWidth(this.width)
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#941/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#973/40";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setLetterSpacing = (function () {
@@ -10576,7 +11363,7 @@ if (this._letterSpacing != spacing_$0) {
 this._letterSpacing = spacing_$0;
 this.scrolldiv.style.letterSpacing = spacing_$0
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#959/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#991/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.setTextDecoration = (function () {
@@ -10585,14 +11372,14 @@ if (this._textDecoration != decoration_$0) {
 this._textDecoration = decoration_$0;
 this.scrolldiv.style.textDecoration = decoration_$0
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#968/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#1000/44";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.getDisplayObject = (function () {
 var $lzsc$temp = function () {
 return this.scrolldiv
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#975/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#1007/43";
 return $lzsc$temp
 })();
 LzTextSprite.prototype.updateShadow = (function () {
@@ -10606,7 +11393,7 @@ this.scrolldiv.style.textShadow = cssString_$4
 this.shadow = cssString_$4;
 this.applyCSS("overflow", "", "scrolldiv")
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#979/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTextSprite.js#1011/39";
 return $lzsc$temp
 })();
 var LzInputTextSprite = (function () {
@@ -10650,7 +11437,7 @@ type_$1 = "multiline"
 }};
 this.__createInputDiv(type_$1);
 t_$0 = t_$0 || "";
-lz.embed.__setAttr(this.__LzInputDiv, "value", t_$0);
+this.__LzInputDiv.setAttribute("value", t_$0);
 if (this.quirks.fix_clickable) {
 if (this.quirks.fix_ie_clickable) {
 this.__LZinputclickdiv = document.createElement("img");
@@ -10685,7 +11472,7 @@ var tagname_$1 = "input";
 if (type_$0 === "password") {
 this.multiline = false;
 this.__LzInputDiv = document.createElement(tagname_$1);
-lz.embed.__setAttr(this.__LzInputDiv, "type", "password")
+this.__LzInputDiv.setAttribute("type", "password")
 } else if (type_$0 === "multiline") {
 tagname_$1 = "textarea";
 this.multiline = true;
@@ -10693,10 +11480,10 @@ this.__LzInputDiv = document.createElement(tagname_$1)
 } else {
 this.multiline = false;
 this.__LzInputDiv = document.createElement(tagname_$1);
-lz.embed.__setAttr(this.__LzInputDiv, "type", "text")
+this.__LzInputDiv.setAttribute("type", "text")
 };
 if (this.quirks.firefox_autocomplete_bug) {
-lz.embed.__setAttr(this.__LzInputDiv, "autocomplete", "off")
+this.__LzInputDiv.setAttribute("autocomplete", "off")
 };
 this.__LzInputDiv.owner = this;
 if (this.quirks.emulate_flash_font_metrics) {
@@ -10709,7 +11496,7 @@ this.className = this.__LzInputDiv.className = "lzswfinputtext"
 this.className = this.__LzInputDiv.className = "lzinputtext"
 };
 if (this.owner) {
-lz.embed.__setAttr(this.__LzInputDiv, "name", this.owner.name)
+this.__LzInputDiv.setAttribute("name", this.owner.name)
 };
 this.scrolldiv = this.__LzInputDiv;
 this.scrolldivtagname = tagname_$1;
@@ -10728,7 +11515,7 @@ var olddiv_$2 = this.__LzInputDiv;
 this.__setTextEvents(false);
 this.__createInputDiv(ml_$0 ? "multiline" : "");
 var newdiv_$3 = this.__LzInputDiv;
-lz.embed.__setAttr(newdiv_$3, "style", olddiv_$2.style.cssText);
+newdiv_$3.setAttribute("style", olddiv_$2.style.cssText);
 if (this.quirks["fix_ie_css_syntax"]) {
 newdiv_$3.style.fontStyle = olddiv_$2.style.fontStyle;
 newdiv_$3.style.fontWeight = olddiv_$2.style.fontWeight;
@@ -10834,18 +11621,20 @@ this.select()
 $lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#306/40";
 return $lzsc$temp
 })();
+LzInputTextSprite.prototype.r_to_n_re = new RegExp("\r", "mg");
 LzInputTextSprite.prototype.setText = (function () {
 var $lzsc$temp = function (t_$0) {
 if (this.capabilities["htmlinputtext"]) {
 if (t_$0.indexOf("<br/>") != -1) {
 t_$0 = t_$0.replace(this.br_to_newline_re, "\r")
 }};
+t_$0 = t_$0.replace(this.r_to_n_re, "\n");
 this.text = t_$0;
 this.__createInputText(t_$0);
 this.__LzInputDiv.value = t_$0;
 this.__updatefieldsize()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#312/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#314/39";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__setTextEvents = (function () {
@@ -10871,11 +11660,11 @@ div_$1.onpaste = c_$0 ? (function () {
 var $lzsc$temp = function (e_$0) {
 this.owner.__pasteHandlerEx(e_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#348/27";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#353/27";
 return $lzsc$temp
 })() : null
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#329/47";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#334/47";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__pasteHandlerEx = (function () {
@@ -10935,7 +11724,7 @@ this.__LzInputDiv.setSelectionRange(selpos_$c, selpos_$c)
 var range_$d = document.selection.createRange();
 range_$d.text = txt_$3
 }}}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#352/48";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#357/48";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__pasteHandler = (function () {
@@ -10966,11 +11755,11 @@ that.__LzInputDiv.value = val.substring(0, selpos) + newc_$6 + val.substring(sel
 selpos += newc_$6.length;
 that.__LzInputDiv.setSelectionRange(selpos, selpos)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#436/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#441/16";
 return $lzsc$temp
 })(), 1)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#429/46";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#434/46";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__textEvent = (function () {
@@ -11005,14 +11794,14 @@ if (y_$5 >= d_$4.clientHeight - 3) {
 d_$4.scrollTop += sprite_$1.lineHeight ? sprite_$1.lineHeight : 10
 }}}};
 if (eventname_$2 === "onmouseout") {
+sprite_$1.__hide();
 sprite_$1.__mouseEvent(eventname_$2)
 } else if (eventname_$2 === "onmousedown") {
 sprite_$1.__mouseisdown = true
 } else if (eventname_$2 === "onmouseup") {
 evt_$0.cancelBubble = true;
 if (!sprite_$1.__isMouseOver()) {
-sprite_$1.__globalmouseup(evt_$0);
-sprite_$1.deselect()
+sprite_$1.__globalmouseup(evt_$0)
 } else {
 sprite_$1.__mouseEvent(eventname_$2)
 }};
@@ -11120,7 +11909,7 @@ d_$4.scrollTop = d_$4.scrollHeight - d_$4.clientHeight + 20
 }} else {
 view_$6.inputtextevent(eventname_$2)
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#472/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#477/43";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setClickable = LzTextSprite.prototype.setClickable;
@@ -11129,7 +11918,7 @@ var $lzsc$temp = function (clickable_$0) {
 this.__clickable = clickable_$0;
 this.$LzTextSprite$setClickable(true)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#705/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#709/44";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setEnabled = (function () {
@@ -11137,7 +11926,7 @@ var $lzsc$temp = function (val_$0) {
 this.disabled = !val_$0;
 this.__LzInputDiv.disabled = this.disabled
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#712/42";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#716/42";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setMaxLength = (function () {
@@ -11150,7 +11939,7 @@ this.__LzInputDiv.maxLength = val_$0;
 if (t_$1 && t_$1.length > val_$0) {
 this.owner._updateSize()
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#717/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#721/44";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.select = (function () {
@@ -11164,7 +11953,7 @@ LzInputTextSprite.prototype.__lastfocus = this;
 setTimeout(LzInputTextSprite.prototype.__selectLastFocused, 50);
 if (window["LzKeyboardKernel"]) LzKeyboardKernel.__cancelKeys = false
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#730/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#734/38";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__selectLastFocused = (function () {
@@ -11172,7 +11961,7 @@ var $lzsc$temp = function () {
 if (LzInputTextSprite.prototype.__lastfocus != null) {
 LzInputTextSprite.prototype.__lastfocus.__LzInputDiv.select()
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#744/51";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#748/51";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setSelection = (function () {
@@ -11181,6 +11970,11 @@ switch (arguments.length) {
 case 1:
 end_$1 = null
 };
+var cheight_$2 = this.__LZdiv.clientHeight;
+if (cheight_$2 == 0) {
+Debug.warn("This inputtext is not visible, can not make selection");
+return
+};
 if (end_$1 == null) {
 end_$1 = start_$0
 };
@@ -11188,50 +11982,50 @@ this._cancelblur = true;
 this.__show();
 LzInputTextSprite.prototype.__lastfocus = this;
 if (this.quirks["text_selection_use_range"]) {
-var range_$2 = this.__LzInputDiv.createTextRange();
-var val_$3 = this.__LzInputDiv.value;
+var range_$3 = this.__LzInputDiv.createTextRange();
+var val_$4 = this.__LzInputDiv.value;
 if (start_$0 > end_$1) {
-var st_$4 = start_$0;
+var st_$5 = start_$0;
 start_$0 = end_$1;
-end_$1 = st_$4
+end_$1 = st_$5
 };
 if (this.multiline) {
-var offset_$5 = 0;
-var startcounter_$6 = 0;
-while (offset_$5 < start_$0) {
-offset_$5 = val_$3.indexOf("\r\n", offset_$5 + 2);
-if (offset_$5 == -1) break;
-startcounter_$6++
+var offset_$6 = 0;
+var startcounter_$7 = 0;
+while (offset_$6 < start_$0) {
+offset_$6 = val_$4.indexOf("\r\n", offset_$6 + 2);
+if (offset_$6 == -1) break;
+startcounter_$7++
 };
-var midcounter_$7 = 0;
-while (offset_$5 < end_$1) {
-offset_$5 = val_$3.indexOf("\r\n", offset_$5 + 2);
-if (offset_$5 == -1) break;
-midcounter_$7++
+var midcounter_$8 = 0;
+while (offset_$6 < end_$1) {
+offset_$6 = val_$4.indexOf("\r\n", offset_$6 + 2);
+if (offset_$6 == -1) break;
+midcounter_$8++
 };
-var endcounter_$8 = 0;
-while (offset_$5 < val_$3.length) {
-offset_$5 = val_$3.indexOf("\r\n", offset_$5 + 2);
-if (offset_$5 == -1) break;
-endcounter_$8++
+var endcounter_$9 = 0;
+while (offset_$6 < val_$4.length) {
+offset_$6 = val_$4.indexOf("\r\n", offset_$6 + 2);
+if (offset_$6 == -1) break;
+endcounter_$9++
 };
-var tl_$9 = range_$2.text.length;
-var st_$4 = start_$0;
-var ed_$a = end_$1 - val_$3.length + startcounter_$6 + midcounter_$7 + endcounter_$8 + 1
+var tl_$a = range_$3.text.length;
+var st_$5 = start_$0;
+var ed_$b = end_$1 - val_$4.length + startcounter_$7 + midcounter_$8 + endcounter_$9 + 1
 } else {
-var st_$4 = start_$0;
-var ed_$a = end_$1 - range_$2.text.length
+var st_$5 = start_$0;
+var ed_$b = end_$1 - range_$3.text.length
 };
-range_$2.moveStart("character", st_$4);
-range_$2.moveEnd("character", ed_$a);
-range_$2.select()
+range_$3.moveStart("character", st_$5);
+range_$3.moveEnd("character", ed_$b);
+range_$3.select()
 } else {
 this.__LzInputDiv.setSelectionRange(start_$0, end_$1)
 };
 this.__LzInputDiv.focus();
 if (window["LzKeyboardKernel"]) LzKeyboardKernel.__cancelKeys = false
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#751/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#755/44";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.getSelectionPosition = (function () {
@@ -11250,7 +12044,7 @@ return -1
 }} else {
 return this.__LzInputDiv.selectionStart
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#816/52";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#834/52";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.getSelectionSize = (function () {
@@ -11269,9 +12063,11 @@ return -1
 }} else {
 return this.__LzInputDiv.selectionEnd - this.__LzInputDiv.selectionStart
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#835/48";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#853/48";
 return $lzsc$temp
 })();
+(function () {
+var $lzsc$temp = function () {
 if (LzSprite.quirks["text_selection_use_range"]) {
 LzInputTextSprite.prototype._getTextSelection = (function () {
 var $lzsc$temp = function () {
@@ -11297,7 +12093,7 @@ range_$0.moveToBookmark(bookmark_$1);
 range_$0.select();
 return result_$5
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#854/49";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#873/49";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype._getTextareaSelection = (function () {
@@ -11378,17 +12174,20 @@ endcounter_$m++
 startPoint_$f -= startcounter_$k;
 endPoint_$g -= midcounter_$l + startcounter_$k;
 return {start: startPoint_$f, end: endPoint_$g}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#884/53";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#903/53";
 return $lzsc$temp
 })()
-};
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#871/3";
+return $lzsc$temp
+})()();
 LzInputTextSprite.prototype.deselect = (function () {
 var $lzsc$temp = function () {
 this.__hide();
 if (this.__LzInputDiv && this.__LzInputDiv.blur) this.__LzInputDiv.blur();
 if (window["LzKeyboardKernel"]) LzKeyboardKernel.__cancelKeys = true
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#997/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1017/40";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.__fontStyle = "normal";
@@ -11403,7 +12202,7 @@ if (this.__fontSize != this._fontSize) {
 this.__fontSize = this._fontSize;
 this.__LzInputDiv.style.fontSize = this._fontSize
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1012/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1032/43";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setFontStyle = LzTextSprite.prototype.setFontStyle;
@@ -11418,7 +12217,7 @@ if (this.__fontWeight != this._fontWeight) {
 this.__fontWeight = this._fontWeight;
 this.__LzInputDiv.style.fontWeight = this._fontWeight
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1021/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1041/44";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setFontName = LzTextSprite.prototype.setFontName;
@@ -11429,7 +12228,7 @@ if (this.__fontFamily != this._fontFamily) {
 this.__fontFamily = this._fontFamily;
 this.__LzInputDiv.style.fontFamily = this._fontFamily
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1034/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1054/43";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setWidth = LzTextSprite.prototype.setWidth;
@@ -11445,7 +12244,7 @@ if (nw_$1 !== this.__iwidthcss) {
 this.__iwidthcss = nw_$1;
 this.__LZinputclickdiv.style.width = nw_$1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1044/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1064/40";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.$LzTextSprite$setHeight = LzTextSprite.prototype.setHeight;
@@ -11461,7 +12260,7 @@ if (nh_$1 !== this.__iheightcss) {
 this.__iheightcss = nh_$1;
 this.__LZinputclickdiv.style.height = nh_$1
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1063/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1083/41";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setColor = (function () {
@@ -11470,7 +12269,7 @@ if (this.color == c_$0) return;
 this.color = c_$0;
 this.__LzInputDiv.style.color = LzColorUtils.inttohex(c_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1081/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1101/40";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.getText = (function () {
@@ -11480,7 +12279,7 @@ return this.__LzInputDiv.value.replace(this.____crregexp, "\n")
 } else {
 return this.__LzInputDiv.value
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1087/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1107/39";
 return $lzsc$temp
 })();
 LzInputTextSprite.findSelection = (function () {
@@ -11488,7 +12287,7 @@ var $lzsc$temp = function () {
 if (LzInputTextSprite.__focusedSprite && LzInputTextSprite.__focusedSprite.owner) {
 return LzInputTextSprite.__focusedSprite.owner
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1098/35";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1118/35";
 return $lzsc$temp
 })();
 LzInputTextSprite.prototype.setTextColor = (function () {
@@ -11497,7 +12296,16 @@ if (this.textcolor === c_$0) return;
 this.textcolor = c_$0;
 this.scrolldiv.style.color = LzColorUtils.inttohex(c_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1105/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1125/44";
+return $lzsc$temp
+})();
+LzInputTextSprite.prototype.setReadOnly = (function () {
+var $lzsc$temp = function (c_$0) {
+if (c_$0) {
+this.__LzInputDiv.setAttribute("readonly", "readonly")
+} else this.__LzInputDiv.removeAttribute("readonly")
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzInputTextSprite.js#1131/43";
 return $lzsc$temp
 })();
 var LzXMLParser = {parseXML: (function () {
@@ -11522,7 +12330,7 @@ return $lzsc$temp
 })(), getParserError: (function () {
 var $lzsc$temp = function (doc_$0) {
 var browser_$1 = lz.embed.browser;
-if (browser_$1.isIE) {
+if (browser_$1.isIE && browser_$1.version < 9) {
 return this.__checkIE(doc_$0)
 } else if (browser_$1.isFirefox || browser_$1.isOpera) {
 return this.__checkFirefox(doc_$0)
@@ -11537,7 +12345,7 @@ var perr_$1 = doc_$0.parseError;
 if (perr_$1.errorCode != 0) {
 return perr_$1.reason
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#42/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#44/16";
 return $lzsc$temp
 })(), __checkFirefox: (function () {
 var $lzsc$temp = function (doc_$0) {
@@ -11546,7 +12354,7 @@ if (c_$1 && c_$1.nodeName == "parsererror") {
 var msg_$2 = c_$1.firstChild.nodeValue;
 return msg_$2.match(".*")[0]
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#48/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#50/21";
 return $lzsc$temp
 })(), __checkSafari: (function () {
 var $lzsc$temp = function (doc_$0) {
@@ -11560,13 +12368,15 @@ if (c_$1 && c_$1.nodeName == "parsererror") {
 var msg_$2 = c_$1.childNodes[1].textContent;
 return msg_$2.match("[^:]*: (.*)")[1]
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#57/20";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#59/20";
 return $lzsc$temp
 })()};
+(function () {
+var $lzsc$temp = function () {
 if (typeof DOMParser == "undefined") {
-var DOMParser = (function () {
+DOMParser = (function () {
 var $lzsc$temp = function () {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#84/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#87/17";
 return $lzsc$temp
 })();
 DOMParser.prototype.parseFromString = (function () {
@@ -11595,10 +12405,13 @@ req_$6.overrideMimeType(contentType_$1)
 req_$6.send(null);
 return req_$6.responseXML
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#85/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#88/43";
 return $lzsc$temp
 })()
-};
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzXMLParser.js#83/3";
+return $lzsc$temp
+})()();
 var LzXMLTranslator = {whitespacePat: new RegExp("^\\s*$"), stringTrimPat: new RegExp("^\\s+|\\s+$", "g"), copyXML: (function () {
 var $lzsc$temp = function (xmldoc_$0, trimwhitespace_$1, nsprefix_$2) {
 var lfcnode_$3 = this.copyBrowserXML(xmldoc_$0, true, trimwhitespace_$1, nsprefix_$2);
@@ -11700,7 +12513,9 @@ var $lzsc$temp = function (owner_$0, proxied_$1) {
 this.owner = owner_$0;
 this.options = {parsexml: true, serverproxyargs: null};
 this.requestheaders = {};
-this.requestmethod = LzHTTPLoader.GET_METHOD
+this.requestmethod = LzHTTPLoader.GET_METHOD;
+this.iscors = false;
+this.credentialled = false
 };
 $lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#12/20";
 return $lzsc$temp
@@ -11712,17 +12527,17 @@ LzHTTPLoader.DELETE_METHOD = "DELETE";
 LzHTTPLoader.prototype.__timeoutID = 0;
 LzHTTPLoader.prototype.loadSuccess = (function () {
 var $lzsc$temp = function (loader_$0, data_$1) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#30/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#32/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.loadError = (function () {
 var $lzsc$temp = function (loader_$0, data_$1) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#31/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#33/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.loadTimeout = (function () {
 var $lzsc$temp = function (loader_$0, data_$1) {};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#32/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#34/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.loadContent = (function () {
@@ -11732,7 +12547,7 @@ this.translateXML()
 } else {
 this.loadSuccess(this, content_$1)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#34/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#36/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.translateXML = (function () {
@@ -11755,91 +12570,98 @@ this.loadSuccess(this, lzxdata_$5)
 } else {
 this.loadError(this, null)
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#43/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#45/39";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getResponse = (function () {
 var $lzsc$temp = function () {
 return this.responseText
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#76/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#78/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getResponseStatus = (function () {
 var $lzsc$temp = function () {
 return this.responseStatus
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#81/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#83/44";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getResponseHeaders = (function () {
 var $lzsc$temp = function () {
 return this.responseHeaders
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#86/45";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#88/45";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getResponseHeader = (function () {
 var $lzsc$temp = function (key_$0) {
 return this.responseHeaders[key_$0]
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#90/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#92/44";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setRequestHeaders = (function () {
 var $lzsc$temp = function (obj_$0) {
 this.requestheaders = obj_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#97/44";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#99/44";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setRequestHeader = (function () {
 var $lzsc$temp = function (key_$0, val_$1) {
 this.requestheaders[key_$0] = val_$1
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#105/43";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#107/43";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setOption = (function () {
 var $lzsc$temp = function (key_$0, val_$1) {
 this.options[key_$0] = val_$1
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#110/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#112/36";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getOption = (function () {
 var $lzsc$temp = function (key_$0) {
 return this.options[key_$0]
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#115/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#117/36";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setProxied = (function () {
 var $lzsc$temp = function (proxied_$0) {
 this.setOption("proxied", proxied_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#120/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#122/37";
+return $lzsc$temp
+})();
+LzHTTPLoader.prototype.setCredentialled = (function () {
+var $lzsc$temp = function (cred_$0) {
+this.credentialled = cred_$0
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#127/43";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setQueryParams = (function () {
 var $lzsc$temp = function (qparams_$0) {
 this.queryparams = qparams_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#125/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#132/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setQueryString = (function () {
 var $lzsc$temp = function (qstring_$0) {
 this.querystring = qstring_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#130/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#137/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setQueueing = (function () {
 var $lzsc$temp = function (queuing_$0) {
 this.setOption("queuing", queuing_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#138/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#145/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.abort = (function () {
@@ -11850,7 +12672,7 @@ this.req.abort();
 this.req = null;
 this.removeTimeout(this)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#143/32";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#150/32";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.open = (function () {
@@ -11868,16 +12690,17 @@ this.__abort = false;
 this.__timeout = false;
 this.__timeoutID = 0;
 this.requesturl = url_$1;
-this.requestmethod = method_$0
+this.requestmethod = method_$0;
+this.iscors = this.checkIfCORS()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#152/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#159/31";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.send = (function () {
 var $lzsc$temp = function (content_$0) {
 this.loadXMLDoc(this.requestmethod, this.requesturl, this.requestheaders, content_$0, true)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#173/31";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#183/31";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.makeProxiedURL = (function () {
@@ -11885,7 +12708,7 @@ var $lzsc$temp = function (proxyurl_$0, url_$1, httpmethod_$2, lzt_$3, headers_$
 var params_$6 = {serverproxyargs: this.options.serverproxyargs, sendheaders: this.options.sendheaders, trimwhitespace: this.options.trimwhitespace, nsprefix: this.options.nsprefix, timeout: this.timeout, cache: this.options.cacheable, ccache: this.options.ccache, proxyurl: proxyurl_$0, url: url_$1, secure: this.secure, postbody: postbody_$5, headers: headers_$4, httpmethod: httpmethod_$2, service: lzt_$3};
 return lz.Browser.makeProxiedURL(params_$6)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#185/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#195/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.timeout = Infinity;
@@ -11893,14 +12716,14 @@ LzHTTPLoader.prototype.setTimeout = (function () {
 var $lzsc$temp = function (timeout_$0) {
 this.timeout = timeout_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#208/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#218/37";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.setupTimeout = (function () {
 var $lzsc$temp = function (loader_$0, duration_$1) {
 loader_$0.__timeoutID = setTimeout(LzHTTPLoader.__LZhandleXMLHTTPTimeout, duration_$1, loader_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#214/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#224/39";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.removeTimeout = (function () {
@@ -11909,7 +12732,7 @@ var tid_$1 = loader_$0.__timeoutID;
 if (tid_$1 != 0) {
 clearTimeout(tid_$1)
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#219/40";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#229/40";
 return $lzsc$temp
 })();
 LzHTTPLoader.__LZhandleXMLHTTPTimeout = (function () {
@@ -11921,14 +12744,14 @@ loader_$0.req = null
 };
 loader_$0.loadTimeout(loader_$0, null)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#227/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#237/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.getElapsedTime = (function () {
 var $lzsc$temp = function () {
 return new Date().getTime() - this.gstart
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#236/41";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#246/41";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.__setRequestHeaders = (function () {
@@ -11938,7 +12761,7 @@ for (var key_$2 in headers_$1) {
 var val_$3 = headers_$1[key_$2];
 xhr_$0.setRequestHeader(key_$2, val_$3)
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#241/46";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#251/46";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.__getAllResponseHeaders = (function () {
@@ -11952,7 +12775,7 @@ allheaders_$3[header_$4[1]] = header_$4[2]
 };
 return allheaders_$3
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#251/50";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#261/50";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.loadXMLDoc = (function () {
@@ -11985,9 +12808,13 @@ self.responseText = xhr_$0.responseText;
 self.responseHeaders = self.__getAllResponseHeaders(xhr_$0);
 self.loadContent(self, self.responseText)
 } else {
+if ($debug && self.iscors && self.responseStatus == 0) {
+var regExp_$3 = new RegExp("//(www.)?(.[^/:]+)"), dataDomain_$4 = self.requesturl.match(regExp_$3)[2];
+Debug.warn("Cross-domain data request to " + dataDomain_$4 + " with URL " + self.requesturl + " failed. " + "Make sure that your server is configured for cross-origin resource sharing.")
+};
 self.loadError(self, null)
 }}}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#268/39";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#277/39";
 return $lzsc$temp
 })();
 try {
@@ -11998,8 +12825,11 @@ this.req = null;
 this.loadError(this, null);
 return
 };
-if (method_$0 == "POST" && headers_$2["content-type"] == null) {
-headers_$2["content-type"] = "application/x-www-form-urlencoded"
+if (this.iscors && this.credentialled && this.req.withCredentials !== undefined) {
+this.req.withCredentials = true
+};
+if (method_$0 == "POST" && headers_$2["Content-Type"] == null) {
+headers_$2["Content-Type"] = "application/x-www-form-urlencoded"
 };
 this.__setRequestHeaders(this.req, headers_$2);
 this.gstart = new Date().getTime();
@@ -12014,30 +12844,55 @@ return
 if (isFinite(this.timeout)) {
 this.setupTimeout(this, this.timeout)
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#264/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#273/37";
+return $lzsc$temp
+})();
+LzHTTPLoader.prototype.checkIfCORS = (function () {
+var $lzsc$temp = function () {
+var url_$0 = new (lz.URL)(this.requesturl);
+if (this.options.proxied === "true" || url_$0.host === null && url_$0.port === null) {
+return false
+};
+var domainRegExp_$1 = new RegExp("//(www.)?(.[^/:]+)"), isHttps_$2 = url_$0.protocol == "https", port_$3 = url_$0.port;
+if (port_$3 == null) {
+if (isHttps_$2) {
+port_$3 = lz.Browser.defaultPortNums.https
+} else {
+port_$3 = lz.Browser.defaultPortNums.http
+}};
+this.iscors = url_$0.host != document.location.hostname || document.location.port != port_$3;
+return this.iscors
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#361/38";
 return $lzsc$temp
 })();
 LzHTTPLoader.prototype.destroy = (function () {
 var $lzsc$temp = function () {
 return
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#341/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzHTTPLoader.js#387/34";
 return $lzsc$temp
 })();
-var LzScreenKernel = {width: null, height: null, __resizeEvent: (function () {
+var LzScreenKernel = {width: null, height: null, orientation: "landscape", __orientationchange: false, __resizeEvent: (function () {
 var $lzsc$temp = function () {
 var rootcontainerdiv_$0 = LzSprite.__rootSpriteContainer;
 LzScreenKernel.width = rootcontainerdiv_$0.offsetWidth;
 LzScreenKernel.height = rootcontainerdiv_$0.offsetHeight;
-if (LzScreenKernel.__callback) LzScreenKernel.__scope[LzScreenKernel.__callback]({width: LzScreenKernel.width, height: LzScreenKernel.height})
+if (LzScreenKernel.__orientationchange) {
+LzScreenKernel.orientation = Math.abs(window.orientation) === 90 ? "landscape" : "portrait"
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#16/21";
+if (LzScreenKernel.__callback) LzScreenKernel.__scope[LzScreenKernel.__callback]({width: LzScreenKernel.width, height: LzScreenKernel.height, orientation: LzScreenKernel.orientation})
+};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#18/21";
 return $lzsc$temp
 })(), __init: (function () {
 var $lzsc$temp = function () {
-lz.embed.attachEventHandler(window.top, "resize", LzScreenKernel, "__resizeEvent")
-};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#59/14";
+lz.embed.attachEventHandler(window.top, "resize", LzScreenKernel, "__resizeEvent");
+if (LzSprite.prototype.capabilities.screenorientation) {
+LzScreenKernel.__orientationchange = true;
+lz.embed.attachEventHandler(window.top, "orientationchange", LzScreenKernel, "__resizeEvent")
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#64/14";
 return $lzsc$temp
 })(), __callback: null, __scope: null, setCallback: (function () {
 var $lzsc$temp = function (scope_$0, funcname_$1) {
@@ -12046,7 +12901,7 @@ this.__callback = funcname_$1;
 this.__init();
 this.__resizeEvent()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#64/19";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzScreenKernel.js#74/19";
 return $lzsc$temp
 })()};
 Class.make("LzContextMenuKernel", ["$lzsc$initialize", (function () {
@@ -12061,10 +12916,6 @@ this._delegate = delegate_$0
 };
 $lzsc$temp["displayName"] = "setDelegate";
 return $lzsc$temp
-})(), "addItem", (function () {
-var $lzsc$temp = function (item_$0) {};
-$lzsc$temp["displayName"] = "addItem";
-return $lzsc$temp
 })(), "hideBuiltInItems", (function () {
 var $lzsc$temp = function () {
 this.showbuiltins = false
@@ -12077,42 +12928,41 @@ this.showbuiltins = true
 };
 $lzsc$temp["displayName"] = "showBuiltInItems";
 return $lzsc$temp
-})(), "clearItems", (function () {
-var $lzsc$temp = function () {};
-$lzsc$temp["displayName"] = "clearItems";
-return $lzsc$temp
-})(), "__show", (function () {
-var $lzsc$temp = function () {
+})(), "kernelItems", void 0, "__show", (function () {
+var $lzsc$temp = function (target_$0) {
 if (LzMouseKernel.__showncontextmenu === this) {
 return
 } else {
 LzMouseKernel.__showncontextmenu = this
 };
-var owner_$0 = this.owner;
-var del_$1 = this._delegate;
-if (del_$1 != null) del_$1.execute(owner_$0);
-if (owner_$0.onmenuopen.ready) owner_$0.onmenuopen.sendEvent(owner_$0);
-var classlist_$2 = [];
-var items_$3 = owner_$0.getItems();
-var _items_$4 = {};
-for (var i_$5 = 0;i_$5 < items_$3.length;i_$5++) {
-var v_$6 = items_$3[i_$5].kernel.cmenuitem;
-var caption_$7 = v_$6.caption;
-if (v_$6.visible != true || (caption_$7 in _items_$4)) {
+var owner_$1 = this.owner;
+var del_$2 = this._delegate;
+if (del_$2 != null) del_$2.execute(owner_$1);
+if (owner_$1.onmenuopen.ready) owner_$1.onmenuopen.sendEvent(owner_$1);
+var classlist_$3 = [];
+var items_$4 = owner_$1._filteredItems(target_$0);
+this.kernelItems = [];
+var _items_$5 = {};
+for (var i_$6 = 0;i_$6 < items_$4.length;i_$6++) {
+var ki_$7 = items_$4[i_$6].kernel;
+var v_$8 = ki_$7.cmenuitem;
+var caption_$9 = v_$8.caption;
+if (v_$8.visible != true || (caption_$9 in _items_$5)) {
 continue
 };
-_items_$4[caption_$7] = true;
-if (v_$6.separatorBefore) {
-classlist_$2.push({type: "separator"})
+_items_$5[caption_$9] = true;
+this.kernelItems[i_$6] = ki_$7;
+if (v_$8.separatorBefore) {
+classlist_$3.push({type: "separator"})
 };
-if (v_$6.enabled) {
-classlist_$2.push({type: "text", label: caption_$7, offset: i_$5})
+if (v_$8.enabled) {
+classlist_$3.push({type: "text", label: caption_$9, offset: i_$6})
 } else {
-classlist_$2.push({type: "disabled", label: caption_$7, offset: i_$5})
+classlist_$3.push({type: "disabled", label: caption_$9, offset: i_$6})
 }};
-var s_$8 = LzContextMenuKernel.lzcontextmenu || LzContextMenuKernel.__create();
-s_$8.setItems(classlist_$2);
-s_$8.show()
+var s_$a = LzContextMenuKernel.lzcontextmenu || LzContextMenuKernel.__create();
+s_$a.setItems(classlist_$3);
+s_$a.show()
 };
 $lzsc$temp["displayName"] = "__show";
 return $lzsc$temp
@@ -12124,8 +12974,8 @@ $lzsc$temp["displayName"] = "__hide";
 return $lzsc$temp
 })(), "__select", (function () {
 var $lzsc$temp = function (i_$0) {
-var items_$1 = this.owner.getItems();
-if (items_$1 && items_$1[i_$0]) items_$1[i_$0].kernel.__select()
+var items_$1 = this.kernelItems;
+if (items_$1 && items_$1[i_$0]) items_$1[i_$0].__select()
 };
 $lzsc$temp["displayName"] = "__select";
 return $lzsc$temp
@@ -12201,13 +13051,15 @@ if (owner_$0.onselect.ready) owner_$0.onselect.sendEvent(owner_$0)
 $lzsc$temp["displayName"] = "__select";
 return $lzsc$temp
 })()]);
+(function () {
+var $lzsc$temp = function () {
 if (LzSprite.quirks.ie_timer_closure) {
 (function () {
 var $lzsc$temp = function (f_$0) {
 window.setTimeout = f_$0(window.setTimeout);
 window.setInterval = f_$0(window.setInterval)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#18/4";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#19/4";
 return $lzsc$temp
 })()((function () {
 var $lzsc$temp = function (f) {
@@ -12219,47 +13071,50 @@ return( f((function () {
 var $lzsc$temp = function () {
 c.apply(this, a)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#26/18";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#27/18";
 return $lzsc$temp
 })(), t_$0))
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#22/12";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#23/12";
 return $lzsc$temp
 })()
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#21/6";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#22/6";
 return $lzsc$temp
 })())
-};
+}};
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#13/3";
+return $lzsc$temp
+})()();
 var LzTimeKernel = {setTimeout: (function () {
 var $lzsc$temp = function () {
 return window.setTimeout.apply(window, arguments)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#34/17";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#36/17";
 return $lzsc$temp
 })(), setInterval: (function () {
 var $lzsc$temp = function () {
 return window.setInterval.apply(window, arguments)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#37/19";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#39/19";
 return $lzsc$temp
 })(), clearTimeout: (function () {
 var $lzsc$temp = function (id_$0) {
 return window.clearTimeout(id_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#40/20";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#42/20";
 return $lzsc$temp
 })(), clearInterval: (function () {
 var $lzsc$temp = function (id_$0) {
 return window.clearInterval(id_$0)
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#43/21";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#45/21";
 return $lzsc$temp
 })(), startTime: new Date().valueOf(), getTimer: (function () {
 var $lzsc$temp = function () {
 return new Date().valueOf() - LzTimeKernel.startTime
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#49/16";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzTimeKernel.js#51/16";
 return $lzsc$temp
 })()};
 var LzFontManager = new Object();
@@ -12280,8 +13135,10 @@ for (var i_$2 in fonts_$0) {
 var font_$3 = fonts_$0[i_$2];
 var url_$4 = this.getURL(font_$3);
 var i_$2 = url_$4.lastIndexOf(".ttf");
-var ieurl_$5 = url_$4.substring(0, i_$2) + ".eot";
-output_$1 += "@font-face{font-family:" + font_$3.name + ";src:url(" + ieurl_$5 + ');src:local("' + font_$3.name + '"), url(' + url_$4 + ') format("truetype");font-weight:' + font_$3.weight + ";font-style:" + font_$3.style + ";}"
+var ttf_$5 = url_$4;
+var eot_$6 = url_$4.substring(0, i_$2) + ".eot";
+var woff_$7 = url_$4.substring(0, i_$2) + ".woff";
+output_$1 += "@font-face{" + "font-family:" + font_$3.name + ";" + "src:url(" + eot_$6 + ");" + 'src:local("' + font_$3.name + '"),' + "url(" + woff_$7 + ') format("woff"),' + "url(" + eot_$6 + ') format("embedded-opentype"),' + "url(" + ttf_$5 + ') format("truetype");' + "font-weight:" + font_$3.weight + ";" + "font-style:" + font_$3.style + ";" + "}"
 };
 return output_$1
 };
@@ -12292,7 +13149,7 @@ LzFontManager.getURL = (function () {
 var $lzsc$temp = function (font_$0) {
 return LzSprite.prototype.getBaseUrl(font_$0) + font_$0.url
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#55/24";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#68/24";
 return $lzsc$temp
 })();
 LzFontManager.__fontloadstate = {counter: 0};
@@ -12323,7 +13180,7 @@ fontloadstate_$6.TID = setInterval(cstr_$c, Math.random() * 20 + 30)
 };
 this.__fontloadcallbacks[sprite_$0.uid] = sprite_$0
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#64/30";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#77/30";
 return $lzsc$temp
 })();
 LzFontManager.fontloadtimeout = 15000;
@@ -12356,7 +13213,7 @@ sprite_$a.__fontLoaded()
 }};
 delete this.__fontloadcallbacks
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#107/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#120/34";
 return $lzsc$temp
 })();
 LzFontManager.__sizecache = {counter: 0};
@@ -12370,17 +13227,17 @@ LzTextSprite.prototype.__cleanupdivs()
 if (this.__rootdiv) {
 this.__rootdiv.innerHTML = ""
 }};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#154/37";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#167/37";
 return $lzsc$temp
 })();
 LzFontManager.__createContainerDiv = (function () {
 var $lzsc$temp = function () {
 var textsizecache_$0 = document.createElement("div");
-lz.embed.__setAttr(textsizecache_$0, "id", "lzTextSizeCache");
+textsizecache_$0.setAttribute("id", "lzTextSizeCache");
 document.body.appendChild(textsizecache_$0);
 this.__rootdiv = document.getElementById("lzTextSizeCache")
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#163/38";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#176/38";
 return $lzsc$temp
 })();
 LzFontManager.getSize = (function () {
@@ -12409,7 +13266,7 @@ cv_$7[dimension_$0] = dimension_$0 == "width" ? mdiv_$9.clientWidth : mdiv_$9.cl
 mdiv_$9.style.display = "none";
 return cv_$7
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#171/25";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#184/25";
 return $lzsc$temp
 })();
 LzFontManager.__createMeasureDiv = (function () {
@@ -12427,14 +13284,14 @@ if (LzSprite.prototype.quirks.ie_leak_prevention) {
 LzTextSprite.prototype.__divstocleanup.push(mdiv_$5)
 }} else {
 var mdiv_$5 = document.createElement(tagname_$2);
-lz.embed.__setAttr(mdiv_$5, "class", className_$0);
-lz.embed.__setAttr(mdiv_$5, "style", style_$1);
+mdiv_$5.setAttribute("class", className_$0);
+mdiv_$5.setAttribute("style", style_$1);
 this.__rootdiv.appendChild(mdiv_$5)
 };
 __sizecache_$3.counter++;
 return mdiv_$5
 };
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#207/36";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#220/36";
 return $lzsc$temp
 })();
 LzFontManager.__setTextContent = (function () {
@@ -12451,7 +13308,7 @@ mdiv_$0.textContent = string_$2
 {
 Debug.error("Unknown tagname: %w", tagname_$1)
 }}};
-$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#232/34";
+$lzsc$temp["displayName"] = "kernel/dhtml/LzFontManager.js#245/34";
 return $lzsc$temp
 })();
 Class.make("LzView", ["$lzsc$initialize", (function () {
@@ -12485,7 +13342,7 @@ this.__LZupdateShown()
 };
 $lzsc$temp["displayName"] = "$lzc$set_visible";
 return $lzsc$temp
-})(), "onaddsubview", LzDeclaredEvent, "onblur", LzDeclaredEvent, "onclick", LzDeclaredEvent, "onclickable", LzDeclaredEvent, "onfocus", LzDeclaredEvent, "onframe", LzDeclaredEvent, "onheight", LzDeclaredEvent, "onkeyup", LzDeclaredEvent, "onkeydown", LzDeclaredEvent, "onlastframe", LzDeclaredEvent, "onload", LzDeclaredEvent, "onframesloadratio", LzDeclaredEvent, "onloadratio", LzDeclaredEvent, "onerror", LzDeclaredEvent, "ontimeout", LzDeclaredEvent, "onmousedown", LzDeclaredEvent, "onmouseout", LzDeclaredEvent, "onmouseover", LzDeclaredEvent, "onmousetrackover", LzDeclaredEvent, "onmousetrackup", LzDeclaredEvent, "onmousetrackout", LzDeclaredEvent, "onmouseup", LzDeclaredEvent, "onmousedragin", LzDeclaredEvent, "onmousedragout", LzDeclaredEvent, "onmouseupoutside", LzDeclaredEvent, "onopacity", LzDeclaredEvent, "onplay", LzDeclaredEvent, "onremovesubview", LzDeclaredEvent, "onresource", LzDeclaredEvent, "onresourceheight", LzDeclaredEvent, "onresourcewidth", LzDeclaredEvent, "onrotation", LzDeclaredEvent, "onstop", LzDeclaredEvent, "ontotalframes", LzDeclaredEvent, "onunstretchedheight", LzDeclaredEvent, "onunstretchedwidth", LzDeclaredEvent, "onvisible", LzDeclaredEvent, "onvisibility", LzDeclaredEvent, "onwidth", LzDeclaredEvent, "onx", LzDeclaredEvent, "onxoffset", LzDeclaredEvent, "ony", LzDeclaredEvent, "onyoffset", LzDeclaredEvent, "onfont", LzDeclaredEvent, "onfontsize", LzDeclaredEvent, "onfontstyle", LzDeclaredEvent, "ondblclick", LzDeclaredEvent, "DOUBLE_CLICK_TIME", 500, "onclip", LzDeclaredEvent, "capabilities", void 0, "construct", (function () {
+})(), "onaddsubview", LzDeclaredEvent, "onblur", LzDeclaredEvent, "onclick", LzDeclaredEvent, "onclickable", LzDeclaredEvent, "onfocus", LzDeclaredEvent, "onframe", LzDeclaredEvent, "onheight", LzDeclaredEvent, "onkeyup", LzDeclaredEvent, "onkeydown", LzDeclaredEvent, "onlastframe", LzDeclaredEvent, "onload", LzDeclaredEvent, "onframesloadratio", LzDeclaredEvent, "onloadratio", LzDeclaredEvent, "onerror", LzDeclaredEvent, "ontimeout", LzDeclaredEvent, "onmousedown", LzDeclaredEvent, "onmouseout", LzDeclaredEvent, "onmouseover", LzDeclaredEvent, "onmousetrackover", LzDeclaredEvent, "onmousetrackup", LzDeclaredEvent, "onmousetrackout", LzDeclaredEvent, "onmouseup", LzDeclaredEvent, "onmousedragin", LzDeclaredEvent, "onmousedragout", LzDeclaredEvent, "onmouseupoutside", LzDeclaredEvent, "ongesture", LzDeclaredEvent, "ontouch", LzDeclaredEvent, "onopacity", LzDeclaredEvent, "onplay", LzDeclaredEvent, "onplaying", LzDeclaredEvent, "onremovesubview", LzDeclaredEvent, "onresource", LzDeclaredEvent, "onresourceheight", LzDeclaredEvent, "onresourcewidth", LzDeclaredEvent, "onrotation", LzDeclaredEvent, "onstop", LzDeclaredEvent, "ontotalframes", LzDeclaredEvent, "onunstretchedheight", LzDeclaredEvent, "onunstretchedwidth", LzDeclaredEvent, "onvisible", LzDeclaredEvent, "onvisibility", LzDeclaredEvent, "onwidth", LzDeclaredEvent, "onx", LzDeclaredEvent, "onxoffset", LzDeclaredEvent, "ony", LzDeclaredEvent, "onyoffset", LzDeclaredEvent, "onfont", LzDeclaredEvent, "onfontsize", LzDeclaredEvent, "onfontstyle", LzDeclaredEvent, "ondblclick", LzDeclaredEvent, "DOUBLE_CLICK_TIME", 500, "onclip", LzDeclaredEvent, "capabilities", void 0, "construct", (function () {
 var $lzsc$temp = function (parent_$0, args_$1) {
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["construct"] || this.nextMethod(arguments.callee, "construct")).call(this, parent_$0 ? parent_$0 : canvas, args_$1);
 this.mask = this.immediateparent.mask;
@@ -12525,18 +13382,8 @@ $lzsc$temp["displayName"] = "construct";
 return $lzsc$temp
 })(), "__spriteAttribute", (function () {
 var $lzsc$temp = function (attrname_$0, value_$1) {
-if (this[attrname_$0]) {
-if (!this.__LZdeleted) {
-var $lzsc$7b6zea = "$lzc$set_" + attrname_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$7b6zea]) : this[$lzsc$7b6zea] instanceof Function) {
-this[$lzsc$7b6zea](value_$1)
-} else {
-this[attrname_$0] = value_$1;
-var $lzsc$cza49x = this["on" + attrname_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$cza49x) : $lzsc$cza49x instanceof LzEvent) {
-if ($lzsc$cza49x.ready) {
-$lzsc$cza49x.sendEvent(value_$1)
-}}}}}};
+if (this[attrname_$0]) this.setAttribute(attrname_$0, value_$1)
+};
 $lzsc$temp["displayName"] = "__spriteAttribute";
 return $lzsc$temp
 })(), "__makeSprite", (function () {
@@ -12547,9 +13394,9 @@ $lzsc$temp["displayName"] = "__makeSprite";
 return $lzsc$temp
 })(), "init", (function () {
 var $lzsc$temp = function () {
-if (this.__updateshadowoninit) {
-delete this.__updateshadowoninit;
-this.__updateShadow()
+var updateshadow_$0 = this.shadowcolor != null && (this.shadowdistance != 0 || this.shadowblurradius != 0);
+if (updateshadow_$0) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
 };
 if (this.sprite) {
 this.sprite.init(this.visible)
@@ -12712,6 +13559,12 @@ this.onfontstyle.sendEvent(this.fontstyle)
 Debug.warn('invalid font style "%s" on %w', val_$0, this)
 }};
 $lzsc$temp["displayName"] = "$lzc$set_fontstyle";
+return $lzsc$temp
+})(), "hasdirectionallayout", void 0, "onhasdirectionallayout", LzDeclaredEvent, "$lzc$set_hasdirectionallayout", (function () {
+var $lzsc$temp = function (val_$0) {
+this.hasdirectionallayout = val_$0
+};
+$lzsc$temp["displayName"] = "$lzc$set_hasdirectionallayout";
 return $lzsc$temp
 })(), "fontsize", void 0, "$lzc$set_fontsize", (function () {
 var $lzsc$temp = function (val_$0) {
@@ -13131,25 +13984,7 @@ this.sprite.setResource(resourceName_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_resource";
 return $lzsc$temp
-})(), "resourcewidth", 0, "resourceheight", 0, "__LZcheckwidth", true, "__LZcheckheight", true, "__LZhasoffset", null, "__LZoutlieheight", null, "__LZoutliewidth", null, "setLayout", (function () {
-var $lzsc$temp = function (layoutobj_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_layout(layoutobj_$0)
-};
-$lzsc$temp["displayName"] = "setLayout";
-return $lzsc$temp
-})(), "setFontName", (function () {
-var $lzsc$temp = function (val_$0, prop_$1) {
-switch (arguments.length) {
-case 1:
-prop_$1 = null
-};
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_font(val_$0)
-};
-$lzsc$temp["displayName"] = "setFontName";
-return $lzsc$temp
-})(), "_setrescwidth", false, "_setrescheight", false, "searchSubviews", (function () {
+})(), "resourcewidth", 0, "resourceheight", 0, "__LZcheckwidth", true, "__LZcheckheight", true, "__LZhasoffset", null, "__LZoutlieheight", null, "__LZoutliewidth", null, "_setrescwidth", false, "_setrescheight", false, "searchSubviews", (function () {
 var $lzsc$temp = function (prop_$0, val_$1) {
 var nextS_$2 = this.subviews.concat();
 while (nextS_$2.length > 0) {
@@ -13168,14 +14003,7 @@ return null
 };
 $lzsc$temp["displayName"] = "searchSubviews";
 return $lzsc$temp
-})(), "layouts", null, "_resource", null, "setResource", (function () {
-var $lzsc$temp = function (v_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_resource(v_$0)
-};
-$lzsc$temp["displayName"] = "setResource";
-return $lzsc$temp
-})(), "resourceload", (function () {
+})(), "layouts", null, "_resource", null, "resourceload", (function () {
 var $lzsc$temp = function (i_$0) {
 if ("resource" in i_$0) {
 this.resource = i_$0.resource;
@@ -13279,20 +14107,6 @@ if (vip_$0.onremovesubview.ready) vip_$0.onremovesubview.sendEvent(this)
 }}};
 $lzsc$temp["displayName"] = "destroy";
 return $lzsc$temp
-})(), "setVisible", (function () {
-var $lzsc$temp = function (v_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_visible(v_$0)
-};
-$lzsc$temp["displayName"] = "setVisible";
-return $lzsc$temp
-})(), "setVisibility", (function () {
-var $lzsc$temp = function (amVisible_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_visibility(amVisible_$0)
-};
-$lzsc$temp["displayName"] = "setVisibility";
-return $lzsc$temp
 })(), "__LZupdateShown", (function () {
 var $lzsc$temp = function () {
 if (this.visibility == "collapse") {
@@ -13311,55 +14125,6 @@ if (vip_$1 && vip_$1.__LZcheckheight) vip_$1.__LZcheckheightFunction(this);
 if (this.onvisible.ready) this.onvisible.sendEvent(shown_$0)
 }};
 $lzsc$temp["displayName"] = "__LZupdateShown";
-return $lzsc$temp
-})(), "setWidth", (function () {
-var $lzsc$temp = function (v_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_width(v_$0)
-};
-$lzsc$temp["displayName"] = "setWidth";
-return $lzsc$temp
-})(), "setHeight", (function () {
-var $lzsc$temp = function (v_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_height(v_$0)
-};
-$lzsc$temp["displayName"] = "setHeight";
-return $lzsc$temp
-})(), "setOpacity", (function () {
-var $lzsc$temp = function (v_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_opacity(v_$0)
-};
-$lzsc$temp["displayName"] = "setOpacity";
-return $lzsc$temp
-})(), "setX", (function () {
-var $lzsc$temp = function (v_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_x(v_$0)
-};
-$lzsc$temp["displayName"] = "setX";
-return $lzsc$temp
-})(), "setY", (function () {
-var $lzsc$temp = function (v_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_y(v_$0)
-};
-$lzsc$temp["displayName"] = "setY";
-return $lzsc$temp
-})(), "setRotation", (function () {
-var $lzsc$temp = function (v_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_rotation(v_$0)
-};
-$lzsc$temp["displayName"] = "setRotation";
-return $lzsc$temp
-})(), "setAlign", (function () {
-var $lzsc$temp = function (align_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_align(align_$0)
-};
-$lzsc$temp["displayName"] = "setAlign";
 return $lzsc$temp
 })(), "__LZalignCenter", (function () {
 var $lzsc$temp = function (e_$0) {
@@ -13382,20 +14147,6 @@ var vip_$1 = this.immediateparent;
 this.$lzc$set_x(vip_$1.width - this.width)
 };
 $lzsc$temp["displayName"] = "__LZalignRight";
-return $lzsc$temp
-})(), "setXOffset", (function () {
-var $lzsc$temp = function (o_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_xoffset(o_$0)
-};
-$lzsc$temp["displayName"] = "setXOffset";
-return $lzsc$temp
-})(), "setYOffset", (function () {
-var $lzsc$temp = function (o_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_yoffset(o_$0)
-};
-$lzsc$temp["displayName"] = "setYOffset";
 return $lzsc$temp
 })(), "getBounds", (function () {
 var $lzsc$temp = function () {
@@ -13441,13 +14192,6 @@ var $lzsc$temp = function (who_$0, self_$1) {
 return [self_$1, "rotation", self_$1, "x", self_$1, "y", self_$1, "width", self_$1, "height"]
 };
 $lzsc$temp["displayName"] = "$lzc$getBounds_dependencies";
-return $lzsc$temp
-})(), "setValign", (function () {
-var $lzsc$temp = function (valign_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_valign(valign_$0)
-};
-$lzsc$temp["displayName"] = "setValign";
 return $lzsc$temp
 })(), "__LZvalignMiddle", (function () {
 var $lzsc$temp = function (e_$0) {
@@ -13680,35 +14424,13 @@ var tLink_$2 = this.getLinkage(refView_$1);
 var val_$3 = refView_$1[prop_$0];
 if (prop_$0 == "x" || prop_$0 == "y") {
 tLink_$2.update(prop_$0);
-{
-var $lzsc$smrj6m = (val_$3 - tLink_$2[prop_$0 + "offset"]) / tLink_$2[prop_$0 + "scale"];
-if (!this.__LZdeleted) {
-var $lzsc$flneg3 = "$lzc$set_" + prop_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$flneg3]) : this[$lzsc$flneg3] instanceof Function) {
-this[$lzsc$flneg3]($lzsc$smrj6m)
-} else {
-this[prop_$0] = $lzsc$smrj6m;
-var $lzsc$ix8bya = this["on" + prop_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$ix8bya) : $lzsc$ix8bya instanceof LzEvent) {
-if ($lzsc$ix8bya.ready) {
-$lzsc$ix8bya.sendEvent($lzsc$smrj6m)
-}}}}}} else if (prop_$0 == "width" || prop_$0 == "height") {
+this.setAttribute(prop_$0, (val_$3 - tLink_$2[prop_$0 + "offset"]) / tLink_$2[prop_$0 + "scale"])
+} else if (prop_$0 == "width" || prop_$0 == "height") {
 var axis_$4 = prop_$0 == "width" ? "x" : "y";
 tLink_$2.update(axis_$4);
 var scale_$5 = axis_$4 + "scale";
-{
-var $lzsc$68vidy = val_$3 * refView_$1[scale_$5] / tLink_$2[scale_$5] / this[scale_$5];
-if (!this.__LZdeleted) {
-var $lzsc$tf075h = "$lzc$set_" + prop_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[$lzsc$tf075h]) : this[$lzsc$tf075h] instanceof Function) {
-this[$lzsc$tf075h]($lzsc$68vidy)
-} else {
-this[prop_$0] = $lzsc$68vidy;
-var $lzsc$jvz64o = this["on" + prop_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$jvz64o) : $lzsc$jvz64o instanceof LzEvent) {
-if ($lzsc$jvz64o.ready) {
-$lzsc$jvz64o.sendEvent($lzsc$68vidy)
-}}}}}}};
+this.setAttribute(prop_$0, val_$3 * refView_$1[scale_$5] / tLink_$2[scale_$5] / this[scale_$5])
+}};
 $lzsc$temp["displayName"] = "setAttributeRelative";
 return $lzsc$temp
 })(), "$lzc$setAttributeRelative_dependencies", (function () {
@@ -13801,8 +14523,12 @@ return this.__LZviewLinks[uid_$1]
 $lzsc$temp["displayName"] = "getLinkage";
 return $lzsc$temp
 })(), "mouseevent", (function () {
-var $lzsc$temp = function (eventname_$0) {
-if (this[eventname_$0] && this[eventname_$0].ready) this[eventname_$0].sendEvent(this)
+var $lzsc$temp = function (eventname_$0, value_$1) {
+switch (arguments.length) {
+case 1:
+value_$1 = null
+};
+if (this[eventname_$0] && this[eventname_$0].ready) this[eventname_$0].sendEvent(value_$1 || this)
 };
 $lzsc$temp["displayName"] = "mouseevent";
 return $lzsc$temp
@@ -13897,27 +14623,6 @@ this.sprite.sendToBack()
 };
 $lzsc$temp["displayName"] = "sendToBack";
 return $lzsc$temp
-})(), "setResourceNumber", (function () {
-var $lzsc$temp = function (n_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_frame(n_$0)
-};
-$lzsc$temp["displayName"] = "setResourceNumber";
-return $lzsc$temp
-})(), "stretchResource", (function () {
-var $lzsc$temp = function (v_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_stretches(v_$0)
-};
-$lzsc$temp["displayName"] = "stretchResource";
-return $lzsc$temp
-})(), "setBGColor", (function () {
-var $lzsc$temp = function (bgc_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_bgcolor(bgc_$0)
-};
-$lzsc$temp["displayName"] = "setBGColor";
-return $lzsc$temp
 })(), "setSource", (function () {
 var $lzsc$temp = function (source_$0, cache_$1, headers_$2, filetype_$3) {
 switch (arguments.length) {
@@ -13953,52 +14658,29 @@ this.mask = null
 };
 $lzsc$temp["displayName"] = "removeMask";
 return $lzsc$temp
-})(), "setClickable", (function () {
-var $lzsc$temp = function (amclickable_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_clickable(amclickable_$0)
-};
-$lzsc$temp["displayName"] = "setClickable";
-return $lzsc$temp
 })(), "$lzc$set_cursor", (function () {
 var $lzsc$temp = function (cursor_$0) {
 this.sprite.setCursor(cursor_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_cursor";
 return $lzsc$temp
-})(), "setCursor", (function () {
-var $lzsc$temp = function (cursor_$0) {
-switch (arguments.length) {
-case 0:
-cursor_$0 = null
-};
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_cursor(cursor_$0)
-};
-$lzsc$temp["displayName"] = "setCursor";
-return $lzsc$temp
 })(), "$lzc$set_play", (function () {
 var $lzsc$temp = function (b_$0) {
+Debug.deprecated(this, arguments.callee, "playing");
+this.$lzc$set_playing(b_$0)
+};
+$lzsc$temp["displayName"] = "$lzc$set_play";
+return $lzsc$temp
+})(), "$lzc$set_playing", (function () {
+var $lzsc$temp = function (b_$0) {
+var changed_$1 = b_$0 !== this.playing;
+if (changed_$1) {
 if (b_$0) {
 this.play()
 } else {
 this.stop()
-}};
-$lzsc$temp["displayName"] = "$lzc$set_play";
-return $lzsc$temp
-})(), "setPlay", (function () {
-var $lzsc$temp = function (b_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_play(b_$0)
-};
-$lzsc$temp["displayName"] = "setPlay";
-return $lzsc$temp
-})(), "getMCRef", (function () {
-var $lzsc$temp = function () {
-Debug.deprecated(this, arguments.callee, this.getDisplayObject);
-return this.getDisplayObject()
-};
-$lzsc$temp["displayName"] = "getMCRef";
+}}};
+$lzsc$temp["displayName"] = "$lzc$set_playing";
 return $lzsc$temp
 })(), "getDisplayObject", (function () {
 var $lzsc$temp = function () {
@@ -14133,13 +14815,6 @@ return null
 };
 $lzsc$temp["displayName"] = "getID3";
 return $lzsc$temp
-})(), "setShowHandCursor", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_showhandcursor(s_$0)
-};
-$lzsc$temp["displayName"] = "setShowHandCursor";
-return $lzsc$temp
 })(), "setAccessible", (function () {
 var $lzsc$temp = function (accessible_$0) {
 if (this.capabilities.accessibility) {
@@ -14148,41 +14823,6 @@ this.sprite.setAccessible(accessible_$0)
 LzView.__warnCapability("view.setAccessible()", "accessibility")
 }};
 $lzsc$temp["displayName"] = "setAccessible";
-return $lzsc$temp
-})(), "setAAActive", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_aaactive(s_$0)
-};
-$lzsc$temp["displayName"] = "setAAActive";
-return $lzsc$temp
-})(), "setAAName", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_aaname(s_$0)
-};
-$lzsc$temp["displayName"] = "setAAName";
-return $lzsc$temp
-})(), "setAADescription", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_aadescription(s_$0)
-};
-$lzsc$temp["displayName"] = "setAADescription";
-return $lzsc$temp
-})(), "setAATabIndex", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_aatabindex(s_$0)
-};
-$lzsc$temp["displayName"] = "setAATabIndex";
-return $lzsc$temp
-})(), "setAASilent", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_aasilent(s_$0)
-};
-$lzsc$temp["displayName"] = "setAASilent";
 return $lzsc$temp
 })(), "shouldYieldFocus", (function () {
 var $lzsc$temp = function () {
@@ -14228,18 +14868,11 @@ this.__proxypolicy = f_$0
 };
 $lzsc$temp["displayName"] = "setProxyPolicy";
 return $lzsc$temp
-})(), "__proxypolicy", null, "setProxyURL", (function () {
-var $lzsc$temp = function (f_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_proxyurl(f_$0)
-};
-$lzsc$temp["displayName"] = "setProxyURL";
-return $lzsc$temp
-})(), "proxyurl", (function () {
+})(), "__proxypolicy", null, "proxyurl", (function () {
 var $lzsc$temp = function (url_$0) {
 return canvas.getProxyURL(url_$0)
 };
-$lzsc$temp["displayName"] = "views/LaszloView.lzs#3442/16";
+$lzsc$temp["displayName"] = "views/LaszloView.lzs#3158/16";
 return $lzsc$temp
 })(), "$lzc$set_proxyurl", (function () {
 var $lzsc$temp = function (f_$0) {
@@ -14253,20 +14886,6 @@ this.contextmenu = cmenu_$0;
 this.sprite.setContextMenu(cmenu_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_contextmenu";
-return $lzsc$temp
-})(), "setContextMenu", (function () {
-var $lzsc$temp = function (cmenu_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_contextmenu(cmenu_$0)
-};
-$lzsc$temp["displayName"] = "setContextMenu";
-return $lzsc$temp
-})(), "getContextMenu", (function () {
-var $lzsc$temp = function () {
-Debug.deprecated(this, arguments.callee, "contextmenu");
-return this.contextmenu
-};
-$lzsc$temp["displayName"] = "getContextMenu";
 return $lzsc$temp
 })(), "getNextSelection", (function () {
 var $lzsc$temp = function () {};
@@ -14301,26 +14920,26 @@ if (this.capabilities["2dcanvas"]) {
 this.sprite.setContextCallback(this, "$lzc$set_context");
 var context_$0 = this.sprite.getContext();
 if (context_$0) {
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_context"]) : this["$lzc$set_context"] instanceof Function) {
-this["$lzc$set_context"](context_$0)
-} else {
-this["context"] = context_$0;
-var $lzsc$ctoqpm = this["oncontext"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$ctoqpm) : $lzsc$ctoqpm instanceof LzEvent) {
-if ($lzsc$ctoqpm.ready) {
-$lzsc$ctoqpm.sendEvent(context_$0)
-}}}}}}} else {
+this.setAttribute("context", context_$0)
+}} else {
 LzView.__warnCapability("view.createContext", "2dcanvas")
 }};
 $lzsc$temp["displayName"] = "createContext";
+return $lzsc$temp
+})(), "drawshadow", (function () {
+var $lzsc$temp = function () {
+if (this.inited && this.height != null) {
+this.sprite.setHeight(this.height)
+}};
+$lzsc$temp["displayName"] = "drawshadow";
 return $lzsc$temp
 })(), "onshadowangle", LzDeclaredEvent, "shadowangle", 0, "$lzc$set_shadowangle", (function () {
 var $lzsc$temp = function (angle_$0) {
 if (this.capabilities["dropshadows"]) {
 this.shadowangle = angle_$0;
-this.__updateShadow();
+if (this.inited) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
+};
 if (this.onshadowangle.ready) {
 this.onshadowangle.sendEvent(angle_$0)
 }} else {
@@ -14333,7 +14952,9 @@ var $lzsc$temp = function (distance_$0) {
 if (this.capabilities["dropshadows"]) {
 if (distance_$0 < 0.01) distance_$0 = 0;
 this.shadowdistance = distance_$0;
-this.__updateShadow();
+if (this.inited) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
+};
 if (this.onshadowdistance.ready) {
 this.onshadowdistance.sendEvent(distance_$0)
 }} else {
@@ -14341,11 +14962,13 @@ LzView.__warnCapability("view.shadowdistance", "dropshadows")
 }};
 $lzsc$temp["displayName"] = "$lzc$set_shadowdistance";
 return $lzsc$temp
-})(), "onshadowcolor", LzDeclaredEvent, "shadowcolor", 0, "$lzc$set_shadowcolor", (function () {
+})(), "onshadowcolor", LzDeclaredEvent, "shadowcolor", null, "$lzc$set_shadowcolor", (function () {
 var $lzsc$temp = function (color_$0) {
 if (this.capabilities["dropshadows"]) {
-this.shadowcolor = LzColorUtils.torgb(color_$0);
-this.__updateShadow();
+this.shadowcolor = color_$0;
+if (this.inited) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
+};
 if (this.onshadowcolor.ready) {
 this.onshadowcolor.sendEvent(color_$0)
 }} else {
@@ -14356,24 +14979,19 @@ return $lzsc$temp
 })(), "onshadowblurradius", LzDeclaredEvent, "shadowblurradius", 4, "$lzc$set_shadowblurradius", (function () {
 var $lzsc$temp = function (blurradius_$0) {
 if (this.capabilities["dropshadows"]) {
-if (blurradius_$0 < 0.01) blurradius_$0 = 0;
+if (blurradius_$0 < 0.01 && blurradius_$0 > 0 || blurradius_$0 > -0.01 && blurradius_$0 < 0) {
+blurradius_$0 = 0
+};
 this.shadowblurradius = blurradius_$0;
-this.__updateShadow();
+if (this.inited) {
+this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
+};
 if (this.onshadowblurradius.ready) {
 this.onshadowblurradius.sendEvent(blurradius_$0)
 }} else {
 LzView.__warnCapability("view.shadowblurradius", "dropshadows")
 }};
 $lzsc$temp["displayName"] = "$lzc$set_shadowblurradius";
-return $lzsc$temp
-})(), "__updateShadow", (function () {
-var $lzsc$temp = function () {
-if (!this.isinited) {
-this.__updateshadowoninit = true
-} else {
-this.sprite.updateShadow(this.shadowcolor, this.shadowdistance, this.shadowangle, this.shadowblurradius)
-}};
-$lzsc$temp["displayName"] = "__updateShadow";
 return $lzsc$temp
 })(), "ontintcolor", LzDeclaredEvent, "tintcolor", "", "$lzc$set_tintcolor", (function () {
 var $lzsc$temp = function (color_$0) {
@@ -14403,20 +15021,28 @@ if (this.ontintcolor.ready) this.ontintcolor.sendEvent(color_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_tintcolor";
 return $lzsc$temp
-})(), "oncornerradius", LzDeclaredEvent, "cornerradius", "4", "$lzc$set_cornerradius", (function () {
+})(), "oncornerradius", LzDeclaredEvent, "cornerradius", "0", "$lzc$set_cornerradius", (function () {
 var $lzsc$temp = function (radius_$0) {
 if (this.capabilities["cornerradius"]) {
 if (this.cornerradius !== radius_$0) {
-var radii_$1 = String(radius_$0).split(" ");
-var l_$2 = radii_$1.length;
-if (l_$2 == 0) return;
-if (l_$2 <= 1) radii_$1[1] = radii_$1[0];
-if (l_$2 <= 3) radii_$1[3] = radii_$1[1];
-if (l_$2 <= 2) radii_$1[2] = radii_$1[0];
-for (var i_$3 = 0, l_$2 = radii_$1.length;i_$3 < l_$2;i_$3++) {
-radii_$1[i_$3] = parseFloat(radii_$1[i_$3])
+var axes_$1 = String(radius_$0).split("/");
+if (axes_$1.length == 1) {
+axes_$1[1] = axes_$1[0]
 };
-this.sprite.setCornerRadius(radii_$1)
+var allradii_$2 = [];
+for (var i_$3 = 0;i_$3 < 2;i_$3++) {
+var str_$4 = LzParsedPath.trim(String(axes_$1[i_$3]));
+var radii_$5 = str_$4.split(" ");
+var l_$6 = radii_$5.length;
+if (l_$6 > 4) l_$6 = 4;
+if (l_$6 == 0) return;
+if (l_$6 <= 1) radii_$5[1] = radii_$5[0];
+if (l_$6 <= 3) radii_$5[3] = radii_$5[1];
+if (l_$6 <= 2) radii_$5[2] = radii_$5[0];
+for (var j_$7 = 0;j_$7 < 4;j_$7++) {
+allradii_$2[i_$3 * 4 + j_$7] = parseFloat(radii_$5[j_$7])
+}};
+this.sprite.setCornerRadius(allradii_$2)
 }} else {
 LzView.__warnCapability("view.cornerradius", "cornerradius")
 };
@@ -14453,7 +15079,7 @@ return this.sprite.getZ() < sibling_$0.sprite.getZ()
 };
 $lzsc$temp["displayName"] = "isBehind";
 return $lzsc$temp
-})(), "__widthoffset", 0, "__heightoffset", 0, "__styleinfo", {}, "setCSS", (function () {
+})(), "__widthoffset", 0, "__heightoffset", 0, "__xoffset", 0, "__yoffset", 0, "__styleinfo", {}, "setCSS", (function () {
 var $lzsc$temp = function (stylename_$0, value_$1) {
 var styleinfo_$2 = this.__styleinfo[stylename_$0];
 if (!styleinfo_$2) {
@@ -14500,7 +15126,7 @@ return $lzsc$temp
 var $lzsc$temp = function (yscale_$0) {
 if (this.capabilities.scaling) {
 this.yscale = yscale_$0;
-this.usegetbounds = this.__LZhasoffset || this.rotation != 0 || this.yscale != 1 || this.yscale != 1;
+this.usegetbounds = this.__LZhasoffset || this.rotation != 0 || this.xscale != 1 || this.yscale != 1;
 this.sprite.setYScale(yscale_$0)
 } else {
 LzView.__warnCapability("view.yscale", "scaling")
@@ -14509,7 +15135,7 @@ if (this.onyscale.ready) this.onyscale.sendEvent(yscale_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_yscale";
 return $lzsc$temp
-})()], LzNode, ["tagname", "view", "attributes", new LzInheritedHash(LzNode.attributes), "__LZlastmtrix", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "__LZproxypolicies", [], "addProxyPolicy", (function () {
+})()], LzNode, ["tagname", "view", "__LZCSSTagSelectors", ["view", "node"], "attributes", new LzInheritedHash(LzNode.attributes), "__LZlastmtrix", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "__LZproxypolicies", [], "addProxyPolicy", (function () {
 var $lzsc$temp = function (f_$0) {
 LzView.__LZproxypolicies.push(f_$0)
 };
@@ -14608,7 +15234,7 @@ instcall_$3 = false
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "selectable", false, "hasdirectionallayout", false, "onselectable", LzDeclaredEvent, "$lzc$set_selectable", (function () {
+})(), "selectable", false, "onselectable", LzDeclaredEvent, "$lzc$set_selectable", (function () {
 var $lzsc$temp = function (isSel_$0) {
 isSel_$0 = !(!isSel_$0);
 this.selectable = isSel_$0;
@@ -14621,9 +15247,9 @@ return $lzsc$temp
 var $lzsc$temp = function (dir_$0) {
 this.direction = dir_$0;
 if (this.capabilities.directional_layout) {
-this.tsprite.setDirection(dir_$0)
+if (this.hasdirectionallayout) this.tsprite.setDirection(dir_$0)
 } else {
-LzView.__warnCapability("text.directional_layout", "direction")
+LzView.__warnCapability("text.directional_layout", "directional_layout")
 };
 if (this.ondirection.ready) this.ondirection.sendEvent(dir_$0)
 };
@@ -14866,22 +15492,28 @@ this.tsprite.setResize(val_$0)
 }};
 $lzsc$temp["displayName"] = "$lzc$set_resize";
 return $lzsc$temp
-})(), "text", "", "$lzc$set_text", (function () {
+})(), "text", "", "ontext", LzDeclaredEvent, "$lzc$set_text", (function () {
 var $lzsc$temp = function (t_$0) {
 t_$0 = String(t_$0);
-if (t_$0 == this.getText()) {
-if (this.ontext.ready) this.ontext.sendEvent(t_$0);
-return
-};
+if (t_$0 != this.text) {
 if (this.visible) this.tsprite.setVisible(this.visible);
 if (t_$0.length > this.maxlength) {
 t_$0 = t_$0.substring(0, this.maxlength)
 };
 this.tsprite.setText(t_$0);
 this.text = t_$0;
-if (this.ontext.ready) this.ontext.sendEvent(t_$0)
+this.cdata = t_$0
+};
+if (this.ontext.ready) this.ontext.sendEvent(t_$0);
+if (this.oncdata.ready) this.oncdata.sendEvent(t_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_text";
+return $lzsc$temp
+})(), "cdata", "", "oncdata", LzDeclaredEvent, "$lzc$set_cdata", (function () {
+var $lzsc$temp = function (t_$0) {
+this.$lzc$set_text(t_$0)
+};
+$lzsc$temp["displayName"] = "$lzc$set_cdata";
 return $lzsc$temp
 })(), "_updateSize", (function () {
 var $lzsc$temp = function () {
@@ -14900,7 +15532,7 @@ this.updateHeight(h_$1)
 }}};
 $lzsc$temp["displayName"] = "_updateSize";
 return $lzsc$temp
-})(), "ontext", LzDeclaredEvent, "ontextlink", LzDeclaredEvent, "maxlength", Infinity, "$lzc$set_maxlength", (function () {
+})(), "ontextlink", LzDeclaredEvent, "maxlength", Infinity, "$lzc$set_maxlength", (function () {
 var $lzsc$temp = function (val_$0) {
 if (val_$0 == null) {
 val_$0 = Infinity
@@ -15015,6 +15647,14 @@ this.__keepconstraint = false
 };
 $lzsc$temp["displayName"] = "$lzc$set_cascadedfgcolor";
 return $lzsc$temp
+})(), "$lzc$set_cascadedhasdirectionallayout", (function () {
+var $lzsc$temp = function (val_$0) {
+this.__keepconstraint = true;
+this.$lzc$set_hasdirectionallayout(val_$0);
+this.__keepconstraint = false
+};
+$lzsc$temp["displayName"] = "$lzc$set_cascadedhasdirectionallayout";
+return $lzsc$temp
 })(), "textalign", "left", "$lzc$set_textalign", (function () {
 var $lzsc$temp = function (align_$0) {
 align_$0 = align_$0 ? align_$0.toLowerCase() : "left";
@@ -15059,27 +15699,34 @@ this.tsprite.setTextDecoration(decoration_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_textdecoration";
 return $lzsc$temp
-})(), "construct", (function () {
+})(), "$lzc$set_hasdirectionallayout", (function () {
+var $lzsc$temp = function (val_$0) {
+var prev_$1 = this.hasdirectionallayout;
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzc$set_hasdirectionallayout"] || this.nextMethod(arguments.callee, "$lzc$set_hasdirectionallayout")).call(this, val_$0)
+};
+$lzsc$temp["displayName"] = "$lzc$set_hasdirectionallayout";
+return $lzsc$temp
+})(), "__cascadeattrs", {font: true, fontsize: true, fontstyle: true, fgcolor: true, hasdirectionallayout: true}, "construct", (function () {
 var $lzsc$temp = function (parent_$0, args_$1) {
 this.hasdirectionallayout = ("hasdirectionallayout" in args_$1) ? args_$1.hasdirectionallayout : false;
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["construct"] || this.nextMethod(arguments.callee, "construct")).call(this, parent_$0, args_$1);
-var cascadeattrs_$2 = {font: null, fontsize: null, fontstyle: null, fgcolor: null};
-var initattrs_$3 = {hassetheight: this.hassetheight, height: this.height};
-var searchattrs_$4 = [];
-for (var attr_$5 in cascadeattrs_$2) {
+var initattrs_$2 = {hassetheight: this.hassetheight, height: this.height};
+var searchattrs_$3 = [];
+var cascattrs_$4 = this.__cascadeattrs;
+for (var attr_$5 in cascattrs_$4) {
 if (attr_$5 in args_$1) {
-this[attr_$5] = initattrs_$3[attr_$5] = args_$1[attr_$5]
+this[attr_$5] = initattrs_$2[attr_$5] = args_$1[attr_$5]
 } else {
-searchattrs_$4.push(attr_$5)
+searchattrs_$3.push(attr_$5)
 }};
-if (searchattrs_$4.length > 0) {
-var parents_$6 = this.searchParentAttrs(searchattrs_$4);
+if (searchattrs_$3.length > 0) {
+var parents_$6 = this.searchParentAttrs(searchattrs_$3);
 for (var attr_$5 in parents_$6) {
 var par_$7 = parents_$6[attr_$5];
-this[attr_$5] = initattrs_$3[attr_$5] = par_$7[attr_$5];
+this[attr_$5] = initattrs_$2[attr_$5] = par_$7[attr_$5];
 this["__cascadeDel" + attr_$5] = new LzDelegate(this, "$lzc$set_cascaded" + attr_$5, par_$7, "on" + attr_$5)
 }};
-this.tsprite.__initTextProperties(initattrs_$3);
+this.tsprite.__initTextProperties(initattrs_$2);
 this.yscroll = 0;
 this.xscroll = 0;
 this.$lzc$set_resize(("resize" in args_$1) ? !(!args_$1.resize) : this.resize);
@@ -15133,20 +15780,17 @@ $lzsc$temp["displayName"] = "init";
 return $lzsc$temp
 })(), "tsprite", void 0, "__makeSprite", (function () {
 var $lzsc$temp = function (args_$0) {
+var par_$1 = this.searchParents("hasdirectionallayout");
+if (par_$1 != null) {
+this.hasdirectionallayout = par_$1.hasdirectionallayout
+};
 this.sprite = this.tsprite = new LzTextSprite(this, args_$0, this.hasdirectionallayout)
 };
 $lzsc$temp["displayName"] = "__makeSprite";
 return $lzsc$temp
-})(), "setResize", (function () {
-var $lzsc$temp = function (val_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_resize(val_$0)
-};
-$lzsc$temp["displayName"] = "setResize";
-return $lzsc$temp
 })(), "addText", (function () {
 var $lzsc$temp = function (t_$0) {
-this.$lzc$set_text(this.getText() + t_$0)
+this.$lzc$set_text(this.text + t_$0)
 };
 $lzsc$temp["displayName"] = "addText";
 return $lzsc$temp
@@ -15155,20 +15799,6 @@ var $lzsc$temp = function () {
 this.$lzc$set_text("")
 };
 $lzsc$temp["displayName"] = "clearText";
-return $lzsc$temp
-})(), "setMaxLength", (function () {
-var $lzsc$temp = function (val_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_maxlength(val_$0)
-};
-$lzsc$temp["displayName"] = "setMaxLength";
-return $lzsc$temp
-})(), "setPattern", (function () {
-var $lzsc$temp = function (val_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_pattern(val_$0)
-};
-$lzsc$temp["displayName"] = "setPattern";
 return $lzsc$temp
 })(), "getTextWidth", (function () {
 var $lzsc$temp = function () {
@@ -15203,13 +15833,6 @@ this.$lzc$set_text(d_$0)
 }};
 $lzsc$temp["displayName"] = "applyData";
 return $lzsc$temp
-})(), "setScroll", (function () {
-var $lzsc$temp = function (h_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_scroll(h_$0)
-};
-$lzsc$temp["displayName"] = "setScroll";
-return $lzsc$temp
 })(), "getScroll", (function () {
 var $lzsc$temp = function () {
 return this.scroll
@@ -15233,27 +15856,6 @@ var $lzsc$temp = function () {
 return this.scroll + this.height / this.lineheight
 };
 $lzsc$temp["displayName"] = "getBottomScroll";
-return $lzsc$temp
-})(), "setXScroll", (function () {
-var $lzsc$temp = function (n_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_xscroll(n_$0)
-};
-$lzsc$temp["displayName"] = "setXScroll";
-return $lzsc$temp
-})(), "setYScroll", (function () {
-var $lzsc$temp = function (n_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_yscroll(n_$0)
-};
-$lzsc$temp["displayName"] = "setYScroll";
-return $lzsc$temp
-})(), "setHScroll", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_hscroll(s_$0)
-};
-$lzsc$temp["displayName"] = "setHScroll";
 return $lzsc$temp
 })(), "annotateAAimg", (function () {
 var $lzsc$temp = function (txt_$0) {
@@ -15335,13 +15937,6 @@ return end_$3
 };
 $lzsc$temp["displayName"] = "parseImgAttributes";
 return $lzsc$temp
-})(), "setText", (function () {
-var $lzsc$temp = function (t_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_text(t_$0)
-};
-$lzsc$temp["displayName"] = "setText";
-return $lzsc$temp
 })(), "format", (function () {
 var $lzsc$temp = function (control_$0) {
 var args_$1 = Array.prototype.slice.call(arguments, 1);
@@ -15352,21 +15947,9 @@ return $lzsc$temp
 })(), "addFormat", (function () {
 var $lzsc$temp = function (control_$0) {
 var args_$1 = Array.prototype.slice.call(arguments, 1);
-this.$lzc$set_text(this.getText() + this.formatToString.apply(this, [control_$0].concat(args_$1)).toString().toHTML())
+this.$lzc$set_text(this.text + this.formatToString.apply(this, [control_$0].concat(args_$1)).toString().toHTML())
 };
 $lzsc$temp["displayName"] = "addFormat";
-return $lzsc$temp
-})(), "getText", (function () {
-var $lzsc$temp = function () {
-return this.text
-};
-$lzsc$temp["displayName"] = "getText";
-return $lzsc$temp
-})(), "$lzc$getText_dependencies", (function () {
-var $lzsc$temp = function (who_$0, self_$1) {
-return [self_$1, "text"]
-};
-$lzsc$temp["displayName"] = "$lzc$getText_dependencies";
 return $lzsc$temp
 })(), "escapeText", (function () {
 var $lzsc$temp = function (ts_$0) {
@@ -15380,34 +15963,6 @@ t_$1 = t_$1.substring(0, i_$2) + LzText.escapeChars[ec_$3] + t_$1.substring(i_$2
 return t_$1
 };
 $lzsc$temp["displayName"] = "escapeText";
-return $lzsc$temp
-})(), "setSelectable", (function () {
-var $lzsc$temp = function (isSel_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_selectable(isSel_$0)
-};
-$lzsc$temp["displayName"] = "setSelectable";
-return $lzsc$temp
-})(), "setFontSize", (function () {
-var $lzsc$temp = function (fsize_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_fontsize(fsize_$0)
-};
-$lzsc$temp["displayName"] = "setFontSize";
-return $lzsc$temp
-})(), "setFontStyle", (function () {
-var $lzsc$temp = function (fstyle_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_fontstyle(fstyle_$0)
-};
-$lzsc$temp["displayName"] = "setFontStyle";
-return $lzsc$temp
-})(), "setMultiline", (function () {
-var $lzsc$temp = function (ml_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_multiline(ml_$0)
-};
-$lzsc$temp["displayName"] = "setMultiline";
 return $lzsc$temp
 })(), "setBorder", (function () {
 var $lzsc$temp = function (onroff_$0) {
@@ -15427,13 +15982,6 @@ this.tsprite.setEmbedFonts(onroff_$0)
 };
 $lzsc$temp["displayName"] = "setEmbedFonts";
 return $lzsc$temp
-})(), "setAntiAliasType", (function () {
-var $lzsc$temp = function (aliasType_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_antiAliasType(aliasType_$0)
-};
-$lzsc$temp["displayName"] = "setAntiAliasType";
-return $lzsc$temp
 })(), "getAntiAliasType", (function () {
 var $lzsc$temp = function () {
 if (this.capabilities.advancedfonts) {
@@ -15442,13 +15990,6 @@ return this.antiAliasType
 LzView.__warnCapability("text.getAntiAliasType()", "advancedfonts")
 }};
 $lzsc$temp["displayName"] = "getAntiAliasType";
-return $lzsc$temp
-})(), "setGridFit", (function () {
-var $lzsc$temp = function (gridFit_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_gridFit(gridFit_$0)
-};
-$lzsc$temp["displayName"] = "setGridFit";
 return $lzsc$temp
 })(), "getGridFit", (function () {
 var $lzsc$temp = function () {
@@ -15459,13 +16000,6 @@ LzView.__warnCapability("text.getGridFit()", "advancedfonts")
 }};
 $lzsc$temp["displayName"] = "getGridFit";
 return $lzsc$temp
-})(), "setSharpness", (function () {
-var $lzsc$temp = function (sharpness_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_sharpness(sharpness_$0)
-};
-$lzsc$temp["displayName"] = "setSharpness";
-return $lzsc$temp
 })(), "getSharpness", (function () {
 var $lzsc$temp = function () {
 if (this.capabilities.advancedfonts) {
@@ -15474,13 +16008,6 @@ return this.sharpness
 LzView.__warnCapability("text.getSharpness()", "advancedfonts")
 }};
 $lzsc$temp["displayName"] = "getSharpness";
-return $lzsc$temp
-})(), "setThickness", (function () {
-var $lzsc$temp = function (thickness_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_thickness(thickness_$0)
-};
-$lzsc$temp["displayName"] = "setThickness";
 return $lzsc$temp
 })(), "getThickness", (function () {
 var $lzsc$temp = function () {
@@ -15524,11 +16051,11 @@ $lzsc$temp["displayName"] = "makeTextLink";
 return $lzsc$temp
 })(), "toString", (function () {
 var $lzsc$temp = function () {
-return "LzText: " + this.getText()
+return "LzText: " + this.text
 };
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], [LzFormatter, LzView], ["tagname", "text", "attributes", new LzInheritedHash(LzView.attributes), "escapeChars", {">": "&gt;", "<": "&lt;"}]);
+})()], [LzFormatter, LzView], ["tagname", "text", "__LZCSSTagSelectors", ["text", "formatter", "view", "node"], "attributes", new LzInheritedHash(LzView.attributes), "escapeChars", {">": "&gt;", "<": "&lt;"}]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
@@ -15541,15 +16068,15 @@ var id_$0 = LzView.prototype._dbg_name.call(this);
 if (id_$0 != this.toString()) {
 return id_$0
 } else {
-var contents_$1 = this.getText();
+var contents_$1 = this.text;
 if (contents_$1) {
 return Debug.stringEscape(contents_$1, true)
 }}};
-$lzsc$temp["displayName"] = "views/LzText.lzs#1786/34";
+$lzsc$temp["displayName"] = "views/LzText.lzs#1690/34";
 return $lzsc$temp
 })()
 }}};
-$lzsc$temp["displayName"] = "views/LzText.lzs#193/1";
+$lzsc$temp["displayName"] = "views/LzText.lzs#226/1";
 return $lzsc$temp
 })()(LzText);
 lz[LzText.tagname] = LzText;
@@ -15576,16 +16103,22 @@ return $lzsc$temp
 var $lzsc$temp = function (parent_$0, args_$1) {
 this.password = ("password" in args_$1) ? !(!args_$1.password) : false;
 this.focusable = true;
+this.hasdirectionallayout = ("hasdirectionallayout" in args_$1) ? args_$1.hasdirectionallayout : false;
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["construct"] || this.nextMethod(arguments.callee, "construct")).call(this, parent_$0, args_$1);
 this.$lzc$set_resize(("resize" in args_$1) ? !(!args_$1.resize) : false);
 this._onfocusDel = new LzDelegate(this, "_gotFocusEvent", this, "onfocus");
 this._onblurDel = new LzDelegate(this, "_gotBlurEvent", this, "onblur");
-this._modemanagerDel = new LzDelegate(this, "_modechanged", lz.ModeManager, "onmode")
+this._modemanagerDel = new LzDelegate(this, "_modechanged", lz.ModeManager, "onmode");
+this._onmousewheeldeltaDel = new LzDelegate(this, "_mousewheelChanged", lz.Keys, "onmousewheeldelta")
 };
 $lzsc$temp["displayName"] = "construct";
 return $lzsc$temp
 })(), "isprite", void 0, "__makeSprite", (function () {
 var $lzsc$temp = function (args_$0) {
+var par_$1 = this.searchParents("hasdirectionallayout");
+if (par_$1 != null) {
+this.hasdirectionallayout = par_$1.hasdirectionallayout
+};
 this.sprite = this.tsprite = this.isprite = new LzInputTextSprite(this, args_$0, this.hasdirectionallayout)
 };
 $lzsc$temp["displayName"] = "__makeSprite";
@@ -15624,7 +16157,7 @@ if (eventname_$0 == "onfocus") {
 this._focused = true;
 if (lz.Focus.getFocus() !== this) {
 var tabdown_$2 = lz.Keys.isKeyDown("tab");
-lz.Focus.setFocus(this, tabdown_$2);
+lz.Focus.setFocus(this, tabdown_$2 ? lz.Focus.MOUSE_KEYBOARD : lz.Focus.MOUSE_MANUAL);
 if (lz.Focus.getFocus() !== this && this._focused) {
 this._gotBlurEvent()
 }}} else if (eventname_$0 == "onchange") {
@@ -15659,13 +16192,6 @@ if (this.onenabled.ready) this.onenabled.sendEvent(enabled_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_enabled";
 return $lzsc$temp
-})(), "setEnabled", (function () {
-var $lzsc$temp = function (enabled_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_enabled(enabled_$0)
-};
-$lzsc$temp["displayName"] = "setEnabled";
-return $lzsc$temp
 })(), "setHTML", (function () {
 var $lzsc$temp = function (htmlp_$0) {
 if (this.capabilities["htmlinputtext"]) {
@@ -15677,6 +16203,7 @@ $lzsc$temp["displayName"] = "setHTML";
 return $lzsc$temp
 })(), "getText", (function () {
 var $lzsc$temp = function () {
+Debug.deprecated(this, arguments.callee, "text");
 if (this.isprite != null) {
 return this.isprite.getText()
 } else {
@@ -15689,6 +16216,29 @@ var $lzsc$temp = function (modalview_$0) {
 this._setallowselectable(!modalview_$0 || lz.ModeManager.__LZallowInput(modalview_$0, this))
 };
 $lzsc$temp["displayName"] = "_modechanged";
+return $lzsc$temp
+})(), "_mousewheelChanged", (function () {
+var $lzsc$temp = function (d_$0) {
+var step_$1 = this.fontsize;
+if (this.multiline && this.isMouseOver()) {
+var s_$2 = this.yscroll + d_$0 * step_$1;
+if (s_$2 > 0) {
+if (this.yscroll < 0) {
+s_$2 = 0
+} else {
+return
+}};
+var inputDiv_$3 = this.tsprite["__LzInputDiv"];
+var minyscroll_$4 = -(inputDiv_$3.scrollHeight - this.height + 4);
+if (s_$2 < minyscroll_$4) {
+if (this.yscroll > minyscroll_$4) {
+s_$2 = minyscroll_$4
+} else {
+return
+}};
+this.setAttribute("yscroll", s_$2)
+}};
+$lzsc$temp["displayName"] = "_mousewheelChanged";
 return $lzsc$temp
 })(), "_setallowselectable", (function () {
 var $lzsc$temp = function (value_$0) {
@@ -15704,7 +16254,15 @@ this._selectable = value_$0;
 };
 $lzsc$temp["displayName"] = "$lzc$set_selectable";
 return $lzsc$temp
-})()], LzText, ["tagname", "inputtext", "attributes", new LzInheritedHash(LzText.attributes)]);
+})(), "readonly", false, "$lzc$set_readonly", (function () {
+var $lzsc$temp = function (readonly_$0) {
+if (this.readonly == readonly_$0) return;
+this.readonly = readonly_$0;
+this.isprite.setReadOnly(this.readonly)
+};
+$lzsc$temp["displayName"] = "$lzc$set_readonly";
+return $lzsc$temp
+})()], LzText, ["tagname", "inputtext", "__LZCSSTagSelectors", ["inputtext", "text", "formatter", "view", "node"], "attributes", new LzInheritedHash(LzText.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
@@ -15744,32 +16302,33 @@ return $lzsc$temp
 var $lzsc$temp = function (xory_$0) {
 var scale_$1 = xory_$0 + "scale";
 var offset_$2 = xory_$0 + "offset";
-var uplinkArray_$3 = this.uplinkArray;
-var downlinkArray_$4 = this.downlinkArray;
-var upscale_$5 = 1;
-var upoffset_$6 = 0;
-if (uplinkArray_$3) {
-var i_$7 = uplinkArray_$3.length - 1;
-var v_$8 = uplinkArray_$3[i_$7--];
-upscale_$5 *= v_$8[scale_$1];
-for (;i_$7 >= 0;i_$7--) {
-v_$8 = uplinkArray_$3[i_$7];
-upoffset_$6 += v_$8[xory_$0] * upscale_$5;
-upscale_$5 *= v_$8[scale_$1]
+var boxoffset_$3 = "__" + offset_$2;
+var uplinkArray_$4 = this.uplinkArray;
+var downlinkArray_$5 = this.downlinkArray;
+var upscale_$6 = 1;
+var upoffset_$7 = 0;
+if (uplinkArray_$4) {
+var i_$8 = uplinkArray_$4.length - 1;
+var v_$9 = uplinkArray_$4[i_$8--];
+upscale_$6 *= v_$9[scale_$1];
+for (;i_$8 >= 0;i_$8--) {
+v_$9 = uplinkArray_$4[i_$8];
+upoffset_$7 += (v_$9[xory_$0] + v_$9[boxoffset_$3]) * upscale_$6;
+upscale_$6 *= v_$9[scale_$1]
 }};
-var downscale_$9 = 1;
-var downoffset_$a = 0;
-if (downlinkArray_$4) {
-var i_$7 = downlinkArray_$4.length - 1;
-var v_$8 = downlinkArray_$4[i_$7--];
-downscale_$9 *= v_$8[scale_$1];
-for (;i_$7 >= 0;i_$7--) {
-v_$8 = downlinkArray_$4[i_$7];
-downoffset_$a += v_$8[xory_$0] * downscale_$9;
-downscale_$9 *= v_$8[scale_$1]
+var downscale_$a = 1;
+var downoffset_$b = 0;
+if (downlinkArray_$5) {
+var i_$8 = downlinkArray_$5.length - 1;
+var v_$9 = downlinkArray_$5[i_$8--];
+downscale_$a *= v_$9[scale_$1];
+for (;i_$8 >= 0;i_$8--) {
+v_$9 = downlinkArray_$5[i_$8];
+downoffset_$b += (v_$9[xory_$0] + v_$9[boxoffset_$3]) * downscale_$a;
+downscale_$a *= v_$9[scale_$1]
 }};
-this[scale_$1] = upscale_$5 / downscale_$9;
-this[offset_$2] = (upoffset_$6 - downoffset_$a) / downscale_$9
+this[scale_$1] = upscale_$6 / downscale_$a;
+this[offset_$2] = (upoffset_$7 - downoffset_$b) / downscale_$a
 };
 $lzsc$temp["displayName"] = "update";
 return $lzsc$temp
@@ -15784,14 +16343,14 @@ this.update("x");
 this.update("y");
 return Debug.formatToString("%w -> %w: [%d 0 %d 0 %d %d 0 0 1]", this.fromView, this.toView, this.xscale, this.xoffset, this.yscale, this.yoffset)
 };
-$lzsc$temp["displayName"] = "views/LzViewLinkage.lzs#177/41";
+$lzsc$temp["displayName"] = "views/LzViewLinkage.lzs#178/41";
 return $lzsc$temp
 })()
 }}};
 $lzsc$temp["displayName"] = "views/LzViewLinkage.lzs#40/1";
 return $lzsc$temp
 })()(LzViewLinkage);
-Class.make("LzCanvas", ["updatePercentCreatedEnabled", true, "_lzinitialsubviews", [], "totalnodes", void 0, "framerate", 30, "onframerate", LzDeclaredEvent, "creatednodes", void 0, "__LZproxied", void 0, "embedfonts", void 0, "lpsbuild", void 0, "lpsbuilddate", void 0, "appbuilddate", void 0, "runtime", void 0, "allowfullscreen", void 0, "fullscreen", void 0, "onfullscreen", LzDeclaredEvent, "__LZmouseupDel", void 0, "__LZmousedownDel", void 0, "__LZmousemoveDel", void 0, "__LZDefaultCanvasMenu", void 0, "httpdataprovider", null, "defaultdataprovider", null, "$lzsc$initialize", (function () {
+Class.make("LzCanvas", ["updatePercentCreatedEnabled", true, "_lzinitialsubviews", [], "totalnodes", void 0, "framerate", 30, "onframerate", LzDeclaredEvent, "creatednodes", void 0, "__LZproxied", void 0, "embedfonts", void 0, "lpsbuild", void 0, "lpsbuilddate", void 0, "appbuilddate", void 0, "runtime", void 0, "allowfullscreen", void 0, "fullscreen", void 0, "onfullscreen", LzDeclaredEvent, "__LZmouseupDel", void 0, "__LZmousedownDel", void 0, "__LZmousemoveDel", void 0, "__LZDefaultCanvasMenu", void 0, "screenorientation", "landscape", "onscreenorientation", LzDeclaredEvent, "httpdataprovider", null, "defaultdataprovider", null, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (parent_$0, args_$1, children_$2, async_$3) {
 switch (arguments.length) {
 case 0:
@@ -15802,28 +16361,29 @@ async_$3 = null
 };
 if (!args_$1["medialoadtimeout"]) args_$1.medialoadtimeout = this.medialoadtimeout;
 if (!args_$1["mediaerrortimeout"]) args_$1.mediaerrortimeout = this.mediaerrortimeout;
-if (args_$1["fontsize"] != null) {
-this.fontsize = LzCanvas.attributes.fontsize.fallback = args_$1.fontsize;
+var fallbacks_$4 = LzCanvas.attributes.$attributeDescriptor.fallbacks;
+if (args_$1.hasOwnProperty("fontsize")) {
+this.fontsize = fallbacks_$4.fontsize = args_$1.fontsize;
 delete args_$1.fontsize
 };
-if (args_$1["fontstyle"] != null) {
-this.fontstyle = LzCanvas.attributes.fontstyle.fallback = args_$1.fontstyle;
+if (args_$1.hasOwnProperty("fontstyle")) {
+this.fontstyle = fallbacks_$4.fontstyle = args_$1.fontstyle;
 delete args_$1.fontstyle
 };
-if (args_$1["font"] != null) {
-this.font = LzCanvas.attributes.font.fallback = args_$1.font;
+if (args_$1.hasOwnProperty("font")) {
+this.font = fallbacks_$4.font = args_$1.font;
 delete args_$1.font
 };
-if (args_$1["bgcolor"] != null) {
-LzCanvas.attributes.bgcolor.fallback = args_$1.bgcolor;
+if (args_$1.hasOwnProperty("bgcolor")) {
+fallbacks_$4.bgcolor = args_$1.bgcolor;
 delete args_$1.bgcolor
 };
-if (args_$1["width"] != null) {
-LzCanvas.attributes.width.fallback = args_$1.width;
+if (args_$1.hasOwnProperty("width")) {
+fallbacks_$4.width = args_$1.width;
 delete args_$1.width
 };
-if (args_$1["height"] != null) {
-LzCanvas.attributes.height.fallback = args_$1.height;
+if (args_$1.hasOwnProperty("height")) {
+fallbacks_$4.height = args_$1.height;
 delete args_$1.height
 };
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, parent_$0, args_$1, children_$2, async_$3);
@@ -15909,9 +16469,6 @@ LzScreenKernel.setFullscreenCallback(this, "__fullscreenEventCallback", "__fulls
 };
 this.lpsversion = args.lpsversion + "." + this.__LZlfcversion;
 delete args.lpsversion;
-if (!this.version) {
-this.version = this.lpsversion
-};
 this.isinited = false;
 this._lzinitialsubviews = [];
 this.datasets = {};
@@ -15934,8 +16491,13 @@ $lzsc$temp["displayName"] = "__LZmouseup";
 return $lzsc$temp
 })(), "__LZmousemove", (function () {
 var $lzsc$temp = function (e_$0) {
-if (this.onmousemove.ready) this.onmousemove.sendEvent()
-};
+if (this.onmousemove.ready) this.onmousemove.sendEvent();
+if (LzMouseKernel.__lastMouseDown) {
+var mx_$1 = canvas.getMouse("x");
+var my_$2 = canvas.getMouse("y");
+if (mx_$1 < 0 || mx_$1 > canvas.width || my_$2 < 0 || my_$2 > canvas.height) {
+LzMouseKernel.__lastMouseDown.__globalmouseup({type: "mouseout"})
+}}};
 $lzsc$temp["displayName"] = "__LZmousemove";
 return $lzsc$temp
 })(), "__LZmousedown", (function () {
@@ -15950,7 +16512,7 @@ this.sprite = new LzSprite(this, true)
 };
 $lzsc$temp["displayName"] = "__makeSprite";
 return $lzsc$temp
-})(), "onmouseleave", LzDeclaredEvent, "onmouseenter", LzDeclaredEvent, "onpercentcreated", LzDeclaredEvent, "onmousemove", LzDeclaredEvent, "onafterinit", LzDeclaredEvent, "lpsversion", void 0, "lpsrelease", void 0, "version", null, "scriptlimits", void 0, "__LZlfcversion", "0", "proxied", true, "dataloadtimeout", 30000, "medialoadtimeout", 30000, "$lzc$set_medialoadtimeout", (function () {
+})(), "onmouseleave", LzDeclaredEvent, "onmouseenter", LzDeclaredEvent, "onpercentcreated", LzDeclaredEvent, "onmousemove", LzDeclaredEvent, "onafterinit", LzDeclaredEvent, "lpsversion", void 0, "lpsrelease", void 0, "scriptlimits", void 0, "__LZlfcversion", "0", "proxied", true, "dataloadtimeout", 30000, "medialoadtimeout", 30000, "$lzc$set_medialoadtimeout", (function () {
 var $lzsc$temp = function (ms_$0) {
 if (this.capabilities["medialoading"]) {
 LzSprite.setMediaLoadTimeout(ms_$0)
@@ -16152,7 +16714,9 @@ this.datapath.__LZApplyDataOnInit()
 this.inited = true;
 if (this.oninited.ready) {
 this.oninited.sendEvent(true)
-}};
+};
+Debug.canvasInitialized()
+};
 $lzsc$temp["displayName"] = "__LZcallInit";
 return $lzsc$temp
 })(), "isProxied", (function () {
@@ -16222,13 +16786,21 @@ $lzsc$temp["displayName"] = "__LZviewSourceMenuItemHandler";
 return $lzsc$temp
 })(), "__windowResize", (function () {
 var $lzsc$temp = function (size_$0) {
+if (size_$0.width !== this.width) {
 this.width = size_$0.width;
 if (this.onwidth.ready) this.onwidth.sendEvent(this.width);
-this.sprite.setWidth(this.width);
+this.sprite.setWidth(this.width)
+};
+if (size_$0.height !== this.height) {
 this.height = size_$0.height;
 if (this.onheight.ready) this.onheight.sendEvent(this.height);
 this.sprite.setHeight(this.height)
 };
+if (this.capabilities.screenorientation) {
+if (size_$0.orientation !== this.screenorientation) {
+this.screenorientation = size_$0.orientation;
+if (this.onscreenorientation.ready) this.onscreenorientation.sendEvent(this.orientation)
+}}};
 $lzsc$temp["displayName"] = "__windowResize";
 return $lzsc$temp
 })(), "LzInstantiateView", (function () {
@@ -16258,9 +16830,9 @@ canvas.initDone()
 };
 $lzsc$temp["displayName"] = "__LzLibraryLoaded";
 return $lzsc$temp
-})()], LzView, ["tagname", "canvas", "attributes", new LzInheritedHash(LzView.attributes), "versionInfoString", (function () {
+})()], LzView, ["tagname", "canvas", "__LZCSSTagSelectors", ["canvas", "view", "node"], "attributes", new LzInheritedHash(LzView.attributes), "versionInfoString", (function () {
 var $lzsc$temp = function () {
-return "URL: " + lz.Browser.getLoadURL() + "\n" + "LPS\n" + "  Version: " + canvas.lpsversion + "\n" + "  Release: " + canvas.lpsrelease + "\n" + "  Build: " + canvas.lpsbuild + "\n" + "  Date: " + canvas.lpsbuilddate + "\n" + "Application\n" + "  Date: " + canvas.appbuilddate + "\n" + "Target: " + canvas.runtime + "\n" + "Runtime: " + lz.Browser.getVersion() + "\n" + "OS: " + lz.Browser.getOS() + "\n"
+return "URL: " + lz.Browser.getLoadURL() + "\n" + "LPS\n" + "  Version: " + canvas.lpsversion + "\n" + "  Release: " + canvas.lpsrelease + "\n" + "  Build: " + canvas.lpsbuild + "\n" + "  Date: " + canvas.lpsbuilddate + "\n" + "Application\n" + "  Date: " + canvas.appbuilddate + "\n" + "Runtime: " + canvas.runtime + "\n" + "Browser/Player\n" + "  Version: " + lz.Browser.getVersion() + "\n" + "OS: " + lz.Browser.getOS()
 };
 $lzsc$temp["displayName"] = "versionInfoString";
 return $lzsc$temp
@@ -16269,13 +16841,13 @@ return $lzsc$temp
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
 {
-attributes.bgcolor = new LzStyleConstraintExpr("bgcolor", "color", "background-color", 16777215, false);
-attributes.font = new LzStyleConstraintExpr("font", "string", "font-family", "Verdana,Vera,sans-serif", false);
-attributes.fontsize = new LzStyleConstraintExpr("fontsize", "number", "font-size", 11, false);
-attributes.fontstyle = new LzStyleConstraintExpr("fontstyle", "string", "font-style", "plain", false);
-attributes.fgcolor = new LzStyleConstraintExpr("fgcolor", "color", "font-color", 0, false);
-attributes.width = new LzStyleConstraintExpr("width", "string", "width", "100%", false);
-attributes.height = new LzStyleConstraintExpr("height", "string", "height", "100%", false)
+(function () {
+var $lzsc$temp = function ($0, $1) {
+LzNode.mergeAttributes({$attributeDescriptor: {fallbacks: {bgcolor: 16777215, fgcolor: 0, fontsize: 11, font: "Verdana,Vera,sans-serif", fontstyle: "plain", height: "100%", width: "100%"}, properties: {bgcolor: "background-color", fgcolor: "color", fontsize: "font-size", font: "font-family", fontstyle: "font-style", height: "height", width: "width"}, types: {bgcolor: "color", fgcolor: "color", fontsize: "number", font: "string", fontstyle: "string", height: "string", width: "string"}}, bgcolor: $0, fgcolor: $0, fontsize: $0, font: $0, fontstyle: $0, height: $0, width: $0}, $1)
+};
+$lzsc$temp["displayName"] = "views/LaszloCanvas.lzs#64/4";
+return $lzsc$temp
+})()(LzStyleConstraintExpr.StyleConstraintExpr, LzCanvas.attributes)
 }}};
 $lzsc$temp["displayName"] = "views/LaszloCanvas.lzs#42/1";
 return $lzsc$temp
@@ -16573,7 +17145,7 @@ return "Empty group"
 };
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], LzNode, ["tagname", "animatorgroup", "attributes", new LzInheritedHash(LzNode.attributes)]);
+})()], LzNode, ["tagname", "animatorgroup", "__LZCSSTagSelectors", ["animatorgroup", "node"], "attributes", new LzInheritedHash(LzNode.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
@@ -16691,19 +17263,8 @@ var expected_$2 = targ_$0.__animatedAttributes;
 if (expected_$2 == null) {
 expected_$2 = targ_$0.__animatedAttributes = {}};
 if (this.from != null) {
-{
-var $lzsc$j2870l = Number(this.from);
-if (!targ_$0.__LZdeleted) {
-var $lzsc$54vsn = "$lzc$set_" + attr_$1;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(targ_$0[$lzsc$54vsn]) : targ_$0[$lzsc$54vsn] instanceof Function) {
-targ_$0[$lzsc$54vsn]($lzsc$j2870l)
-} else {
-targ_$0[attr_$1] = $lzsc$j2870l;
-var $lzsc$af5f1l = targ_$0["on" + attr_$1];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$af5f1l) : $lzsc$af5f1l instanceof LzEvent) {
-if ($lzsc$af5f1l.ready) {
-$lzsc$af5f1l.sendEvent($lzsc$j2870l)
-}}}}}};
+targ_$0.__setAttr(attr_$1, Number(this.from))
+};
 if (expected_$2[attr_$1] == null) {
 expected_$2[attr_$1] = Number(targ_$0[attr_$1])
 };
@@ -16731,19 +17292,8 @@ expected_$2[attr_$1] = Number(targ_$0[attr_$1])
 var from_$3 = this.from;
 if (from_$3 != null) {
 expected_$2[attr_$1] += Number(from_$3 - expected_$2[attr_$1]);
-{
-var $lzsc$igi8xw = Number(from_$3);
-if (!targ_$0.__LZdeleted) {
-var $lzsc$wzrf4g = "$lzc$set_" + attr_$1;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(targ_$0[$lzsc$wzrf4g]) : targ_$0[$lzsc$wzrf4g] instanceof Function) {
-targ_$0[$lzsc$wzrf4g]($lzsc$igi8xw)
-} else {
-targ_$0[attr_$1] = $lzsc$igi8xw;
-var $lzsc$momqa1 = targ_$0["on" + attr_$1];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$momqa1) : $lzsc$momqa1 instanceof LzEvent) {
-if ($lzsc$momqa1.ready) {
-$lzsc$momqa1.sendEvent($lzsc$igi8xw)
-}}}}}};
+targ_$0.__setAttr(attr_$1, Number(from_$3))
+};
 if (!this.relative) {
 var newto_$4 = this.origto - expected_$2[attr_$1];
 if (this.to != newto_$4) {
@@ -16785,21 +17335,11 @@ var $lzsc$temp = function () {
 var targ_$0 = this.target;
 var attr_$1 = this.attribute;
 var expected_$2 = targ_$0.__animatedAttributes;
-if (this.updateCounter(-1) == 0) {
+if (this.updateCounter(-this.repeat) == 0) {
 var val_$3 = expected_$2[attr_$1];
 delete expected_$2[attr_$1];
-{
-if (!targ_$0.__LZdeleted) {
-var $lzsc$rcq7a4 = "$lzc$set_" + attr_$1;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(targ_$0[$lzsc$rcq7a4]) : targ_$0[$lzsc$rcq7a4] instanceof Function) {
-targ_$0[$lzsc$rcq7a4](val_$3)
-} else {
-targ_$0[attr_$1] = val_$3;
-var $lzsc$xda0d6 = targ_$0["on" + attr_$1];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$xda0d6) : $lzsc$xda0d6 instanceof LzEvent) {
-if ($lzsc$xda0d6.ready) {
-$lzsc$xda0d6.sendEvent(val_$3)
-}}}}}};
+targ_$0.__setAttr(attr_$1, val_$3)
+};
 this.__LZhalt()
 };
 $lzsc$temp["displayName"] = "__LZfinalizeAnim";
@@ -16842,19 +17382,7 @@ checkrepeat_$2 = true
 };
 var targ_$4 = this.target;
 var attr_$5 = this.attribute;
-{
-var $lzsc$qlqd17 = targ_$4[attr_$5] + (value_$3 - this.currentValue);
-if (!targ_$4.__LZdeleted) {
-var $lzsc$lmk3yn = "$lzc$set_" + attr_$5;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(targ_$4[$lzsc$lmk3yn]) : targ_$4[$lzsc$lmk3yn] instanceof Function) {
-targ_$4[$lzsc$lmk3yn]($lzsc$qlqd17)
-} else {
-targ_$4[attr_$5] = $lzsc$qlqd17;
-var $lzsc$gztggd = targ_$4["on" + attr_$5];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$gztggd) : $lzsc$gztggd instanceof LzEvent) {
-if ($lzsc$gztggd.ready) {
-$lzsc$gztggd.sendEvent($lzsc$qlqd17)
-}}}}};
+targ_$4.__setAttr(attr_$5, targ_$4[attr_$5] + (value_$3 - this.currentValue));
 this.currentValue = value_$3;
 if (checkrepeat_$2) {
 return this.checkRepeat()
@@ -16869,7 +17397,7 @@ return "Animator for " + this.target + " attribute:" + this.attribute + " to:" +
 };
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], LzAnimatorGroup, ["tagname", "animator", "attributes", new LzInheritedHash(LzAnimatorGroup.attributes)]);
+})()], LzAnimatorGroup, ["tagname", "animator", "__LZCSSTagSelectors", ["animator", "animatorgroup", "node"], "attributes", new LzInheritedHash(LzAnimatorGroup.attributes)]);
 lz[LzAnimator.tagname] = LzAnimator;
 Class.make("LzContextMenu", ["onmenuopen", LzDeclaredEvent, "kernel", null, "items", null, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (del_$0, attrs_$1, children_$2, instcall_$3) {
@@ -16904,24 +17432,17 @@ ip_$0.$lzc$set_contextmenu(this)
 }};
 $lzsc$temp["displayName"] = "init";
 return $lzsc$temp
-})(), "$lzc$set_delegate", (function () {
+})(), "delegate", void 0, "$lzc$set_delegate", (function () {
 var $lzsc$temp = function (delegate_$0) {
+this.delegate = delegate_$0;
 this.kernel.setDelegate(delegate_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_delegate";
 return $lzsc$temp
-})(), "setDelegate", (function () {
-var $lzsc$temp = function (delegate_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_delegate(delegate_$0)
-};
-$lzsc$temp["displayName"] = "setDelegate";
-return $lzsc$temp
 })(), "addItem", (function () {
 var $lzsc$temp = function (item_$0) {
 if (canvas.capabilities.customcontextmenu) {
-this.items.push(item_$0);
-this.kernel.addItem(item_$0)
+this.items.push(item_$0)
 } else {
 LzView.__warnCapability("LzContextMenu.addItem", "customcontextmenu")
 }};
@@ -16942,8 +17463,7 @@ return $lzsc$temp
 })(), "clearItems", (function () {
 var $lzsc$temp = function () {
 if (canvas.capabilities.customcontextmenu) {
-this.items = [];
-this.kernel.clearItems()
+this.items = []
 } else {
 LzView.__warnCapability("LzContextMenu.clearItems", "customcontextmenu")
 }};
@@ -16955,6 +17475,23 @@ return this.items
 };
 $lzsc$temp["displayName"] = "getItems";
 return $lzsc$temp
+})(), "filterItems", (function () {
+var $lzsc$temp = function (target_$0) {
+return this.getItems()
+};
+$lzsc$temp["displayName"] = "filterItems";
+return $lzsc$temp
+})(), "_filteredItems", (function () {
+var $lzsc$temp = function (target_$0) {
+var items_$1 = this.filterItems(target_$0);
+var debugitems_$2 = Debug.contextMenuItems(this, target_$0);
+if (debugitems_$2 != null) {
+return items_$1.concat(debugitems_$2)
+};
+return items_$1
+};
+$lzsc$temp["displayName"] = "_filteredItems";
+return $lzsc$temp
 })(), "makeMenuItem", (function () {
 var $lzsc$temp = function (title_$0, delegate_$1) {
 var item_$2 = new LzContextMenuItem(title_$0, delegate_$1);
@@ -16962,7 +17499,7 @@ return item_$2
 };
 $lzsc$temp["displayName"] = "makeMenuItem";
 return $lzsc$temp
-})()], LzNode, ["tagname", "contextmenu", "attributes", new LzInheritedHash(LzNode.attributes)]);
+})()], LzNode, ["tagname", "contextmenu", "__LZCSSTagSelectors", ["contextmenu", "node"], "attributes", new LzInheritedHash(LzNode.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
@@ -16999,82 +17536,53 @@ ip_$4.addItem(this)
 }};
 $lzsc$temp["displayName"] = "construct";
 return $lzsc$temp
-})(), "$lzc$set_delegate", (function () {
+})(), "delegate", void 0, "$lzc$set_delegate", (function () {
 var $lzsc$temp = function (delegate_$0) {
+this.delegate = delegate_$0;
 this.kernel.setDelegate(delegate_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_delegate";
 return $lzsc$temp
-})(), "$lzc$set_caption", (function () {
+})(), "caption", void 0, "$lzc$set_caption", (function () {
 var $lzsc$temp = function (caption_$0) {
+this.caption = caption_$0;
 this.kernel.setCaption(caption_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_caption";
 return $lzsc$temp
-})(), "$lzc$set_enabled", (function () {
+})(), "enabled", void 0, "$lzc$set_enabled", (function () {
 var $lzsc$temp = function (val_$0) {
+this.enabled = val_$0;
 this.kernel.setEnabled(val_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_enabled";
 return $lzsc$temp
-})(), "$lzc$set_separatorbefore", (function () {
+})(), "separatorbefore", void 0, "$lzc$set_separatorbefore", (function () {
 var $lzsc$temp = function (val_$0) {
+this.separatorbefore = val_$0;
 this.kernel.setSeparatorBefore(val_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_separatorbefore";
 return $lzsc$temp
-})(), "$lzc$set_visible", (function () {
+})(), "visible", void 0, "$lzc$set_visible", (function () {
 var $lzsc$temp = function (val_$0) {
+this.visible = val_$0;
 this.kernel.setVisible(val_$0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_visible";
 return $lzsc$temp
-})(), "setDelegate", (function () {
-var $lzsc$temp = function (delegate_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_delegate(delegate_$0)
-};
-$lzsc$temp["displayName"] = "setDelegate";
-return $lzsc$temp
-})(), "setCaption", (function () {
-var $lzsc$temp = function (caption_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_caption(caption_$0)
-};
-$lzsc$temp["displayName"] = "setCaption";
-return $lzsc$temp
 })(), "getCaption", (function () {
 var $lzsc$temp = function () {
+Debug.deprecated(this, arguments.callee, this.caption);
 return this.kernel.getCaption()
 };
 $lzsc$temp["displayName"] = "getCaption";
 return $lzsc$temp
-})(), "setEnabled", (function () {
-var $lzsc$temp = function (val_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_enabled(val_$0)
-};
-$lzsc$temp["displayName"] = "setEnabled";
-return $lzsc$temp
-})(), "setSeparatorBefore", (function () {
-var $lzsc$temp = function (val_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_separatorbefore(val_$0)
-};
-$lzsc$temp["displayName"] = "setSeparatorBefore";
-return $lzsc$temp
-})(), "setVisible", (function () {
-var $lzsc$temp = function (val_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_visible(val_$0)
-};
-$lzsc$temp["displayName"] = "setVisible";
-return $lzsc$temp
-})()], LzNode, ["tagname", "contextmenuitem", "attributes", new LzInheritedHash(LzNode.attributes)]);
+})()], LzNode, ["tagname", "contextmenuitem", "__LZCSSTagSelectors", ["contextmenuitem", "node"], "attributes", new LzInheritedHash(LzNode.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "helpers/LzContextMenu.lzs#196/1";
+$lzsc$temp["displayName"] = "helpers/LzContextMenu.lzs#227/1";
 return $lzsc$temp
 })()(LzContextMenuItem);
 lz[LzContextMenuItem.tagname] = LzContextMenuItem;
@@ -17335,9 +17843,9 @@ delete held_$3[dependenciesName_$g]
 } else if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this[dependenciesName_$g]) : this[dependenciesName_$g] instanceof Function) {
 held_$3[newDependenciesName_$l] = this[dependenciesName_$g]
 };
-held_$3[key_$5] = new (expr_$i.constructor)(expr_$i.attribute, expr_$i.type, newMethodName_$j, newDependenciesName_$l, dbgName_$k)
+held_$3[key_$5] = new (expr_$i.constructor)(newMethodName_$j, newDependenciesName_$l, dbgName_$k)
 } else {
-held_$3[key_$5] = new (expr_$i.constructor)(expr_$i.attribute, expr_$i.type, newMethodName_$j, dbgName_$k)
+held_$3[key_$5] = new (expr_$i.constructor)(newMethodName_$j, dbgName_$k)
 }}};
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["__LZapplyArgs"] || this.nextMethod(arguments.callee, "__LZapplyArgs")).call(this, stateArgs_$2, constcall_$1)
 };
@@ -17363,7 +17871,7 @@ return aview_$0
 };
 $lzsc$temp["displayName"] = "__LZretach";
 return $lzsc$temp
-})()], LzNode, ["tagname", "state", "attributes", new LzInheritedHash(LzNode.attributes), "events", {onremove: true, onapply: true, onapplied: true}]);
+})()], LzNode, ["tagname", "state", "__LZCSSTagSelectors", ["state", "node"], "attributes", new LzInheritedHash(LzNode.attributes), "events", {onremove: true, onapply: true, onapplied: true}]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
@@ -17584,13 +18092,6 @@ this.onownerDocument.sendEvent(ownerDoc_$0)
 }};
 $lzsc$temp["displayName"] = "$lzc$set_ownerDocument";
 return $lzsc$temp
-})(), "setOwnerDocument", (function () {
-var $lzsc$temp = function (ownerDoc_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_ownerDocument(ownerDoc_$0)
-};
-$lzsc$temp["displayName"] = "setOwnerDocument";
-return $lzsc$temp
 })(), "cloneNode", (function () {
 var $lzsc$temp = function (deep_$0) {
 switch (arguments.length) {
@@ -17664,19 +18165,7 @@ return "lz.DataNode"
 };
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], LzEventable, ["ELEMENT_NODE", 1, "TEXT_NODE", 3, "DOCUMENT_NODE", 9, "stringToLzData", (function () {
-var $lzsc$temp = function (str_$0, trimwhitespace_$1, nsprefix_$2) {
-switch (arguments.length) {
-case 1:
-trimwhitespace_$1 = false;;case 2:
-nsprefix_$2 = false
-};
-Debug.info("lz.DataNode.stringToLzData is deprecated.  Use `lz.DataElement.stringToLzData` instead.");
-return LzDataElement.stringToLzData(str_$0, trimwhitespace_$1, nsprefix_$2)
-};
-$lzsc$temp["displayName"] = "stringToLzData";
-return $lzsc$temp
-})()]);
+})()], LzEventable);
 lz.DataNode = LzDataNode;
 Mixin.make("LzDataElementMixin", ["__LZchangeQ", null, "__LZlocker", null, "nodeName", null, "attributes", null, "insertBefore", (function () {
 var $lzsc$temp = function (newChild_$0, refChild_$1) {
@@ -17927,13 +18416,6 @@ this.ownerDocument.handleDocumentChange("attributes", this, 1)
 };
 $lzsc$temp["displayName"] = "$lzc$set_attributes";
 return $lzsc$temp
-})(), "setAttrs", (function () {
-var $lzsc$temp = function (attrs_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_attributes(attrs_$0)
-};
-$lzsc$temp["displayName"] = "setAttrs";
-return $lzsc$temp
 })(), "$lzc$set_childNodes", (function () {
 var $lzsc$temp = function (children_$0) {
 if (!children_$0) children_$0 = [];
@@ -17963,13 +18445,6 @@ this.ownerDocument.handleDocumentChange("childNodes", this, 0)
 };
 $lzsc$temp["displayName"] = "$lzc$set_childNodes";
 return $lzsc$temp
-})(), "setChildNodes", (function () {
-var $lzsc$temp = function (children_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_childNodes(children_$0)
-};
-$lzsc$temp["displayName"] = "setChildNodes";
-return $lzsc$temp
 })(), "$lzc$set_nodeName", (function () {
 var $lzsc$temp = function (name_$0) {
 this.nodeName = name_$0;
@@ -17982,13 +18457,6 @@ this.ownerDocument.handleDocumentChange("childNodeName", this.parentNode, 0);
 this.ownerDocument.handleDocumentChange("nodeName", this, 1)
 };
 $lzsc$temp["displayName"] = "$lzc$set_nodeName";
-return $lzsc$temp
-})(), "setNodeName", (function () {
-var $lzsc$temp = function (name_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_nodeName(name_$0)
-};
-$lzsc$temp["displayName"] = "setNodeName";
 return $lzsc$temp
 })(), "__LZgetText", (function () {
 var $lzsc$temp = function () {
@@ -18287,13 +18755,6 @@ this.ownerDocument.handleDocumentChange("data", this, 1)
 }};
 $lzsc$temp["displayName"] = "$lzc$set_data";
 return $lzsc$temp
-})(), "setData", (function () {
-var $lzsc$temp = function (newdata_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_data(newdata_$0)
-};
-$lzsc$temp["displayName"] = "setData";
-return $lzsc$temp
 })(), "cloneNode", (function () {
 var $lzsc$temp = function (deep_$0) {
 switch (arguments.length) {
@@ -18358,7 +18819,7 @@ $lzsc$temp["displayName"] = "abortLoadForRequest";
 return $lzsc$temp
 })()], LzEventable);
 lz.DataProvider = LzDataProvider;
-Class.make("LzHTTPDataRequest", ["method", "GET", "postbody", void 0, "proxied", void 0, "proxyurl", void 0, "multirequest", false, "queuerequests", false, "queryparams", null, "requestheaders", null, "getresponseheaders", false, "responseheaders", void 0, "cacheable", false, "clientcacheable", false, "trimwhitespace", false, "nsprefix", false, "serverproxyargs", null, "xmldata", null, "loadtime", 0, "loadstarttime", void 0, "secure", false, "secureport", void 0, "parsexml", true, "loader", null, "$lzsc$initialize", (function () {
+Class.make("LzHTTPDataRequest", ["method", "GET", "postbody", void 0, "proxied", void 0, "proxyurl", void 0, "multirequest", false, "queuerequests", false, "queryparams", null, "requestheaders", null, "getresponseheaders", false, "responseheaders", void 0, "credentialled", void 0, "cacheable", false, "clientcacheable", false, "trimwhitespace", false, "nsprefix", false, "serverproxyargs", null, "xmldata", null, "loadtime", 0, "loadstarttime", void 0, "secure", false, "secureport", void 0, "parsexml", true, "loader", null, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (requestor_$0) {
 switch (arguments.length) {
 case 0:
@@ -18387,11 +18848,11 @@ tloader_$2.loadSuccess = this.loadSuccess;
 tloader_$2.loadError = this.loadError;
 tloader_$2.loadTimeout = this.loadTimeout;
 tloader_$2.setProxied(proxied_$1);
+tloader_$2.setCredentialled(dreq_$0.credentialled);
 var secure_$3 = dreq_$0.secure;
-if (secure_$3 == null) {
 if (dreq_$0.src.substring(0, 5) == "https") {
 secure_$3 = true
-}};
+};
 tloader_$2.secure = secure_$3;
 if (secure_$3) {
 tloader_$2.baserequest = lz.Browser.getBaseURL(secure_$3, dreq_$0.secureport);
@@ -18460,7 +18921,7 @@ lzurl_$d.query += "&" + postbody_$c
 }};
 postbody_$c = null
 };
-var cachebreak_$e = "__lzbc__=" + new Date().getTime();
+var cachebreak_$e = "__lzbc__=" + Math.floor(Math.random() * (-1 >>> 1)).toString(36);
 if (!proxied_$2 && httpdreq_$1.method == "POST" && (postbody_$c == null || postbody_$c == "")) {
 postbody_$c = cachebreak_$e
 };
@@ -18629,6 +19090,12 @@ var $lzsc$temp = function () {
 return this.proxied != null ? this.proxied : canvas.proxied
 };
 $lzsc$temp["displayName"] = "isProxied";
+return $lzsc$temp
+})(), "credentialled", false, "$lzc$set_credentialled", (function () {
+var $lzsc$temp = function (b_$0) {
+this.credentialled = b_$0
+};
+$lzsc$temp["displayName"] = "$lzc$set_credentialled";
 return $lzsc$temp
 })(), "responseheaders", null, "queuerequests", false, "oncanvas", void 0, "$lzc$set_initialdata", (function () {
 var $lzsc$temp = function (d_$0) {
@@ -18852,55 +19319,6 @@ this.doRequest()
 }};
 $lzsc$temp["displayName"] = "setQueryParams";
 return $lzsc$temp
-})(), "setSrc", (function () {
-var $lzsc$temp = function (src_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_src(src_$0)
-};
-$lzsc$temp["displayName"] = "setSrc";
-return $lzsc$temp
-})(), "setProxyRequests", (function () {
-var $lzsc$temp = function (val_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_proxied(val_$0)
-};
-$lzsc$temp["displayName"] = "setProxyRequests";
-return $lzsc$temp
-})(), "setRequest", (function () {
-var $lzsc$temp = function (b_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_request(b_$0)
-};
-$lzsc$temp["displayName"] = "setRequest";
-return $lzsc$temp
-})(), "setAutorequest", (function () {
-var $lzsc$temp = function (b_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_autorequest(b_$0)
-};
-$lzsc$temp["displayName"] = "setAutorequest";
-return $lzsc$temp
-})(), "setPostBody", (function () {
-var $lzsc$temp = function (str_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_postbody(str_$0)
-};
-$lzsc$temp["displayName"] = "setPostBody";
-return $lzsc$temp
-})(), "setQueryType", (function () {
-var $lzsc$temp = function (reqtype_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_querytype(reqtype_$0)
-};
-$lzsc$temp["displayName"] = "setQueryType";
-return $lzsc$temp
-})(), "setInitialData", (function () {
-var $lzsc$temp = function (d_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_initialdata(d_$0)
-};
-$lzsc$temp["displayName"] = "setInitialData";
-return $lzsc$temp
 })(), "abort", (function () {
 var $lzsc$temp = function () {
 var dreq_$0 = this.dataRequest;
@@ -18949,6 +19367,7 @@ dreq_$1.cacheable = this.cacheable;
 dreq_$1.clientcacheable = this.clientcacheable;
 dreq_$1.trimwhitespace = this.trimwhitespace;
 dreq_$1.nsprefix = this.nsprefix;
+dreq_$1.credentialled = this.credentialled;
 if (this.dsloadDel == null) {
 this.dsloadDel = new LzDelegate(this, "handleDataResponse", dreq_$1, "onstatus")
 } else {
@@ -19026,7 +19445,7 @@ return "LzDataset " + ":" + this.name
 };
 $lzsc$temp["displayName"] = "toString";
 return $lzsc$temp
-})()], [LzDataElementMixin, LzDataNodeMixin, LzNode], ["tagname", "dataset", "attributes", new LzInheritedHash(LzNode.attributes), "slashPat", "/", "queryStringToTable", (function () {
+})()], [LzDataElementMixin, LzDataNodeMixin, LzNode], ["tagname", "dataset", "__LZCSSTagSelectors", ["dataset", "DataElementMixin", "DataNodeMixin", "node"], "attributes", new LzInheritedHash(LzNode.attributes), "slashPat", "/", "queryStringToTable", (function () {
 var $lzsc$temp = function (query_$0) {
 var queries_$1 = {};
 var parameters_$2 = query_$0.split("&");
@@ -19035,7 +19454,7 @@ var key_$4 = parameters_$2[i_$3];
 var value_$5 = "";
 var n_$6 = key_$4.indexOf("=");
 if (n_$6 > 0) {
-value_$5 = unescape(key_$4.substring(n_$6 + 1));
+value_$5 = decodeURIComponent(key_$4.substring(n_$6 + 1));
 key_$4 = key_$4.substring(0, n_$6)
 };
 if (key_$4 in queries_$1) {
@@ -19601,7 +20020,7 @@ return $lzsc$temp
 var $lzsc$temp = function (selector_$0, amnt_$1) {
 var np_$2 = this.p;
 for (;np_$2 != null && amnt_$1 > 0;amnt_$1--) {
-if (np_$2.nodeType == LzDataNode.TEXT_NODE) {
+if (np_$2.nodeType == LzDataElement.TEXT_NODE) {
 if (selector_$0 == "getFirstChild") break
 };
 np_$2 = np_$2[selector_$0]()
@@ -19664,13 +20083,6 @@ this.setPointer(op_$0);
 return false
 }};
 $lzsc$temp["displayName"] = "selectNextParent";
-return $lzsc$temp
-})(), "getNodeOffset", (function () {
-var $lzsc$temp = function () {
-Debug.info("%w.%s is deprecated.  Use XPath `position()` operator or LzDatapointer.getXPathIndex() instead.", this, arguments.callee);
-return this.getXPathIndex()
-};
-$lzsc$temp["displayName"] = "getNodeOffset";
 return $lzsc$temp
 })(), "getXPathIndex", (function () {
 var $lzsc$temp = function () {
@@ -20058,7 +20470,7 @@ this.__LZtrackDel.unregisterAll()
 }}};
 $lzsc$temp["displayName"] = "__LZsetTracking";
 return $lzsc$temp
-})()], LzNode, ["tagname", "datapointer", "attributes", {ignoreplacement: true}, "ppcache", {}, "pathSymbols", {"/": 1, "..": 2, "*": 3, ".": 4}]);
+})()], LzNode, ["tagname", "datapointer", "__LZCSSTagSelectors", ["datapointer", "node"], "attributes", {ignoreplacement: true}, "ppcache", {}, "pathSymbols", {"/": 1, "..": 2, "*": 3, ".": 4}]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
@@ -20070,7 +20482,7 @@ return this.p._dbg_name()
 };
 return null
 };
-$lzsc$temp["displayName"] = "data/LzDatapointer.lzs#1339/37";
+$lzsc$temp["displayName"] = "data/LzDatapointer.lzs#1325/37";
 return $lzsc$temp
 })()
 }}};
@@ -20095,13 +20507,6 @@ var $lzsc$temp = function () {
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
 this.d = {}};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})(), "parseQueryString", (function () {
-var $lzsc$temp = function (query_$0) {
-Debug.info(this, ".parseQueryString is deprecated. Use lz.Param.parseQueryString instead");
-return lz.Param.parseQueryString(query_$0)
-};
-$lzsc$temp["displayName"] = "parseQueryString";
 return $lzsc$temp
 })(), "addObject", (function () {
 var $lzsc$temp = function (o_$0) {
@@ -20187,14 +20592,6 @@ return null
 };
 $lzsc$temp["displayName"] = "getValues";
 return $lzsc$temp
-})(), "getValueNoCase", (function () {
-var $lzsc$temp = function (name_$0) {
-Debug.deprecated(this, arguments.callee, this.getValues);
-var a_$1 = this.getValues(name_$0);
-return a_$1 != null && a_$1.length == 1 ? a_$1[0] : a_$1
-};
-$lzsc$temp["displayName"] = "getValueNoCase";
-return $lzsc$temp
 })(), "getNames", (function () {
 var $lzsc$temp = function () {
 var o_$0 = [];
@@ -20261,7 +20658,7 @@ var key_$4 = parameters_$2[i_$3];
 var value_$5 = "";
 var n_$6 = key_$4.indexOf("=");
 if (n_$6 > 0) {
-value_$5 = unescape(key_$4.substring(n_$6 + 1));
+value_$5 = decodeURIComponent(key_$4.substring(n_$6 + 1));
 key_$4 = key_$4.substring(0, n_$6)
 };
 queries_$1[key_$4] = value_$5
@@ -20844,7 +21241,7 @@ return 1
 }}};
 $lzsc$temp["displayName"] = "__LZgetPosition";
 return $lzsc$temp
-})()], LzDatapointer, ["tagname", "datapath", "attributes", new LzInheritedHash(LzDatapointer.attributes)]);
+})()], LzDatapointer, ["tagname", "datapath", "__LZCSSTagSelectors", ["datapath", "datapointer", "node"], "attributes", new LzInheritedHash(LzDatapointer.attributes)]);
 lz[LzDatapath.tagname] = LzDatapath;
 Class.make("LzReplicationManager", ["asyncnew", true, "initialnodes", void 0, "clonePool", void 0, "cloneClass", void 0, "cloneParent", void 0, "cloneAttrs", void 0, "cloneChildren", void 0, "hasdata", void 0, "orderpath", void 0, "comparator", void 0, "__LZxpathconstr", null, "__LZxpathdepend", null, "visible", true, "__LZpreventXPathUpdate", false, "nodes", void 0, "clones", void 0, "__LZdataoffset", 0, "onnodes", LzDeclaredEvent, "onclones", LzDeclaredEvent, "onvisible", LzDeclaredEvent, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (odp_$0, args_$1, children_$2, instcall_$3) {
@@ -20951,7 +21348,7 @@ var dpCons_$9 = dp_$8;
 this.__LZxpathconstr = view_$2[dpCons_$9.methodName];
 this.__LZxpathdepend = view_$2[dpCons_$9.dependenciesName];
 this.__LZpreventXPathUpdate = true;
-this.applyConstraintExpr(new LzAlwaysExpr("datapath", "string", "__LZxpathconstr", "__LZxpathdepend"));
+this.applyConstraintExpr(new LzAlwaysExpr("__LZxpathconstr", "__LZxpathdepend"));
 this.__LZpreventXPathUpdate = false;
 if (this.pooling) {
 view_$2.releaseConstraintMethod(dpCons_$9.methodName)
@@ -20963,7 +21360,7 @@ var xpCons_$c = xp_$a;
 refObj_$b.__LZxpathconstr = odp_$0[xpCons_$c.methodName];
 refObj_$b.__LZxpathdepend = odp_$0[xpCons_$c.dependenciesName];
 this.__LZpreventXPathUpdate = true;
-refObj_$b.applyConstraintExpr(new LzAlwaysExpr("xpath", "string", "__LZxpathconstr", "__LZxpathdepend"));
+refObj_$b.applyConstraintExpr(new LzAlwaysExpr("__LZxpathconstr", "__LZxpathdepend"));
 this.__LZpreventXPathUpdate = false;
 if (this.pooling) {
 odp_$0.releaseConstraintMethod(xpCons_$c.methodName)
@@ -21246,7 +21643,7 @@ return $lzsc$temp
 })(), "setXPath", (function () {
 var $lzsc$temp = function (xp_$0) {
 if (this.__LZpreventXPathUpdate) return false;
-return (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["setXPath"] || this.nextMethod(arguments.callee, "setXPath")).apply(this, arguments)
+return (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["setXPath"] || this.nextMethod(arguments.callee, "setXPath")).call(this, xp_$0)
 };
 $lzsc$temp["displayName"] = "setXPath";
 return $lzsc$temp
@@ -21285,13 +21682,6 @@ var $lzsc$temp = function () {
 return "ReplicationManager in " + this.immediateparent
 };
 $lzsc$temp["displayName"] = "toString";
-return $lzsc$temp
-})(), "setVisible", (function () {
-var $lzsc$temp = function (vis_$0) {
-Debug.deprecated(this, arguments.callee, this.setAttribute);
-this.$lzc$set_visible(vis_$0)
-};
-$lzsc$temp["displayName"] = "setVisible";
 return $lzsc$temp
 })(), "$lzc$set_visible", (function () {
 var $lzsc$temp = function (vis_$0) {
@@ -21465,18 +21855,8 @@ data_$4 = null
 };
 var newvalue_$7 = lz.Type.acceptTypeValue(this.type, data_$4, node_$5, attr_$6);
 if (pchg_$2 || node_$5[attr_$6] !== newvalue_$7 || !node_$5.inited || this.parsedPath.operator == "attributes") {
-{
-if (!node_$5.__LZdeleted) {
-var $lzsc$fcn694 = "$lzc$set_" + attr_$6;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(node_$5[$lzsc$fcn694]) : node_$5[$lzsc$fcn694] instanceof Function) {
-node_$5[$lzsc$fcn694](newvalue_$7)
-} else {
-node_$5[attr_$6] = newvalue_$7;
-var $lzsc$o6sk0 = node_$5["on" + attr_$6];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$o6sk0) : $lzsc$o6sk0 instanceof LzEvent) {
-if ($lzsc$o6sk0.ready) {
-$lzsc$o6sk0.sendEvent(newvalue_$7)
-}}}}}}};
+node_$5.setAttribute(attr_$6, newvalue_$7)
+}};
 return result_$3
 };
 $lzsc$temp["displayName"] = "__LZsendUpdate";
@@ -21635,20 +22015,7 @@ if (args_$1.spacing == null) {
 args_$1.spacing = 0
 };
 this.totalsize = this.viewsize + args_$1.spacing;
-{
-var $lzsc$y67dk = this.axis;
-var $lzsc$a4uci7 = this.totalsize;
-if (!v_$6.__LZdeleted) {
-var $lzsc$hiz5xd = "$lzc$set_" + $lzsc$y67dk;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(v_$6[$lzsc$hiz5xd]) : v_$6[$lzsc$hiz5xd] instanceof Function) {
-v_$6[$lzsc$hiz5xd]($lzsc$a4uci7)
-} else {
-v_$6[$lzsc$y67dk] = $lzsc$a4uci7;
-var $lzsc$vsp9uf = v_$6["on" + $lzsc$y67dk];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$vsp9uf) : $lzsc$vsp9uf instanceof LzEvent) {
-if ($lzsc$vsp9uf.ready) {
-$lzsc$vsp9uf.sendEvent($lzsc$a4uci7)
-}}}}};
+v_$6.setAttribute(this.axis, this.totalsize);
 this.__LZdataoffset = 0;
 this.updateDel = new LzDelegate(this, "__LZhandleUpdate");
 this.updateDel.register(this.cloneimmediateparent, "on" + this.axis);
@@ -21690,19 +22057,7 @@ var _totalsize_$6 = this.totalsize;
 if (_nodes_$3) {
 var nodelen_$7 = _nodes_$3.length;
 if (this.__LZoldnodelen != nodelen_$7) {
-{
-var $lzsc$gxaf1z = nodelen_$7 * _totalsize_$6 - this.spacing;
-if (!cloneip_$2.__LZdeleted) {
-var $lzsc$svn2rs = "$lzc$set_" + _sizeAxis_$5;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(cloneip_$2[$lzsc$svn2rs]) : cloneip_$2[$lzsc$svn2rs] instanceof Function) {
-cloneip_$2[$lzsc$svn2rs]($lzsc$gxaf1z)
-} else {
-cloneip_$2[_sizeAxis_$5] = $lzsc$gxaf1z;
-var $lzsc$6i499e = cloneip_$2["on" + _sizeAxis_$5];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$6i499e) : $lzsc$6i499e instanceof LzEvent) {
-if ($lzsc$6i499e.ready) {
-$lzsc$6i499e.sendEvent($lzsc$gxaf1z)
-}}}}};
+cloneip_$2.setAttribute(_sizeAxis_$5, nodelen_$7 * _totalsize_$6 - this.spacing);
 this.__LZoldnodelen = nodelen_$7
 }};
 if (!(this.mask && this.mask["hasset" + _sizeAxis_$5])) return;
@@ -21743,19 +22098,7 @@ cl_$g = this.getNewClone()
 }};
 if (cl_$g) {
 this.clones[i_$f] = cl_$g;
-{
-var $lzsc$xnxvuq = (i_$f + newstart_$8) * _totalsize_$6;
-if (!cl_$g.__LZdeleted) {
-var $lzsc$sbeuax = "$lzc$set_" + _axis_$4;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(cl_$g[$lzsc$sbeuax]) : cl_$g[$lzsc$sbeuax] instanceof Function) {
-cl_$g[$lzsc$sbeuax]($lzsc$xnxvuq)
-} else {
-cl_$g[_axis_$4] = $lzsc$xnxvuq;
-var $lzsc$f4evwa = cl_$g["on" + _axis_$4];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$f4evwa) : $lzsc$f4evwa instanceof LzEvent) {
-if ($lzsc$f4evwa.ready) {
-$lzsc$f4evwa.sendEvent($lzsc$xnxvuq)
-}}}}};
+cl_$g.setAttribute(_axis_$4, (i_$f + newstart_$8) * _totalsize_$6);
 cl_$g.clonenumber = newstart_$8 + i_$f;
 if (_nodes_$3) {
 cl_$g.datapath.setClonePointer(_nodes_$3[newstart_$8 + i_$f])
@@ -21957,64 +22300,296 @@ if (cl_$m.onclonenumber.ready) cl_$m.onclonenumber.sendEvent(i_$e + newoffset_$5
 this.clones[i_$e] = cl_$m
 };
 this.clones[i_$e] = cl_$m;
-{
-var $lzsc$cl8ywv = this.axis;
-if (!cl_$m.__LZdeleted) {
-var $lzsc$lpa5ea = "$lzc$set_" + $lzsc$cl8ywv;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(cl_$m[$lzsc$lpa5ea]) : cl_$m[$lzsc$lpa5ea] instanceof Function) {
-cl_$m[$lzsc$lpa5ea](clpos_$n)
-} else {
-cl_$m[$lzsc$cl8ywv] = clpos_$n;
-var $lzsc$m5zz8w = cl_$m["on" + $lzsc$cl8ywv];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$m5zz8w) : $lzsc$m5zz8w instanceof LzEvent) {
-if ($lzsc$m5zz8w.ready) {
-$lzsc$m5zz8w.sendEvent(clpos_$n)
-}}}}};
+cl_$m.setAttribute(this.axis, clpos_$n);
 var ds_$g = cnode_$f.getUserData(this.datasizevar);
 var csiz_$h = ds_$g == null ? this.viewsize : ds_$g;
 if (cl_$m[this.sizeAxis] != csiz_$h) {
-{
-var $lzsc$tvnh8q = this.sizeAxis;
-if (!cl_$m.__LZdeleted) {
-var $lzsc$yd93el = "$lzc$set_" + $lzsc$tvnh8q;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(cl_$m[$lzsc$yd93el]) : cl_$m[$lzsc$yd93el] instanceof Function) {
-cl_$m[$lzsc$yd93el](csiz_$h)
-} else {
-cl_$m[$lzsc$tvnh8q] = csiz_$h;
-var $lzsc$anijxg = cl_$m["on" + $lzsc$tvnh8q];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$anijxg) : $lzsc$anijxg instanceof LzEvent) {
-if ($lzsc$anijxg.ready) {
-$lzsc$anijxg.sendEvent(csiz_$h)
-}}}}}};
+cl_$m.setAttribute(this.sizeAxis, csiz_$h)
+};
 clpos_$n += csiz_$h + this.spacing
 };
 this.__LZdataoffset = newoffset_$5;
-{
-var $lzsc$4c3tl7 = this.cloneimmediateparent;
-var $lzsc$sj41i3 = this.sizeAxis;
-if (!$lzsc$4c3tl7.__LZdeleted) {
-var $lzsc$39utoh = "$lzc$set_" + $lzsc$sj41i3;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa($lzsc$4c3tl7[$lzsc$39utoh]) : $lzsc$4c3tl7[$lzsc$39utoh] instanceof Function) {
-$lzsc$4c3tl7[$lzsc$39utoh](cpos_$9)
-} else {
-$lzsc$4c3tl7[$lzsc$sj41i3] = cpos_$9;
-var $lzsc$9jahab = $lzsc$4c3tl7["on" + $lzsc$sj41i3];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$9jahab) : $lzsc$9jahab instanceof LzEvent) {
-if ($lzsc$9jahab.ready) {
-$lzsc$9jahab.sendEvent(cpos_$9)
-}}}}};
+this.cloneimmediateparent.setAttribute(this.sizeAxis, cpos_$9);
 this.__LZresizeupdating = false
 };
 $lzsc$temp["displayName"] = "__LZadjustVisibleClones";
 return $lzsc$temp
 })()], LzLazyReplicationManager);
 lz.ResizeReplicationManager = LzResizeReplicationManager;
-Class.make("LzColorUtils", null, null, ["__cache", {counter: 0}, "stringToColor", (function () {
+Class.make("LzColorUtils", null, null, ["__cache", {counter: 0}, "colorfrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+return n_$0 & 16777215
+};
+$lzsc$temp["displayName"] = "colorfrominternal";
+return $lzsc$temp
+})(), "alphafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+return (255 - (n_$0 >>> 24 & 255)) / 255
+};
+$lzsc$temp["displayName"] = "alphafrominternal";
+return $lzsc$temp
+})(), "coloralphafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+return [n_$0 & 16777215, (255 - (n_$0 >>> 24 & 255)) / 255]
+};
+$lzsc$temp["displayName"] = "coloralphafrominternal";
+return $lzsc$temp
+})(), "internalfromcoloralpha", (function () {
+var $lzsc$temp = function (c_$0, a_$1) {
+return 255 - (Math.round(a_$1 * 255) & 255) << 24 | c_$0 & 16777215
+};
+$lzsc$temp["displayName"] = "internalfromcoloralpha";
+return $lzsc$temp
+})(), "rgbafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+return [n_$0 >> 16 & 255, n_$0 >> 8 & 255, n_$0 & 255, (255 - (n_$0 >>> 24 & 255)) / 255]
+};
+$lzsc$temp["displayName"] = "rgbafrominternal";
+return $lzsc$temp
+})(), "internalfromrgba", (function () {
+var $lzsc$temp = function (r_$0, g_$1, b_$2, a_$3) {
+var round_$4 = Math.round;
+return 255 - (round_$4(a_$3 * 255) & 255) << 24 | (round_$4(r_$0) & 255) << 16 | (round_$4(g_$1) & 255) << 8 | round_$4(b_$2) & 255
+};
+$lzsc$temp["displayName"] = "internalfromrgba";
+return $lzsc$temp
+})(), "hslafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+var r_$1 = (n_$0 >> 16 & 255) / 255, g_$2 = (n_$0 >> 8 & 255) / 255, b_$3 = (n_$0 & 255) / 255;
+var a_$4 = (255 - (n_$0 >>> 24 & 255)) / 255;
+var min_$5 = Math.min(r_$1, Math.min(g_$2, b_$3)), max_$6 = Math.max(r_$1, Math.max(g_$2, b_$3));
+var h_$7, s_$8, l_$9 = (max_$6 + min_$5) / 2;
+if (max_$6 == min_$5) {
+h_$7 = s_$8 = 0
+} else {
+var d_$a = max_$6 - min_$5;
+s_$8 = l_$9 > 0.5 ? d_$a / (2 - max_$6 - min_$5) : d_$a / (max_$6 + min_$5);
+switch (max_$6) {
+case r_$1:
+h_$7 = (g_$2 - b_$3) / d_$a + (g_$2 < b_$3 ? 6 : 0);break;;case g_$2:
+h_$7 = (b_$3 - r_$1) / d_$a + 2;break;;case b_$3:
+h_$7 = (r_$1 - g_$2) / d_$a + 4;break
+};
+h_$7 *= 60;
+if (h_$7 < 0) {
+h_$7 += 360
+}};
+return [h_$7, s_$8, l_$9, a_$4]
+};
+$lzsc$temp["displayName"] = "hslafrominternal";
+return $lzsc$temp
+})(), "internalfromhsla", (function () {
+var $lzsc$temp = function (h_$0, s_$1, l_$2, a_$3) {
+var hue2rgb_$4;
+hue2rgb_$4 = (function () {
+var $lzsc$temp = function (m1_$0, m2_$1, h_$2) {
+if (h_$2 < 0) {
+h_$2++
+};
+if (h_$2 > 1) {
+h_$2--
+};
+if (h_$2 * 6 < 1) {
+return m1_$0 + (m2_$1 - m1_$0) * h_$2 * 6
+};
+if (h_$2 * 2 < 1) {
+return m2_$1
+};
+if (h_$2 * 3 < 2) {
+return m1_$0 + (m2_$1 - m1_$0) * (2 / 3 - h_$2) * 6
+};
+return m1_$0
+};
+$lzsc$temp["displayName"] = "hue2rgb";
+return $lzsc$temp
+})();
+h_$0 = (h_$0 % 360 + 360) % 360 / 360;
+var m2_$5 = l_$2 <= 0.5 ? l_$2 * (s_$1 + 1) : l_$2 + s_$1 - l_$2 * s_$1;
+var m1_$6 = l_$2 * 2 - m2_$5;
+var r_$7 = hue2rgb_$4(m1_$6, m2_$5, h_$0 + 1 / 3);
+var g_$8 = hue2rgb_$4(m1_$6, m2_$5, h_$0);
+var b_$9 = hue2rgb_$4(m1_$6, m2_$5, h_$0 - 1 / 3);
+return LzColorUtils.internalfromrgba(r_$7 * 255, g_$8 * 255, b_$9 * 255, a_$3)
+};
+$lzsc$temp["displayName"] = "internalfromhsla";
+return $lzsc$temp
+})(), "hsvafrominternal", (function () {
+var $lzsc$temp = function (n_$0) {
+var r_$1 = (n_$0 >> 16 & 255) / 255, g_$2 = (n_$0 >> 8 & 255) / 255, b_$3 = (n_$0 & 255) / 255;
+var a_$4 = (255 - (n_$0 >>> 24 & 255)) / 255;
+var min_$5 = Math.min(r_$1, Math.min(g_$2, b_$3)), max_$6 = Math.max(r_$1, Math.max(g_$2, b_$3));
+var h_$7, s_$8, v_$9 = max_$6;
+if (max_$6 == min_$5) {
+h_$7 = s_$8 = 0
+} else {
+var d_$a = max_$6 - min_$5;
+s_$8 = d_$a / max_$6;
+if (r_$1 == max_$6) {
+h_$7 = (g_$2 - b_$3) / d_$a
+} else if (g_$2 == max_$6) {
+h_$7 = 2 + (b_$3 - r_$1) / d_$a
+} else {
+h_$7 = 4 + (r_$1 - g_$2) / d_$a
+};
+h_$7 *= 60;
+if (h_$7 < 0) {
+h_$7 += 360
+}};
+return [h_$7, s_$8, v_$9, a_$4]
+};
+$lzsc$temp["displayName"] = "hsvafrominternal";
+return $lzsc$temp
+})(), "internalfromhsva", (function () {
+var $lzsc$temp = function (h_$0, s_$1, v_$2, a_$3) {
+var t_$4 = h_$0 / 60;
+var ti_$5 = t_$4 | 0;
+var hi_$6 = ti_$5 % 6;
+var f_$7 = t_$4 - ti_$5;
+var p_$8 = v_$2 * (1 - s_$1);
+var q_$9 = v_$2 * (1 - f_$7 * s_$1);
+var t_$4 = v_$2 * (1 - (1 - f_$7) * s_$1);
+var r_$a, g_$b, b_$c;
+switch (hi_$6) {
+case 0:
+r_$a = v_$2;g_$b = t_$4;b_$c = p_$8;break;;case 1:
+r_$a = q_$9;g_$b = v_$2;b_$c = p_$8;break;;case 2:
+r_$a = p_$8;g_$b = v_$2;b_$c = t_$4;break;;case 3:
+r_$a = p_$8;g_$b = q_$9;b_$c = v_$2;break;;case 4:
+r_$a = t_$4;g_$b = p_$8;b_$c = v_$2;break;;case 5:
+r_$a = v_$2;g_$b = p_$8;b_$c = q_$9;break
+};
+return LzColorUtils.internalfromrgba(r_$a * 255, g_$b * 255, b_$c * 255, a_$3)
+};
+$lzsc$temp["displayName"] = "internalfromhsva";
+return $lzsc$temp
+})(), "ColorPattern", new RegExp("^\\s*(rgb|hsl|hsv)a?\\s*\\(([^,]+),([^,]+),([^,\\)]+)(?:,([^\\)]+))?\\)\\s*$"), "PercentPattern", new RegExp("^\\s*(100(?:\\.0*)?|\\d{1,2}(?:\\.\\d*)?|\\.\\d+)\\s*%\\s*$"), "NumberPattern", new RegExp("^\\s*(\\d{1,3}(?:\\.\\d*)?|\\.\\d+)\\s*$"), "HexPattern", new RegExp("^\\s*#\\s*([a-fA-F\\d]{3,8})\\s*$"), "internalfromcss", (function () {
+var $lzsc$temp = function (s_$0) {
+if (s_$0 in lz.colors) {
+return lz.colors[s_$0]
+};
+var match_$1;
+if (match_$1 = s_$0.match(LzColorUtils.ColorPattern)) {
+var components_$2 = [0, 0, 0, 1];
+var multipliers_$3, divisors_$4;
+switch (match_$1[1]) {
+case "rgb":
+multipliers_$3 = [255, 255, 255, 1];divisors_$4 = [1, 1, 1, 1];break;;case "hsv":
+case "hsl":
+multipliers_$3 = [360, 1, 1, 1];divisors_$4 = [1, 100, 100, 1];break
+};
+var percent_$5, number_$6;
+for (var i_$7 = 0, l_$8 = match_$1.length - 2;i_$7 < l_$8;i_$7++) {
+var elt_$9 = match_$1[i_$7 + 2];
+if (elt_$9) {
+if (percent_$5 = elt_$9.match(LzColorUtils.PercentPattern)) {
+components_$2[i_$7] = parseFloat(percent_$5[1]) * multipliers_$3[i_$7] / 100
+} else if (number_$6 = elt_$9.match(LzColorUtils.NumberPattern)) {
+components_$2[i_$7] = parseFloat(number_$6[1]) / divisors_$4[i_$7]
+} else {
+Debug.error("Invalid CSS Color component %w in %w", elt_$9, s_$0);
+return 0
+}}};
+switch (match_$1[1]) {
+case "rgb":
+return LzColorUtils.internalfromrgba.apply(LzColorUtils, components_$2);;case "hsv":
+return LzColorUtils.internalfromhsva.apply(LzColorUtils, components_$2);;case "hsl":
+return LzColorUtils.internalfromhsla.apply(LzColorUtils, components_$2)
+}} else if (match_$1 = s_$0.match(LzColorUtils.HexPattern)) {
+var hex_$a = match_$1[1];
+var rgb_$b = parseInt(hex_$a, 16);
+var alpha_$c = 1;
+switch (hex_$a.length) {
+case 3:
+rgb_$b = ((rgb_$b & 3840) << 8 | (rgb_$b & 240) << 4 | rgb_$b & 15) * 17;break;;case 6:
+break;;case 4:
+rgb_$b = ((rgb_$b & 61440) << 12 | (rgb_$b & 3840) << 8 | (rgb_$b & 240) << 4 | rgb_$b & 15) * 17;;case 8:
+alpha_$c = (rgb_$b & 255) / 255;rgb_$b = rgb_$b >>> 8 & 16777215;break;;default:
+{
+Debug.error("Invalid CSS Color: %w", s_$0)
+}return 0
+};
+return LzColorUtils.internalfromcoloralpha(rgb_$b, alpha_$c)
+} else {
+Debug.error("Invalid CSS Color: %w", s_$0)
+};
+return 0
+};
+$lzsc$temp["displayName"] = "internalfromcss";
+return $lzsc$temp
+})(), "fractionToDecimal", (function () {
+var $lzsc$temp = function (n_$0, base_$1) {
+switch (arguments.length) {
+case 1:
+base_$1 = 255
+};
+var round_$2 = Math.round;
+var str_$3 = (n_$0 / base_$1).toString();
+var i_$4 = str_$3.indexOf(".");
+if (i_$4 == -1) {
+return str_$3
+};
+i_$4 += 2;
+for (var l_$5 = str_$3.length;i_$4 < l_$5;i_$4++) {
+var s_$6 = str_$3.substring(0, i_$4);
+if (n_$0 === round_$2(base_$1 * s_$6)) {
+return s_$6
+}};
+return str_$3
+};
+$lzsc$temp["displayName"] = "fractionToDecimal";
+return $lzsc$temp
+})(), "cssfrominternal", (function () {
+var $lzsc$temp = function (n_$0, format_$1) {
+switch (arguments.length) {
+case 1:
+format_$1 = null
+};
+var f2d_$2 = LzColorUtils.fractionToDecimal;
+var v_$3;
+if (!format_$1) {
+format_$1 = LzColorUtils.alphafrominternal(n_$0) !== 1 ? "rgb" : "#"
+};
+switch (format_$1) {
+default:
+{
+Debug.error("Unknown CSS format %w", format_$1)
+};case "rgb":
+v_$3 = LzColorUtils.rgbafrominternal(n_$0);if (v_$3[3] == 1) {
+return "rgb(" + v_$3[0] + "," + v_$3[1] + "," + v_$3[2] + ")"
+} else {
+return "rgba(" + v_$3[0] + "," + v_$3[1] + "," + v_$3[2] + "," + f2d_$2(v_$3[3] * 255) + ")"
+};case "hsl":
+v_$3 = LzColorUtils.hslafrominternal(n_$0);if (v_$3[3] == 1) {
+return "hsl(" + v_$3[0] + "," + v_$3[1] * 100 + "%," + v_$3[2] * 100 + "%)"
+} else {
+return "hsl(" + v_$3[0] + "," + v_$3[1] * 100 + "%," + v_$3[2] * 100 + "%," + v_$3[3] + ")"
+};case "hsv":
+v_$3 = LzColorUtils.hsvafrominternal(n_$0);if (v_$3[3] == 1) {
+return "hsv(" + v_$3[0] + "," + v_$3[1] * 100 + "%," + v_$3[2] * 100 + "%)"
+} else {
+return "hsv(" + v_$3[0] + "," + v_$3[1] * 100 + "%," + v_$3[2] * 100 + "%," + v_$3[3] + ")"
+};case "#":
+v_$3 = LzColorUtils.rgbafrominternal(n_$0);var s_$4 = "#";for (var i_$5 = 0;i_$5 < 4;i_$5++) {
+var c_$6 = v_$3[i_$5];
+if (i_$5 == 3) {
+if (c_$6 == 1) {
+break
+};
+c_$6 = Math.round(c_$6 * 255)
+};
+if (c_$6 < 16) {
+s_$4 += "0"
+};
+s_$4 += c_$6.toString(16)
+};return s_$4
+}};
+$lzsc$temp["displayName"] = "cssfrominternal";
+return $lzsc$temp
+})(), "stringToColor", (function () {
 var $lzsc$temp = function (s_$0) {
 if (typeof s_$0 != "string") return s_$0;
 if (s_$0 in lz.colors) return lz.colors[s_$0];
-if (s_$0 in global) return global[s_$0];
-if (s_$0.indexOf("rgb") != -1) return LzColorUtils.fromrgb(s_$0);
+if (s_$0.indexOf("rgb") != -1) return LzColorUtils.internalfromcss(s_$0);
 var n_$1 = Number(s_$0);
 if (isNaN(n_$1)) {
 return s_$0
@@ -22026,14 +22601,7 @@ return $lzsc$temp
 })(), "fromrgb", (function () {
 var $lzsc$temp = function (s_$0) {
 if (typeof s_$0 != "string") return s_$0;
-if (s_$0.indexOf("rgb") == -1) return LzColorUtils.stringToColor(s_$0);
-var parts_$1 = s_$0.substring(s_$0.indexOf("(") + 1, s_$0.lastIndexOf(")")).split(",");
-var color_$2 = LzColorUtils.rgbatoint(parts_$1[0], parts_$1[1], parts_$1[2], parts_$1[3]);
-if (!isNaN(color_$2)) {
-return color_$2
-};
-Debug.warn("invalid color string: " + s_$0);
-return 0
+return LzColorUtils.internalfromcss(s_$0)
 };
 $lzsc$temp["displayName"] = "fromrgb";
 return $lzsc$temp
@@ -22057,20 +22625,15 @@ $lzsc$temp["displayName"] = "dectohex";
 return $lzsc$temp
 })(), "torgb", (function () {
 var $lzsc$temp = function (s_$0) {
-if (typeof s_$0 == "string" && s_$0.indexOf("rgb") != -1) return s_$0;
-var n_$1 = LzColorUtils.inttohex(s_$0);
-if (typeof n_$1 != "string") return n_$1;
-if (typeof s_$0 == "number" || lz.colors[s_$0] != null) s_$0 = n_$1;
-var cache_$2 = LzColorUtils.__cache;
-var key_$3 = "torgb" + n_$1;
-if (cache_$2[key_$3]) return cache_$2[key_$3];
-if (++cache_$2.counter > 1000) {
-cache_$2 = {counter: 0}};
-if (s_$0.length < 6) {
-s_$0 = "#" + s_$0.charAt(1) + s_$0.charAt(1) + s_$0.charAt(2) + s_$0.charAt(2) + s_$0.charAt(3) + s_$0.charAt(3) + (s_$0.length > 4 ? s_$0.charAt(4) + s_$0.charAt(4) : "")
+if (typeof s_$0 == "string") {
+s_$0 = LzColorUtils.hextoint(s_$0)
 };
-cache_$2[key_$3] = (s_$0.length > 7 ? "rgba(" : "rgb(") + parseInt(s_$0.substring(1, 3), 16) + "," + parseInt(s_$0.substring(3, 5), 16) + "," + parseInt(s_$0.substring(5, 7), 16) + (s_$0.length > 7 ? "," + parseInt(s_$0.substring(7), 16) / 255 : "") + ")";
-return cache_$2[key_$3]
+var cache_$1 = LzColorUtils.__cache;
+var key_$2 = "torgb" + s_$0;
+if (cache_$1[key_$2]) return cache_$1[key_$2];
+if (++cache_$1.counter > 1000) {
+cache_$1 = {counter: 0}};
+return cache_$1[key_$2] = LzColorUtils.cssfrominternal(s_$0, "rgb")
 };
 $lzsc$temp["displayName"] = "torgb";
 return $lzsc$temp
@@ -22082,54 +22645,22 @@ if (cache_$1[key_$2]) return cache_$1[key_$2];
 if (++cache_$1.counter > 1000) {
 cache_$1 = {counter: 0}};
 rgb_$0 = LzColorUtils.hextoint(rgb_$0);
-var r_$3 = (rgb_$0 >> 16 & 255) / 255, g_$4 = (rgb_$0 >> 8 & 255) / 255, b_$5 = (rgb_$0 & 255) / 255;
-var min_$6 = Math.min(r_$3, Math.min(g_$4, b_$5)), max_$7 = Math.max(r_$3, Math.max(g_$4, b_$5));
-var v_$8 = max_$7;
-var delta_$9 = max_$7 - min_$6;
-if (delta_$9 == 0) {
-cache_$1[key_$2] = {h: 0, s: 0, v: v_$8}} else {
-var s_$a = delta_$9 / max_$7;
-if (r_$3 == max_$7) {
-var h_$b = (g_$4 - b_$5) / delta_$9
-} else if (g_$4 == max_$7) {
-var h_$b = 2 + (b_$5 - r_$3) / delta_$9
-} else {
-var h_$b = 4 + (r_$3 - g_$4) / delta_$9
-};
-h_$b *= 60;
-if (h_$b < 0) {
-h_$b += 360
-};
-cache_$1[key_$2] = {h: h_$b, s: s_$a, v: v_$8}};
-return cache_$1[key_$2]
-};
+var hsva_$3 = LzColorUtils.hsvafrominternal(rgb_$0);
+return cache_$1[key_$2] = {h: hsva_$3[0], s: hsva_$3[1], v: hsva_$3[2], a: hsva_$3[3]}};
 $lzsc$temp["displayName"] = "tohsv";
 return $lzsc$temp
 })(), "fromhsv", (function () {
-var $lzsc$temp = function (h_$0, s_$1, v_$2) {
-var cache_$3 = LzColorUtils.__cache;
-var key_$4 = "fromhsv" + h_$0 + s_$1 + v_$2;
-if (cache_$3[key_$4]) return cache_$3[key_$4];
-if (++cache_$3.counter > 1000) {
-cache_$3 = {counter: 0}};
-var t_$5 = h_$0 / 60;
-var ti_$6 = t_$5 | 0;
-var hi_$7 = ti_$6 % 6;
-var f_$8 = t_$5 - ti_$6;
-var p_$9 = v_$2 * (1 - s_$1);
-var q_$a = v_$2 * (1 - f_$8 * s_$1);
-var t_$5 = v_$2 * (1 - (1 - f_$8) * s_$1);
-var r_$b, g_$c, b_$d;
-switch (hi_$7) {
-case 0:
-r_$b = v_$2;g_$c = t_$5;b_$d = p_$9;break;;case 1:
-r_$b = q_$a;g_$c = v_$2;b_$d = p_$9;break;;case 2:
-r_$b = p_$9;g_$c = v_$2;b_$d = t_$5;break;;case 3:
-r_$b = p_$9;g_$c = q_$a;b_$d = v_$2;break;;case 4:
-r_$b = t_$5;g_$c = p_$9;b_$d = v_$2;break;;case 5:
-r_$b = v_$2;g_$c = p_$9;b_$d = q_$a;break
+var $lzsc$temp = function (h_$0, s_$1, v_$2, a_$3) {
+switch (arguments.length) {
+case 3:
+a_$3 = 1
 };
-return cache_$3[key_$4] = LzColorUtils.rgbatoint(r_$b * 255, g_$c * 255, b_$d * 255)
+var cache_$4 = LzColorUtils.__cache;
+var key_$5 = "fromhsv" + h_$0 + s_$1 + v_$2 + a_$3;
+if (cache_$4[key_$5]) return cache_$4[key_$5];
+if (++cache_$4.counter > 1000) {
+cache_$4 = {counter: 0}};
+return cache_$4[key_$5] = LzColorUtils.internalfromhsva(h_$0, s_$1, v_$2, a_$3)
 };
 $lzsc$temp["displayName"] = "fromhsv";
 return $lzsc$temp
@@ -22149,24 +22680,7 @@ var key_$3 = "hextoint" + s_$0;
 if (cache_$2[key_$3]) return cache_$2[key_$3];
 if (++cache_$2.counter > 1000) {
 cache_$2 = {counter: 0}};
-var hex_$4 = s_$0;
-hex_$4 = hex_$4.slice(1);
-var alpha_$5 = 0;
-if (hex_$4.length > 6) {
-alpha_$5 = parseInt(hex_$4.slice(6), 16) / 25500;
-hex_$4 = hex_$4.slice(0, 6)
-};
-var n_$1 = parseInt(hex_$4, 16);
-switch (hex_$4.length) {
-case 3:
-hex_$4 = ((n_$1 & 3840) << 8 | (n_$1 & 240) << 4 | n_$1 & 15) * 17 + alpha_$5;break;;case 6:
-hex_$4 = n_$1 + alpha_$5;break;;default:
-{
-Debug.warn("invalid color string: " + s_$0)
-}hex_$4 = 0;break
-};
-cache_$2[key_$3] = hex_$4;
-return hex_$4
+return cache_$2[key_$3] = LzColorUtils.internalfromcss(s_$0)
 };
 $lzsc$temp["displayName"] = "hextoint";
 return $lzsc$temp
@@ -22183,17 +22697,7 @@ var key_$4 = "inttohex" + s_$2;
 if (cache_$3[key_$4]) return cache_$3[key_$4];
 if (++cache_$3.counter > 1000) {
 cache_$3 = {counter: 0}};
-var hex_$5 = "#" + LzColorUtils.dectohex(s_$2, padding_$1);
-var alpha_$6 = LzColorUtils.findalpha(n_$0);
-if (alpha_$6 != null) {
-var alphastring_$7 = alpha_$6.toString(16);
-if (alphastring_$7.length == 1) {
-alphastring_$7 = "0" + alphastring_$7
-};
-hex_$5 += alphastring_$7
-};
-cache_$3[key_$4] = hex_$5;
-return hex_$5
+return cache_$3[key_$4] = LzColorUtils.cssfrominternal(s_$2)
 };
 $lzsc$temp["displayName"] = "inttohex";
 return $lzsc$temp
@@ -22221,29 +22725,60 @@ switch (arguments.length) {
 case 3:
 a_$3 = null
 };
-var color_$4 = (r_$0 & 255) << 16 | (g_$1 & 255) << 8 | b_$2 & 255;
-if (a_$3 != null) {
-color_$4 += a_$3 * 0.01
-};
-return color_$4
+return LzColorUtils.internalfromrgba(r_$0, g_$1, b_$2, a_$3 == null ? 1 : a_$3)
 };
 $lzsc$temp["displayName"] = "rgbatoint";
 return $lzsc$temp
 })(), "inttorgba", (function () {
 var $lzsc$temp = function (rgb_$0) {
-return [rgb_$0 >> 16 & 255, rgb_$0 >> 8 & 255, rgb_$0 & 255, LzColorUtils.findalpha(rgb_$0)]
+var result_$1 = LzColorUtils.rgbafrominternal(rgb_$0);
+if (result_$1[3] == 1) {
+result_$1[3] = null
+} else {
+result_$1[3] = Math.round(result_$1[3] * 255)
+};
+return result_$1
 };
 $lzsc$temp["displayName"] = "inttorgba";
 return $lzsc$temp
 })(), "findalpha", (function () {
 var $lzsc$temp = function (rgba_$0) {
 if (rgba_$0 == null) return;
-rgba_$0 = Number(rgba_$0);
-var alpha_$1 = rgba_$0 - (rgba_$0 | 0);
-if (alpha_$1 != 0 && !isNaN(alpha_$1)) {
-return alpha_$1 * 25600 | 0
-}};
+var alpha_$1 = LzColorUtils.alphafrominternal(rgba_$0);
+if (alpha_$1 == 1) {
+return null
+};
+return Math.round(alpha_$1 * 255)
+};
 $lzsc$temp["displayName"] = "findalpha";
+return $lzsc$temp
+})(), "blendRGBA", (function () {
+var $lzsc$temp = function (from_$0, to_$1, percent_$2) {
+if (from_$0 === to_$1) return from_$0;
+from_$0 = LzColorUtils.rgbafrominternal(from_$0);
+to_$1 = LzColorUtils.rgbafrominternal(to_$1);
+var oppositepercent_$3 = 1 - percent_$2;
+var newr_$4 = oppositepercent_$3 * from_$0[0] + percent_$2 * to_$1[0];
+var newg_$5 = oppositepercent_$3 * from_$0[1] + percent_$2 * to_$1[1];
+var newb_$6 = oppositepercent_$3 * from_$0[2] + percent_$2 * to_$1[2];
+var newa_$7 = oppositepercent_$3 * from_$0[3] + percent_$2 * to_$1[3];
+return LzColorUtils.internalfromrgba(newr_$4, newg_$5, newb_$6, newa_$7)
+};
+$lzsc$temp["displayName"] = "blendRGBA";
+return $lzsc$temp
+})(), "blendHSVA", (function () {
+var $lzsc$temp = function (from_$0, to_$1, percent_$2) {
+if (from_$0 === to_$1) return from_$0;
+from_$0 = LzColorUtils.hsvafrominternal(from_$0);
+to_$1 = LzColorUtils.hsvafrominternal(to_$1);
+var oppositepercent_$3 = 1 - percent_$2;
+var newh_$4 = oppositepercent_$3 * from_$0[0] + percent_$2 * to_$1[0];
+var news_$5 = oppositepercent_$3 * from_$0[1] + percent_$2 * to_$1[1];
+var newv_$6 = oppositepercent_$3 * from_$0[2] + percent_$2 * to_$1[2];
+var newa_$7 = oppositepercent_$3 * from_$0[3] + percent_$2 * to_$1[3];
+return LzColorUtils.internalfromhsva(newh_$4, news_$5, newv_$6, newa_$7)
+};
+$lzsc$temp["displayName"] = "blendHSVA";
 return $lzsc$temp
 })(), "applyTransform", (function () {
 var $lzsc$temp = function (color_$0, trans_$1) {
@@ -22275,77 +22810,7 @@ this.__ElementPattern = new RegExp("([$_A-Za-z][$\\w]*)|(\\d+)", "g")
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "color", {hextoint: (function () {
-var $lzsc$temp = function (value_$0) {
-Debug.warn("lz.Utils.color.hextoint() is deprecated.  Use LzColorUtils.hextoint() instead.");
-return LzColorUtils.hextoint(value_$0)
-};
-$lzsc$temp["displayName"] = "hextoint";
-return $lzsc$temp
-})(), inttohex: (function () {
-var $lzsc$temp = function (c_$0) {
-Debug.warn("lz.Utils.color.inttohex() is deprecated.  Use LzColorUtils.inttohex() instead.");
-return LzColorUtils.inttohex(c_$0)
-};
-$lzsc$temp["displayName"] = "inttohex";
-return $lzsc$temp
-})(), torgb: (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.warn("lz.Utils.color.torgb() is deprecated.  Use LzColorUtils.torgb() instead.");
-return LzColorUtils.torgb(s_$0)
-};
-$lzsc$temp["displayName"] = "torgb";
-return $lzsc$temp
-})()}, "hextoint", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, LzColorUtils.hextoint);
-return LzColorUtils.hextoint(s_$0)
-};
-$lzsc$temp["displayName"] = "hextoint";
-return $lzsc$temp
-})(), "inttohex", (function () {
-var $lzsc$temp = function (n_$0, padding_$1) {
-switch (arguments.length) {
-case 1:
-padding_$1 = 6
-};
-Debug.deprecated(this, arguments.callee, LzColorUtils.inttohex);
-return LzColorUtils.inttohex(n_$0, padding_$1)
-};
-$lzsc$temp["displayName"] = "inttohex";
-return $lzsc$temp
-})(), "dectohex", (function () {
-var $lzsc$temp = function (n_$0, padding_$1) {
-switch (arguments.length) {
-case 1:
-padding_$1 = 0
-};
-return LzColorUtils.dectohex(n_$0, padding_$1)
-};
-$lzsc$temp["displayName"] = "dectohex";
-return $lzsc$temp
-})(), "stringToColor", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, LzColorUtils.stringToColor);
-return LzColorUtils.stringToColor(s_$0)
-};
-$lzsc$temp["displayName"] = "stringToColor";
-return $lzsc$temp
-})(), "torgb", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, LzColorUtils.torgb);
-return LzColorUtils.torgb(s_$0)
-};
-$lzsc$temp["displayName"] = "torgb";
-return $lzsc$temp
-})(), "fromrgb", (function () {
-var $lzsc$temp = function (s_$0) {
-Debug.deprecated(this, arguments.callee, LzColorUtils.fromrgb);
-return LzColorUtils.fromrgb(s_$0)
-};
-$lzsc$temp["displayName"] = "fromrgb";
-return $lzsc$temp
-})(), "colornames", lz.colors, "__parseArgs", (function () {
+})(), "__parseArgs", (function () {
 var $lzsc$temp = function (argstr_$0, scope_$1) {
 switch (arguments.length) {
 case 1:
@@ -22359,18 +22824,18 @@ var currarg_$4 = "";
 for (var i_$5 = 0, l_$6 = argstr_$0.length;i_$5 < l_$6;i_$5++) {
 var lc_$7 = c_$8;
 var c_$8 = argstr_$0.charAt(i_$5);
-if (c_$8 == '"' || c_$8 == "'") {
+if (lc_$7 !== "\\" && (c_$8 === '"' || c_$8 === "'")) {
 if (lastquote_$3 == null) {
 lastquote_$3 = c_$8
-} else if (lastquote_$3 == c_$8) {
+} else if (lastquote_$3 === c_$8) {
 lastquote_$3 = null
-}} else if (c_$8 == ",") {
+}} else if (c_$8 === ",") {
 if (!lastquote_$3) {
 args_$2.push(currarg_$4);
 currarg_$4 = "";
 continue
-}} else if (c_$8 == " " || c_$8 == "\t" || c_$8 == "\n" || c_$8 == "\r") {
-if (lastquote_$3 == null && (lc_$7 == "," || lc_$7 == " " || lc_$7 == "\t" || lc_$7 == "\n" || lc_$7 == "\r")) {
+}} else if (c_$8 === " " || c_$8 === "\t" || c_$8 === "\n" || c_$8 === "\r") {
+if (lastquote_$3 == null && (lc_$7 === "," || lc_$7 === " " || lc_$7 === "\t" || lc_$7 === "\n" || lc_$7 === "\r")) {
 continue
 }};
 currarg_$4 += c_$8
@@ -22378,16 +22843,16 @@ currarg_$4 += c_$8
 args_$2.push(currarg_$4);
 for (var i_$5 = 0;i_$5 < args_$2.length;i_$5++) {
 var a_$9 = args_$2[i_$5];
-if (a_$9 == "") continue;
+if (a_$9 === "") continue;
 var firstchar_$a = a_$9.charAt(a_$9);
 var n_$b = parseFloat(a_$9);
 if (!isNaN(n_$b)) {
 args_$2[i_$5] = n_$b
-} else if (firstchar_$a == '"' || firstchar_$a == "'") {
+} else if (firstchar_$a === '"' || firstchar_$a === "'") {
 var e_$c = a_$9.lastIndexOf(firstchar_$a);
 args_$2[i_$5] = a_$9.substring(1, e_$c)
-} else if (a_$9 == "true" || a_$9 == "false") {
-args_$2[i_$5] = a_$9 == "true"
+} else if (a_$9 === "true" || a_$9 === "false") {
+args_$2[i_$5] = a_$9 === "true"
 } else if (scope_$1[a_$9]) {
 args_$2[i_$5] = scope_$1[a_$9]
 } else {
@@ -22472,7 +22937,6 @@ $lzsc$temp["displayName"] = "safeNew";
 return $lzsc$temp
 })()]);
 lz.Utils = new LzUtilsClass();
-var LzUtils = lz.Utils;
 Class.make("LzInstantiatorService", ["checkQDel", null, "$lzsc$initialize", (function () {
 var $lzsc$temp = function () {
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
@@ -22731,6 +23195,7 @@ $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })(), "onmousemove", LzDeclaredEvent, "onmouseup", LzDeclaredEvent, "onmouseupoutside", LzDeclaredEvent, "onmouseover", LzDeclaredEvent, "onmouseout", LzDeclaredEvent, "onmousedown", LzDeclaredEvent, "onmousedragin", LzDeclaredEvent, "onmousedragout", LzDeclaredEvent, "onmouseleave", LzDeclaredEvent, "onmouseenter", LzDeclaredEvent, "onmouseevent", LzDeclaredEvent, "onclick", LzDeclaredEvent, "ondblclick", LzDeclaredEvent, "__movecounter", 0, "__mouseactive", true, "__mouseEvent", (function () {
 var $lzsc$temp = function (eventname_$0, view_$1) {
+if (eventname_$0.indexOf("on") != 0) eventname_$0 = "on" + eventname_$0;
 if (eventname_$0 == "onmouseleave") {
 this.__mouseactive = false;
 if (canvas.onmouseleave.ready) {
@@ -22993,9 +23458,19 @@ $lzsc$temp["displayName"] = "toAbsoluteURL";
 return $lzsc$temp
 })(), "xmlEscape", (function () {
 var $lzsc$temp = function (str_$0) {
-return LzDataElement.__LZXMLescape(str_$0)
+if (typeof str_$0 != "string") {
+Debug.error("Function xmlEscape() only accepts string type value.");
+return ""
+};
+return lz.Type.acceptTypeValue("cdata", str_$0, null, null)
 };
 $lzsc$temp["displayName"] = "xmlEscape";
+return $lzsc$temp
+})(), "xmlUnescape", (function () {
+var $lzsc$temp = function (str_$0) {
+return lz.Type.presentTypeValue("cdata", str_$0, null, null)
+};
+$lzsc$temp["displayName"] = "xmlUnescape";
 return $lzsc$temp
 })(), "urlEscape", (function () {
 var $lzsc$temp = function (str_$0) {
@@ -23147,7 +23622,7 @@ return
 dosend_$2 = dosend_$2 || isDebugView_$3;
 if (dosend_$2) {
 if (eventStr_$1 == "onclick") {
-if (this.__LZlastclick === view_$0 && view_$0.ondblclick.ready && LzTimeKernel.getTimer() - this.__LZlastClickTime < view_$0.DOUBLE_CLICK_TIME) {
+if (this.__LZlastclick === view_$0 && LzTimeKernel.getTimer() - this.__LZlastClickTime < view_$0.DOUBLE_CLICK_TIME) {
 eventStr_$1 = "ondblclick";
 lz.GlobalMouse.__mouseEvent(eventStr_$1, view_$0);
 this.__LZlastclick = null
@@ -23155,8 +23630,9 @@ this.__LZlastclick = null
 this.__LZlastclick = view_$0;
 this.__LZlastClickTime = LzTimeKernel.getTimer()
 }};
+var focuscount_$6 = lz.Focus.focuscount;
 view_$0.mouseevent(eventStr_$1);
-if (eventStr_$1 == "onmousedown") {
+if (lz.Focus.focuscount == focuscount_$6 && eventStr_$1 == "onmousedown") {
 lz.Focus.__LZcheckFocusChange(view_$0)
 }}};
 $lzsc$temp["displayName"] = "handleMouseEvent";
@@ -23213,8 +23689,14 @@ return LzInputTextSprite.findSelection()
 $lzsc$temp["displayName"] = "__findInputtextSelection";
 return $lzsc$temp
 })(), "rawMouseEvent", (function () {
-var $lzsc$temp = function (eventname_$0, view_$1) {
-if (eventname_$0 == "onmousemove") {
+var $lzsc$temp = function (eventname_$0, view_$1, value_$2) {
+switch (arguments.length) {
+case 2:
+value_$2 = null
+};
+if (eventname_$0 == "ongesture" || eventname_$0 == "ontouch") {
+view_$1.mouseevent(eventname_$0, value_$2)
+} else if (eventname_$0 == "onmousemove") {
 lz.GlobalMouse.__mouseEvent("onmousemove", null)
 } else {
 this.handleMouseEvent(view_$1, eventname_$0)
@@ -23291,17 +23773,25 @@ lz.embed.mousewheel.setCallback(this, "__mousewheelEvent")
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })(), "downKeysHash", {}, "downKeysArray", [], "keycombos", {}, "onkeydown", LzDeclaredEvent, "onkeyup", LzDeclaredEvent, "onmousewheeldelta", LzDeclaredEvent, "onkeyevent", LzDeclaredEvent, "codemap", {shift: 16, control: 17, alt: 18}, "ctrlKey", false, "__keyEvent", (function () {
-var $lzsc$temp = function (delta_$0, k_$1, type_$2, ctrlKey_$3) {
+var $lzsc$temp = function (delta_$0, k_$1, type_$2, ctrlKey_$3, shiftKey_$4) {
 switch (arguments.length) {
 case 3:
-ctrlKey_$3 = false
+ctrlKey_$3 = false;;case 4:
+shiftKey_$4 = null
 };
 this.ctrlKey = ctrlKey_$3;
-var cm_$4 = this.codemap;
-for (var key_$5 in delta_$0) {
-var down_$6 = delta_$0[key_$5];
-if (cm_$4[key_$5] != null) k_$1 = cm_$4[key_$5];
-if (down_$6) {
+if (shiftKey_$4 !== null) {
+var dkhash_$5 = this.downKeysHash;
+if (shiftKey_$4) {
+dkhash_$5[16] = true
+} else {
+delete dkhash_$5[16]
+}};
+var cm_$6 = this.codemap;
+for (var key_$7 in delta_$0) {
+var down_$8 = delta_$0[key_$7];
+if (cm_$6[key_$7] != null) k_$1 = cm_$6[key_$7];
+if (down_$8) {
 this.gotKeyDown(k_$1)
 } else {
 this.gotKeyUp(k_$1)
@@ -23330,6 +23820,11 @@ info_$1 = null
 };
 var dkhash_$2 = this.downKeysHash;
 var dkeys_$3 = this.downKeysArray;
+if (LzKeyboardKernel.__shiftState && !dkhash_$2[16]) {
+dkhash_$2[16] = true;
+dkeys_$3.push(16);
+dkeys_$3.sort()
+};
 var firstkeydown_$4 = !dkhash_$2[kC_$0];
 if (firstkeydown_$4) {
 dkhash_$2[kC_$0] = true;
@@ -23559,7 +24054,7 @@ var $lzsc$temp = function () {
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "isReady", false, "ready", false, "onready", LzDeclaredEvent, "persist", false, "_persistso", null, "offset", 0, "__lzdirty", false, "__lzhistq", [], "__lzcurrstate", {}, "capabilities", LzSprite.prototype.capabilities, "onoffset", LzDeclaredEvent, "receiveHistory", (function () {
+})(), "ready", false, "onready", LzDeclaredEvent, "persist", false, "_persistso", null, "offset", 0, "__lzdirty", false, "__lzhistq", [], "__lzcurrstate", {}, "capabilities", LzSprite.prototype.capabilities, "onoffset", LzDeclaredEvent, "receiveHistory", (function () {
 var $lzsc$temp = function (o_$0) {
 if (this.persist && !this._persistso) {
 this.__initPersist()
@@ -23574,21 +24069,8 @@ offset_$2 = len_$1
 var h_$3 = this.__lzhistq[offset_$2];
 for (var u_$4 in h_$3) {
 var obj_$5 = h_$3[u_$4];
-{
-var $lzsc$cjvzeb = global[obj_$5.c];
-var $lzsc$ui31rf = obj_$5.n;
-var $lzsc$6u9njx = obj_$5.v;
-if (!$lzsc$cjvzeb.__LZdeleted) {
-var $lzsc$vjput0 = "$lzc$set_" + $lzsc$ui31rf;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa($lzsc$cjvzeb[$lzsc$vjput0]) : $lzsc$cjvzeb[$lzsc$vjput0] instanceof Function) {
-$lzsc$cjvzeb[$lzsc$vjput0]($lzsc$6u9njx)
-} else {
-$lzsc$cjvzeb[$lzsc$ui31rf] = $lzsc$6u9njx;
-var $lzsc$k1o5wc = $lzsc$cjvzeb["on" + $lzsc$ui31rf];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$k1o5wc) : $lzsc$k1o5wc instanceof LzEvent) {
-if ($lzsc$k1o5wc.ready) {
-$lzsc$k1o5wc.sendEvent($lzsc$6u9njx)
-}}}}}};
+global[obj_$5.c].setAttribute(obj_$5.n, obj_$5.v)
+};
 this.offset = offset_$2;
 if (this.onoffset.ready) this.onoffset.sendEvent(offset_$2);
 return offset_$2
@@ -23597,18 +24079,8 @@ $lzsc$temp["displayName"] = "receiveHistory";
 return $lzsc$temp
 })(), "receiveEvent", (function () {
 var $lzsc$temp = function (n_$0, v_$1) {
-{
-if (!canvas.__LZdeleted) {
-var $lzsc$m0auwi = "$lzc$set_" + n_$0;
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(canvas[$lzsc$m0auwi]) : canvas[$lzsc$m0auwi] instanceof Function) {
-canvas[$lzsc$m0auwi](v_$1)
-} else {
-canvas[n_$0] = v_$1;
-var $lzsc$xcl27w = canvas["on" + n_$0];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$xcl27w) : $lzsc$xcl27w instanceof LzEvent) {
-if ($lzsc$xcl27w.ready) {
-$lzsc$xcl27w.sendEvent(v_$1)
-}}}}}};
+canvas.setAttribute(n_$0, v_$1)
+};
 $lzsc$temp["displayName"] = "receiveEvent";
 return $lzsc$temp
 })(), "getCanvasAttribute", (function () {
@@ -23726,7 +24198,6 @@ return $lzsc$temp
 })(), "__start", (function () {
 var $lzsc$temp = function (id_$0) {
 lz.Browser.callJS("lz.embed.history.listen('" + id_$0 + "')");
-this.isReady = true;
 this.ready = true;
 if (this.onready.ready) this.onready.sendEvent(true)
 };
@@ -23761,11 +24232,13 @@ var reglist_$2 = this.__LZreg[group_$1];
 if (!reglist_$2) {
 this.__LZreg[group_$1] = reglist_$2 = [];
 reglist_$2.__LZlasthit = null;
-reglist_$2.__LZactive = false
-};
+reglist_$2.__LZactive = false;
+reglist_$2.__LZuids = {}};
+if (reglist_$2.__LZuids[v_$0.__LZUID] != true) {
+reglist_$2.__LZuids[v_$0.__LZUID] = true;
 reglist_$2.push(v_$0);
 this.__LZdestroydel.register(v_$0, "ondestroy")
-};
+}};
 $lzsc$temp["displayName"] = "register";
 return $lzsc$temp
 })(), "unregister", (function () {
@@ -23773,16 +24246,19 @@ var $lzsc$temp = function (v_$0, group_$1) {
 if (v_$0 == null || group_$1 == null) return;
 var reglist_$2 = this.__LZreg[group_$1];
 if (reglist_$2) {
+if (reglist_$2.__LZuids[v_$0.__LZUID]) {
+delete reglist_$2.__LZuids[v_$0.__LZUID];
 for (var i_$3 = 0;i_$3 < reglist_$2.length;i_$3++) {
-if (reglist_$2[i_$3] == v_$0) {
-if (reglist_$2.__LZlasthit == v_$0) {
-if (this.__LZlastmouseup == v_$0) {
+if (reglist_$2[i_$3] === v_$0) {
+if (reglist_$2.__LZlasthit === v_$0) {
+if (this.__LZlastmouseup === v_$0) {
 this.__LZlastmouseup = null
 };
 reglist_$2.__LZlasthit = null
 };
-reglist_$2.splice(i_$3, 1)
-}};
+reglist_$2.splice(i_$3, 1);
+break
+}}};
 if (reglist_$2.length == 0) {
 if (reglist_$2.__LZactive) {
 this.deactivate(group_$1)
@@ -23819,7 +24295,7 @@ var reglist_$1 = this.__LZreg[group_$0];
 if (reglist_$1 && reglist_$1.__LZactive) {
 var agroups_$2 = this.__LZactivegroups;
 for (var i_$3 = 0;i_$3 < agroups_$2.length;++i_$3) {
-if (agroups_$2[i_$3] == reglist_$1) {
+if (agroups_$2[i_$3] === reglist_$1) {
 agroups_$2.splice(i_$3, 1);
 break
 }};
@@ -23827,7 +24303,7 @@ if (agroups_$2.length == 0) {
 this.__LZtrackDel.unregisterAll()
 };
 reglist_$1.__LZactive = false;
-if (this.__LZlastmouseup == reglist_$1.__LZlasthit) {
+if (this.__LZlastmouseup === reglist_$1.__LZlasthit) {
 this.__LZlastmouseup = null
 };
 reglist_$1.__LZlasthit = null
@@ -23840,13 +24316,13 @@ var atemp_$2 = a_$0;
 var btemp_$3 = b_$1;
 while (atemp_$2.nodeLevel < btemp_$3.nodeLevel) {
 btemp_$3 = btemp_$3.immediateparent;
-if (btemp_$3 == a_$0) return b_$1
+if (btemp_$3 === a_$0) return b_$1
 };
 while (btemp_$3.nodeLevel < atemp_$2.nodeLevel) {
 atemp_$2 = atemp_$2.immediateparent;
-if (atemp_$2 == b_$1) return a_$0
+if (atemp_$2 === b_$1) return a_$0
 };
-while (atemp_$2.immediateparent != btemp_$3.immediateparent) {
+while (atemp_$2.immediateparent !== btemp_$3.immediateparent) {
 atemp_$2 = atemp_$2.immediateparent;
 btemp_$3 = btemp_$3.immediateparent
 };
@@ -23886,7 +24362,7 @@ this.__LZtrackgroup(thisgroup_$4, hitlist_$5);
 var lhit_$6 = thisgroup_$4.__LZlasthit;
 if (hitlist_$5.length) {
 var fd_$7 = this.__LZfindTopmost(hitlist_$5);
-if (fd_$7 == lhit_$6) continue;
+if (fd_$7 === lhit_$6) continue;
 foundviews_$1.push(fd_$7)
 } else {
 var fd_$7 = null
@@ -23911,7 +24387,7 @@ var lhit_$3 = agroups_$1[i_$2].__LZlasthit;
 if (lhit_$3) {
 var onmtrackup_$4 = lhit_$3.onmousetrackup;
 if (onmtrackup_$4.ready) {
-if (this.__LZlastmouseup == lhit_$3) {
+if (this.__LZlastmouseup === lhit_$3) {
 this.__LZlastmouseup = null
 } else {
 this.__LZlastmouseup = lhit_$3;
@@ -24003,55 +24479,63 @@ return $lzsc$temp
 })()(LzIdleService);
 lz.IdleService = LzIdleService;
 lz.Idle = LzIdleService.LzIdle;
-Class.make("LzCSSStyleRule", ["parsed", null, "specificity", 0, "properties", void 0, "_dbg_filename", null, "_dbg_lineno", 0, "$lzsc$initialize", (function () {
+Class.make("LzCSSStyleRule", ["parsed", null, "specificity", 0, "dynamic", false, "properties", void 0, "_lexorder", void 0, "_dbg_filename", null, "_dbg_lineno", 0, "$lzsc$initialize", (function () {
 var $lzsc$temp = function (selector_$0, properties_$1, source_$2, line_$3) {
 this.parsed = selector_$0;
 if (selector_$0["length"]) {
 var s_$4 = 0;
 for (var i_$5 = 0, l_$6 = selector_$0.length;i_$5 < l_$6;i_$5++) {
-s_$4 += selector_$0[i_$5].s
+var sel_$7 = selector_$0[i_$5];
+s_$4 += sel_$7.s;
+if (("v" in sel_$7) && sel_$7.a != "name") {
+this.dynamic = true
 };
+while (sel_$7["&"]) {
+sel_$7 = sel_$7["&"];
+if (("v" in sel_$7) && sel_$7.a != "name") {
+this.dynamic = true
+}}};
 this.specificity = s_$4
 } else {
-this.specificity = selector_$0.s
+var sel_$7 = selector_$0;
+this.specificity = sel_$7.s;
+if (("v" in sel_$7) && sel_$7.a != "name") {
+this.dynamic = true
 };
+while (sel_$7["&"]) {
+sel_$7 = sel_$7["&"];
+if (("v" in sel_$7) && sel_$7.a != "name") {
+this.dynamic = true
+}}};
 this.properties = properties_$1;
 this[Debug.FUNCTION_FILENAME] = source_$2;
 this[Debug.FUNCTION_LINENO] = line_$3
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "_lexorder", void 0, "_dbg_name", (function () {
+})(), "clone", (function () {
 var $lzsc$temp = function () {
-var pname;
-pname = (function () {
-var $lzsc$temp = function (rp_$0) {
-var rptn_$1 = rp_$0["t"];
-var rpi_$2 = rp_$0["i"];
-var rpa_$3 = rp_$0["a"];
-if (!(rptn_$1 || rpi_$2 || rpa_$3)) {
-return "*"
+var result_$0 = new LzCSSStyleRule(this.parsed, this.properties, this["_dbg_filename"], this["_dbg_lineno"]);
+result_$0._lexorder = this._lexorder;
+return result_$0
 };
-var rpv_$4 = rp_$0["v"];
-var rpm_$5 = rp_$0["m"] || "=";
-return (rptn_$1 ? rptn_$1 : "") + (rpi_$2 ? "#" + rpi_$2 : "") + (rpa_$3 ? (rpa_$3 == "styleclass" ? "." + rpv_$4 : "[" + rpa_$3 + (rpv_$4 ? rpm_$5 + rpv_$4 : "") + "]") : "") + (("&" in rp_$0) ? pname(rp_$0["&"]) : "")
-};
-$lzsc$temp["displayName"] = "pname";
+$lzsc$temp["displayName"] = "clone";
 return $lzsc$temp
-})();
+})(), "_dbg_name", (function () {
+var $lzsc$temp = function () {
 var rp_$0 = this.parsed;
 if (rp_$0["length"]) {
 var n_$1 = "";
 for (var i_$2 = 0;i_$2 < rp_$0.length;i_$2++) {
-n_$1 += pname(rp_$0[i_$2]) + " "
+n_$1 += LzCSSStyleRule.selectorToString(rp_$0[i_$2]) + " "
 };
 n_$1 = n_$1.substring(0, n_$1.length - 1)
 } else {
-var n_$1 = pname(rp_$0)
+var n_$1 = LzCSSStyleRule.selectorToString(rp_$0)
 };
 return n_$1
 };
-$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#72/19";
+$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#121/21";
 return $lzsc$temp
 })(), "equal", (function () {
 var $lzsc$temp = function (that_$0) {
@@ -24090,6 +24574,25 @@ return true
 };
 $lzsc$temp["displayName"] = "equal";
 return $lzsc$temp
+})()], null, ["selectorToString", (function () {
+var $lzsc$temp = function (sel_$0) {
+var str_$1 = sel_$0["k"];
+if (str_$1) {
+return str_$1
+};
+var seltn_$2 = sel_$0["t"];
+var seli_$3 = sel_$0["i"];
+var sela_$4 = sel_$0["a"];
+if (!(seltn_$2 || seli_$3 || sela_$4)) {
+return "*"
+};
+var selv_$5 = sel_$0["v"];
+var selm_$6 = sel_$0["m"] || "=";
+str_$1 = sel_$0.k = (seltn_$2 ? seltn_$2 : "") + (seli_$3 ? "#" + seli_$3 : "") + (sela_$4 ? (sela_$4 == "styleclass" ? "." + selv_$5 : "[" + sela_$4 + (selv_$5 ? selm_$6 + selv_$5 : "") + "]") : "") + (("&" in sel_$0) ? LzCSSStyleRule.selectorToString(sel_$0["&"]) : "");
+return str_$1
+};
+$lzsc$temp["displayName"] = "selectorToString";
+return $lzsc$temp
 })()]);
 (function () {
 var $lzsc$temp = function ($0) {
@@ -24098,35 +24601,16 @@ $lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#18/1";
 return $lzsc$temp
 })()(LzCSSStyleRule);
 lz.CSSStyleRule = LzCSSStyleRule;
-Class.make("LzCSSStyleDependencies", ["count", 0, "deps", void 0, "$lzsc$initialize", (function () {
+Class.make("LzCSSStyleClass", ["_idRules", void 0, "_nameRules", void 0, "_attrs", void 0, "_attrRules", void 0, "_tags", void 0, "_tagRules", void 0, "_rules", void 0, "$lzsc$initialize", (function () {
 var $lzsc$temp = function () {
-this.deps = {}};
-$lzsc$temp["displayName"] = "$lzsc$initialize";
-return $lzsc$temp
-})(), "gather", (function () {
-var $lzsc$temp = function (node_$0, attr_$1) {
-if (!(attr_$1 in this.deps)) {
-this.deps[attr_$1] = [node_$0];
-this.count++;
-return
-};
-var nodes_$2 = this.deps[attr_$1];
-for (var i_$3 = 0, l_$4 = nodes_$2.length;i_$3 < l_$4;i_$3++) {
-if (node_$0 === nodes_$2[i_$3]) {
-return
-}};
-this.deps[attr_$1].push(node_$0);
-this.count++
-};
-$lzsc$temp["displayName"] = "gather";
-return $lzsc$temp
-})()]);
-Class.make("LzCSSStyleClass", ["$lzsc$initialize", (function () {
-var $lzsc$temp = function () {
-this._rules = [];
-this._attrRules = {};
 this._idRules = {};
-this._tagRules = {}};
+this._nameRules = {};
+this._attrs = [];
+this._attrRules = {};
+this._tags = [];
+this._tagRules = {};
+this._rules = []
+};
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })(), "getComputedStyle", (function () {
@@ -24143,140 +24627,277 @@ var pc_$2 = node_$0["__LZPropertyCache"] || this.getPropertyCache(node_$0);
 if (pname_$1 in pc_$2) {
 return pc_$2[pname_$1]
 };
-Debug.warn("No CSS value found for node %#w for property name %s", node_$0, pname_$1);
 return pc_$2[pname_$1] = void 0
 };
 $lzsc$temp["displayName"] = "getPropertyValueFor";
 return $lzsc$temp
 })(), "getPropertyCache", (function () {
 var $lzsc$temp = function (node_$0) {
-if (!node_$0) return {};
+if (!node_$0) return LzCSSStyleClass.EMTPY_CACHE;
 var pc_$1 = node_$0["__LZPropertyCache"];
 if (pc_$1) {
 return pc_$1
 };
 var ip_$2 = node_$0.immediateparent;
-if (!ip_$2 || ip_$2 === canvas) {
-var ipc_$3 = {}} else {
-var ipc_$3 = ip_$2["__LZPropertyCache"] || this.getPropertyCache(ip_$2)
+if (ip_$2 && ip_$2 !== node_$0) {
+var ppc_$3 = ip_$2["__LZPropertyCache"] || this.getPropertyCache(ip_$2);
+var pipc_$4 = ip_$2["__LZInheritedPropertyCache"]
+} else {
+var ppc_$3 = LzCSSStyleClass.EMTPY_CACHE;
+var pipc_$4 = LzCSSStyleClass.EMTPY_CACHE
 };
-var rules_$4 = node_$0["__LZRuleCache"] || this.getRulesCache(node_$0);
-if (rules_$4.length == 0) {
-return node_$0.__LZPropertyCache = ipc_$3
+var cdesc_$5 = node_$0.$CSSDescriptor;
+var expanders_$6 = cdesc_$5 && cdesc_$5.expanders;
+var cssinherited_$7 = LzCSSStyleClass.CSSInheritableProperties;
+var nodeinherited_$8 = cdesc_$5 && cdesc_$5.inheritable;
+var rules_$9 = node_$0["__LZRuleCache"];
+if (!rules_$9) {
+if (expanders_$6) {
+var inhexp_$a = null;
+var inhexpcount_$b = 0;
+for (var e_$c in expanders_$6) {
+if (expanders_$6.hasOwnProperty(e_$c) && (nodeinherited_$8 && (e_$c in nodeinherited_$8) ? nodeinherited_$8[e_$c] : (e_$c in cssinherited_$7))) {
+if (inhexp_$a == null) {
+inhexp_$a = {}};
+inhexp_$a[e_$c] = true;
+inhexpcount_$b++
+}}};
+rules_$9 = this.getRulesCache(node_$0, inhexp_$a, inhexpcount_$b)
 };
 var pc_$1 = {};
-for (var k_$5 in ipc_$3) {
-pc_$1[k_$5] = ipc_$3[k_$5]
+var ipc_$d = {};
+nextrule: for (var i_$e = rules_$9.length - 1;i_$e >= 0;i_$e--) {
+var rule_$f = rules_$9[i_$e];
+if (rule_$f.dynamic) {
+var rp_$g = rule_$f.parsed;
+var compound_$h = !(!rp_$g["length"]);
+if (compound_$h) {
+rp_$g = rp_$g[rp_$g.length - 1]
 };
-for (var i_$6 = rules_$4.length - 1;i_$6 >= 0;i_$6--) {
-var props_$7 = rules_$4[i_$6].properties;
-for (var pname_$8 in props_$7) {
-pc_$1[pname_$8] = props_$7[pname_$8]
+var tp_$i = rp_$g["a"] ? rp_$g : rp_$g["&"];
+while (tp_$i) {
+var tpa_$j = tp_$i.a;
+if ("v" in tp_$i) {
+var nav_$k = node_$0[tpa_$j];
+nav_$k += "";
+var tpv_$l = tp_$i.v;
+if (!tp_$i["m"]) {
+if (nav_$k != tpv_$l) {
+continue nextrule
+}} else {
+var tpm_$m = tp_$i.m;
+if (tpm_$m == "~=") {
+if (nav_$k != tpv_$l && nav_$k.search("(^| )" + tpv_$l + "( |$)") == -1) {
+continue nextrule
+}} else if (tpm_$m == "|=") {
+if (nav_$k.indexOf(tpv_$l + "-") != 0) {
+continue nextrule
+}} else {
+Debug.error("Unknown attribute match %#s", tp_$i.m)
+}}};
+tp_$i = tp_$i["&"]
+};
+if (compound_$h) {
+if (!this._compoundSelectorApplies(rule_$f.parsed, node_$0, null, false)) {
+continue nextrule
+}}};
+var props_$n = rule_$f.properties;
+for (var pname_$o in props_$n) {
+if (expanders_$6 && (pname_$o in expanders_$6)) {
+var expprops_$p = node_$0[expanders_$6[pname_$o]](pname_$o, props_$n[pname_$o]);
+for (var exppname_$q in expprops_$p) {
+pc_$1[exppname_$q] = ipc_$d[exppname_$q] = expprops_$p[exppname_$q]
 }};
-return node_$0.__LZPropertyCache = pc_$1
+pc_$1[pname_$o] = ipc_$d[pname_$o] = props_$n[pname_$o]
+}};
+var inhprops_$r = true;
+for (var k_$s in pipc_$4) {
+var ival_$t = pipc_$4[k_$s];
+if (!(k_$s in pc_$1)) {
+ipc_$d[k_$s] = ival_$t;
+if (nodeinherited_$8 && (k_$s in nodeinherited_$8) ? nodeinherited_$8[k_$s] : (k_$s in cssinherited_$7)) {
+pc_$1[k_$s] = ival_$t;
+inhprops_$r = true
+}} else if (pc_$1[k_$s] === LzCSSStyleClass.INHERIT) {
+ipc_$d[k_$s] = pc_$1[k_$s] = ival_$t;
+inhprops_$r = true
+}};
+if (rules_$9.length == 0 && !inhprops_$r) {
+pc_$1 = LzCSSStyleClass.EMTPY_CACHE;
+ipc_$d = pipc_$4
+};
+node_$0.__LZPropertyCache = pc_$1;
+var send_$u = false;
+var oipc_$v = node_$0["__LZInheritedPropertyCache"] || LzCSSStyleClass.EMTPY_CACHE;
+node_$0.__LZInheritedPropertyCache = ipc_$d;
+for (var op_$w in oipc_$v) {
+if (oipc_$v[op_$w] !== ipc_$d[op_$w]) {
+send_$u = true;
+break
+}};
+if (!send_$u) {
+for (var np_$x in ipc_$d) {
+if (oipc_$v[np_$x] !== ipc_$d[np_$x]) {
+send_$u = true;
+break
+}}};
+if (send_$u) {
+var evt_$y = node_$0.on__LZInheritedPropertyCache;
+if (evt_$y.ready) {
+evt_$y.sendEvent(ipc_$d)
+}};
+return pc_$1
 };
 $lzsc$temp["displayName"] = "getPropertyCache";
 return $lzsc$temp
 })(), "getRulesCache", (function () {
-var $lzsc$temp = function (node_$0) {
-var rules_$1 = node_$0["__LZRuleCache"];
-if (rules_$1) {
-return rules_$1
+var $lzsc$temp = function (node_$0, expanders_$1, expandercount_$2) {
+var gather_$4;
+gather_$4 = (function () {
+var $lzsc$temp = function (attr_$0, node_$1) {
+var nodes_$2 = deps[attr_$0];
+if (!nodes_$2) {
+deps[attr_$0] = [node_$1];
+return
 };
-rules_$1 = new Array();
-var tryRules_$2 = new Array();
+for (var i_$3 = 0, l_$4 = nodes_$2.length;i_$3 < l_$4;i_$3++) {
+if (node_$1 === nodes_$2[i_$3]) {
+return
+}};
+nodes_$2.push(node_$1)
+};
+$lzsc$temp["displayName"] = "gather";
+return $lzsc$temp
+})();
+switch (arguments.length) {
+case 1:
+expanders_$1 = null;;case 2:
+expandercount_$2 = 0
+};
+var rules_$3 = node_$0["__LZRuleCache"];
+if (rules_$3) {
+return rules_$3
+};
+rules_$3 = new Array();
 if (this._rulenum != this._lastSort) {
 this._sortRules()
 };
-var id_$3 = node_$0["id"];
-if (id_$3) {
-var ir_$4 = this._idRules;
-if (id_$3 in ir_$4) {
-tryRules_$2 = tryRules_$2.concat(ir_$4[id_$3])
-}};
-var ar_$5 = this._attrRules;
-for (var k_$6 in ar_$5) {
-if (node_$0[k_$6] !== void 0) {
-tryRules_$2 = tryRules_$2.concat(ar_$5[k_$6])
-}};
-var cr_$7 = this._tagRules;
-for (var tn_$8 in cr_$7) {
-var c_$9 = lz[tn_$8];
-if (c_$9 && (c_$9["$lzsc$isa"] ? c_$9.$lzsc$isa(node_$0) : node_$0 instanceof c_$9)) {
-tryRules_$2 = tryRules_$2.concat(cr_$7[tn_$8])
-}};
-tryRules_$2.concat(this._rules);
-var deps_$a = new LzCSSStyleDependencies();
-var sortNeeded_$b = false;
-var lastSpecificity_$c = Infinity;
-for (var i_$d = 0, l_$e = tryRules_$2.length;i_$d < l_$e;i_$d++) {
-var r_$f = tryRules_$2[i_$d];
-if (!sortNeeded_$b) {
-var rs_$g = r_$f.specificity;
-if (!rs_$g || rs_$g >= lastSpecificity_$c) {
-sortNeeded_$b = true
-} else {
-lastSpecificity_$c = rs_$g
-}};
-var rp_$h = r_$f.parsed;
-var compound_$i = !(!rp_$h["length"]);
-if (compound_$i) {
-rp_$h = rp_$h[rp_$h.length - 1]
+var deps = {};
+var tryRules_$5;
+var state_$6 = "id";
+var substate_$7 = 0;
+var attrs_$8 = this._attrs;
+var tags_$9 = node_$0.constructor.__LZCSSTagSelectors;
+var sortNeeded_$a = false;
+var lastSpecificity_$b = Infinity;
+while (state_$6) {
+step: switch (state_$6) {
+case "id":
+state_$6 = "name";var id_$c = node_$0["id"];if (id_$c && (tryRules_$5 = this._idRules[id_$c])) {
+break step
+};case "name":
+state_$6 = "attr";var name_$d = node_$0["name"];if (name_$d && (tryRules_$5 = this._nameRules[name_$d])) {
+break step
+};case "attr":
+while (substate_$7 < attrs_$8.length) {
+var k_$e = attrs_$8[substate_$7++];
+if (node_$0[k_$e] !== void 0) {
+tryRules_$5 = this._attrRules[k_$e];
+break step
+}};state_$6 = "tag";substate_$7 = 0;;case "tag":
+while (tags_$9 && substate_$7 < tags_$9.length) {
+var tn_$f = tags_$9[substate_$7++];
+if (tryRules_$5 = this._tagRules[tn_$f]) {
+break step
+}};state_$6 = null;substate_$7 = 0;;default:
+tryRules_$5 = this._rules
 };
-var rptn_$j = rp_$h["t"];
-var rpc_$k = rptn_$j ? lz[rptn_$j] : null;
-var rpi_$l = rp_$h["i"];
-var applies_$m = false;
-if ((!rptn_$j || rpc_$k && (rpc_$k["$lzsc$isa"] ? rpc_$k.$lzsc$isa(node_$0) : node_$0 instanceof rpc_$k)) && (!rpi_$l || node_$0["id"] == rpi_$l)) {
-if (!compound_$i) {
-if (!rp_$h["a"] && !rp_$h["&"]) {
-applies_$m = true
+nextrule: for (var i_$g = 0, l_$h = tryRules_$5.length;i_$g < l_$h;i_$g++) {
+var r_$i = tryRules_$5[i_$g];
+if (!sortNeeded_$a) {
+var rs_$j = r_$i.specificity;
+if (rs_$j >= lastSpecificity_$b) {
+sortNeeded_$a = true
 } else {
-var tp_$n = rp_$h["a"] ? rp_$h : rp_$h["&"];
+lastSpecificity_$b = rs_$j
+}};
+var rp_$k = r_$i.parsed;
+var compound_$l = !(!rp_$k["length"]);
+if (compound_$l) {
+rp_$k = rp_$k[rp_$k.length - 1]
+};
+if (!(state_$6 == "id" || state_$6 == "name")) {
+var rptn_$m = rp_$k["t"];
+if (rptn_$m && (!lz[rptn_$m] || !(lz[rptn_$m]["$lzsc$isa"] ? lz[rptn_$m].$lzsc$isa(node_$0) : node_$0 instanceof lz[rptn_$m]))) {
+continue nextrule
+};
+var tp_$n = rp_$k["a"] ? rp_$k : rp_$k["&"];
+while (tp_$n) {
 var tpa_$o = tp_$n.a;
-do {
-applies_$m = false;
-if (node_$0[tpa_$o] !== void 0) {
-if (tpa_$o != "name") {
-deps_$a.gather(node_$0, tpa_$o)
+if (node_$0[tpa_$o] === void 0) {
+continue nextrule
 };
-if (!("v" in tp_$n)) {
-applies_$m = true
-} else {
-var nav_$p = node_$0[tpa_$o];
-nav_$p += "";
-var tpv_$q = tp_$n.v;
+if ("v" in tp_$n) {
+if (tpa_$o == "name") {
 if (!tp_$n["m"]) {
-applies_$m = nav_$p == tpv_$q
-} else {
-var tpm_$r = tp_$n.m;
-if (tpm_$r == "~=") {
-applies_$m = nav_$p == tpv_$q || node_$0.__LZCSSStyleclass && node_$0.__LZCSSStyleclass.indexOf(" " + tpv_$q + " ") >= 0
-} else if (tpm_$r == "|=") {
-applies_$m = nav_$p.indexOf(tpv_$q + "-") == 0
-} else {
-Debug.error("Unknown attribute match %#s", tp_$n.m)
-}}}};
-if (applies_$m && tp_$n["&"]) {
-tp_$n = tp_$n["&"];
-tpa_$o = tp_$n.a
-} else {
-tp_$n = null
-}} while (tp_$n)
+if (node_$0.name != tp_$n.v) {
+continue nextrule
+}} else if (!this._complexAttrMatch(node_$0.name, tp_$n.v, tp_$n.m)) {
+continue nextrule
 }} else {
-applies_$m = this._compoundSelectorApplies(r_$f.parsed, node_$0, deps_$a)
+if (!deps[tpa_$o]) {
+deps[tpa_$o] = [node_$0]
+} else {
+gather_$4(tpa_$o, node_$0)
+}}};
+tp_$n = tp_$n["&"]
 }};
-if (applies_$m) {
-rules_$1.push(r_$f)
+if (compound_$l) {
+if (!this._compoundSelectorApplies(r_$i.parsed, node_$0, gather_$4, false)) {
+continue nextrule
 }};
-if (sortNeeded_$b) {
-rules_$1.sort(this.__compareSpecificity)
+rules_$3.push(r_$i)
+}};
+if (sortNeeded_$a) {
+rules_$3.sort(this.__compareSpecificity)
 };
-node_$0.__LZRuleCache = rules_$1;
-if (deps_$a.count > 0) {
-node_$0.__LZCSSDependencies = deps_$a.deps
+if (expanders_$1 && expandercount_$2 > 0) {
+for (var i_$g = rules_$3.length - 1;i_$g >= 0 && expandercount_$2 > 0;i_$g--) {
+var props_$p = rules_$3[i_$g].properties;
+for (var pname_$q in props_$p) {
+if (pname_$q in expanders_$1) {
+delete expanders_$1[pname_$q];
+expandercount_$2--;
+if (!expandercount_$2) {
+break
+}}}};
+var ip_$r = node_$0.immediateparent;
+while (expandercount_$2 > 0 && ip_$r) {
+var parentrules_$s = this.getRulesCache(ip_$r);
+for (var i_$g = 0, l_$h = parentrules_$s.length;i_$g < l_$h && expandercount_$2 > 0;i_$g++) {
+var prule_$t = parentrules_$s[i_$g];
+var props_$p = prule_$t.properties;
+for (var pname_$q in props_$p) {
+if (pname_$q in expanders_$1) {
+var nprops_$u = {};
+nprops_$u[pname_$q] = props_$p[pname_$q];
+rules_$3.push(new LzCSSStyleRule(prule_$t.parsed, nprops_$u, prule_$t["_dbg_filename"], prule_$t["_dbg_lineno"]));
+delete expanders_$1[pname_$q];
+expandercount_$2--
+}}};
+var next_$v = ip_$r.immediateparent;
+if (next_$v && next_$v != ip_$r) {
+ip_$r = next_$v
+} else {
+break
+}}};
+var ip_$r = node_$0.immediateparent;
+if (ip_$r !== node_$0) {
+deps["__LZInheritedPropertyCache"] = [ip_$r]
 };
-return rules_$1
+node_$0.__applyCSSConstraints(deps);
+node_$0.__LZRuleCache = rules_$3;
+return rules_$3
 };
 $lzsc$temp["displayName"] = "getRulesCache";
 return $lzsc$temp
@@ -24329,74 +24950,75 @@ return lexorder_$6
 };
 $lzsc$temp["displayName"] = "__compareSpecificity";
 return $lzsc$temp
-})(), "_printRuleArray", (function () {
-var $lzsc$temp = function (arr_$0) {
-for (var i_$1 = 0;i_$1 < arr_$0.length;i_$1++) {
-Debug.write(i_$1, arr_$0[i_$1])
-}};
-$lzsc$temp["displayName"] = "_printRuleArray";
+})(), "_complexAttrMatch", (function () {
+var $lzsc$temp = function (nav_$0, tpv_$1, tpm_$2) {
+if (!tpm_$2) {
+return nav_$0 == tpv_$1
+} else if (tpm_$2 == "~=") {
+return nav_$0 == tpv_$1 || nav_$0.search("(^| )" + tpv_$1 + "( |$)") >= 0
+} else if (tpm_$2 == "|=") {
+return nav_$0.indexOf(tpv_$1 + "-") == 0
+} else {
+Debug.error("Unknown attribute match %#s", tpm_$2)
+};
+return false
+};
+$lzsc$temp["displayName"] = "_complexAttrMatch";
 return $lzsc$temp
 })(), "_compoundSelectorApplies", (function () {
-var $lzsc$temp = function (parsedsel_$0, startnode_$1, deps_$2) {
-for (var node_$3 = startnode_$1, i_$4 = parsedsel_$0.length - 1;i_$4 >= 0 && node_$3 !== canvas;i_$4--, node_$3 = node_$3.parent) {
-var rp_$5 = parsedsel_$0[i_$4];
-var rptn_$6 = rp_$5["t"];
-var rpc_$7 = rptn_$6 ? lz[rptn_$6] : null;
-var rpi_$8 = rp_$5["i"];
-while (node_$3 !== canvas) {
-var applies_$9 = false;
-if ((!rptn_$6 || rpc_$7 && (rpc_$7["$lzsc$isa"] ? rpc_$7.$lzsc$isa(node_$3) : node_$3 instanceof rpc_$7)) && (!rpi_$8 || node_$3["id"] == rpi_$8)) {
-if (!rp_$5["a"] && !rp_$5["&"]) {
-applies_$9 = true
-} else {
-var tp_$a = rp_$5["a"] ? rp_$5 : rp_$5["&"];
-var tpa_$b = tp_$a.a;
-do {
-applies_$9 = false;
-if (node_$3[tpa_$b] !== void 0) {
-if (tpa_$b != "name") {
-deps_$2.gather(node_$3, tpa_$b)
+var $lzsc$temp = function (parsedsel_$0, startnode_$1, gather_$2, anchored_$3) {
+var startindex_$4 = parsedsel_$0.length - 1;
+if (!anchored_$3) {
+if (startnode_$1 === canvas) {
+return false
 };
-if (!("v" in tp_$a)) {
-applies_$9 = true
+startnode_$1 = startnode_$1.immediateparent;
+startindex_$4--
+};
+nextselector: for (var node_$5 = startnode_$1, i_$6 = startindex_$4;i_$6 >= 0 && node_$5;i_$6--, node_$5 = node_$5 === canvas ? null : node_$5.immediateparent) {
+var rp_$7 = parsedsel_$0[i_$6];
+var rptn_$8 = rp_$7["t"];
+var rpi_$9 = rp_$7["i"];
+nextnode: for (;node_$5;node_$5 = node_$5 === canvas || anchored_$3 && node_$5 === startnode_$1 ? null : node_$5.immediateparent) {
+if (rpi_$9 && node_$5["id"] != rpi_$9) {
+continue nextnode
+};
+if (rptn_$8 && (!lz[rptn_$8] || !(lz[rptn_$8]["$lzsc$isa"] ? lz[rptn_$8].$lzsc$isa(node_$5) : node_$5 instanceof lz[rptn_$8]))) {
+continue nextnode
+};
+var tp_$a = rp_$7["a"] ? rp_$7 : rp_$7["&"];
+while (tp_$a) {
+var tpa_$b = tp_$a.a;
+if (node_$5[tpa_$b] === void 0) {
+continue nextnode
+};
+if ("v" in tp_$a) {
+if (gather_$2 && tpa_$b != "name") {
+gather_$2(tpa_$b, node_$5)
 } else {
-var nav_$c = node_$3[tpa_$b];
+var nav_$c = node_$5[tpa_$b];
 nav_$c += "";
 var tpv_$d = tp_$a.v;
 if (!tp_$a["m"]) {
-applies_$9 = nav_$c == tpv_$d
-} else {
-var tpm_$e = tp_$a.m;
-if (tpm_$e == "~=") {
-applies_$9 = nav_$c == tpv_$d || node_$3.__LZCSSStyleclass && node_$3.__LZCSSStyleclass.indexOf(" " + tpv_$d + " ") >= 0
-} else if (tpm_$e == "|=") {
-applies_$9 = nav_$c.indexOf(tpv_$d + "-") == 0
-} else {
-Debug.error("Unknown attribute match %#s", tp_$a.m)
-}}}};
-if (applies_$9 && tp_$a["&"]) {
-tp_$a = tp_$a["&"];
-tpa_$b = tp_$a.a
-} else {
-tp_$a = null
-}} while (tp_$a)
-};
-if (applies_$9) {
-if (i_$4 == 0) {
-return true
-} else {
-break
+if (nav_$c != tpv_$d) {
+continue nextnode
+}} else if (!this._complexAttrMatch(nav_$c, tpv_$d, tp_$a.m)) {
+continue nextnode
 }}};
-if (node_$3 === startnode_$1) {
+tp_$a = tp_$a["&"]
+};
+if (i_$6 == 0) {
+return true
+};
+continue nextselector
+};
 return false
 };
-node_$3 = node_$3.parent
-}};
 return false
 };
 $lzsc$temp["displayName"] = "_compoundSelectorApplies";
 return $lzsc$temp
-})(), "_rules", void 0, "_attrRules", void 0, "_idRules", void 0, "_tagRules", void 0, "_rulenum", 0, "_lastSort", -1, "_sortRules", (function () {
+})(), "_rulenum", 0, "_lastSort", -1, "_sortRules", (function () {
 var $lzsc$temp = function () {
 var deleteDuplicates_$0;
 deleteDuplicates_$0 = (function () {
@@ -24409,23 +25031,28 @@ $lzsc$temp["displayName"] = "deleteDuplicates";
 return $lzsc$temp
 })();
 if (this._rulenum != this._lastSort) {
-this._rules.sort(this.__compareSpecificity);
 deleteDuplicates_$0(this._rules);
-for (var k_$1 in this._attrRules) {
-var ark_$2 = this._attrRules[k_$1];
-ark_$2.sort(this.__compareSpecificity);
-deleteDuplicates_$0(ark_$2)
-};
 for (var k_$1 in this._idRules) {
-var irk_$3 = this._idRules[k_$1];
-irk_$3.sort(this.__compareSpecificity);
-deleteDuplicates_$0(irk_$3)
+var rk_$2 = this._idRules[k_$1];
+rk_$2.sort(this.__compareSpecificity);
+deleteDuplicates_$0(rk_$2)
+};
+for (var k_$1 in this._nameRules) {
+var rk_$2 = this._nameRules[k_$1];
+rk_$2.sort(this.__compareSpecificity);
+deleteDuplicates_$0(rk_$2)
+};
+for (var k_$1 in this._attrRules) {
+var rk_$2 = this._attrRules[k_$1];
+rk_$2.sort(this.__compareSpecificity);
+deleteDuplicates_$0(rk_$2)
 };
 for (var k_$1 in this._tagRules) {
-var trk_$4 = this._tagRules[k_$1];
-trk_$4.sort(this.__compareSpecificity);
-deleteDuplicates_$0(trk_$4)
+var rk_$2 = this._tagRules[k_$1];
+rk_$2.sort(this.__compareSpecificity);
+deleteDuplicates_$0(rk_$2)
 };
+this._rules.sort(this.__compareSpecificity);
 this._lastSort = this._rulenum
 }};
 $lzsc$temp["displayName"] = "_sortRules";
@@ -24437,37 +25064,55 @@ var lastsel_$1 = r_$0.parsed;
 if (lastsel_$1["length"]) {
 lastsel_$1 = lastsel_$1[lastsel_$1.length - 1]
 };
-if ("i" in lastsel_$1) {
 var id_$2 = lastsel_$1.i;
-var itab_$3 = this._idRules[id_$2];
-if (!itab_$3) {
-itab_$3 = this._idRules[id_$2] = []
+var attr_$3 = lastsel_$1.a;
+var tag_$4 = lastsel_$1.t;
+var match_$5 = lastsel_$1.m;
+var compound_$6 = lastsel_$1["&"];
+if (id_$2 && !(attr_$3 || tag_$4 || compound_$6)) {
+var itab_$7 = this._idRules[id_$2];
+if (!itab_$7) {
+itab_$7 = this._idRules[id_$2] = []
 };
-itab_$3.push(r_$0)
-} else if ("a" in lastsel_$1) {
-var attr_$4 = lastsel_$1.a;
-var atab_$5 = this._attrRules[attr_$4];
-if (!atab_$5) {
-atab_$5 = this._attrRules[attr_$4] = []
+itab_$7.push(r_$0)
+} else if (attr_$3 && !(id_$2 || match_$5 || compound_$6)) {
+var value_$8 = lastsel_$1.v;
+if (value_$8 && attr_$3 == "name") {
+var ntab_$9 = this._nameRules[value_$8];
+if (!ntab_$9) {
+ntab_$9 = this._nameRules[value_$8] = []
 };
-atab_$5.push(r_$0)
-} else if ("t" in lastsel_$1) {
-var tag_$6 = lastsel_$1.t;
-var ttab_$7 = this._tagRules[tag_$6];
-if (!ttab_$7) {
-ttab_$7 = this._tagRules[tag_$6] = []
+ntab_$9.push(r_$0)
+} else {
+var atab_$a = this._attrRules[attr_$3];
+if (!atab_$a) {
+this._attrs.push(attr_$3);
+atab_$a = this._attrRules[attr_$3] = []
 };
-ttab_$7.push(r_$0)
+atab_$a.push(r_$0)
+}} else if (tag_$4) {
+var ttab_$b = this._tagRules[tag_$4];
+if (!ttab_$b) {
+this._tags.push(tag_$4);
+ttab_$b = this._tagRules[tag_$4] = []
+};
+ttab_$b.push(r_$0)
 } else {
 this._rules.push(r_$0)
 }};
 $lzsc$temp["displayName"] = "_addRule";
 return $lzsc$temp
-})()]);
+})()], null, ["CSSInheritableProperties", {"azimuth": true, "border-collapse": true, "border-spacing": true, "caption-side": true, "color": true, "cursor": true, "direction": true, "elevation": true, "empty-cells": true, "font-family": true, "font-size": true, "font-style": true, "font-variant": true, "font-weight": true, "font": true, "letter-spacing": true, "line-height": true, "list-style-image": true, "list-style-position": true, "list-style-type": true, "list-style": true, "orphans": true, "pitch-range": true, "pitch": true, "quotes": true, "richness": true, "speak-header": true, "speak-numeral": true, "speak-punctuation": true, "speak": true, "speech-rate": true, "stress": true, "text-indent": true, "text-transform": true, "visibility": true, "voice-family": true, "volume": true, "whitespace": true, "widows": true, "word-spacing": true}, "INHERIT", {toString: (function () {
+var $lzsc$temp = function () {
+return "inherit"
+};
+$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#242/35";
+return $lzsc$temp
+})()}, "EMTPY_CACHE", {}]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#168/1";
+$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#175/1";
 return $lzsc$temp
 })()(LzCSSStyleClass);
 var LzCSSStyle = new LzCSSStyleClass();
@@ -24492,7 +25137,7 @@ return $lzsc$temp
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {}};
-$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#749/1";
+$lzsc$temp["displayName"] = "services/LzCSSStyle.lzs#1043/1";
 return $lzsc$temp
 })()(LzCSSStyleDeclaration);
 lz.CSSStyleDeclaration = LzCSSStyleDeclaration;
@@ -24538,7 +25183,7 @@ $lzsc$temp["displayName"] = "insertRule";
 return $lzsc$temp
 })()], LzStyleSheet);
 lz.CSSStyleSheet = LzCSSStyleSheet;
-Class.make("LzFocusService", ["onfocus", LzDeclaredEvent, "onescapefocus", LzDeclaredEvent, "lastfocus", null, "csel", null, "cseldest", null, "$lzsc$initialize", (function () {
+Class.make("LzFocusService", ["onfocus", LzDeclaredEvent, "onescapefocus", LzDeclaredEvent, "lastfocus", null, "csel", null, "cseldest", null, "FOCUS_MANUAL", 0, "FOCUS_KEYBOARD", -1, "FOCUS_KEYBOARD_PREV", -2, "FOCUS_MOUSE", 1, "$lzsc$initialize", (function () {
 var $lzsc$temp = function () {
 (arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this);
 this.upDel = new LzDelegate(this, "gotKeyUp", lz.Keys, "onkeyup");
@@ -24547,7 +25192,7 @@ this.lastfocusDel = new LzDelegate(lz.Keys, "gotLastFocus", this, "onescapefocus
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})(), "upDel", void 0, "downDel", void 0, "lastfocusDel", void 0, "focuswithkey", false, "__LZskipblur", false, "__LZsfnextfocus", -1, "__LZsfrunning", false, "gotKeyUp", (function () {
+})(), "upDel", void 0, "downDel", void 0, "lastfocusDel", void 0, "focusmethod", 0, "focuswithkey", false, "__LZskipblur", false, "__LZsfnextfocus", -1, "__LZsfrunning", false, "focuscount", 0, "gotKeyUp", (function () {
 var $lzsc$temp = function (kC_$0) {
 if (this.csel && this.csel.onkeyup.ready) this.csel.onkeyup.sendEvent(kC_$0)
 };
@@ -24567,7 +25212,9 @@ return $lzsc$temp
 })(), "__LZcheckFocusChange", (function () {
 var $lzsc$temp = function (v_$0) {
 if (v_$0.focusable) {
-this.setFocus(v_$0, false)
+this.setFocus(v_$0, this.FOCUS_MOUSE)
+} else {
+this.clearFocus()
 }};
 $lzsc$temp["displayName"] = "__LZcheckFocusChange";
 return $lzsc$temp
@@ -24577,10 +25224,17 @@ switch (arguments.length) {
 case 1:
 fwkey_$1 = null
 };
+this.focusmethod = this.FOCUS_MANUAL;
+if (fwkey_$1 != null) {
+if (typeof fwkey_$1 == "number") {
+this.focusmethod = fwkey_$1
+} else this.focusmethod = this.FOCUS_KEYBOARD
+};
 if (this.__LZsfrunning) {
 this.__LZsfnextfocus = newsel_$0;
 return
 };
+this.focuscount++;
 if (this.cseldest == newsel_$0) {
 return
 };
@@ -24599,9 +25253,7 @@ prevsel_$2.blurring = true
 this.__LZsfnextfocus = -1;
 this.__LZsfrunning = true;
 this.cseldest = newsel_$0;
-if (fwkey_$1 != null) {
-this.focuswithkey = !(!fwkey_$1)
-};
+this.focuswithkey = this.focusmethod <= this.FOCUS_KEYBOARD;
 if (!this.__LZskipblur) {
 this.__LZskipblur = true;
 if (prevsel_$2 && prevsel_$2.onblur.ready) {
@@ -24613,7 +25265,7 @@ next_$3 = this.getNext(next_$3)
 };
 if (next_$3 != newsel_$0) {
 this.__LZsfrunning = false;
-this.setFocus(next_$3);
+this.setFocus(next_$3, this.focusmethod);
 return
 }}}};
 this.lastfocus = prevsel_$2;
@@ -24634,7 +25286,7 @@ next_$3 = this.getNext(next_$3)
 };
 if (next_$3 != newsel_$0) {
 this.__LZsfrunning = false;
-this.setFocus(next_$3);
+this.setFocus(next_$3, this.focusmethod);
 return
 }}};
 if (this.onfocus.ready) {
@@ -24646,7 +25298,7 @@ next_$3 = this.getNext(next_$3)
 };
 if (next_$3 != newsel_$0) {
 this.__LZsfrunning = false;
-this.setFocus(next_$3);
+this.setFocus(next_$3, this.focusmethod);
 return
 }}};
 this.__LZsfrunning = false
@@ -24716,7 +25368,7 @@ if (v_$4 == null) {
 v_$4 = this.moveSelSubview(sel_$1, movedir_$0, true)
 };
 if (lz.ModeManager.__LZallowFocus(v_$4)) {
-this.setFocus(v_$4, true)
+this.setFocus(v_$4, movedir_$0 == 1 ? this.FOCUS_KEYBOARD : this.FOCUS_KEYBOARD_PREV)
 }};
 $lzsc$temp["displayName"] = "genMoveSelection";
 return $lzsc$temp
@@ -24877,13 +25529,13 @@ catch (e_$2) {}}}};
 $lzsc$temp["displayName"] = "debugger/LzInit.lzs#11/4";
 return $lzsc$temp
 })()();
-Class.make("$lzc$class_lzcontextmenuseparator", ["$ii6lnt1", (function () {
+Class.make("$lzc$class_lzcontextmenuseparator", ["$8l2c51", (function () {
 var $lzsc$temp = function ($0) {
 this.parent.registerRedraw(this)
 };
 $lzsc$temp["displayName"] = "handle oninit";
 return $lzsc$temp
-})(), "$ii6lnt2", (function () {
+})(), "$8l2c52", (function () {
 var $lzsc$temp = function ($0) {
 this.parent.unregisterRedraw(this)
 };
@@ -24916,26 +25568,26 @@ return $lzsc$temp
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
 {
-LzNode.mergeAttributes({$delegates: ["oninit", "$ii6lnt1", null, "ondestroy", "$ii6lnt2", null], height: 10}, $lzc$class_lzcontextmenuseparator.attributes)
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {aaactive: "boolean", aadescription: "string", aaname: "string", aasilent: "boolean", aatabindex: "number", align: "string", backgroundrepeat: "string", bgcolor: "color", cachebitmap: "boolean", capabilities: "string", clickable: "boolean", clickregion: "string", clip: "boolean", contextmenu: "string", cornerradius: "string", cursor: "token", fgcolor: "color", focusable: "boolean", focustrap: "boolean", font: "string", fontsize: "size", fontstyle: "string", frame: "numberExpression", framesloadratio: "number", hasdirectionallayout: "boolean", hassetheight: "boolean", hassetwidth: "boolean", height: "size", layout: "css", loadratio: "number", mask: "string", opacity: "number", pixellock: "boolean", playing: "boolean", resource: "string", resourceheight: "number", resourcewidth: "number", rotation: "numberExpression", shadowangle: "number", shadowblurradius: "number", shadowcolor: "color", shadowdistance: "number", showhandcursor: "boolean", source: "string", stretches: "string", subviews: "string", tintcolor: "string", totalframes: "number", unstretchedheight: "number", unstretchedwidth: "number", usegetbounds: "boolean", valign: "string", visibility: "string", visible: "boolean", width: "size", x: "numberExpression", xoffset: "numberExpression", xscale: "numberExpression", y: "numberExpression", yoffset: "numberExpression", yscale: "numberExpression"}}, $delegates: ["oninit", "$8l2c51", null, "ondestroy", "$8l2c52", null], height: 10}, $lzc$class_lzcontextmenuseparator.attributes)
 }}};
 $lzsc$temp["displayName"] = "contextmenu.lzx#8/1";
 return $lzsc$temp
 })()($lzc$class_lzcontextmenuseparator);
-Class.make("$lzc$class_lzcontextmenutext", ["$ii6lnt3", (function () {
+Class.make("$lzc$class_lzcontextmenutext", ["$8l2c56", (function () {
 var $lzsc$temp = function ($0) {
 this.parent.__overnow = this.data;
 this.parent.registerRedraw(this)
 };
 $lzsc$temp["displayName"] = "handle onmouseover";
 return $lzsc$temp
-})(), "$ii6lnt4", (function () {
+})(), "$8l2c57", (function () {
 var $lzsc$temp = function ($0) {
 this.parent.__overnow = null;
 this.parent.unregisterRedraw(this)
 };
 $lzsc$temp["displayName"] = "handle onmouseout";
 return $lzsc$temp
-})(), "$ii6lnt5", (function () {
+})(), "$8l2c58", (function () {
 var $lzsc$temp = function ($0) {
 this.parent.select(this.data);
 this.parent.unregisterRedraw(this)
@@ -24959,7 +25611,8 @@ attrs_$b_$1 = null;;case 2:
 children_$c_$2 = null;;case 3:
 async_$d_$3 = false
 };
-(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, parent_$a_$0, attrs_$b_$1, children_$c_$2, async_$d_$3)
+(arguments.callee["$superclass"] && arguments.callee.$superclass.prototype["$lzsc$initialize"] || this.nextMethod(arguments.callee, "$lzsc$initialize")).call(this, parent_$a_$0, attrs_$b_$1, children_$c_$2, async_$d_$3);
+this.sprite.setWidth(this.parent.width - 3)
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
@@ -24968,7 +25621,7 @@ return $lzsc$temp
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
 {
-LzNode.mergeAttributes({$delegates: ["onmouseover", "$ii6lnt3", null, "onmouseout", "$ii6lnt4", null, "onmousedown", "$ii6lnt5", null], clickable: true, fgcolor: LzColorUtils.convertColor("0x0"), fontsize: 11, fontstyle: "plain"}, $lzc$class_lzcontextmenutext.attributes)
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {antiAliasType: "string", cdata: "cdata", direction: "string", embedfonts: "boolean", gridFit: "string", hscroll: "number", letterspacing: "number", lineheight: "number", maxhscroll: "number", maxlength: "numberExpression", maxscroll: "number", multiline: "boolean", pattern: "string", resize: "boolean", scroll: "number", scrollevents: "boolean", scrollheight: "number", scrollwidth: "number", selectable: "boolean", sharpness: "number", text: "html", textalign: "string", textdecoration: "string", textindent: "number", thickness: "number", xscroll: "number", yscroll: "number"}}, $delegates: ["onmouseover", "$8l2c56", null, "onmouseout", "$8l2c57", null, "onmousedown", "$8l2c58", null], clickable: true, fgcolor: 0, fontsize: 11, fontstyle: "plain"}, $lzc$class_lzcontextmenutext.attributes)
 }}};
 $lzsc$temp["displayName"] = "contextmenu.lzx#23/1";
 return $lzsc$temp
@@ -24991,29 +25644,20 @@ return $lzsc$temp
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
 {
-LzNode.mergeAttributes({fgcolor: LzColorUtils.convertColor("0xcccccc"), fontsize: 11, fontstyle: "plain"}, $lzc$class_lzcontextmenudisabled.attributes)
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {antiAliasType: "string", cdata: "cdata", direction: "string", embedfonts: "boolean", gridFit: "string", hscroll: "number", letterspacing: "number", lineheight: "number", maxhscroll: "number", maxlength: "numberExpression", maxscroll: "number", multiline: "boolean", pattern: "string", resize: "boolean", scroll: "number", scrollevents: "boolean", scrollheight: "number", scrollwidth: "number", selectable: "boolean", sharpness: "number", text: "html", textalign: "string", textdecoration: "string", textindent: "number", thickness: "number", xscroll: "number", yscroll: "number"}}, fgcolor: 13421772, fontsize: 11, fontstyle: "plain"}, $lzc$class_lzcontextmenudisabled.attributes)
 }}};
 $lzsc$temp["displayName"] = "contextmenu.lzx#44/1";
 return $lzsc$temp
 })()($lzc$class_lzcontextmenudisabled);
-Class.make("$lzc$class_ii6lntc", ["$ii6lnt7", (function () {
+Class.make("$lzc$class_8l2c5f", ["$8l2c5a", (function () {
 var $lzsc$temp = function ($0) {
 var $1 = this.parent.container.width + 9;
 if ($1 !== this["width"] || !this.inited) {
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_width"]) : this["$lzc$set_width"] instanceof Function) {
-this["$lzc$set_width"]($1)
-} else {
-this["width"] = $1;
-var $lzsc$u27gga = this["onwidth"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$u27gga) : $lzsc$u27gga instanceof LzEvent) {
-if ($lzsc$u27gga.ready) {
-$lzsc$u27gga.sendEvent($1)
-}}}}}}};
+this.setAttribute("width", $1)
+}};
 $lzsc$temp["displayName"] = "width='${...}'";
 return $lzsc$temp
-})(), "$ii6lnt8", (function () {
+})(), "$8l2c5b", (function () {
 var $lzsc$temp = function () {
 try {
 return $lzc$validateReferenceDependencies([this.parent.container, "width"], ["this.parent.container"])
@@ -25026,24 +25670,15 @@ throw $lzsc$e
 }};
 $lzsc$temp["displayName"] = "width dependencies";
 return $lzsc$temp
-})(), "$ii6lnt9", (function () {
+})(), "$8l2c5c", (function () {
 var $lzsc$temp = function ($0) {
 var $1 = this.parent.container.height + 9;
 if ($1 !== this["height"] || !this.inited) {
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_height"]) : this["$lzc$set_height"] instanceof Function) {
-this["$lzc$set_height"]($1)
-} else {
-this["height"] = $1;
-var $lzsc$5yvnff = this["onheight"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$5yvnff) : $lzsc$5yvnff instanceof LzEvent) {
-if ($lzsc$5yvnff.ready) {
-$lzsc$5yvnff.sendEvent($1)
-}}}}}}};
+this.setAttribute("height", $1)
+}};
 $lzsc$temp["displayName"] = "height='${...}'";
 return $lzsc$temp
-})(), "$ii6lnta", (function () {
+})(), "$8l2c5d", (function () {
 var $lzsc$temp = function () {
 try {
 return $lzc$validateReferenceDependencies([this.parent.container, "height"], ["this.parent.container"])
@@ -25056,7 +25691,7 @@ throw $lzsc$e
 }};
 $lzsc$temp["displayName"] = "height dependencies";
 return $lzsc$temp
-})(), "$ii6lntb", (function () {
+})(), "$8l2c5e", (function () {
 var $lzsc$temp = function ($0) {
 this.createContext()
 };
@@ -25086,7 +25721,7 @@ context_$a_$0.globalAlpha = 0.2;
 context_$a_$0.fill();
 context_$a_$0.beginPath();
 LzKernelUtils.rect(context_$a_$0, 0, 0, this.width - 3, this.height - 3, this.classroot.inset);
-context_$a_$0.globalAlpha = 0.9;
+context_$a_$0.globalAlpha = lz.embed.browser.OS == "Mac" ? 0.97 : 1;
 context_$a_$0.fillStyle = "#FFFFFF";
 context_$a_$0.fill();
 context_$a_$0.globalAlpha = 1;
@@ -25112,7 +25747,16 @@ async_$d_$3 = false
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
 })()], LzView, ["displayName", "<anonymous extends='view'>", "attributes", new LzInheritedHash(LzView.attributes)]);
-Class.make("$lzc$class_lzcontextmenu", ["inset", void 0, "__drawnitems", void 0, "__overnow", void 0, "$ii6lnt6", (function () {
+(function () {
+var $lzsc$temp = function ($0) {
+with ($0) with ($0.prototype) {
+{
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {aaactive: "boolean", aadescription: "string", aaname: "string", aasilent: "boolean", aatabindex: "number", align: "string", backgroundrepeat: "string", bgcolor: "color", cachebitmap: "boolean", capabilities: "string", clickable: "boolean", clickregion: "string", clip: "boolean", contextmenu: "string", cornerradius: "string", cursor: "token", fgcolor: "color", focusable: "boolean", focustrap: "boolean", font: "string", fontsize: "size", fontstyle: "string", frame: "numberExpression", framesloadratio: "number", hasdirectionallayout: "boolean", hassetheight: "boolean", hassetwidth: "boolean", height: "size", layout: "css", loadratio: "number", mask: "string", opacity: "number", pixellock: "boolean", playing: "boolean", resource: "string", resourceheight: "number", resourcewidth: "number", rotation: "numberExpression", shadowangle: "number", shadowblurradius: "number", shadowcolor: "color", shadowdistance: "number", showhandcursor: "boolean", source: "string", stretches: "string", subviews: "string", tintcolor: "string", totalframes: "number", unstretchedheight: "number", unstretchedwidth: "number", usegetbounds: "boolean", valign: "string", visibility: "string", visible: "boolean", width: "size", x: "numberExpression", xoffset: "numberExpression", xscale: "numberExpression", y: "numberExpression", yoffset: "numberExpression", yscale: "numberExpression"}}}, $lzc$class_8l2c5f.attributes)
+}}};
+$lzsc$temp["displayName"] = "contextmenu.lzx#134/1";
+return $lzsc$temp
+})()($lzc$class_8l2c5f);
+Class.make("$lzc$class_lzcontextmenu", ["inset", void 0, "__drawnitems", void 0, "__overnow", void 0, "$8l2c59", (function () {
 var $lzsc$temp = function ($0) {
 this.__globalmousedel = new (lz.Delegate)(this, "__handlemouse")
 };
@@ -25138,41 +25782,9 @@ var pos_$a_$0 = canvas.getMouse();
 if (pos_$a_$0.x > canvas.width - this.width) pos_$a_$0.x = canvas.width - this.width;
 if (pos_$a_$0.y > canvas.height - this.height) pos_$a_$0.y = canvas.height - this.height;
 this.bringToFront();
-{
-var $lzsc$fqbz7i = pos_$a_$0.x;
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_x"]) : this["$lzc$set_x"] instanceof Function) {
-this["$lzc$set_x"]($lzsc$fqbz7i)
-} else {
-this["x"] = $lzsc$fqbz7i;
-var $lzsc$b6a4ve = this["onx"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$b6a4ve) : $lzsc$b6a4ve instanceof LzEvent) {
-if ($lzsc$b6a4ve.ready) {
-$lzsc$b6a4ve.sendEvent($lzsc$fqbz7i)
-}}}}};
-{
-var $lzsc$gwx168 = pos_$a_$0.y;
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_y"]) : this["$lzc$set_y"] instanceof Function) {
-this["$lzc$set_y"]($lzsc$gwx168)
-} else {
-this["y"] = $lzsc$gwx168;
-var $lzsc$gic2md = this["ony"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$gic2md) : $lzsc$gic2md instanceof LzEvent) {
-if ($lzsc$gic2md.ready) {
-$lzsc$gic2md.sendEvent($lzsc$gwx168)
-}}}}};
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_visible"]) : this["$lzc$set_visible"] instanceof Function) {
-this["$lzc$set_visible"](true)
-} else {
-this["visible"] = true;
-var $lzsc$ymoazg = this["onvisible"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$ymoazg) : $lzsc$ymoazg instanceof LzEvent) {
-if ($lzsc$ymoazg.ready) {
-$lzsc$ymoazg.sendEvent(true)
-}}}}};
+this.setAttribute("x", pos_$a_$0.x);
+this.setAttribute("y", pos_$a_$0.y);
+this.setAttribute("visible", true);
 this.__globalmousedel.register(lz.GlobalMouse, "onmousedown")
 };
 $lzsc$temp["displayName"] = "show";
@@ -25182,17 +25794,8 @@ var $lzsc$temp = function () {
 this.__globalmousedel.unregisterAll();
 var cmenu_$a_$0 = LzMouseKernel.__showncontextmenu;
 if (cmenu_$a_$0) cmenu_$a_$0.__hide();
-{
-if (!this.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(this["$lzc$set_visible"]) : this["$lzc$set_visible"] instanceof Function) {
-this["$lzc$set_visible"](false)
-} else {
-this["visible"] = false;
-var $lzsc$apyxje = this["onvisible"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$apyxje) : $lzsc$apyxje instanceof LzEvent) {
-if ($lzsc$apyxje.ready) {
-$lzsc$apyxje.sendEvent(false)
-}}}}}};
+this.setAttribute("visible", false)
+};
 $lzsc$temp["displayName"] = "hide";
 return $lzsc$temp
 })(), "setItems", (function () {
@@ -25211,17 +25814,7 @@ var item_$g_$6 = newitems_$a_$0[i_$c_$2];
 var classref_$h_$7 = lz["lzcontextmenu" + item_$g_$6.type];
 if (classref_$h_$7) {
 var newview_$i_$8 = new classref_$h_$7(this, {data: item_$g_$6.offset, text: item_$g_$6.label});
-{
-if (!newview_$i_$8.__LZdeleted) {
-if (Function["$lzsc$isa"] ? Function.$lzsc$isa(newview_$i_$8["$lzc$set_y"]) : newview_$i_$8["$lzc$set_y"] instanceof Function) {
-newview_$i_$8["$lzc$set_y"](ypos_$f_$5)
-} else {
-newview_$i_$8["y"] = ypos_$f_$5;
-var $lzsc$jdizyw = newview_$i_$8["ony"];
-if (LzEvent["$lzsc$isa"] ? LzEvent.$lzsc$isa($lzsc$jdizyw) : $lzsc$jdizyw instanceof LzEvent) {
-if ($lzsc$jdizyw.ready) {
-$lzsc$jdizyw.sendEvent(ypos_$f_$5)
-}}}}};
+newview_$i_$8.setAttribute("y", ypos_$f_$5);
 ypos_$f_$5 += newview_$i_$8.height
 }};
 this.items = newitems_$a_$0;
@@ -25272,12 +25865,12 @@ async_$d_$3 = false
 };
 $lzsc$temp["displayName"] = "$lzsc$initialize";
 return $lzsc$temp
-})()], LzView, ["tagname", "lzcontextmenu", "children", [{attrs: {$classrootdepth: 1, $delegates: ["oninit", "$ii6lntb", null, "onwidth", "__doredraw", null, "onheight", "__doredraw", null, "oncontext", "__doredraw", null, "onvisible", "__doredraw", null], height: new LzAlwaysExpr("height", "size", "$ii6lnt9", "$ii6lnta", "height='${...}'"), name: "background", width: new LzAlwaysExpr("width", "size", "$ii6lnt7", "$ii6lnt8", "width='${...}'")}, "class": $lzc$class_ii6lntc}, {attrs: {$classrootdepth: 1, name: "container", x: 3, y: 3}, "class": LzView}, {attrs: "container", "class": $lzc$class_userClassPlacement}], "attributes", new LzInheritedHash(LzView.attributes)]);
+})()], LzView, ["tagname", "lzcontextmenu", "children", [{attrs: {$classrootdepth: 1, $delegates: ["oninit", "$8l2c5e", null, "onwidth", "__doredraw", null, "onheight", "__doredraw", null, "oncontext", "__doredraw", null, "onvisible", "__doredraw", null], height: new LzAlwaysExpr("$8l2c5c", "$8l2c5d", "='${...}'"), name: "background", width: new LzAlwaysExpr("$8l2c5a", "$8l2c5b", "='${...}'")}, "class": $lzc$class_8l2c5f}, {attrs: {$CSSDescriptor: {}, $attributeDescriptor: {types: {aaactive: "boolean", aadescription: "string", aaname: "string", aasilent: "boolean", aatabindex: "number", align: "string", backgroundrepeat: "string", bgcolor: "color", cachebitmap: "boolean", capabilities: "string", clickable: "boolean", clickregion: "string", clip: "boolean", contextmenu: "string", cornerradius: "string", cursor: "token", fgcolor: "color", focusable: "boolean", focustrap: "boolean", font: "string", fontsize: "size", fontstyle: "string", frame: "numberExpression", framesloadratio: "number", hasdirectionallayout: "boolean", hassetheight: "boolean", hassetwidth: "boolean", height: "size", layout: "css", loadratio: "number", mask: "string", opacity: "number", pixellock: "boolean", playing: "boolean", resource: "string", resourceheight: "number", resourcewidth: "number", rotation: "numberExpression", shadowangle: "number", shadowblurradius: "number", shadowcolor: "color", shadowdistance: "number", showhandcursor: "boolean", source: "string", stretches: "string", subviews: "string", tintcolor: "string", totalframes: "number", unstretchedheight: "number", unstretchedwidth: "number", usegetbounds: "boolean", valign: "string", visibility: "string", visible: "boolean", width: "size", x: "numberExpression", xoffset: "numberExpression", xscale: "numberExpression", y: "numberExpression", yoffset: "numberExpression", yscale: "numberExpression"}}, $classrootdepth: 1, name: "container", x: 3, y: 3}, "class": LzView}, {attrs: "container", "class": $lzc$class_userClassPlacement}], "attributes", new LzInheritedHash(LzView.attributes)]);
 (function () {
 var $lzsc$temp = function ($0) {
 with ($0) with ($0.prototype) {
 {
-LzNode.mergeAttributes({$delegates: ["oninit", "$ii6lnt6", null], __drawnitems: {}, __overnow: null, inset: 5, options: {ignorelayout: true}, visible: false}, $lzc$class_lzcontextmenu.attributes)
+LzNode.mergeAttributes({$CSSDescriptor: {}, $attributeDescriptor: {types: {aaactive: "boolean", aadescription: "string", aaname: "string", aasilent: "boolean", aatabindex: "number", align: "string", backgroundrepeat: "string", bgcolor: "color", cachebitmap: "boolean", capabilities: "string", clickable: "boolean", clickregion: "string", clip: "boolean", contextmenu: "string", cornerradius: "string", cursor: "token", defaultplacement: "string", fgcolor: "color", focusable: "boolean", focustrap: "boolean", font: "string", fontsize: "size", fontstyle: "string", frame: "numberExpression", framesloadratio: "number", hasdirectionallayout: "boolean", hassetheight: "boolean", hassetwidth: "boolean", height: "size", inset: "number", layout: "css", loadratio: "number", mask: "string", opacity: "number", pixellock: "boolean", playing: "boolean", resource: "string", resourceheight: "number", resourcewidth: "number", rotation: "numberExpression", shadowangle: "number", shadowblurradius: "number", shadowcolor: "color", shadowdistance: "number", showhandcursor: "boolean", source: "string", stretches: "string", subviews: "string", tintcolor: "string", totalframes: "number", unstretchedheight: "number", unstretchedwidth: "number", usegetbounds: "boolean", valign: "string", visibility: "string", visible: "boolean", width: "size", x: "numberExpression", xoffset: "numberExpression", xscale: "numberExpression", y: "numberExpression", yoffset: "numberExpression", yscale: "numberExpression"}}, $delegates: ["oninit", "$8l2c59", null], __drawnitems: {}, __overnow: null, inset: 5, options: {ignorelayout: true}, visible: false}, $lzc$class_lzcontextmenu.attributes)
 }}};
 $lzsc$temp["displayName"] = "contextmenu.lzx#46/1";
 return $lzsc$temp

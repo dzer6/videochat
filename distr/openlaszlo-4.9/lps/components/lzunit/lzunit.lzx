@@ -187,7 +187,7 @@
   <xref linkend="lz.TestCase"/> and <xref linkend="lz.TestResult"/> extend this class to provide
   functionality.
 -->
-<class name="Test" extends="DebugObject">
+<class name="Test" extends="DebugObject" with="formatter">
     <!-- attributes -->
     <!---
       Used to accumulate test results in the absence of exceptions
@@ -315,11 +315,6 @@
         ]]>
     </method>
 
-    <!--
-        @devnote TODO: [2007-10-23 ptw] Use LzFormatter as a mixin instead (LPP-7793)
-        @access private
-    -->
-    <attribute name="formatter" value="new lz.text()" />
     <!---
       Format a failure message from a message, expected and actual
       values.
@@ -332,7 +327,7 @@
       @return String: the formatted failure message
     -->
     <method name="tformat" args="message, expected, actual">
-        return this.formatter.formatToString(
+        return this.formatToString(
             '%s expected %#w got %#w',
             (jsTrue(message) ? message + ": " : ""), expected, actual);
     </method>
@@ -346,7 +341,7 @@
       LzFormatter.formatToString and output to the display
     -->
     <method name="displayMessage" args="...args"> <![CDATA[
-        var message = this.formatter.formatToString.apply(this, args);
+        var message = this.formatToString.apply(this, args);
         if (this.result) {
           this.result.addMessage(message);
         }
@@ -517,7 +512,7 @@
     <method name="assertNotSame" args="expected, actual, message='NotSame'">
         if (expected === actual) {
             // In-line Test.tformat so we can invert the sense
-            var msg = this.formatter.formatToString(
+            var msg = this.formatToString(
                 '%s expected anything but %#w got %#w',
                 message + ": ", expected, actual);
             this.fail(msg);
@@ -578,7 +573,7 @@
     <method name="run" args="theTestResult, theTestName">  <![CDATA[
         dw("TestCase.run(", theTestName, ")");
         setResult(theTestResult);
-        this.result.startTest(this.formatter.formatToString("%w/%s", this, theTestName));
+        this.result.startTest(this.formatToString("%w/%s", this, theTestName));
         setUp();
 
         // NOTE: [2008-10-26 ptw] Intercepting source warnings is only
@@ -1301,6 +1296,6 @@
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->

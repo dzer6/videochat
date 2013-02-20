@@ -1,5 +1,6 @@
-var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $swf8=false;var $svg=false;var $profile=false;if(!this.JSON){
-this.JSON={}};(function(){
+var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $swf11=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $svg=false;var $swf8=false;var $mobile=false;var $profile=false;(function(){
+if(!this.JSON){
+this.JSON={}}})();(function(){
 var f;var quote;var str;f=function($0){
 return $0<10?"0"+$0:$0
 };quote=function($0){

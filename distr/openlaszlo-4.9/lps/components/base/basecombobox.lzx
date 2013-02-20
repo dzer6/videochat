@@ -1,5 +1,5 @@
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->
@@ -177,7 +177,7 @@
                     </handler>
                     <!-- pass up to component level so subclassers can catch -->
                     <handler name="onblur" args="v">
-                         classroot.setAttribute('text', this.getText() );
+                         classroot.setAttribute('text', this.text );
                          if ( classroot['onblur'] ) classroot.onblur.sendEvent(v);
                     </handler>
                     <!-- pass up to component level so subclassers can catch -->
@@ -507,13 +507,16 @@
                 this.isopen = open;
                 return;
             }
+
+            // Convert withkey state to focus type (keyboard or mouse)
+            var focustype = withkey ? lz.Focus.FOCUS_KEYBOARD : lz.Focus.FOCUS_MOUSE;
             if (open) { // open combox
                 if (this.isopen) return; // tends to get called more than once, esp when
                 lz.ModeManager.makeModal( this );
 
                 this.cblist.bringToFront();
                 this.cblist.setAttribute('visible', true);
-                lz.Focus.setFocus(this.cblist, withkey);
+                lz.Focus.setFocus(this.cblist, focustype);
 
                 this.isopen = true;
                 if (this['onisopen']) this.onisopen.sendEvent(true);
@@ -526,9 +529,9 @@
                 if (this['onisopen']) this.onisopen.sendEvent(false);
                 if ( lz.Focus.getFocus() == this.cblist ) {
                     if (!editable) {
-                        lz.Focus.setFocus(bkgnd, withkey);
+                        lz.Focus.setFocus(bkgnd, focustype);
                     } else {
-                        lz.Focus.setFocus(interior.cbtext, withkey);
+                        lz.Focus.setFocus(interior.cbtext, focustype);
                     }
                 }
             }
@@ -549,7 +552,7 @@
            var rv;
            var ra = this.cblist.getValue(); // an array of values
            if (ra==null) {
-               rv  = this.interior.cbtext.getText();
+               rv  = this.interior.cbtext.text;
            } else {
                rv = ra;
            }
@@ -568,7 +571,7 @@
         <!--- Get the displayed text.
               @return String: the displayed text. -->
         <method name="getText">
-           return this.interior.cbtext.getText();
+           return this.interior.cbtext.text;
         </method>
 
         <!--- Returns current selection.

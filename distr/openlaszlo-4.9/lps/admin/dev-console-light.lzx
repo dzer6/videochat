@@ -33,11 +33,11 @@
           <text resize="true" text="Evaluate in remote app"/>
           <edittext  doesenter="true" id="expr2" width="300">
             <method name="doEnterDown">
-              canvas.remoteEval(expr2.getText());
+              canvas.remoteEval(expr2.text);
             </method>
           </edittext>
           <button enabled="false" bgcolor="white" id="app_eval_btn"
-                onclick="canvas.remoteEval(expr2.getText())">Eval</button>
+                onclick="canvas.remoteEval(expr2.text)">Eval</button>
           <button onclick="app_eval_btn.setAttribute('enabled', true);
                            canvas.initConnection();
                            canvas.sendConsoleAlive()">Connect To App</button>
@@ -146,3 +146,8 @@
 
 
 </canvas>
+<!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Use is subject to license terms.                                            *
+* X_LZ_COPYRIGHT_END ****************************************************** -->
+<!-- @LZX_VERSION@                                                         -->

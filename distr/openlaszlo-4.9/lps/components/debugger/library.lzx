@@ -48,6 +48,12 @@
        a window in the application canvas for runtimes or IDE's that have an external debugger console,
        or if remote or developer console debugging
        is enabled.</p>
+       <p>When the debugger is active, there is a menu item in the
+       default contextual (right-click) menu that can be used to show or hide
+       the debugger window.  The debugger will add a number of useful actions
+       to the contextual menu when the debugger window is visible.  If an
+       error occurred in the program, there will be actions to examine the
+       error in detail or to generate a bug report.</p>
       </text>
     </doc>
   </class>
@@ -67,6 +73,6 @@
 </library>
 
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2009 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2009, 2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->

@@ -68,12 +68,12 @@
             if (selection.length == 0) return null;
 
             if ( selection.length == 1 && !multiselect) {
-                return selection[0].text; //should be getText() ?
+                return selection[0].text;
             }
 
             var textArray = [];
             for (var i = 0; i < selection.length; i++) {
-                textArray[i] = selection[i].text; //should be getText() ?
+                textArray[i] = selection[i].text;
             }
             return textArray;
             ]]>
@@ -172,7 +172,7 @@
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2004, 2008, 2009-2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2004, 2008, 2009-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

@@ -1,5 +1,5 @@
 /* J_LZ_COPYRIGHT_BEGIN *******************************************************
-* Copyright 2007-2009 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2007-2012, 2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * J_LZ_COPYRIGHT_END *********************************************************/
 
@@ -8,6 +8,8 @@ load("3rd-party/tools/BUFakeDom.js");
 
 // some setup to fake what the html embed does 
 lz = {};
+lz.ClassAttributeTypes = {};
+lz.ClassAttributeTypes["Object"] = {};
 lz.embed = {__propcache: { appenddiv: document.createElement() },
             options: {serverroot: "RHINO_SERVERROOT", 
                       cancelkeyboardcontrol: false,
@@ -67,31 +69,17 @@ LzIdle.update = function() { }
 
 // Make a log file for us to write results to
 var lzjumReportWriter = new java.io.FileWriter("lzjum.log", true);
-// Make all calls to the debug output go to a file
-_dbg_log_all_writes = true; 
-
-// Make the platform debugger's output function call rhino's print function, so we get
-// console output in rhino. 
-Debug.addText = function( s ) {
-    print( s ); 
+// Spoof the debugger into thinking we have a console with a log
+// function
+global.console = {
+  log: function (str) { lzjumReportWriter.write(str); lzjumReportWriter.flush(); }
 }
+// Lose the noise
+Debug.console.makeObjectLink = function (rep) { return rep; };
+// Enable logging
+Debug.log_all_writes = true;
 
-Debug.info = function( s ) {
-    // Write the message out to a file
-    lzjumReportWriter.write( "info: " + s ); 
-} 
 
-Debug.error = function( s ) {
-    // Write the message out to a file
-    print("error: " + s);
-    lzjumReportWriter.write( "error: " + s ); 
-} 
-
-// Log to lzjum.log. This does not seem to work [ben 4.19.06]
-Debug.log = function( s ) {
-    // Write the message out to a file
-    lzjumReportWriter.write( s ); 
-}
 
 
 

@@ -1,11 +1,16 @@
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2010 Laszlo Systems, Inc.  All Rights Reserved.                   *
+* Copyright 2010-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 
 <library>
 
-<class name="rte" extends="html" scrollbars="false">
+<include href="html.lzx" />
+
+<!-- A note about scrollbars. scrollbars="true" will prevent an extra <div> wrapper
+     around the iframe. This extra wrapper appears to confuse dojo.
+-->
+<class name="rte" extends="html" scrollbars="true">
     <doc>
       <tag name="shortdesc"><text>Adds the capability to edit rich-text pages.</text></tag>
       <text>
@@ -50,6 +55,11 @@ role="html">&lt;html&gt;</sgmltag>.</p>
     -->
     <attribute name="extra_plugins" type="string" value=""/>
 
+    <!--- When true, the editor will be focused when it loads.
+          @initarg Boolean
+          @access public
+    -->
+    <attribute name="focusonload" type="boolean" value="false"/>
 
     <!--- root url where Dojo library is loaded. An empty string (default)
           will load the library from Google. This path must end with a '/'.
@@ -62,6 +72,8 @@ role="html">&lt;html&gt;</sgmltag>.</p>
 
     <!--- dojo theme to use. Default value is 'tundra'
           Other values in dojo 1.5 are soria, nihilo, claro
+          If you specify '(local)', no theme is loaded. In this case you
+          should load the theme directly in the wrapper file.
           @initarg String
           @access public
     -->
@@ -77,7 +89,10 @@ role="html">&lt;html&gt;</sgmltag>.</p>
     <!--- Dojo library to load (relative to dojo_root). This value is
           ignored if dojo_root is empty. Default value is 'dojo/dojo.js'.
           If you want to load an uncompressed version of dojo, specify
-          'dojo/dojo.js.uncompressed.js'
+          'dojo/dojo.js.uncompressed.js'.
+          '(local)' is a special value and no dojo javascript code will be
+          automatically loaded. Use this case when you load the dojo
+          libraries directly from the wrapper file.
           @initarg String
           @access public
     -->
@@ -105,7 +120,7 @@ role="html">&lt;html&gt;</sgmltag>.</p>
           @type html
           @access public
     -->
-    <attribute name="text" type="html"/>
+    <attribute name="text" type="html" value=""/>
 
     <!--- @access private -->
     <setter name="text" args="t">
@@ -132,6 +147,32 @@ role="html">&lt;html&gt;</sgmltag>.</p>
     -->
     <method name="getText" args="delegate">
         this.callJavascript('lz.rte.manager.getText', delegate);
+    </method>
+
+    <!--- When the component gets focus, tell the dijit.Editor it has focus.
+          @access private
+    -->
+    <handler name="onfocus">
+        this.setEditorFocus (true);
+    </handler>
+
+    <!--- When the component loses focus, tell the dijit.Editor to blur
+          @access private
+    -->
+    <handler name="onblur" args="newsel=null">
+        // Tell the editor to blur
+        this.setEditorFocus (false);
+    </handler>
+
+    <!--- Set the focus state of the dijit.Editor.
+          true = focus, false = blur
+          @type boolean
+          @access public
+    -->
+    <method name="setEditorFocus" args="focused">
+        //Debug.warn("rte.setEditorFocus", focused);
+        // Disabled until it can be tested further.
+        this.callJavascript('lz.rte.manager.editor_focus', null, focused);
     </method>
 
     <!--- If true, the rte editor is ready to receive commands
@@ -171,7 +212,7 @@ role="html">&lt;html&gt;</sgmltag>.</p>
     <!---
         Adds a button(or image button) above the rte with the specified
         text and attributes.
-        @param Object attributes: attributes suitable for the html <input/> tag. If the src attribute is used to point to an image, the path is relative to where the application is loaded from.
+        @param Object attributes: attributes suitable for the html &lt;input&gt; tag. If the src attribute is used to point to an image, the path is relative to where the application is loaded from.
         @param LzDelegate delegate: An LzDelegate which will be called with the user clicks on the text button.
         @return String: unique button id
     -->
@@ -235,6 +276,10 @@ role="html">&lt;html&gt;</sgmltag>.</p>
         if (this.dojo_theme.length > 0)
             this.callJavascript('lz.rte.manager.setDojoTheme', null, this.dojo_theme);
 
+        // Handle focusonload
+        if (this.focusonload)
+            this.callJavascript('lz.rte.manager.setFocusOnLoad', null, this.focusonload);
+
         // Set the extra plugins
         if (this.extra_plugins.length > 0)
             this.callJavascript('lz.rte.manager.setExtraPlugins', null, this.extra_plugins);
@@ -258,9 +303,19 @@ role="html">&lt;html&gt;</sgmltag>.</p>
     <event name="on_text"/>
 
     <!--- @access private -->
+    <event name="on_movefocus"/>
+
+    <!--- @access private -->
+    <event name="on_focus"/>
+
+    <!--- @access private -->
     <handler name="on_editorready">
         // The editor is ready. 
         this.editorready = true;
+
+        // If focusonload is true, make sure this component has focus
+        if (this.focusonload)
+            lz.Focus.setFocus (this);
 
         // Any settext calls are ignored until this point. Display the current html text.
         if (this.text)
@@ -272,8 +327,47 @@ role="html">&lt;html&gt;</sgmltag>.</p>
 
     <!--- @access private -->
     <handler name="on_text" args="txt">
+        if (txt == this.text) return;
         this.text = txt;
         if (this.ontext.ready) this.ontext.sendEvent(txt);
+    </handler>
+
+    <!--- Called from rtemanager or wrapper to move the focus relative
+          to this component. Positive values move to the next elements,
+          negative values move to the previous elements.
+          @access private
+    -->
+    <handler name="on_movefocus" args="dir">  <![CDATA[
+        if (!dir || dir == 0)
+            return;
+
+        var v = this;
+        if (dir < 0) {
+            dir = -dir;
+            for (var i=0; i<dir; i++) {
+                v = lz.Focus.getPrev (v);
+            }
+        }
+        else {
+            for (var i=0; i<dir; i++) {
+                v = lz.Focus.getNext (v);
+            }
+        }
+
+        // Make sure focus is on this swf div
+        this.forceSWFFocus ();
+
+        // Move the focus
+        lz.Focus.setFocus (v, lz.Focus.FOCUS_KEYBOARD);
+        ]]>
+    </handler>
+
+    <!--- Called when the rte editor got focus. This is used to make sure focus is on component.
+          @access private -->
+    <handler name="on_focus" args="ignore=null">
+        //Debug.write("on_focus");
+        if (lz.Focus.getFocus() != this)
+            lz.Focus.setFocus (this, lz.Focus.FOCUS_MOUSE);
     </handler>
 
 
@@ -281,11 +375,11 @@ role="html">&lt;html&gt;</sgmltag>.</p>
     <method name="loadsrc" args="root">
         var wrapper = root + 'rtewrapper.html';
         if (this.wrapperfile.length > 0) {
-            wrapper = this.wrapperfile;
+            wrapper = lz.Browser.getLoadURLAsLzURL().path + this.wrapperfile;
         }
 
+        this.setAttribute('visible', true); // dojo requires the div to be visible
         this.setAttribute('src', wrapper);
-        this.setAttribute('visible', true);
     </method>
 
     <!--- @access private -->

@@ -1,5 +1,5 @@
 <!-- X_LZ_COPYRIGHT_BEGIN ************************************************
-* Copyright 2007-2010 Laszlo Systems, Inc.  All Rights Reserved.         *
+* Copyright 2007-2011 Laszlo Systems, Inc.  All Rights Reserved.         *
 * Use is subject to license terms.                                       *
 * X_LZ_COPYRIGHT_END ************************************************** -->
 
@@ -78,11 +78,6 @@
             starttime="${classroot.starttime}"
             debug="${parent.debug}"
         >
-
-        <camera name="mycam"
-            show="${classroot.capturing}" />
-        <microphone name="mymic"
-            capturing="${classroot.capturing}" />
 
         </videoview>
 

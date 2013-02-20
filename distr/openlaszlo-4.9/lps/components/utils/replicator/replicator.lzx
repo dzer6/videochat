@@ -1,4 +1,4 @@
-<!-- Copyright 2001-2010 Laszlo Systems, Inc.  All Rights Reserved. -->
+<!-- Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved. -->
 <library>
     <!--- This is a declared replicator for visual elements. Unlike
         OpenLaszlo''s data-replication feature, a replicator can take an
@@ -120,12 +120,24 @@
         </method>
 
         <!-- Insert a node in existing list of elements.
-            @param Number idx: index to insert element
+                @param Number idx: index to insert element
                 @param Object n: node to insert -->
         <method name="insertNode" args="idx,n">
             this.nodes.splice(idx, 0, n);
             this._cloneprops.splice(idx,0, null); // maintain cloneprops indices
             this.__adjustVisibleClones();
+        </method>
+
+        <!-- Remove one or more nodes from the existing list of elements.
+                @param Number idx: First index to delete element
+                @param Number n: number of elements to delete.
+                @return [Object]: Array of nodes that were removed.
+        -->
+        <method name="removeNodes" args="idx,n">
+            var removed = this.nodes.splice(idx, n);
+            this._cloneprops.splice(idx, n); // maintain cloneprops indices
+            this.__adjustVisibleClones();
+            return removed;
         </method>
 
         <!-- Called internally, but may be overridden.  This is the method
@@ -214,6 +226,8 @@
         <method name="_makeClone">
             var v = this.container.makeChild( this.replicated );
             v.setAttribute( "clonenumber", null );
+            // The classroot is the same as the container
+            v.classroot = this.container.classroot;
             // emulate datapath behavior
             v.setAttribute( "cloneManager", this );
             return v;
@@ -236,12 +250,23 @@
             
             @param LzView v: The clone whose data is being set.
             @param n: The node to which it is being set. -->
-        <method name="setData" args="v:*,n=null">
-            if (v) {
-                v.setAttribute('data', this.nodes[ n ]);
-                v.applyData(this.nodes[n]);
-            }
-        </method>
+
+        <method name="setData" args="v:*,n=null"><![CDATA[
+          if (v) {
+             v.setAttribute('data', this.nodes[ n ]);
+               var ptr = this._pointer;
+               if (ptr) {
+                   var ppath = ptr.parsePath(this.xpath);
+                   if (ppath && (ppath.operator != null || ppath.aggOperator != null)) {
+                       v.applyData(this.nodes[n]);
+                   }
+               } else {
+                   // other data-source
+                   v.applyData(this.nodes[n]);
+               }
+          }
+         ]]></method>
+
 
         <!-- @keywords private -->
         <method name="__adjustVisibleClones" args="ignore=null" >

@@ -137,6 +137,76 @@
     <view resource="shadowCorner_rsc" /> 
 </class> 
 
+    <!-- Special context menu item for debugger commands -->
+    <class name="debugmenuitem" extends="contextmenuitem">
+      <attribute name="argument" value="null" />
+      <event name="onargument" />
+      <setter name="argument" args="argument"><![CDATA[
+        if ((this.arguments == 0 && argument == null) || this.validArgument(argument)) {
+          this.argument = argument;
+          this.setAttribute('isapplicable', this.applicable());
+          if (this.isapplicable) {
+            this.updateCaption();
+          }
+          if (this.onargument.ready) { this.onargument.sendEvent(argument); }
+        }
+      ]]></setter>
+      <!-- The tricky part here is that menu items keep their last valid argument -->
+      <method name="validArgument" args="argument">
+        return (argument != null);
+      </method>
+      <attribute name="isapplicable" type="boolean" value="false" />
+      <method name="applicable">
+        return this.arguments == 0 || this.argument != null;
+      </method>
+      // Visible only if debug window is visible and applicable
+      <attribute name="visible" value="${this.parent.parent.visible &amp;&amp; this.isapplicable}" />
+      <attribute name="description" type="string" value="${null}" />
+      <attribute name="command" type="string" value="${this.name}" />
+      <attribute name="arguments" type="number" value="1" />
+      <attribute name="argumentFormat" type="string" value="w" />
+      <method name ="descriptionString">
+        if (this.arguments == 0) {
+          return Debug.formatToString("%s", this.description);
+        } else {
+          return Debug.formatToString(
+            "%s '%0.48" + this.argumentFormat + "'",
+            this.description, this.argument);
+        }
+      </method>
+      <method name ="commandEchoString">
+        if (this.arguments == 0) {
+          return Debug.formatToString("Debug.%s()", this.command);
+        } else {
+          return Debug.formatToString("Debug.%s(%0.64w)", this.command, this.argument);
+        }
+      </method>
+      <method name="updateCaption">
+        this.setAttribute('caption', (this.description ? this.descriptionString() : this.commandEchoString()));
+      </method>
+      <handler name="oninit">
+        this.updateCaption();
+      </handler>
+      <event name="onnode" />
+      <handler name="onselect" method="execute" />
+      <method name="execute" args="ignore">
+        Debug.freshPrompt();
+        Debug.echo(this.commandEchoString());
+        if (this.arguments == 0) {
+          var result = Debug[this.command]();
+        } else if (this.arguments == 1) {
+          var result = Debug[this.command](this.argument);
+        } else {
+          var result = Debug[this.command].apply(Debug, this.argument);
+        }
+        if (result) {
+          Debug.displayResult(result);
+          if (result is LzNode) {
+            if (this.onnode.ready) { this.onnode.sendEvent(result); }
+          }
+        }
+      </method>
+    </class>
 
 <!--- 
     The Laszlo debugger window. An instance will be automatically
@@ -259,7 +329,176 @@
         super.setAttribute ('y', Math.max( 0 , Math.min( y , canvas.height - 4) ) ); 
     </setter> 
 
+    <contextmenu name="menu" />
+    <node name="debuggeritems">
+      <debugmenuitem
+          name="showHide" caption="Show/Hide Debugger"
+          visible="true"
+        >
+        <method name="execute" args="ignore">
+          this.classroot.setAttribute('visible', (! this.classroot.visible));
+        </method>
+      </debugmenuitem>
+      <debugmenuitem
+          name="versionInfo" separatorbefore="true"
+          description="Show Version Information"
+          arguments="0"
+          />
+      <!-- We make the error commands always visible, so people know they are there -->
+      <!-- We only enable them when they are applicable -->
+      <debugmenuitem
+          name="inspectError"
+          command="inspect"
+          description="Show Details of"
+          visible="${this.classroot.visible}"
+          enabled="${this.argument is LzSourceMessage}"
+          argument="'Last Error'"
+          argumentFormat="s"
+          >
+      </debugmenuitem>
+      <debugmenuitem
+          name="bugReport"
+          command="bugReport"
+          description="Show Bug Report for"
+          visible="${this.classroot.visible}"
+          enabled="${this.argument is LzSourceMessage}"
+          argument="'Last Error'"
+          argumentFormat="s"
+          />
+      <debugmenuitem
+          name="inspectTarget" separatorbefore="true"
+          command="inspect"
+          description="Show Details of"
+          >
+        <handler name="onnode" args="node">
+          this.classroot.lastNode = node;
+        </handler>
+      </debugmenuitem>
+      <debugmenuitem
+          name="inspectNode"
+          command="inspect"
+          description="Show Details of"
+          >
+        <method name="applicable">
+          return this.argument != this.parent.inspectTarget.argument;
+        </method>
+      </debugmenuitem>
+      <debugmenuitem
+          name="showSubviews"
+          description="Show Subviews of"
+          >
+        <method name="validArgument" args="arg"><![CDATA[
+          return (arg is LzNode && arg.subviews.length > 0);
+        ]]></method>
+      </debugmenuitem>
+      <debugmenuitem
+          name="showParent"
+          description="Show Parent of"
+          >
+        <method name="validArgument" args="arg"><![CDATA[
+          return (arg is LzNode && arg.parent && arg.parent !== arg);
+        ]]></method>
+        <handler name="onnode" args="node">
+          this.classroot.lastNode = node;
+        </handler>
+      </debugmenuitem>
+      <debugmenuitem
+          name="explainStyles"
+          command="explainStyleBindings"
+          description="Show Style Bindings of"
+          >
+        <method name="validArgument" args="arg"><![CDATA[
+          return (arg is LzNode) && (arg.__LZCSSStyledAttrs != null);
+        ]]></method>
+      </debugmenuitem>
+      <debugmenuitem
+          name="inspect_"
+          command="inspect"
+          description="Show Details of"
+          />
+      <debugmenuitem
+          name="inspect__"
+          command="inspect"
+          description="Show Details of"
+          />
+      <debugmenuitem
+          name="inspect___"
+          command="inspect"
+          description="Show Details of"
+          />
+    </node>
+    <node name="controlitems">
+      <!-- Useful things for the debug window -->
+      <contextmenuitem
+          name="Preferences" caption="Debugger Peferences" separatorbefore="true"
+          visible="${this.classroot.visible}"
+        >
+        <handler name="onselect">
+          this.classroot.showprefs();
+        </handler>
+      </contextmenuitem>
+      <contextmenuitem
+          name="Clear" caption="Clear Debugger Window"
+          visible="${this.classroot.visible}"
+        >
+        <handler name="onselect">
+          this.classroot.clear();
+        </handler>
+      </contextmenuitem>
+    </node>
 
+    <attribute name="contextTarget" value="null" />
+    <attribute name="lastNode" value="null" />
+    <method name="nodeTarget">
+      return this.lastNode || ((this.contextTarget is LzNode) ? (this.lastNode = this.contextTarget) : null);
+    </method>
+
+    <method name="updateMenu" args="menu, target"><![CDATA[
+      var visible = this.visible;
+
+      menu.showHide.setAttribute('caption', Debug.formatToString("%s Debugger", visible ? "Hide" : "Show"));
+
+      menu.inspectError.setAttribute('argument', Debug.lastError);
+      menu.bugReport.setAttribute('argument', Debug.lastError);
+
+      var _ = Debug.environment._;
+      this.contextTarget = target || ((_ is LzNode) ? _ : canvas);
+      var nodeTarget = this.nodeTarget();
+
+      menu.inspectTarget.setAttribute('argument', target);
+
+      menu.inspectNode.setAttribute('argument', nodeTarget);
+      if (menu.explainStyles.validArgument(target)) {
+          menu.explainStyles.setAttribute('argument', target);
+      } else {
+          menu.explainStyles.setAttribute('argument', nodeTarget);
+      }
+      if (menu.showSubviews.validArgument(target)) {
+          menu.showSubviews.setAttribute('argument', target);
+      } else {
+          menu.showSubviews.setAttribute('argument', nodeTarget);
+      }
+      if (menu.showParent.validArgument(target)) {
+          menu.showParent.setAttribute('argument', target);
+      } else {
+          menu.showParent.setAttribute('argument', nodeTarget);
+      }
+
+      menu.inspect_.setAttribute('argument', Debug.environment._);
+      menu.inspect__.setAttribute('argument', Debug.environment.__);
+      menu.inspect__.setAttribute('argument', Debug.environment.__);
+    ]]></method>
+
+    <!-- The debugger context menu items that should be added to any context menu -->
+    <method name="contextMenuItems" args="menu, target"><![CDATA[
+      this.updateMenu(this.debuggeritems, target);
+      var dbgmenu = (this.menu === menu);
+      // add control items at end if displaying debugger context menu
+      var items = this.debuggeritems.subnodes.concat(dbgmenu ? this.controlitems.subnodes : []);
+      // add separator if displaying user (= non-debugger) context menu
+      items[0].setAttribute("separatorbefore", ! dbgmenu);
+      return items;
+    ]]></method>
 
 <method name="initEvalView">
       <![CDATA[
@@ -273,6 +512,7 @@
            }
        }
 
+       this.middle.content.textpane.setAttribute('contextmenu', this.menu);
        this.loaded();
        var text = this.bottom.center.input;
        this.lineheight = text.getTextHeight();
@@ -334,7 +574,7 @@
     <!-- send the input text field to server for compile/eval -->
     <method name="doEval">
       <![CDATA[
-       var expr = this.bottom.center.input.getText();
+       var expr = this.bottom.center.input.text;
        this.commandhistory[this.commandhistory.length] = expr;
        this.commandhistory_ptr = this.commandhistory.length;
        if (this.persistedData) {
@@ -371,7 +611,7 @@
 <method name="sendCaretToEOL" args="ignore=null">
         var infield = this.bottom.center.input;
         lz.Focus.setFocus(infield);
-        var content = infield.getText();
+        var content = infield.text;
         infield.setSelection(content.length, content.length);
     </method>
 
@@ -382,7 +622,7 @@
         // Save any partial input
         if ((offset < 0) &&
             (ptr == this.commandhistory.length) &&
-            (expr = this.bottom.center.input.getText())) {
+            (expr = this.bottom.center.input.text)) {
           this.commandhistory[this.commandhistory.length] = expr;
           this.commandhistory_ptr = this.commandhistory.length;
           if (this.persistedData) { this.persistedData.data.commandhistory = this.commandhistory; }
@@ -399,7 +639,7 @@
 <method name="doCommandCompletion" args="char">
       <![CDATA[
         var leader = '';
-        var expr = this.bottom.center.input.getText();
+        var expr = this.bottom.center.input.text;
         // Find the last completable expression
         // TODO: [2006-11-23 ptw] If not in a partial member
         // expression, find next enclosing call expression (to print arg
@@ -695,18 +935,6 @@
                    resource="clear1_rsc">
               <tooltip>Clear debug window</tooltip>
             </basebutton>
-            <basebutton name="prefs" pixellock="true"
-                   x="${parent.clear.x - this.width}"
-                   onclick="classroot.showprefs()"
-                   resource="prefsBtn_rsc">
-               <tooltip>Preferences</tooltip>
-             </basebutton>
-            <basebutton name="bugrep" pixellock="true"
-                  x="${parent.prefs.x - this.width}"
-                  onclick="if (Debug.lastError) Debug.bugReport(Debug.lastError)"
-                  resource="bug_rsc">
-            <tooltip>Create a bug report</tooltip>
-          </basebutton>
        </view>
 
        <view name="logo" resource="title_rsc" x="9" y="8"/>
@@ -758,14 +986,17 @@
                   minvalue="64" maxvalue="65536" showvalue="true"/>
         </view>
 
+        <view>
+          <text>printDepth</text>
+          <slider x="100" value="Debug.printDepth"
+                  onvalue="Debug.printDepth = this.value"
+                  minvalue="1" maxvalue="256" showvalue="true"/>
+        </view>
+
         <view >
           <text>Opacity</text>
           <slider x="100" onvalue="Debug.window.setAttribute('opacity', this.value/100)"
                   value="100" minvalue="10" maxvalue="100" showvalue="true"/>
-        </view>
-
-        <view >
-            <button onclick="Debug.bugReport()">Make Bug Report</button>
         </view>
 
         <view align="right" layout="axis:x; spacing:10">
@@ -1028,7 +1259,7 @@
 
 </library>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2001-2006, 2008, 2009, 2010 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Copyright 2001-2006, 2008, 2009-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->
 <!-- @LZX_VERSION@                                                         -->

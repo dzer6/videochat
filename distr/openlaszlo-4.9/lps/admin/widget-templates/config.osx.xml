@@ -18,6 +18,8 @@
     <integer>%APPHEIGHT%</integer>
     <key>Width</key>
     <integer>%APPWIDTH%</integer> 
+    <key>AllowNetworkAccess</key>
+    <true/>
 </dict>
 </plist>
 
