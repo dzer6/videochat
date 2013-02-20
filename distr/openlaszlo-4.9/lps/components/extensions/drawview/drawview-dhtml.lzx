@@ -1,0 +1,554 @@
+<!---
+
+    @copyright Copyright 2001-2012 Laszlo Systems, Inc.  All Rights Reserved.
+               Use is subject to license terms.
+
+    @access public
+    @affects lzdrawview
+    @topic LFC
+    @subtopic Views
+  -->
+<library>
+
+      <script when="immediate"><![CDATA[
+        // Classes that implement an interface must obey the LZX
+        // tag->class mapping convention and must be dynamic
+        dynamic class $lzc$class_drawview extends LzView with DrawviewShared {
+            // Next two are part of the required LFC tag class protocol
+            static var tagname = 'drawview';
+            static var attributes = new LzInheritedHash(LzView.attributes);
+
+            // cache values, used to avoid resetting context values
+            private var __globalAlpha = null;
+            private var __lineWidth = null;
+            private var __lineCap = null;
+            private var __lineJoin = null;
+            private var __miterLimit = null;
+            private var __strokeStyle = null;
+            private var __fillStyle = null;
+            // Track whether the path needs to be drawn again by comparing with
+            // the __path length
+            private var __pathdrawn = -1;
+            private var __lastoffset = -1;
+            // Prevent unneeded calls to clear()
+            private var __dirty = false;
+            // Track whether this path is currently open or not.
+            private var __pathisopen = false;
+            // Add local alias to help the compiler avoid with (this) ...
+            private var _lz = lz;
+
+            // contains context states, used for save/restore()
+            var __contextstates = null;
+
+            function init() {
+                super.init();
+                this.createContext();
+            }
+
+            override function construct(parent, args) {
+                super.construct(parent, args);
+                this.__contextstates = [];
+            }
+
+            // called when the context has been created
+            override function $lzc$set_context(context) {
+                this.beginPath();
+                if (this.context) {
+                    this.__lineWidth = null;
+                    this.__lineCap = null;
+                    this.__lineJoin = null;
+                    this.__miterLimit = null;
+                    this.__fillStyle = null;
+                    this.__strokeStyle = null;
+                    this.__globalAlpha = null;
+                }
+                // Add capability so folks know if they can use canvas text APIs
+                // disable for iPad for now...
+                if (context['fillText'] && this._lz.embed.browser.browser !== 'iPad') {
+                    this.capabilities['2dcanvastext'] = true;
+                }
+                super.$lzc$set_context(context);
+            }
+
+            // hash of image resources for drawImage
+            static var images = {};
+            var __drawImageCnt = 0;
+
+            function getImage(url) {
+                var cache = this._lz.drawview.images;
+                if (! cache[url]) {
+                    var loadurl = url;
+                    if (url.indexOf('http:') != 0 && url.indexOf('https:') != 0) {
+                        loadurl = this.sprite.getResourceUrls(url)[0];
+                    }
+                    var img = new Image();
+                    img.src = loadurl;
+                    cache[url] = img;
+                    if (loadurl != url) {
+                        cache[loadurl] = img;
+                    }
+                }
+                return cache[url];
+            }
+
+            function drawImage(image, x=0, y=0, w=null, h=null, r=0) {
+                if ($debug) this.__checkContext();
+                if (image == null) {
+                    // use a copy of this canvas
+                    image = this.sprite.__LZcanvas;
+                } else if (typeof image == 'string') {
+                    // load the image
+                    image = this.getImage(image);
+                }
+                if (! image) return;
+                this.__dirty = true;
+                // default to image size per http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#dom-context-2d-drawimage
+                if (w == null) w = image.width;
+                if (h == null) h = image.height;
+
+                var nodename = image.nodeName;
+                // canvas and img tags are valid
+                var valid = (image && image.nodeType == 1 && (nodename == 'IMG') || nodename == 'CANVAS'); 
+                // canvas is always complete
+                var complete = (image && image.complete) || nodename == 'CANVAS';
+                if (! valid) {
+                    if ($debug) {
+                        Debug.warn("Invalid image for lz.drawview.drawImage(): %w", image);
+                    }
+                } else if (! complete) {
+                    // TODO [20090308 anba] drawImage needs to be defered,
+                    // maybe emit a debug-message to inform user
+                    var fname = '__drawImage' + (this.__drawImageCnt++);
+                    // create a closure to save arguments
+                    this[fname] = function () {
+                        // remove handler and delete closure
+                        this._lz.embed.removeEventHandler(image, 'load', this, fname);
+                        delete this[fname];
+                        this.drawImage(image, x, y, w, h, r);
+                    }
+                    // defer until image is completely loaded
+                    this._lz.embed.attachEventHandler(image, 'load', this, fname);
+                } else {
+                    this.__updateFillStyle();
+
+                    var dotransform = x || y || r;
+                    if (dotransform) {
+                        this.context.save();
+                        if (x || y) {
+                            this.context.translate(x, y);
+                        }
+                        if (r) {
+                            this.context.rotate(r);
+                        }
+                    }
+
+                    if (w == null) w = image.width;
+                    if (h == null) h = image.height;
+
+                    this.context.drawImage(image, 0, 0, w, h);
+
+                    if (dotransform) {
+                        this.context.restore();
+                    }
+                }
+            }
+
+            //Fills or strokes (respectively) the given text at the given position. If a maximum width is provided, the text will be scaled to fit that width if necessary.
+            function fillText(text, x, y, maxWidth = null) {
+                if (! this.capabilities['2dcanvastext']) {
+                    if ($debug) {
+                        Debug.warn('lz.drawview.fillText() is not currently supported in %w.', $runtime);
+                    }
+                    return;
+                }
+                this.__styleText();
+                this.__dirty = true;
+                this.__updateFillStyle();
+                if (maxWidth) {
+                    this.context.fillText(text,x,y,maxWidth);
+                } else {
+                    this.context.fillText(text,x,y);
+                }
+            }
+            function strokeText(text, x, y, maxWidth = null) {
+                if (! this.capabilities['2dcanvastext']) {
+                    if ($debug) {
+                        Debug.warn('lz.drawview.strokeText() is not currently supported in %w.', $runtime);
+                    }
+                    return;
+                }
+                this.__styleText();
+                this.__dirty = true;
+                this.__updateLineStyle();
+                if (maxWidth) {
+                    this.context.strokeText(text,x,y,maxWidth);
+                } else {
+                    this.context.strokeText(text,x,y);
+                }
+            }
+
+            function measureText(text) {
+                if (! this.capabilities['2dcanvastext']) {
+                    if ($debug) {
+                        Debug.warn('lz.drawview.measureText() is not currently supported in %w.', $runtime);
+                    }
+                    return;
+                }
+                this.__styleText();
+                return this.context.measureText(text);
+            }
+
+            // Applies this view's styling to the html5 canvas
+            function __styleText() {
+                var font = this.font || canvas.font;
+                var fontsize = (this.fontsize || canvas.fontsize) + 'px';
+                var fontstyle = this.fontstyle || 'plain';
+
+                if (fontstyle == "plain") {
+                    var fweight = "normal";
+                    var fstyle = "normal";
+                } else if (fontstyle == "bold") {
+                    var fweight = "bold";
+                    var fstyle = "normal";
+                } else if (fontstyle == "italic") {
+                    var fweight = "normal";
+                    var fstyle = "italic";        
+                } else if (fontstyle == "bold italic" || fontstyle == "bolditalic") {
+                    var fweight = "bold";
+                    var fstyle = "italic";        
+                }
+
+                // Assemble CSS font attribute per HTML5 canvas styling rules
+                var css = fstyle + ' ' + fweight + ' ' + fontsize + ' ' + font;
+                //Debug.debug('css', css);
+                this.context.font = css;
+            }
+            
+
+            function __checkContext() {
+                if ($debug) {
+                    if (! this['context']) Debug.warn('this.context is not yet defined.  Please check for the presence of the context property before using drawing methods, and/or register for the oncontext event to find out when the property is available.');
+                }
+            }
+
+            function beginPath() {
+                this.__path = [[1,0,0]];
+                this.__pathisopen = true;
+                this.__pathdrawn = -1;
+            }
+
+            function closePath() {
+                if (this.__pathisopen) {
+                    this.__path.push([0]);
+                }
+                this.__pathisopen = false;
+            }
+
+            function moveTo(x,y) {
+                if (this.__pathisopen) {
+                    this.__path.push([1, x,y]);
+                }
+            }
+
+            function lineTo(x,y) {
+                if (this.__pathisopen) {
+                    this.__path.push([2, x,y]);
+                }
+            }
+
+            function quadraticCurveTo(cpx, cpy, x, y) {
+                if (this.__pathisopen) {
+                    this.__path.push([3, cpx, cpy, x, y]);
+                }
+            }
+
+            function bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) {
+                if (this.__pathisopen) {
+                    this.__path.push([4, cp1x, cp1y, cp2x, cp2y, x, y]);
+                }
+            }
+
+            // Use native arc
+            function arc(x, y, radius, startAngle, endAngle, anticlockwise) {
+                if (this.__pathisopen) {
+                    var sx:Number = x + radius*Math.cos(-startAngle);
+                    var sy:Number = y + radius*Math.sin(2 * Math.PI + startAngle);
+                    // TODO:
+                    //If the context has any subpaths, then the method must add a straight line from the last point in the subpath to the start point of the arc.
+                    this.__path.push([1, sx, sy]);
+                    this.__path.push([5, x, y, radius, startAngle, endAngle, anticlockwise]);
+                }
+            }
+            function fill() {
+                this.__updateFillStyle();
+                this.__playPath(0);
+                this.context.fill();
+            }
+
+            function __updateFillStyle() {
+                if (this.__globalAlpha != this.globalAlpha) {
+                    this.__globalAlpha = this.context.globalAlpha = this.globalAlpha;
+                }
+                if (this.__fillStyle != this.fillStyle) {
+                    if (this.fillStyle instanceof this._lz.CanvasGradient) {
+                        this.fillStyle.__applyFillTo(this.context);
+                    } else {
+                        this.context.fillStyle = this._lz.ColorUtils.torgb(this.fillStyle)
+                    }
+                    this.__fillStyle = this.fillStyle;
+                }
+            }
+
+            var __strokeOffset = 0;
+            function __updateLineStyle() {
+                if (this.__globalAlpha != this.globalAlpha) {
+                    this.__globalAlpha = this.context.globalAlpha = this.globalAlpha;
+                }
+                if (this.__lineWidth != this.lineWidth) {
+                    this.__lineWidth = this.context.lineWidth = this.lineWidth;
+                    if (this.aliaslines) {
+                        // Offset by .5 if lineWidth is an odd number - see LPP-8780
+                        this.__strokeOffset = (this.lineWidth % 2) ? .5 : 0;
+                    }
+                }
+                if (this.__lineCap != this.lineCap) {
+                    this.__lineCap = this.context.lineCap = this.lineCap;
+                }
+                if (this.__lineJoin != this.lineJoin) {
+                    this.__lineJoin = this.context.lineJoin = this.lineJoin;
+                }
+                if (this.__miterLimit != this.miterLimit) {
+                    this.__miterLimit = this.context.miterLimit = this.miterLimit;
+                }
+                if (this.__strokeStyle != this.strokeStyle) {
+                    if (this.strokeStyle instanceof this._lz.CanvasGradient) {
+                        this.strokeStyle.__applyStrokeTo(this.context);
+                    } else {
+                        this.context.strokeStyle =  this._lz.ColorUtils.torgb(this.strokeStyle);
+                    }
+                    this.__strokeStyle = this.strokeStyle;
+                }
+            }
+
+            function __playPath(offset) {
+                var path = this.__path;
+                var l = path.length;
+                if (l == 0) return;
+                if ($debug) this.__checkContext();
+
+                // Skip offsets for stroke
+                if (this.__pathdrawn === l && this.__lastoffset === offset) {
+                    //console.log('skipping playpath');
+                    return;
+                }
+                //console.log('offset', offset, l, this.__pathdrawn, this.__lastoffset === offset, this.__pathdrawn === l);
+                this.__pathdrawn = l;
+                this.__lastoffset = offset;
+
+                if (offset) {
+                    this.context.translate(offset, offset);
+                }
+
+                // clear() should happen
+                this.__dirty = true;
+
+                this.context.beginPath();
+                
+                for (var i = 0; i < l; i += 1) {
+                    var a = path[i];
+                    switch (a[0]) {
+                        case 0:
+                            this.context.closePath();
+                            break;
+                        case 1:
+                            this.context.moveTo(a[1], a[2]);
+                            break;
+                        case 2:
+                            this.context.lineTo(a[1], a[2]);
+                            break;
+                        case 3:
+                            this.context.quadraticCurveTo(a[1], a[2], a[3], a[4]);
+                            break;
+                        case 4:
+                            this.context.bezierCurveTo(a[1], a[2], a[3], a[4], a[5], a[6]);
+                            break;
+                        case 5:
+                            this.context.arc(a[1], a[2], a[3], a[4], a[5], a[6])
+                            break;
+                    }
+                }
+                if (offset) {
+                    this.context.translate(-offset, -offset);
+                }
+            }
+
+            function clipPath() {
+                this.__playPath(0);
+                this.context.clip();
+            }
+
+            function clipButton() {
+                if ($debug) {
+                    Debug.warn('lz.drawview.clipButton() is not currently supported in %w.', $runtime);
+                }
+            }
+
+            function stroke() {
+                this.__updateLineStyle();
+                this.__playPath(this.__strokeOffset);
+                this.context.stroke();
+            }
+
+            function clear() {
+                if (this['__dirty'] == false) return;
+                this.__pathdrawn = -1;
+                this.__dirty = false;
+                if ($debug) this.__checkContext();
+                this.context.clearRect(0, 0, this.width, this.height);
+            }
+
+            function clearMask() {
+                if ($debug) {
+                    Debug.warn('lz.drawview.clearMask() is not currently supported in %w.', $runtime);
+                }
+            }
+
+            function createLinearGradient(x0, y0, x1, y1) {
+                return new this._lz.CanvasGradient(this, [x0, y0, x1, y1], false);
+            }
+
+            function createRadialGradient(x0, y0, r0, x1, y1, r1) {
+                return new this._lz.CanvasGradient(this, [x0, y0, r0, x1, y1, r1], true);
+            }
+
+            function rotate(r) {
+                this.context.rotate(r);
+            }
+
+            function translate(x, y) {
+                this.context.translate(x, y);
+            }
+
+            function scale(x, y) {
+                this.context.scale(x, y);
+            }
+
+            function save() {
+                this.__contextstates.push({fillStyle: this.fillStyle, strokeStyle: this.strokeStyle, globalAlpha: this.globalAlpha, lineWidth: this.lineWidth, lineCap: this.lineCap, lineJoin: this.lineJoin, miterLimit: this.miterLimit});
+                this.context.save();
+            }
+
+            function restore() {
+                var state = this.__contextstates.pop();
+                if (state) {
+                    for (var i in state) {
+                        // restore to both regular and cached values, since they'll match the context values already
+                        this[i] = this['__' + i] = state[i];
+                    }
+                }
+                this.context.restore();
+            }
+
+            function fillRect(x, y, w, h) {
+                this.__dirty = true;
+                this.__updateFillStyle();
+                this.context.fillRect(x, y, w, h);
+            }
+
+            function clearRect(x, y, w, h) {
+                this.context.clearRect(x, y, w, h);
+            }
+
+            function strokeRect(x, y, w, h) {
+                this.__dirty = true;
+                this.__updateLineStyle();
+                this.context.strokeRect(x, y, w, h);
+            }
+        } // End of drawview
+        lz[$lzc$class_drawview.tagname] = $lzc$class_drawview;
+
+        /**
+          * <p>
+          * The <tagname>LzCanvasGradient</tagname> is used by drawviews to describe a gradient fill.
+          * </p>
+          *
+          * @shortdesc An object for describing gradient fills
+          * @devnote LzCanvasGradient is an opaque object, which is used for assigning to
+          * other attributes, e.g. fillStyle.  It is also used to add color stops.
+          * An LzCanvasGradient is returned by drawview.createLinearGradient or
+          * drawview.createRadialGradient.
+          */
+        class LzCanvasGradient {
+            /** @access private */
+            var __context = null;
+            /** @access private */
+            var __g = null;
+
+            function LzCanvasGradient(c, args, isradial) {
+                this.__context = c;
+                var context = c.context;
+                if (isradial) {
+                    this.__g = context.createRadialGradient(args[0], args[1], args[2], args[3], args[4], args[5]);
+                } else {
+                    this.__g = context.createLinearGradient(args[0], args[1], args[2], args[3]);
+                }
+            }
+
+            /**
+              * Adds a new stop to a gradient. gradients are rendered such that at the starting point the colour at offset 0 is used, that at the ending point the color at offset 1 is used.  globalAlpha is stored for each gradient step added.
+              * @param Number o: The offset this stop used for placement in the gradient.  Gradients are rendered such that for the starting point the colour at offset 0 is used, that at the ending point the color at offset 1 is used and all colors between those offsets are blended.  Must be less than 0 or greater than 1.
+              * @param Number c: The color to be used at this color.  A hexadecimal value, e.g. 0xffffff
+              */
+            function addColorStop(o, c) {
+                var cstopColor = lz.ColorUtils.torgb(c);
+                var gAlpha = this.__context.globalAlpha;
+                if (gAlpha != null && gAlpha != 1) {
+                    // add globalAlpha (if there is no explicit alpha value)
+                    cstopColor = this.torgba(cstopColor, gAlpha);
+                }
+                if ($debug) {
+                    try {
+                        this.__g.addColorStop(o, cstopColor);
+                    } catch (e) {
+                            Debug.warn('drawview gradient addColorStop() called with an invalid offset or color value: %w, %w.  Converted color to %w and received the error %w.', o, c, cstopColor, e);
+                    }
+                } else {
+                    this.__g.addColorStop(o, cstopColor);
+                }
+            }
+
+            /**
+            * @access private
+            */
+            function torgba (rgb, alpha) {
+                if (rgb.indexOf("rgba") == -1) {
+                    // remove "rgb(" and ")"
+                    var rgba = rgb.substring(4, rgb.length - 1).split(',');
+                    rgba.push(alpha);
+                    return "rgba(" + rgba.join(',') + ")";
+                } else {
+                    // already in rgba() format
+                    return rgb;
+                }
+            }
+
+            /**
+            * @access private
+            */
+            function __applyFillTo(scope) {
+                scope.fillStyle = this.__g;
+            }
+
+            /**
+            * @access private
+            */
+            function __applyStrokeTo(scope) {
+                scope.strokeStyle = this.__g;
+            }
+        }
+
+        // create alias
+        lz.CanvasGradient = LzCanvasGradient;
+      ]]></script>
+  
+</library>

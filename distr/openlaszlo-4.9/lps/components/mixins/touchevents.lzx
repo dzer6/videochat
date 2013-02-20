@@ -1,0 +1,224 @@
+<!---
+    @copyright Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.
+               Use is subject to license terms.
+
+    @access public
+    @topic LFC
+    @subtopic Views
+  -->
+<library>
+    <mixin name="touchevents">
+        <doc>
+        <tag name="shortdesc"><text>A mixin that adds touch events to view.</text></tag>
+        <text>
+        <example title="Touch and gesture demo"><programlisting><![CDATA[
+<canvas> 
+    <mixin name="limitx">
+        <attribute name="minx" type="number" value="0"/>
+        <attribute name="maxx" type="number" value="${canvas.width - this.width}"/>
+        <setter name="x" args="x">
+            if (x &lt; this.minx) {
+                x = minx;
+            } else if (x > this.maxx) {
+                x = maxx;
+            }
+            super.$lzc$set_x(x);
+        </setter>
+    </mixin>
+    <mixin name="limity">
+        <attribute name="miny" type="number" value="0"/>
+        <attribute name="maxy" type="number" value="${canvas.height - this.height}"/>
+        <setter name="y" args="y">
+            if (y &lt; this.miny) {
+                y = miny;
+            } else if (y > this.maxy) {
+                y = maxy;
+            }
+            super.$lzc$set_y(y);
+        </setter>
+    </mixin>
+
+    <view width="100" height="100" opacity="${this.activated ? .5 : 1}" bgcolor="${this.pressed ? 'green' : 'red'}" with="swipegesture, touchevents, limitx, limity" transition="x 1s, y 1s" clickable="true">
+        <handler name="ongesture" args="g">
+            // activate dragging
+            this.setAttribute('pressed', true);
+
+            this.setAttribute('rotation', g.rotation);
+            this.setAttribute('xscale', g.scale);
+            this.setAttribute('yscale', g.scale);
+        </handler>
+        <handler name="onswipe" args="s">
+            var axis = 'x';
+            if (s.direction === 'up' || s.direction === 'down') {
+                axis = 'y';
+            }
+            this.animate(axis, s.velocity, 1000, true);
+            //Debug.info('onswipe', axis, s);
+        </handler>
+        <dragstate name="dragger" applied="${parent.pressed}"/>
+    </view>
+</canvas>
+        ]]></programlisting></example>
+
+        <p><classname>touchevents</classname> is a mixin intended for use with <sgmltag class="element" role="LzView">&lt;view&gt;</sgmltag> and its subclasses.
+        </p>
+        </text>
+        </doc>
+
+        <!--- True if this view has been touched for activatetime milliseconds, 
+              false otherwise.
+              @lzxdefault false -->
+        <attribute name="activated" type="boolean" value="false"/>
+        <!--- True if this view has been touched and held for more than 
+              presstime milliseconds, false otherwise.
+              @lzxdefault false -->
+        <attribute name="pressed" type="boolean" value="false"/>
+        <!--- Sent when the view has been tapped -->
+        <event name="ontap"/>
+
+        <!--- The time this view must be touched before becoming activated, in 
+              milliseconds
+              @lzxdefault 100 -->
+        <attribute name="activatetime" type="number" value="100"/>
+        <!--- The time this view must be touched before becoming pressed, in 
+              milliseconds
+              @lzxdefault 1000 -->
+        <attribute name="presstime" type="number" value="1000"/>
+        <!--- The threshold used to determine if a touch event was a tap, in pixels. The touch event must begin and end within taplimit pixels.
+              milliseconds
+              @lzxdefault 10 -->
+        <attribute name="taplimit" type="number" value="10"/>
+
+        <!--- @access private -->
+        <method name="construct" args="p, a">
+            super.construct(p,a);
+            this.__activateDel = new lz.Delegate(this, '__activate');
+            this.__pressDel = new lz.Delegate(this, '__press');
+        </method>
+
+        <!--- @access private -->
+        <method name="mouseevent" args="name, value=null">
+            <![CDATA[
+            if ($debug) {
+                //Debug.info('mouseevent %w: %w', name, value)
+            }
+            if (name === 'onmousedown') {
+                this.__positionstate.setAttribute('applied', true);
+                this.__downtime = (new Date()).getTime();
+                this.__downpos = this.getMouse();
+                this.__delta = {absx: -1, absy: -1};
+                lz.Timer.addTimer(this.__activateDel, this.activatetime)
+                lz.Timer.addTimer(this.__pressDel, this.presstime)
+            } else if (name === 'onmousemove') {
+                var newpos = this.getMouse(),
+                    dx = newpos.x - this.__downpos.x,
+                    absx = Math.abs(dx),
+                    dy = newpos.y - this.__downpos.y,
+                    absy = Math.abs(dy),
+                    dt = (new Date()).getTime() - this.__downtime;
+
+                this.__delta = {x: dx, y: dy, t: dt, absx: absx, absy: absy};
+
+                if (absx > this.taplimit || absy > this.taplimit) {
+                    lz.Timer.removeTimer(this.__pressDel);
+                }
+                lz.Timer.removeTimer(this.__activateDel);
+
+            } else if (name === 'onpress') {
+                this.__deactivate();
+            } else if (name === 'onmouseup'){
+                this.__deactivate();
+                // process tap events
+                var dt = (new Date()).getTime() - this.__downtime;
+                if (dt < this.presstime && 
+                    this.__delta.absx < this.taplimit && 
+                    this.__delta.absy < this.taplimit) {
+                    //Debug.info('tap', this.__delta.absx, this.__delta.absy, dt, this.presstime, this.taplimit)
+                    this.mouseevent('ontap');
+                }
+            }
+            super.mouseevent(name, value);
+            ]]>
+        </method>
+
+        <!--- @access private -->
+        <method name="__activate" args="ignore=null">
+            //Debug.info('__activate');
+            this.setAttribute('activated', true);
+        </method>
+        <!--- @access private -->
+        <method name="__deactivate">
+            //Debug.info('__deactivate');
+            this.__positionstate.setAttribute('applied', false);
+            if (this.activated) {
+                this.setAttribute('activated', false);
+            }
+            if (this.pressed) {
+                this.setAttribute('pressed', false);
+            }
+            lz.Timer.removeTimer(this.__activateDel);
+            lz.Timer.removeTimer(this.__pressDel);
+        </method>
+        <!--- @access private -->
+        <method name="__press" args="value">
+            //Debug.info('_press');
+            lz.Timer.removeTimer(this.__activateDel);
+            this.setAttribute('pressed', true);
+        </method>
+
+        <!--- @access private -->
+        <state name="__positionstate">
+            <!--- @access private -->
+            <handler name="onmousemove" reference="canvas">
+                this.mouseevent('onmousemove');
+            </handler>
+        </state>
+    </mixin>
+
+    <mixin name="swipegesture">
+        <doc>
+        <tag name="shortdesc"><text>A mixin that adds the swipe gesture to touch events. Must be mixed in before touchevents, e.g. with="swipegesture, touchevents".</text></tag>
+        <!--text>
+        </text-->
+        </doc>
+
+        <!--- Sent when a swipe gesture occurs. An event object will be sent with the prototype {direction: 'up|down|left|right', velocity: pixels per second}.-->
+        <event name="onswipe"/>
+        <!--- The threshold velocity, in pixels per second. Swipe gestures must be moving faster than this to be sent as onswipe events. 
+              milliseconds
+              @lzxdefault 40 -->
+        <attribute name="swipevelocity" type="number" value="40"/>
+        <!--- @access private -->
+        <method name="mouseevent" args="name, value=null">
+            <![CDATA[
+            if (name === 'onmousemove' && this.pressed == false) {
+                var d = this.__delta;
+                var swipedirection
+                if (d.absx > d.absy) {
+                    // horizontal
+                    var v = (1000 * d.x) / d.t;
+                    if (Math.abs(v) >= this.swipevelocity && 
+                        d.absx > this.taplimit) {
+                        swipedirection = v < 0 ? 'left' : 'right';
+                    }
+                } else {
+                    // vertical
+                    var v = (1000 * d.y) / d.t;
+                    if (Math.abs(v) >= this.swipevelocity && 
+                        d.absy > this.taplimit) {
+                        swipedirection = v < 0 ? 'up' : 'down';
+                    }
+                }
+                if (swipedirection) {
+                    this.mouseevent('onswipe', {direction: swipedirection, velocity: v});
+                }
+                //Debug.info('onmousemove', d, v);
+            } else if (name === 'onswipe') {
+                //Debug.info('onswipe', value);
+                this.__deactivate();
+            }
+            super.mouseevent(name, value);
+            ]]>
+        </method>
+    </mixin>
+</library>

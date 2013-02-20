@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+body {
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 90%;
+	font-weight: normal;
+	background-color: #e1e1e1;
+}
+
+body, caption, th, td, input, textarea, select, option, legend, fieldset {
+	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 90%;
+	font-weight: normal;
+}
+
+img {border:0}
+
+a:link {color: #005596; text-decoration: none;}     /* unvisited link */
+a:visited {color: #005596; text-decoration: none;}  /* visited link */
+a:hover {color: #277CB4; text-decoration: underline;}   /* mouse over link */
+a:active {color: #000000; text-decoration: none;}   /* selected link */
+
+/* J_LZ_COPYRIGHT_BEGIN *******************************************************
+* Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Use is subject to license terms.                                            *
+* J_LZ_COPYRIGHT_END *********************************************************/

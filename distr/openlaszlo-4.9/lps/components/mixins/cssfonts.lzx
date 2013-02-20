@@ -1,0 +1,306 @@
+<!---
+    @copyright Copyright 2011 Laszlo Systems, Inc.  All Rights Reserved.
+               Use is subject to license terms.
+
+    @access public
+    @topic LFC
+    @subtopic Views
+  -->
+<library>
+  <script when="immediate"><![CDATA[
+    /** @access private **/
+    class cssFontSupport {
+      static const SPACE = new RegExp('\\s+');
+      static const SLASH = new RegExp('\\s*\\/\\s*');
+      static const COMMA = new RegExp('\\s*,\\s*');
+      static const STYLE_PATTERN = new RegExp('(italic|oblique)');
+      static const VARIANT_PATTERN = new RegExp('small-caps');
+      static const WEIGHT_PATTERN = new RegExp('(bold|bolder|lighter|[1-9]00)');
+
+      // Only thing we still cascade
+      static const CASCADE_ATTRS = {hasdirectionallayout: true};
+
+      static function parseFontSpecification(font, node:LzNode, attribute:String) {
+        // Crush out any space around commas
+        var canonical = font.replace(cssFontSupport.COMMA, ',');
+        // Crush out any space around slashes
+        canonical = canonical.replace(cssFontSupport.SLASH, '/');
+        // Get the parts
+        var parts = canonical.split(cssFontSupport.SPACE);
+        // family and size are required and are the last two components
+        var family = parts.pop();
+        var size = parts.pop();
+        var lineheight = 'normal';
+        var sizeparts = size.split(cssFontSupport.SLASH);
+        if (sizeparts.length > 1) {
+          size = sizeparts[0];
+          lineheight = sizeparts[1];
+        }
+        // style, variant and weight can come in any order, and are all optional
+        var style = 'normal', variant = 'normal', weight = 'normal';
+        while (parts.length > 0) {
+          var part = parts[0];
+          if (part.match(cssFontSupport.WEIGHT_PATTERN)) {
+            weight = parts.shift();
+          } else if (part.match(cssFontSupport.STYLE_PATTERN)) {
+            style = parts.shift();
+          } else if (part.match(cssFontSupport.VARIANT_PATTERN)) {
+            variant = parts.shift();
+          } else if (part === 'normal') {
+            // Default, ignore
+            parts.shift();
+          } else {
+            // Unparsable
+            break;
+          }
+        }
+        if (family && size && (parts.length == 0)) {
+          // Carefully contrived to be the CSS for the expander
+          return {
+            'font-family': family,
+            'font-size': size,
+            'line-height': lineheight,
+            'font-weight': weight,
+            'font-style': style,
+            'font-variant': variant
+          };
+        } else if ($debug) {
+          Debug.error("Invalid font: %w", font);
+        }
+      };
+
+      static function unparseFontSpecification (value, node:LzNode, attribute:String) {
+        var str = '';
+        if (value['font-style'] != 'normal') {
+          if (str) { str += ' '; }
+          str += value['font-style'];
+        }
+        if (value['font-variant'] != 'normal') {
+          if (str) { str += ' '; }
+          str += value['font-variant'];
+        }
+        if (value['font-weight'] != 'normal') {
+          if (str) { str += ' '; }
+          str += value['font-weight'];
+        }
+        if (str) { str += ' '; }
+        str += value['font-size'];
+        if (value['line-height'] != 'normal') {
+          str += '/' + value['line-height'];
+        }
+        str += ' ' + value['font-family'];
+        return str;
+      }
+    };
+  ]]></script>
+
+  <type name="cssfontspecification">
+    <accept args="value, node:LzNode, attribute:String">
+      return cssFontSupport.parseFontSpecification(value, node, attribute);
+    </accept>
+
+    <present args="value, node:LzNode, attribute:String">
+      return cssFontSupport.unparseFontSpecification(value, node, attribute);
+    </present>
+  </type>
+
+  <mixin name="cssfonts">
+      <doc>
+        <tag name="shortdesc"><text>A mixin to control font attributes with CSS style properties.</text></tag>
+        <text>
+          <p>The <tagname>cssfonts</tagname> mixin adds CSS font styling to <sgmltag class="element" role="LzView">&lt;text&gt;</sgmltag></p>
+
+          <p><tagname>cssfonts</tagname> implements a subset of the CSS fonts specification
+          <a href="http://www.w3.org/TR/css3-fonts/">http://www.w3.org/TR/css3-fonts/</a>
+          </p>
+          <example title="Using CSS styleable fonts" query-parameters="lzr=swf10"><programlisting><![CDATA[
+<canvas height="60">
+    <stylesheet>
+      view.styled {
+        font: bold italic 24 helvetica, sans-serif;
+      }
+    </stylesheet>
+    <include href="mixins/cssfonts.lzx"/>
+    <view styleclass="styled" layout="axis: y; spacing: 5">
+      <text>This is a demonstration of NOT styling fonts with CSS</text>
+      <text with="cssfonts">This is a demonstration of styling fonts with CSS</text>
+    </view>
+</canvas>
+          ]]></programlisting></example>
+        </text>
+      </doc>
+
+    <!--- @access private -->
+    <method name="construct" args="p, a"><![CDATA[
+      super.construct(p,a);
+      // initialize default values
+      // @devnote [2010-12-30 ptw] Because the style bindings and
+      // initializations can happen in any order, we set the default
+      // values here, then set the fallback values for each styled
+      // attribute to `null`, which tells us the attribute was not
+      // styled so we should do nothing.  If the attribute _is_
+      // styled, the setter will be called and the value will
+      // propagate to both the array (abbreviated value) and the
+      // individual value
+      this.css_font = {
+            'font-family': "Verdana,Vera,sans-serif",
+            'font-size': 11,
+            'line-height': 'normal',
+            'font-weight': 'normal',
+            'font-style': 'normal',
+            'font-variant': 'normal'
+          };
+      this.css_font_family = "Verdana,Vera,sans-serif";
+      this.css_font_size = 11;
+      this.css_line_height = 'normal'
+      this.css_font_style = 'normal';
+      this.css_font_weight = 'normal';
+      this.css_font_variant = 'normal';
+    ]]></method>
+
+    <!-- Simple properties -->
+    <attribute name="bgcolor" style="background-color" type="color" value="white" />
+    <attribute name="fgcolor" style="color"  type="color" value="black" />
+    <attribute name="direction" style="direction"  type="string" value="ltr" />
+
+
+    <!--- @access private -->
+    <method name="_expandCSSFontSpecificationProperty" args="attr, value:String"><![CDATA[
+      var expanded = lz.Type.acceptTypeValue('cssfontspecification', value, this, attr);
+      return expanded;
+    ]]></method>
+
+
+    <!--- The font of the element -->
+    <attribute name="css_font" style="font" type="cssfontspecification" value="" expander="_expandCSSFontSpecificationProperty" />
+    <!--- @access private -->
+    <event name="oncss_font" />
+    <!--- @access private -->
+    <setter name="css_font" args="font"><![CDATA[
+        var changed = false;
+        for (var prop in font) {
+          if (font.hasOwnProperty(prop)) {
+            var attr = 'css_' + prop.replace('-', '_');
+            if (this[attr] != font[prop]) {
+              changed = true;
+              this.setAttribute(attr, font[prop]);
+            }
+          }
+        }
+        if (changed) {
+          this.css_font = font;
+          if (this.oncss_font.ready) {
+            this.oncss_font.sendEvent(font);
+          }
+        }
+    ]]></setter>
+
+    <!--- The font family of the element -->
+    <attribute name="css_font_family" style="font-family" type="string" value="${null}" />
+    <!--- @access private -->
+    <event name="oncss_font_family" />
+    <!--- @access private -->
+    <setter name="css_font_family" args="value"><![CDATA[
+      if (value == null) { return; }
+      if (value != this.css_font_family) {
+        this.css_font['font-family'] = this.css_font_family = value;
+        // TODO: Translate to LZX attribute
+        this.setAttribute('font', value);
+        if (this.oncss_font_family.ready) {
+          this.oncss_font_family.sendEvent(value);
+        }
+      }
+    ]]></setter>
+
+    <!--- The font size of the element -->
+    <attribute name="css_font_size" style="font-size" type="number" value="${null}" />
+    <!--- @access private -->
+    <event name="oncss_font_size" />
+    <!--- @access private -->
+    <setter name="css_font_size" args="value"><![CDATA[
+      if (value == null) { return; }
+      if (value != this.css_font_size) {
+        this.css_font['font-size'] = this.css_font_size = value;
+        // TODO: Translate to LZX attribute
+        this.setAttribute('fontsize', value);
+        if (this.oncss_font_size.ready) {
+          this.oncss_font_size.sendEvent(value);
+        }
+      }
+    ]]></setter>
+
+    <!--- The font style of the element -->
+    <attribute name="css_font_style" style="font-style" type="string" value="${null}" />
+    <!--- @access private -->
+    <event name="oncss_font_style" />
+    <!--- @access private -->
+    <setter name="css_font_style" args="value"><![CDATA[
+      if (value == null) { return; }
+      if (value != this.css_font_style) {
+        this.css_font['font-style'] = this.css_font_style = value;
+        // TODO: Translate to LZX attribute
+        var lzxval = '';
+        if (this.css_font_weight == 'bold') { lzxval = 'bold'; }
+        if (this.css_font_style == 'italic' || this.css_font_style == 'olique') { lzxval += 'italic'; }
+        if (lzxval == '') { lzxval = 'plain'; }
+        this.setAttribute('fontstyle', lzxval);
+        if (this.oncss_font_style.ready) {
+          this.oncss_font_style.sendEvent(value);
+        }
+      }
+    ]]></setter>
+
+    <!--- The font weight of the element -->
+    <attribute name="css_font_weight" style="font-weight" type="string" value="${null}" />
+    <!--- @access private -->
+    <event name="oncss_font_weight" />
+    <!--- @access private -->
+    <setter name="css_font_weight" args="value"><![CDATA[
+      if (value == null) { return; }
+      if (value != this.css_font_weight) {
+        this.css_font['font-weight'] = this.css_font_weight = value;
+        // TODO: Translate to LZX attribute
+        var lzxval = '';
+        if (this.css_font_weight == 'bold') { lzxval = 'bold'; }
+        if (this.css_font_style == 'italic' || this.css_font_style == 'olique') { lzxval += 'italic'; }
+        if (lzxval == '') { lzxval = 'plain'; }
+        this.setAttribute('fontstyle', lzxval);
+        if (this.oncss_font_weight.ready) {
+          this.oncss_font_weight.sendEvent(value);
+        }
+      }
+    ]]></setter>
+
+    <!--- The font variant of the element -->
+    <attribute name="css_font_variant" style="font-variant" type="string" value="${null}" />
+    <!--- @access private -->
+    <event name="oncss_font_variant" />
+    <!--- @access private -->
+    <setter name="css_font_variant" args="value"><![CDATA[
+      if (value == null) { return; }
+      if (value != this.css_font_variant) {
+        this.css_font['font-variant'] = this.css_font_variant = value;
+        // TODO: Translate to LZX attribute
+        if (this.oncss_font_variant.ready) {
+          this.oncss_font_variant.sendEvent(value);
+        }
+      }
+    ]]></setter>
+
+    <!--- The line height of the element -->
+    <attribute name="css_line_height" style="line-height" type="string" value="${null}" />
+    <!--- @access private -->
+    <event name="oncss_line_height" />
+    <!--- @access private -->
+    <setter name="css_line_height" args="value"><![CDATA[
+      if (value == null) { return; }
+      if (value != this.css_font_variant) {
+        this.css_font['font-variant'] = this.css_font_variant = value;
+        // TODO: Translate to LZX attribute
+        if (this.oncss_font_variant.ready) {
+          this.oncss_font_variant.sendEvent(value);
+        }
+      }
+    ]]></setter>
+  </mixin>
+</library>

@@ -1,0 +1,327 @@
+<!---
+    @copyright Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.
+               Use is subject to license terms.
+
+    @access public
+    @topic Extensions
+    @subtopic Audio-Video
+  -->
+<library>
+
+<include href="mediaview.lzx"/>
+<script when="immediate">
+<![CDATA[// requires "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" to be loaded in HEAD of wrapper HTML
+         /* example:
+           <wrapperheaders>
+           <script type="text/javascript" src="includes/swfobject.js"></script>
+           </wrapperheaders>
+         */
+
+function onCurrentTimeChange(time, playerId)
+{
+
+    //    Debug.info('onCurrentTimeChange', time, playerId);
+}
+
+function onDurationChange(time, playerId)
+{
+    //    Debug.info('onDurationChange', time, playerId);
+}       
+
+
+function onMediaPlayerStateChange (value, playerId)
+    {   
+        Debug.info('onMediaPlayerStateChange', value, playerId);
+    }
+
+
+function onJavaScriptBridgeCreated(playerId)
+{
+    //    Debug.info("onJavaScriptBridgeCreated", playerId);
+    if (!lz.html5fallbackmediaview.__playersinited) {
+        lz.html5fallbackmediaview.__playersinited = true;
+        var plist = lz.html5fallbackmediaview.__players;
+        for (var k = 0; k < plist.length; k++) {
+            var player = plist[k];
+            player.setAttribute('src', this.src);
+        }
+    }
+    
+    var player = lz.html5fallbackmediaview.findPlayerById(playerId);
+    if (player != null) {
+        var state = player.__media.getState();
+        if (state == "paused")
+            player.onpause.sendEvent();
+        } else if (state == "playing") {
+           player.onplaying.sendEvent();
+    }
+
+        
+    // Add event listeners that will update the 
+    //player.addEventListener("currentTimeChange", "onCurrentTimeChange");
+    //    player.addEventListener("durationChange", "onDurationChange");
+    //    player.addEventListener("onMediaPlayerStateChange", "onMediaPlayerStateChange");
+
+    // For some reason this callback fn keeps getting called every second when the
+    // movie is playing. I cant' figure out how to disable that callback, except by deleting
+    // this function..
+
+    //onJavaScriptBridgeCreated = null;
+
+
+
+}
+]]>
+</script>
+
+
+<class name="html5fallbackmediaview" extends="html5mediaview">
+    <doc>
+        <tag name="shortdesc"><text>Abstract base class to support SWF fallback player for HTML5 video and audio playback.</text></tag>
+        <text>
+        <p>See <sgmltag class="element" role="LzView">&lt;html5videoview&gt;</sgmltag> and  <sgmltag class="element" role="LzView">&lt;html5audioview&gt;</sgmltag></p>
+        </text>
+
+    </doc>  
+  
+    <attribute name="__players" allocation="class" value="[]"/>
+    <attribute name="__playersinited" allocation="class" type="boolean" value="false"/>
+
+    <method name="findPlayerById" args="pid" allocation="class">
+      <![CDATA[
+        var plist = lz.html5fallbackmediaview.__players;
+        for (var k = 0; k < plist.length; k++) {
+           if (plist[k]._fpid == pid) {return plist[k]; }
+        }
+        return null;
+      ]]>
+    </method>
+
+
+  <!--- @keywords private -->
+  <method name="_addlisteners">
+    // override parent, so it doesn't do anything at all. Subclass will install it's own listeners
+  </method>
+  
+  
+  <!--- @keywords private -->
+  <method name="_updateDuration" args="val">
+  </method>
+  
+  <!--- Returns whether the media element supports the specified MIME type. 
+      DOMString canPlayType (in DOMString type);
+      Return Value
+      
+      The possible string values are: “no”, “probably” and “maybe”.
+  -->
+  
+
+  <setter name="autobuffer" args="val">
+          Debug.info("autobuffer setter NYI");
+  </setter>
+
+  <setter name="autoplay" args="val">
+    this.autoplay = val;
+    if (this.__media) this.__media.autoplay = val;
+    if (this.onautoplay) this.onautoplay.sendEvent(val);
+  </setter>
+
+  <setter name="currentTime" args="val"> 
+    <![CDATA[
+        if (this.__media && this.__media.seek) this.__media.seek( val );
+        if (this.onCurrentTimeChange) this.onCurrentTimeChange.sendEvent(val);
+        if (this.onCurrentTime) this.onCurrentTime.sendEvent(val);
+        ]]>
+  </setter>
+
+  <setter name="controls" args="val"> 
+    if (this.oncontrols) this.oncontrols.sendEvent(val);
+  </setter>
+
+
+  
+  <!--- Starts loading the media resource. -->
+  <method name="load" >
+
+  </method>
+  
+  <!--- Pauses the media playback if in progress. -->
+  <method name="pause" >
+
+  </method>
+  
+  <!--- Begins playing the media resource. -->
+  <method name="play" >
+    Debug.warn("play() not yet implemented", this);
+  </method>
+  
+</class>
+
+
+<class name="html5fallbackvideoview" extends="html5fallbackmediaview">
+      <doc>
+        <text>
+            <p><tagname>html5fallbackvideoview</tagname> allows applications to play video from HTTP servers.</p> 
+
+            <example><programlisting class="code">
+            &lt;canvas&gt;
+            &lt;html5videoview src="http://www.archive.org/download/SoundieF/SoundieF_512kb.mp4" autoplay="true" width="320" height="240"/&gt;
+            &lt;/canvas&gt;
+            </programlisting></example>
+        </text>  
+        </doc>
+
+  <!--- @keywords private  id of the flowplayer div-->
+  <attribute name="_fpid" value="null"/>
+
+  <!--- @keywords private pointer to flowplayer object -->
+  <attribute name="fp" value="null"/>
+
+  <method name="makeNativePlayer" args="args">
+    Debug.info("makeNativePlayer");
+    var vid = document.createElement('div');
+    this._fpid = "strobeMediaPlayback"; // ++LzNode.__UIDs;
+    vid.id = this._fpid;
+    this.sprite.__LZdiv.appendChild(vid);
+
+  </method>
+
+  <method name="init">
+    super.init();
+
+    lz.html5fallbackmediaview.__players.push(this);
+
+    // Create a StrobeMediaPlayback configuration 
+    var parameters =
+    {   autoPlay: this.autoplay
+    ,   controlBarAutoHide: false
+    ,   javascriptCallbackFunction: "onJavaScriptBridgeCreated"
+    };
+
+            
+    // Embed the player SWF:            
+    swfobject.embedSWF
+    ( "StrobeMediaPlayback.swf"
+    , "strobeMediaPlayback"
+    , 640
+    , 480
+    , "10.1.0"
+    , {}
+    , parameters
+    , { allowFullScreen: "true"}
+    , { name: "strobeMediaPlayback" }
+    );
+
+
+    this.__media = document.getElementById(this._fpid);
+
+  </method>
+
+  <!--- @keywords private -->
+  <method name="_addlisteners">
+    super._addlisteners();
+  </method>
+  
+
+  <setter name="src" args="val"> 
+    <![CDATA[
+             Debug.info('set src', val);
+    this.src = val;
+    if (this.__media && this.__media.setMediaResourceURL) this.__media.setMediaResourceURL(val);
+    if (this.onsrc) { this.onsrc.sendEvent(val); }
+  ]]></setter>
+  
+
+   <method name="addSource" args="url,mimetype=null,codecs=null">
+         this.setAttribute('src', url);
+   </method>
+ 
+   <method name="removeSources" args="">
+         this.setAttribute('src', null);
+   </method>
+
+
+  <!--- Begins playing the media resource. -->
+  <method name="play" >
+    Debug.info(this, "play()");
+    try {
+        this.__media.play2();
+        // TODO we should only send this event when the swf player tells us it is actually playing
+        this.onplaying.sendEvent();
+    } catch (e) {
+       this.onerror.sendEvent(e);
+     }
+  </method>
+
+  <method name="load" >
+        Debug.info("load");
+  </method>
+
+  <method name="pause" >
+        this.__media.pause();
+        this.onpause.sendEvent()
+  </method>
+  
+  <!--- Sent when the video begins displaying as fullscreen -->
+  <event name="onbeginfullscreen"/>
+  
+  <!--- Sent when the video stops displaying as fullscreen -->
+  <event name="onendfullscreen"/>
+  
+  <attribute name="poster" type="string"/>
+  
+  <!--- The native width of the video in CSS pixels. (read-only) -->
+  <method name="getVideoWidth">
+    return flowplayer(this._fpid).getClip().width;
+  </method>
+  
+  <!--- The native height of the video in CSS pixels. (read-only) -->
+  <method name="getVideoHeight">
+    return flowplayer(this._fpid).getClip().height;
+  </method>
+  
+  <!--- Is video element displaying fullscreen mode? -->
+  <method name="getDisplayingFullscreen">
+  </method>
+  
+  <!--- Does video element support fullscreen mode? -->
+  <method name="getSupportsFullscreen">
+  </method>
+  
+  <!--- Enters fullscreen mode. -->
+  <method name="enterFullscreen">
+  </method>
+  
+  <!--- Exits fullscreen mode. -->
+  <method name="exitFullscreen">
+  </method>
+  
+  <setter name="volume" args="val">
+    <![CDATA[
+    this.volume = val;
+    if (this.ready && this.__media) {
+        this.__media.setVolume(val);
+    }
+    if (this.onvolumechange) { this.onvolumechange.sendEvent(val); }
+    if (this.onvolume) { this.onvolume.sendEvent(val); }
+    ]]>
+  </setter>
+
+
+  <setter name="muted" args='val' >
+    <![CDATA[
+     this.muted = val;
+     if (this.ready && this.__media) {
+       this.__media.setMuted(val);
+     }
+     if (this.onmuted) this.onmuted.sendEvent(val);
+     ]]>
+  </setter>
+
+
+
+
+</class>
+
+
+</library>

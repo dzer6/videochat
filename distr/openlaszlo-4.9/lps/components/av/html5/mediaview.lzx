@@ -1,0 +1,15 @@
+<!---
+    @copyright Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.
+               Use is subject to license terms.
+
+    @access public
+    @topic Extensions
+    @subtopic Audio-Video
+  -->
+<library>
+
+
+  <include href="html5mediaview.lzx" />
+  <include href="fallbackmediaview.lzx" />
+
+</library>

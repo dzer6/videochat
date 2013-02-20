@@ -1,0 +1,19 @@
+<!---
+    @copyright Copyright 2011 Laszlo Systems, Inc.  All Rights Reserved.
+               Use is subject to license terms.
+  -->
+<library>
+  <script when="immediate">
+    /** @access private */
+    var __formatter_trampoline = new lz.text(null, {visible: false});
+  </script>
+  <!---
+     Documented by the kernel LzFormatter mixin, which this reflects into LZX
+     @access private
+  -->
+  <mixin name="formatter">
+    <method name="abbreviate" args="...args">return __formatter_trampoline.abbreviate.apply(__formatter_trampoline, args);</method>
+    <method name="formatToString" args="...args">return __formatter_trampoline.formatToString.apply(__formatter_trampoline, args);</method>
+    <method name="pad" args="...args">return __formatter_trampoline.pad.apply(__formatter_trampoline, args);</method>
+  </mixin>
+</library>

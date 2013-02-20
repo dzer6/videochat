@@ -1,0 +1,38 @@
+<library>
+    <!--- bidi mixin. Adds attributes that can be forwarded to a text-derived
+          view. When using this mixin, use a constraint to tie these settings
+          with the underlying text (or input text) element.
+    -->
+
+    <mixin name="bidi">
+        <!--- (SWF Only). If true, use the TLF text framework class that
+              supports bidirectional text layout.
+              @type Boolean
+              @lzxdefault false
+              @access public
+        -->
+        <attribute name="hasdirectionallayout" type="boolean" style="directional_layout" value="false"/>
+
+        <!--- (SWF only). Text direction, either "ltr" (default) or
+              "rtl". This is ignored unless hasdirectionallayout is true.
+              @type String
+              @lzxdefault "ltr"
+              @access public
+        -->
+        <attribute name="direction" type="string" style="bidi_direction" value="ltr"/>
+
+        <!--- Text alignment. Accepts [left, right, center, justify]
+              @type String
+              @lzxdefault "left"
+              @access public
+        -->
+        <attribute name="textalign" type="string" style="textalign" value="left"/>
+
+    </mixin>
+</library>
+
+<!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
+* Copyright 2010-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
+* Use is subject to license terms.                                            *
+* X_LZ_COPYRIGHT_END ****************************************************** -->
+<!-- @LZX_VERSION@                                                         -->

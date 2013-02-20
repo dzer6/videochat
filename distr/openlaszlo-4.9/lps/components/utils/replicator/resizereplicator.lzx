@@ -1,0 +1,469 @@
+<!-- Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved. -->
+<library>
+    <include href="lazyreplicator.lzx"/>
+    <!-- A replicator which creates as many clones as are necessary to fill in
+    a masked region, similar to the lazy replication option in OpenLaszlo. Also
+    similar to OL''s resize replication, the resizereplicator must have a clipped
+    view as a parent.  Be sure to use a dataselectionmanager instead of a selectionmanager for resizereplicators.-->
+
+    <class name="resizereplicator" extends="lazyreplicator">
+
+        <!--- Specifies the estimated size of each replicated node. This hint
+              improves the performance of the cloning process. This is
+              overridden from lazyreplicator.
+        -->
+        <attribute name="replicatedsize" value="100"/>
+
+        <!--- Set to true to not reuse old clones. 
+              It is not advised to set this to true because each node can
+              a different size.
+        -->
+        <attribute name="recycleclones" value="false"/>
+
+        <!-- @keywords private -->
+        <attribute name="resizedel" value="null"/>
+
+        <!-- Size of each node. There is one entry for each node.
+                > 0 : specified size of the node
+                = 0 : a node of zero size
+                -999999 : unknown
+             @keywords private
+        -->
+        <attribute name="clonesizes" value="null"/>
+
+        <!-- Last position of mask
+             @keywords private
+        -->
+        <attribute name="lastpos" value="0"/>
+
+        <!-- @keywords private -->
+        <method name="construct" args="p,a">
+            <![CDATA[ 
+            super.construct( p, a );
+
+            // TODO [hqm 2007 09] Lock the parent layout so it can't mess
+            // up our placement of clones.  The implicit lazy
+            // repl. manager only wraps this inside of _adjustVisibleClones
+            // but I want to be sure any parent container layout is really
+            // turned off before any views get instantiated, and stays off
+            // all the time, it can only cause trouble.
+            // 
+            var layouts = this.container.layouts;
+            if (layouts) {
+                for (var i = 0, len = layouts.length; i < len; i++) {
+                    layouts[i].lock();
+                }
+            }
+
+
+            this.__emptyArray = [];
+//            this.clonedel = new LzDelegate( this, '__adjustVisibleClones');
+
+            // The size (height or width) of each clone is stored by clonenumber
+            // Initialize the full list
+            if (this.clonesizes == null)
+                this.clonesizes = [];
+
+            // Track any changes to the size of a clone
+            this.resizedel = new LzDelegate( this, '__handleCloneResize');
+            ]]>
+        </method>
+
+        <!-- Handle the clone changing dimension in the layout axis.
+             A record is kept of all clone heights (by clonenumber).
+             @keywords private
+        -->
+        <method name="__handleCloneResize" args="ignore=null">
+            var changed = this.__updateCloneSizes ();
+                
+            // Adjust the sizes
+            var pos = -this.container[this.axis];
+            if (this.clones.length == 0 || this.lastpos != pos || changed)
+                this.__adjust ();
+        </method>
+
+        <!-- Get the size of a clone, either by its explicit
+             size or by measuring it. Returns -999999 if unknown.
+             @keywords private
+        -->
+        <method name="__getCloneSize" args="clone">
+            <![CDATA[
+            var sz = -999999;
+            if (clone) {
+                var key = clone.clonenumber;
+                var sizeaxis = this._sizes[ this.axis ];
+                var sz = clone[sizeaxis];
+            }
+            return sz;
+            ]]>
+        </method>
+
+        <!-- Reuse or discard a clone
+             @keyword private
+        -->
+        <method name="__discardClone" args="clone">
+            if (!this.recycleclones) {
+                clone.destroy ();
+            }
+            else {
+                // Zero the size to prevent problems when it is reused.
+                var sizeaxis = this._sizes[ this.axis ];                
+                clone[sizeaxis] = 0; 
+                this.poolClone (clone);
+            }
+        </method>
+
+        <!-- Get the size of a node by constructing it and measuring the size
+             @keyword private
+        -->
+        <method name="__getNodeSize" args="i">
+            var clone = this.getClone();
+            this.bind (clone, i);
+            var sz = this.__getCloneSize (clone);
+            this.unbind (clone);
+            this.__discardClone (clone);
+
+            return sz;
+        </method>
+
+ 
+        <!-- Update the size of the clonesizes array. Negative entries
+             indicate the view was measured. Returns true if any values
+             changed.
+             @keywords private
+        -->
+        <method name="__updateCloneSizes">
+            <![CDATA[
+                // Look at the current size of all the current clones.
+                var changed = false;
+                var sizeaxis = this._sizes[ this.axis ];
+                var len = this.clones.length;
+                for (var i=0; i<len; i++) {
+                    var clone = this.clones[i];
+                    if (clone) {
+                        var sz = this.__getCloneSize(clone);
+                        var key = clone.clonenumber;
+                        if (sz != this.clonesizes[key]) {
+                            this.clonesizes[key] = sz;
+                            changed = true;
+                        }
+                    }
+                }
+                return changed;
+            ]]>
+        </method>
+
+        <!-- Compute the size of all the nodes. This is an estimate if
+             the sizes are not available.
+             @keywords private
+        -->
+        <method name="__measureSize">
+            <![CDATA[
+            var s = 0;  // Total size of all nodes
+            var remaining = this.nodes.length;
+            for (var i=0, len=this.clonesizes.length; i<len; i++) {
+                var sz = this.clonesizes[i];
+                if (sz != -999999)
+                    s += sz;
+                else
+                    s += this.replicatedsize; // Use defualt value
+                remaining--;
+            }
+            if (remaining > 0)
+                s += remaining * this.replicatedsize;
+
+            return s;
+            ]]>
+        </method>
+
+
+        <!-- Adjust the clones for display using the current position of
+             the scrollbars. This should be called whenever the scrollbars
+             move, or when the height of any node changes.
+             @keywords private
+        -->
+        <method name="__adjust">
+            <![CDATA[
+            if ( ! this.nodes ) {
+                while ( this.clones.length ) this.__discardClone( this.clones.pop() );
+                return;
+            }
+
+            if (! this.mask) {
+                Debug.warn("%w: cannot find clipping parent", this);
+                return;
+            }
+
+            var sizeAxis = this._sizes[ this.axis ];
+            if (! this.mask[ "hasset" + sizeAxis ] ) {
+                return;
+            }
+
+            if (!this.replicatedsize || this.nodes.length > this.clonesizes.length)
+                this._setSize();
+
+            // Determine the size of all the items. This will be an estimate
+            // if the sizes of each node are not known.
+            var s = this.__measureSize ();
+            // Debug.warn("Estimated sz = ", s);
+
+            if ( this.nodes.length != null ){
+                this._lastNodesLength = this.nodes.length;
+            }
+
+
+            // Tell the container about its new size
+            if ( s > 0 && this.container[ sizeAxis ] != s ){
+                //Debug.write( sizeAxis, " was ", this.container[ sizeAxis ], " now", s );
+                this.container.setAttribute( sizeAxis, s );
+            }
+
+
+            // Find the first element to display. Be careful not to add new.
+            var newoffset = -this.container[this.axis];
+
+            var pos = 0;
+            var newstart = 0;  // cloneoffset to start the page
+            for (var i=0, len = this.nodes.length; i<len; i++) {
+                var size = this.clonesizes[i];
+                if (size == -999999)
+                    size = this.replicatedsize; // Use default value
+                if (pos+size > newoffset)
+                    break;
+                pos += size;
+                newstart++;
+            }
+            newoffset = pos;
+
+            // Use as many elements as will fit. Be careful not to add new
+            // elements. Also make sure a full window of data is shown
+            var sizeAxis = this._sizes[ this.axis ];
+            var lastoffset = newoffset + this.mask[sizeAxis];
+            var atend = false;
+            if (lastoffset > s && lastoffset >= this.mask[sizeAxis]) {
+                // Show a full page of data on the last page.
+                //Debug.write("At end: ", lastoffset, s);
+                lastoffset = s;
+                newoffset = lastoffset - this.mask[sizeAxis];
+                atend = true;
+            }
+            this.lastpos = newoffset;
+
+            var newend = newstart;
+            for (var i=newstart, len = this.nodes.length; i<len; i++) {
+                if (pos > lastoffset)
+                    break;
+
+                var size = this.clonesizes[i];
+                if (size == -999999)
+                    size = this.replicatedsize; // Use default value
+
+                pos += size;
+                newend++;
+            }
+            if (newend >= this.nodes.length) newend = this.nodes.length-1;
+
+            // Get the old start/end of data.
+            var oldstart = -1;
+            var oldend = -1;
+            if (this.clones.length > 0) {
+                oldstart = this.clones[0].clonenumber;
+                oldend = this.clones[this.clones.length-1].clonenumber;
+            }
+
+            // If the new selection is a subset of the existing clones, don't
+            // remove any clones.
+            if (!atend && newstart >= oldstart && newend <= oldend) {
+                // Recompute the starting position
+                newoffset = 0;
+                for (var i=0; i<oldstart; i++) {
+                    var size = this.clonesizes[i];
+                    if (size == -999999)
+                        size = this.replicatedsize; // Use default value
+                    newoffset += size;
+                    this.lastpos = newoffset;
+                }
+
+                newstart = oldstart;
+                newend = oldend;
+                // Debug.write("Overlapped. newstart=",newstart,"newend=",newend,"newoffset=",newoffset);
+            }
+
+            //Debug.write("oldstart=",oldstart,"oldend=",oldend,"newstart=",newstart,"newend=",newend, "pos=", newoffset);
+
+            // Continue like the lazyreplicator does to recompute the clones.
+            var pos = newoffset;
+
+            var sizeaxis = this._sizes[ this.axis ];
+            var offset = newstart - this.clonesoffset;
+            var oldptr = 0;
+            var oldlength = this.clones.length;
+            var newlength = (newend - newstart) + 1;
+
+            var oldclones = this.clones;
+            this.clones = [];
+
+            for ( var i = 0 ; i < newlength; i++ ){
+                //before the new beginning
+                var cl = null;
+                if ( i + offset < 0 ){
+                    //this comes before the old data window
+                    if ( newlength + offset < oldlength  && oldlength > 0){
+                        //pull the clone off the end
+                        cl = oldclones[ --oldlength ];
+
+                        if (!this.recycleclones) {
+                            this.__discardClone( cl );
+                            cl = this.getClone();
+                        }
+                    } else {
+                        cl = this.getClone();
+                    }
+                } else if ( i + offset >= oldlength ){
+                    //this comes after the old data window
+                    if ( oldptr < offset && oldptr < oldlength  ){
+                        //pull the clone off the end
+                        cl = oldclones[ oldptr++ ];
+
+                        if (!this.recycleclones) {
+                            this.__discardClone( cl );
+                            cl = this.getClone();
+                        }
+
+                    } else {
+                        cl = this.getClone();
+                    }
+                }
+
+                if ( cl ){
+                    this.clones[ i ] = cl;
+                    this.unbind( cl );
+                    this.bind( cl, newstart + i );
+                } else {
+                    //otherwise, the oldclone and the newclone match
+                    cl = oldclones[ i + offset ];
+                    this.clones[ i ] = cl;
+                }
+
+                // Update the clone size
+                var sz = cl[sizeaxis];
+                if (sz != null)
+                    this.clonesizes[newstart+i] = sz;
+
+                // Set the position of the clone.
+                sz = this.clonesizes[newstart+i];
+                if (sz == -999999) {
+                    sz = this.replicatedsize; // Use default value
+                    this.clonesizes[newstart+i] = sz;
+                }
+
+                //Debug.write("Clone", i, "Node=",newstart+i,"sz=",sz,"pos=",pos);
+                if (cl[this.axis] != pos)
+                    cl.setAttribute (this.axis, pos)
+                pos += sz;
+            }
+
+            while ( oldptr < offset  && oldptr < oldlength ){
+                var v = oldclones[ oldptr++ ];
+                this.__discardClone( v );
+            }
+
+            while ( oldlength > newlength + offset && oldlength > 0 ){
+                var v = oldclones[ --oldlength ];
+                if (v) 
+                    this.__discardClone( v );
+            }
+
+            this.clonesoffset = newstart;
+
+            while ( oldclones.length ) oldclones.pop();
+
+            ]]>
+        </method>
+
+
+        <!--- Override bind() to make sure the view will respond to
+              resize (either onheight or onwidth) events.
+              @param LzView v: the clone being bound
+              @param Number n: The element number the clone is being bound to.
+        -->
+        <method name="bind" args="v,n">
+            <![CDATA[
+            super.bind (v,n);
+
+            // Track when this view changes size
+            var sizeAxis = this._sizes[ this.axis ];
+            this.resizedel.register(v, "on" + sizeAxis);
+
+            ]]>
+        </method>
+
+
+        <!--- Scan each clone looking for changes. The container is
+              resized if needed. This method is called automatically
+              when the clone or container changes size. However, you
+              can call this when a clone changes size to make sure
+              the scrollbar position is updated correctly.
+        -->
+        <method name="rescan">
+            // Update the size of each clone in case they changed.
+            this.__updateCloneSizes ();
+                
+            // Adjust the sizes
+            this.__adjust ();
+        </method>
+
+        <!-- This is called when the container or mask changes size or
+             position.
+             @keywords private
+        -->
+        <method name="__adjustVisibleClones" args="ignore=null">
+            this.rescan ();
+        </method>
+
+
+        <!-- Update clonesizes by resizing them, and updating unitialized
+             values.
+             @keywords private
+        -->
+        <method name="_setSize">
+            <![CDATA[
+            var c = this.getClone();
+
+            // Get the size of an object
+            var size = c[this._sizes[this.axis]];
+            if (size == 0) {
+               // The dimension was not specified so measure it.
+               // This might still be 0.
+               size = c.measureSize(this._sizes[this.axis]);
+            }
+
+            // Use a default value if there is no size
+            if (!this.replicatedsize || this.replicatedsize == 0)
+                this.setAttribute("replicatedsize", (size>0) ? size : 100);
+
+            this.__discardClone( c );
+
+            // Initialize new clonesizes if the size changes
+            if (this.clonesizes.length < this.nodes.length) {
+                for (var i=this.clonesizes.length, len = this.nodes.length; i<len; i++) {
+                    this.clonesizes[i] = this.replicatedsize;
+                }
+            }
+            ]]>
+        </method>
+
+
+        <!-- @keywords private -->
+        <method name="destroy">
+            <![CDATA[ 
+            if (this.clonesizes)
+                this.clonesizes.destroy();
+
+            super.destroy();
+            ]]>
+        </method>
+    </class>
+
+
+</library>

@@ -1,0 +1,154 @@
+<library>
+    <script>
+        // For swf10, DHTML debug (need a global slot for some reason)
+        var dragmanager;
+    </script>
+    <node name="dragmanager"> 
+        <!--- The view that's being dragged, or null if none. 
+              @type lz.draggable
+              @access public
+              @keywords readonly
+        -->
+        <attribute name="dragging" value="null"/>
+        <!--- @access private -->
+        <event name="ondragging"/>
+        <!--- Filtered list of droppable items when dragging 
+              @access private 
+        -->
+        <attribute name="__dragviews" value="null"/>
+        <!--- @access private -->
+        <setter name="dragging" args="view:lz.draggable">
+            <![CDATA[
+            // use the last view
+            var target = view || this.dragging;
+            this.dragging = view;
+            if (target) {
+                target.setAttribute('dragging', view);
+
+                var targets;
+                if (view) {
+                    // reuse list of droptargets for when view == null
+                    targets = this.__dragviews = this.__find(target);
+                } else if (this.__dragviews) {
+                    targets = this.__dragviews;
+                    this.__dragviews = null;
+                }
+
+                if (targets.length) {
+                    // activate/deactivate lz.Track group
+                    var trackmethod = view ? 'activate' : 'deactivate';
+                    //Debug.warn(trackmethod, target.destinationtypes)
+                    lz.Track[trackmethod]('dragmanager_' + target.destinationtypes);
+
+                    // send to all targets
+                    for (var i = 0, l = targets.length; i < l; i++) {
+                        targets[i].setAttribute('dragging', view);
+                    }
+//                } else {
+//                    if ($debug) {
+//                        Debug.warn('No droppable views found for destinationtypes %w in %w', target.destinationtypes, target);
+//                    }
+                }
+            }
+            if (this.ondragging.ready) {
+                this.ondragging.sendEvent(view);
+            }
+            ]]>
+        </setter>
+        <!--- @access private -->
+        <method name="__find" args="view" returns="Array">
+            <![CDATA[
+            var views = this.__droppable,
+                out = [],
+                destinationtypes = view.destinationtypes;
+            for (var i = 0, l = views.length; i < l; i++) {
+                var dropview:lz.droppable = views[i];
+                if (view.validDestination(dropview) && dropview['validSource'](view)) {
+                    //Debug.warn('registering', destinationtypes, dropview, regcache)
+                    lz.Track.register(dropview, 'dragmanager_' + destinationtypes);
+                    out.push(dropview);
+                }
+            }
+            //Debug.info('__find', view.destinationtypes, out);
+            return out;
+            ]]>
+        </method>
+
+        <!--- The view that's been dragged over, or null if none. 
+              @type lz.droppable
+              @access public
+              @keywords readonly
+        -->
+        <attribute name="dragover" value="null"/>
+        <!--- @access private -->
+        <event name="ondragover"/>
+        <!--- @access private -->
+        <setter name="dragover" args="view:lz.droppable">
+            <![CDATA[
+            // use the last view
+            var target = view || this.dragover;
+            this.dragover = view;
+            if (target) {
+                this.dragging.setAttribute('dragover', view != null ? target : null);
+                target.setAttribute('dragover', view != null ? this.dragging : null);
+            }
+            //Debug.info('dragover setter', view, this.dragging, target);
+            if (this.ondragover.ready) {
+                this.ondragover.sendEvent(view);
+            }
+            ]]>
+        </setter>
+
+        <!--- List of droppable items 
+              @access private 
+        -->
+        <attribute name="__droppable" value="[]"/>
+        <!--- @access private -->
+        <method name="__add" args="view:lz.droppable">
+            if (view is lz.droppable) {
+                this.__droppable.push(view);
+                new lz.Delegate(this, '__remove', view, 'ondestroy')
+            }
+            //Debug.warn('__add', this.__droppable);
+        </method>
+        <!--- @access private -->
+        <method name="__remove" args="view:lz.droppable">
+            <![CDATA[
+            var views;
+            if (view is lz.droppable) {
+                views = this.__droppable;
+                for (var i = 0, l = views.length; i < l; i++) {
+                    if (views[i] === view) {
+                        //Debug.info('found', views[i], view);
+                        views.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            //Debug.warn('__remove', view, this.__droppable);
+            ]]>
+        </method>
+        
+        <!--- @access private -->
+        <method name="__dropEvent" args="droppable">
+            <![CDATA[
+            //Debug.warn('__dropEvent', droppable, this.dragging);
+            if (this.dragover) {
+                this.setAttribute('dragover', null);
+            }
+            var dragging = this.dragging;
+            if (dragging && dragging.ondrop && dragging.ondrop.ready) {
+                dragging.ondrop.sendEvent(droppable);
+            }
+            if (droppable && droppable.ondrop && droppable.ondrop.ready) {
+                droppable.ondrop.sendEvent(dragging);
+            }
+            ]]>
+        </method>
+    </node>
+</library>
+<!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
+* Copyright 2010 Laszlo Systems, Inc.  All Rights Reserved.                   *
+* Use is subject to license terms.                                            *
+* X_LZ_COPYRIGHT_END ****************************************************** -->
+<!-- @LZX_VERSION@                                                         -->

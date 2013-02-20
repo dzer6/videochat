@@ -1,0 +1,740 @@
+<!---
+    @copyright Copyright 2001-2011 Laszlo Systems, Inc.  All Rights Reserved.
+               Use is subject to license terms.
+
+    @access public
+    @topic Extensions
+    @subtopic Audio-Video
+
+o seek method (add arg to play?)
+o update duration
+o fullscreen method 
+o onended event
+o onplaying event
+o onplay event
+o onpause event
+o onstop event
+o mute method
+o nail down setMedia (set src)
+o ensure width height  working
+
+o seek events
+o flag to display native controls 
+
+  -->
+<library>
+<class name="html5mediaview">
+    <doc>
+        <tag name="shortdesc"><text>Abstract base class to support HTML5 video and audio playback.</text></tag>
+        <text>
+        <p>See <sgmltag class="element" role="LzView">&lt;html5videoview&gt;</sgmltag> and  <sgmltag class="element" role="LzView">&lt;html5audioview&gt;</sgmltag></p>
+        </text>
+
+    </doc>  
+  <!--- the media playback object @keywords private -->
+  <attribute name="__media" value="null"/>
+
+  <!--- The div containing the jPlayer  @keywords private -->
+  <attribute name="__mdiv" value="null"/>
+
+    <!--- The jquery id of the jPlayer  @keywords private -->
+  <attribute name="__jqid" value="null"/>
+
+  <!--- Sent when the browser stops fetching the media data before the media resource was completely downloaded. -->
+  <event name="onabort"/>
+
+  <!--- Sent when the browser can resume playback of the media data,  -->
+  <event name="oncanplay"/>
+  
+  <!--- Sent when the browser estimates that if playback is started now, the media resource could be rendered -->
+  <event name="oncanplaythrough"/>
+  
+  <!--- Sent when the media element network state changes to the NETWORK_EMPTY state. -->
+  <event name="onemptied"/>
+  
+  <!--- Sent when playback has stopped at the end of the media resource and the ended property is set to true. -->
+  <event name="onended"/>
+  
+  <!--- Sent when an error occurs while fetching the media data. Use the error property to get the current error. -->
+  <event name="onerror"/>
+  
+  <!--- Sent when the browser can render the media data at the current playback position for the first time. -->
+  <event name="onloadeddata"/>
+  
+  <!--- Sent when the browser knows the duration and dimensions of the media resource. -->
+  <event name="onloadedmetadata"/>
+  
+  <!--- Sent when the browser begins loading the media data. -->
+  <event name="onloadstart"/>
+  
+  <!--- Sent when playback pauses after the pause method returns. -->
+  <event name="onpause"/>
+  
+  <!--- Sent when playback starts after the play method returns. -->
+  <event name="onplay"/>
+  
+  <!--- Sent when playback starts. -->
+  <event name="onplaying"/>
+  
+  <!--- Sent when the browser is fetching the media data. -->
+  <event name="onprogress"/>
+  
+  <!--- Sent when either the defaultPlaybackRate or the playbackRate property changes. -->
+  <event name="onratechange"/>
+  
+  <!--- Sent when the seeking property is set to false -->
+  <event name="onseeked"/>
+  
+  <!--- Sent when the seeking property is set to true and there is time to send this event. -->
+  <event name="onseeking"/>
+  
+  <!--- Sent when the browser is fetching media data but it has stopped arriving. -->
+  <event name="onstalled"/>
+  
+  <!--- Sent when the browser suspends loading the media data and does not have the entire media resource downloaded. -->
+  <event name="onsuspend"/>
+
+  <!--- Sent when the player container is resized, a list of [width, height] -->
+  <event name="onresize"/>
+  
+  <!--- Sent when the currentTime property changes as part of normal playback or because of some other condition. -->
+  <event name="ontimeupdate"/>
+  
+  <!--- Sent when either the volume property or the muted property changes. -->
+  <event name="onvolumechange"/>
+  
+  <!--- Sent when the browser stops playback because it is waiting for the next frame. -->
+  <event name="onwaiting"/>
+  
+  <!--- Sent when the ready-state changes -->
+  <event name="onreadystatechange"/>
+
+  <!--- Sent when the media element is ready to accept commands; On iOS, you
+       need to wait for this event before setting the media sources and
+       other attributes, due to a delay in rendering the element in
+       the browser -->
+  <attribute name="ready" type="boolean" value="false"/>
+
+  <!--- A Boolean value that gives a hint to the browser that it should automatically buffer media when the webpage is loaded.
+      If true (the default), the media data is automatically buffered; otherwise, it is not.
+      Availability
+  -->
+  
+  <attribute name="autobuffer" type="boolean" value="true"/>
+  <setter name="autobuffer" args="val">
+    Debug.warn("autobuffer not yet implemented");
+  </setter>
+  
+  <!--- A Boolean value that determines whether the media resource plays automatically when available. -->
+  <attribute name="autoplay" type="boolean" value="false"/>
+  
+  <!--- The time ranges of the media resource that have been downloaded. (read-only)
+      readonly
+  -->
+  <attribute name="buffered" />
+  
+  <!--- A Boolean value that determines whether the playback controls appear. -->
+  <attribute name="controls" type="boolean" value="true"/>
+  
+  <setter name="controls" args="val"> 
+    this.controls = val;
+    var media = this.findMediaElement('video');
+    if (media != null) {
+       media.controls = val;
+     }
+    if (this.oncontrols) this.oncontrols.sendEvent(val);
+  </setter>
+  
+  
+  <!--- The absolute URL of the media resource. (read-only) -->
+  <method name="getCurrentSrc"> return this.__media.currentSrc; </method>
+  
+  <!--- The current playback position in seconds. -->
+  <attribute name="currentTime" type="number" value="0"/>
+  <event name="oncurrentTime"/>
+  <setter name="currentTime" args="val"> 
+        if (this.__media != null)  {
+            this.__media.jPlayer('play', val);
+        }
+        this.currentTime = val;
+        this.oncurrentTime.sendEvent(val);
+        this.ontimeupdate.sendEvent(val);
+  </setter>
+  
+  <!--- The default rate used to play the media resource.
+      The value of this property is a multiple of the media resource’s intrinsic speed. The default value is 1.0. -->
+  <attribute name="defaultPlaybackRate" type="number" value="1.0"/>
+  
+  <!--- The length of the media resource in seconds. (read-only)
+      
+      This property is 0 if there is no media data available. This property is NaN if the duration is unknown.
+      The value is positive infinity if the duration is known but is indefinite—for example, a live stream.
+  -->
+  <attribute name="duration" type="number" value="0"/>
+  <!--- Sent when the duration changes -->
+  <event name="onduration"/>
+
+  
+  <!--- A Boolean value that indicates whether the media played to the end. (read-only)
+      If true, the video played to the end; otherwise, it did not.
+  -->
+  <attribute name="ended" type="boolean"/>
+  
+
+  <!--- Specifies the time at which an audio or video element will
+       stop playing. If this attribute is not specified, the media
+       element will play to completion.  -->
+  <attribute name="end" type="number"/>  
+
+  <!--- The last error that occurred for this element. (read-only) -->
+  <attribute name="error" />
+  
+  <!--- A Boolean value that determines whether the playback should loop. -->
+  <attribute name="loop" type="boolean"/>
+
+  <!--- A Boolean value that determines whether the audio content should be muted. -->
+  <attribute name="muted" type="boolean"/>
+  <setter name="muted" args="val"> 
+    this.muted = val;
+    if (this.__media) {
+    this.__media.jPlayer(val ? "mute" : "unmute");
+    } else {
+        Debug.error("trying to set muted to ", muted, "but __media is null");
+    }
+    if (this.onmuted) { this.onmuted.sendEvent(val); }
+  </setter>
+  
+  <!--- The state of downloading the media resource. (read-only) -->
+  <attribute name="networkState" />
+  
+  <!--- A Boolean value that indicates whether the media is paused. (read-only) -->
+  <attribute name="paused" />
+
+  <!--- A Boolean value that indicates whether the media is playing. (read-only) -->
+  <attribute name="playing" />
+
+  <!--- The speed that the media resource is playing.
+      
+      The value of this property is a multiple of the media resource’s intrinsic speed. If set to 0.0, a NOT_SUPPORTED_ERR DOM exception is raised. The default value is 1.0.
+  -->
+  <attribute name="playbackRate" type="number" value="1.0"/>
+  
+  
+  <!--- The ranges of the media resource that was played. (read-only) -->
+  <attribute name="played" />
+  
+  <!--- The ready state of the media resource. (read-only) -->
+  <attribute name="readyState" />
+  
+  <!--- HAVE_NOTHING No media data is available for playback at the current time. @keywords private -->
+  <attribute name="HAVE_NOTHING" allocation="class" value="0"/>
+  
+  <!---HAVE_METADATA Enough of the media resource has been loaded to know the duration, and in the case of a video element, the dimensions. 
+      @keywords private -->
+  <attribute name="HAVE_METADATA" allocation="class" value="1"/>
+  
+  <!--- HAVE_CURRENT_DATA Data for the current playback position is available, but not enough to begin playback. @keywords private -->
+  <attribute name="HAVE_CURRENT_DATA" allocation="class" value="2"/>
+  
+  <!--- HAVE_FUTURE_DATA Enough data is available to begin playback. @keywords private -->
+  <attribute name="HAVE_FUTURE_DATA" allocation="class" value="3"/>
+  
+  <!--- HAVE_ENOUGH_DATA Enough data is available to play at the default playback rate to the end of the media resource without having to pause to rebuffer. 
+      @keywords private -->
+  <attribute name="HAVE_ENOUGH_DATA" allocation="class" value="4"/>
+  
+  <!--- The ranges that can be played in a nonlinear fashion. (read-only) -->
+  <method name="seekable" >
+        return null;
+  </method>
+  
+  <!--- A Boolean value that indicates whether the element is seeking. (read-only) -->
+  <method name="seeking" >
+        return false;
+  </method>
+  
+  <!--- The URI address of the media resource to play. -->
+  <attribute name="src" type="string"/>
+  
+  <setter name="src" args="surl"> 
+    Debug.info(this, "set src", surl);
+       this.removeSources();
+       this.addSource(surl);
+       if (this.onsrc) { this.onsrc.sendEvent(surl); }
+  </setter>
+  
+  <method name="stringEndsWith" args="s1, s2">
+    <![CDATA[
+      var ind = s1.lastIndexOf(s2);
+       return ((ind != -1) && (ind == (s1.length - s2.length)));
+     ]]>
+   </method>
+
+
+<!--- keeps a list of all the media sources, in the form of {type1: url1, type2: url2} @keywords private-->
+<attribute name="_sources" value="null"/>
+
+<!-- 
+Add a media source to the media view. This is used to provide a list
+of alternate media files; when the play command is issued, the browser will look at the sources in order, playing the
+first one whose encoding format it supports.
+
+-->
+
+
+  <method name="addSource" args="src:String,encoding:String=null">
+    <![CDATA[
+      if (this._sources == null) {
+          this._sources = {};
+      }
+      var obj = this._sources;
+      var url = makeAbsoluteURL(src).toString();
+      if (encoding != null) {
+          obj[encoding] = url;
+      } else if (this.stringEndsWith(url, ".mov") || this.stringEndsWith(url, ".m4v") || this.stringEndsWith(url, ".mp4")) {
+          obj['m4v'] = url;
+      } else if (this.stringEndsWith(url, ".ogv")) {
+          obj['ogv'] = url;
+      } else if (this.stringEndsWith(url, ".mp3")) {
+          obj['mp3'] = url;
+      } else {
+          Debug.error("set src could not guess encoding type from url "+url);
+      }
+      this.src = url;
+
+      if (this.__media) {
+           this.__media.jPlayer("setMedia", obj);
+      }
+      if (this.onsrc) { this.onsrc.sendEvent(src); }
+    ]]>
+  </method>
+
+  <method name="makeAbsoluteURL" args="target_url">
+   <![CDATA[
+    var loadurl = lz.Browser.getLoadURLAsLzURL();
+    loadurl.query = null;
+    loadurl.file = null;
+    var purl = new lz.URL(target_url);
+    if (purl.port == null && purl.host != null) { loadurl.port = null;}
+    var url = LzURL.merge(purl, loadurl);
+    if (purl.host == null) {
+         url.path = loadurl.path + purl.path;
+    }
+    return url;
+    ]]>
+   </method>
+
+  <!--- removes all video sources -->
+  <method name="removeSources" args="">
+    this._sources = null;
+    if (this.__media) {
+        this.__media.jPlayer("clearMedia");
+    }
+  </method>
+  <!--- The earliest possible time in seconds to start playback. (read-only) -->
+  <attribute name="startTime" />
+  
+  <!--- The volume of the audio portion of the media element.
+      
+      The value of this property must be in the range from 0.0 (silent) to
+      1.0 (loudest); otherwise, a INDEX_SIZE_ERR DOM exception is
+      raised. The default value is 1.0.
+  -->
+  <attribute name="volume" type="number"/>
+  
+  <setter name="volume" args="val">
+    this.volume = val;
+    if (this.__media) {
+         this.__media.jPlayer("volume", val);
+    }
+    if (this.onvolumechange) { this.onvolumechange.sendEvent(val); }
+    if (this.onvolume) { this.onvolume.sendEvent(val); }
+  </setter>
+  
+  
+  <!--- @keywords private -->
+  <method name="_addlisteners">
+    /* add all event listeners for HTML5 media element events */  
+    var media = this.__media;
+    var self = this;
+    
+    media.bind($.jPlayer.event.playing, function(event) { // Add a listener to report the time play began
+            self.currentTime = event.jPlayer.status.currentTime;
+            self.ended = false;
+            self.playing = true;
+            self.onplaying.sendEvent(self.currentTime);
+        });
+
+    media.bind($.jPlayer.event.play, function(event) { // Add a listener to report the time play began
+            self.currentTime = event.jPlayer.status.currentTime;
+            self.playing = true;
+            self.onplay.sendEvent(self.currentTime);
+        });
+
+    media.bind($.jPlayer.event.pause, function(event) { // Add a listener to report the time play began
+            self.currentTime = event.jPlayer.status.currentTime;
+            self.paused = true;
+            self.onpause.sendEvent(self.currentTime);
+        });
+
+    media.bind($.jPlayer.event.ended, function(event) { 
+            self.ended = true;
+            self.onended.sendEvent(true);
+    });
+
+    media.bind($.jPlayer.event.timeupdate, function(event) { // Add a listener to report the current time of playhead
+            //Debug.info("timeupdate", self, 'time', event.jPlayer.status.currentTime, 'duration', event.jPlayer.status.duration);
+            self.currentTime = event.jPlayer.status.currentTime;
+            // Some browsers do not seem to ever get durationchange
+            // events, so we grab the duration from timeupdate events
+            // here
+            self.setAttribute('duration', event.jPlayer.status.duration);
+            if (self.oncurrentTime) { self.oncurrentTime.sendEvent(self.currentTime); }
+            if (self.ontimeupdate) { self.ontimeupdate.sendEvent(self.currentTime); }
+        });
+    
+
+    media.bind($.jPlayer.event.suspend, function(event) {
+            self.onsuspend.sendEvent();
+    });
+
+
+    media.bind($.jPlayer.event.durationchange, function(event) { // Add a listener to a duration update
+            self.setAttribute('duration', event.jPlayer.status.duration);
+    });
+
+    media.bind($.jPlayer.event.canplay, function(event) {
+            self.oncanplay.sendEvent();
+    });
+
+    media.bind($.jPlayer.event.canplaythrough, function(event) { 
+            self.oncanplaythrough.sendEvent();
+    });
+
+    media.bind($.jPlayer.event.seeking, function(event) {
+            self.onseeking.sendEvent();
+    });
+
+    media.bind($.jPlayer.event.seeked, function(event) {
+            self.onseeked.sendEvent();
+    });
+
+    media.bind($.jPlayer.event.loadeddata, function(event) {
+            self.onloadeddata.sendEvent();
+    });
+
+    media.bind($.jPlayer.event.loadedmetadata, function(event) {
+            self.onloadedmetadata.sendEvent();
+    });
+
+    media.bind($.jPlayer.event.stalled, function(event) {
+            self.onstalled.sendEvent();
+    });
+
+
+    media.bind($.jPlayer.event.waiting, function(event) {
+            self.onwaiting.sendEvent();
+    });
+
+
+    media.bind($.jPlayer.event.ratechange, function(event) {
+            self.onratechange.sendEvent();
+    });
+
+   media.bind($.jPlayer.event.abort, function(event) {
+            self.onabort.sendEvent();
+    });
+
+    media.bind($.jPlayer.event.emptied, function(event) {
+            self.onemptied.sendEvent();
+    });
+
+    media.bind($.jPlayer.event.progress, function(event) {
+            self.onprogress.sendEvent(event.jPlayer.status.currentPercentAbsolute);
+    });
+
+    media.bind($.jPlayer.event.resize, function(event) {
+            self.onresize.sendEvent([event.jPlayer.status.width, event.jPlayer.status.height]);
+    });
+
+    media.bind($.jPlayer.event.volumechange, function(event) { 
+            self.volume = event.jPlayer.status.volume;
+            if (self.onvolume) { self.onvolume.sendEvent(self.volume); }
+        });
+
+    media.bind($.jPlayer.event.error, function(event) { // 
+        Debug.error ("jplayerview error event: type = " + event.jPlayer.error.type + "\n" +
+               event.jPlayer.error.message+"\n" + event.jPlayer.error.hint );
+         self.onerror.sendEvent(event.jPlayer.error.type);
+    });
+
+
+
+
+/*    $.jPlayer.event.ready * †
+    $.jPlayer.event.resize * †
+    $.jPlayer.event.error * ‡
+    $.jPlayer.event.warning * †
+    $.jPlayer.event.loadstart *
+    $.jPlayer.event.progress *
+    $.jPlayer.event.suspend
+    $.jPlayer.event.abort
+    $.jPlayer.event.emptied
+    $.jPlayer.event.stalled
+    $.jPlayer.event.play *
+    $.jPlayer.event.pause *
+    $.jPlayer.event.loadedmetadata
+    $.jPlayer.event.loadeddata
+    $.jPlayer.event.waiting
+    $.jPlayer.event.playing
+    $.jPlayer.event.canplay
+    $.jPlayer.event.canplaythrough
+    $.jPlayer.event.seeking *
+    $.jPlayer.event.seeked *
+    $.jPlayer.event.timeupdate *
+    $.jPlayer.event.ended *
+    $.jPlayer.event.ratechange
+    $.jPlayer.event.durationchange
+    $.jPlayer.event.volumechange *
+
+
+
+
+eventHandler(event)
+    event : Object: Standard jQuery $.Event() properties.
+
+    event.jPlayer : Object : The jPlayer information object.
+
+    event.jPlayer.error : Object
+    event.jPlayer.error.type : String : The error event code
+    event.jPlayer.error.context : String : The cause of the error
+    event.jPlayer.error.message : String : Message describing the error
+    event.jPlayer.error.hint : String : A suggestion on how to fix the error
+
+    event.jPlayer.flash : Object : Info about the Flash solution
+    event.jPlayer.html : Object : Info about the HTML solution
+
+    event.jPlayer.status : Object
+    event.jPlayer.status.src : String : The URL being used by jPlayer.
+    event.jPlayer.status.file : Object : Pointer to the media object used in setMedia.
+    event.jPlayer.status.seekPercent : Number : Percent seekable
+    event.jPlayer.status.currentPercentRelative : Number : Current time as a percent of seekPercent
+    event.jPlayer.status.currentPercentAbsolute : Number : Current time as a percent of duration
+    event.jPlayer.status.currentTime : Number : The current time in seconds
+    event.jPlayer.status.duration : Number : The duration of the media
+    event.jPlayer.status.volume : Number
+    event.jPlayer.status.muted : Boolean
+    event.jPlayer.status.srcSet : Boolean
+    event.jPlayer.status.paused : Boolean
+    event.jPlayer.status.waitForPlay : Boolean
+    event.jPlayer.status.waitForLoad : Boolean
+    event.jPlayer.status.video : Boolean
+    event.jPlayer.status.width : String : The CSS style width of jPlayer.
+    event.jPlayer.status.height : String : The CSS style height of jPlayer.
+
+    event.jPlayer.version : Object
+    event.jPlayer.version.script : String : jPlayer's JavaScript version
+    event.jPlayer.version.flash : String : jPlayer's Flash version, or "unknown" if Flash is not being used
+    event.jPlayer.version.needFlash : String : The Flash version compatiable with the JavaScript
+
+    event.jPlayer.warning : Object
+    event.jPlayer.warning.type : String : The warning event code
+    event.jPlayer.warning.context : String : The cause of the warning
+    event.jPlayer.warning.message : String : Message describing the warning
+    event.jPlayer.warning.hint : String : A suggestion on how to fix the warning
+
+*/
+
+
+  </method>
+  
+  <setter name="height" args="h" > 
+    super.setAttribute ('height', h);
+    if (this.__mdiv) {
+        this.__mdiv.height = h;
+        this.__mdiv.style.height = h + "px";
+    } 
+  </setter> 
+  
+  
+  <setter name="width" args="w" > 
+    super.setAttribute ('width', w);
+    if (this.__mdiv) {
+        this.__mdiv.width = w;
+        this.__mdiv.style.width = w + "px";
+    }
+  </setter> 
+  
+  
+  <!--- Returns whether the media element supports the specified MIME type. 
+      DOMString canPlayType (in DOMString type);
+      Return Value
+      
+      The possible string values are: “no”, “probably” and “maybe”.
+  -->
+  
+  <method name="canPlayType" args="mtype">
+    return this.__media.canPlayType(mtype);
+  </method>
+  
+  <!--- Starts loading the media resource. -->
+  <method name="load" >
+    this.__media.jPlayer("load");
+  </method>
+  
+  <!--- Pauses the media playback if in progress. -->
+  <method name="pause"  args="pt=null">
+    this.__media.jPlayer("pause", pt);
+  </method>
+  
+  <!--- Begins playing the media resource. -->
+  <method name="play" args="pt=null">
+    this.__media.jPlayer("play",pt);
+  </method>
+  
+  <handler name="oninit">
+    this.makePlayer();
+  </handler>
+
+  <event name="onready"/>
+
+  <handler name="onready">
+    <![CDATA[ //Debug.info(this, "onready autoplay=",this.autoplay);
+    if (this.__media && this._sources != null) {
+       this.__media.jPlayer("setMedia", this._sources);
+    }
+    var mediaElt = this.findMediaElement(this.__kind);
+    if (mediaElt != null) {
+       mediaElt.controls = this.controls;
+     }
+    if (this.autoplay) {
+        this.play();
+    }
+    ]]>
+  </handler>
+
+  <attribute name="__kind"/>
+
+
+</class>
+
+<class name="html5videoview" extends="html5mediaview">
+      <doc>
+        <text>
+            <p><tagname>html5videoview</tagname> allows applications to play video from HTTP servers.</p> 
+
+            <example><programlisting class="code">
+            &lt;canvas&gt;
+            &lt;html5videoview src="http://www.archive.org/download/SoundieF/SoundieF_512kb.mp4" autoplay="true" width="320" height="240"/&gt;
+            &lt;/canvas&gt;
+            </programlisting></example>
+        </text>  
+        </doc>
+
+  <!--- @keywords private -->
+  <method name="makePlayer">
+    <![CDATA[
+      this.__kind = 'video';
+     //Debug.info("makePlayer");
+     var self = this;
+     var vid = document.createElement('div');
+     vid.style.width = "640"
+     vid.style.height = "360";
+     this.__mdiv = vid;
+     var pid = this.__LZUID;
+     vid.id = pid;
+     // This is how we refer to the jplayer via jquery
+     this.__jqid = "#" + pid;
+     vid.className = "jp-jplayer";
+     vid.style.width = LzKernelUtils.CSSDimension(this.width);
+     vid.style.height = LzKernelUtils.CSSDimension(this.height);
+     this.sprite.__LZdiv.appendChild(vid);
+     setTimeout(function() {
+             $(self.__jqid).jPlayer({
+                 ready: function () {
+                 //Debug.info(self , "makePlayer ready function", self.__jqid);
+                         if (!self.ready) {
+                           self.__media = $(self.__jqid);
+                           self._addlisteners();
+                           self.setAttribute('ready', true);
+                         }
+                     },
+                 supplied: "m4v,mp3",
+                 swfPath: "js"});
+         }, 0);
+
+    ]]>
+  </method>
+  
+  
+  <!--- @keywords private -->
+  <method name="_addlisteners">
+    super._addlisteners();
+  </method>
+  
+  
+  <!--- Sent when the video begins displaying as fullscreen -->
+  <event name="onbeginfullscreen" />
+  
+  <!--- Sent when the video stops displaying as fullscreen -->
+  <event name="onendfullscreen"/>
+  
+  
+  <attribute name="poster" type="string"/>
+  
+  <setter name="poster" args="val"> 
+    if (this.__media) {
+    }
+  </setter>
+  
+  
+  
+  <!--- The native width of the video in CSS pixels. (read-only) -->
+  <method name="getVideoWidth">
+    Debug.warn(self, "getVideoWidth NYI");
+    return this.width;
+  </method>
+  
+  <!--- The native height of the video in CSS pixels. (read-only) -->
+  <method name="getVideoHeight">
+    Debug.warn(self, "getVideoHeight NYI");
+    return this.height;
+  </method>
+  
+  <!--- Is video element displaying fullscreen mode? -->
+  <method name="getDisplayingFullscreen">
+    return this.__media.webkitDisplayingFullscreen();
+  </method>
+  
+  <!--- Does video element support fullscreen mode? -->
+  <method name="getSupportsFullscreen">
+    return this.__media.webkitSupportsFullscreen();
+  </method>
+  
+  <!--- Enters fullscreen mode. -->
+  <method name="enterFullscreen">
+    <![CDATA[
+      var video = this.findMediaElement('video');
+      video.webkitEnterFullscreen();
+    ]]>
+  </method>
+  
+  <!--- Exits fullscreen mode. -->
+  <method name="exitFullscreen">
+    <![CDATA[
+        var video = this.findMediaElement('video');
+        video.webkitExitFullscreen();
+   ]]>
+  </method>
+  
+  <method name="findMediaElement" args="kind">
+    <![CDATA[
+      return this.__media ? this.__media.data('jPlayer').htmlElement.video : null;
+   ]]>
+  </method>
+
+  
+</class>
+
+
+</library>
