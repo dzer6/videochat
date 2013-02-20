@@ -4,13 +4,9 @@ import com.dzer6.vc.ga.FlashClientInterface;
 import com.dzer6.vc.ga.FrontendServerInterface;
 import com.dzer6.vc.ga.RtmpServerInterface;
 import com.dzer6.vc.ga.UserConnectionInterface;
-import com.xuggle.xuggler.IContainer;
-import etm.core.configuration.BasicEtmConfigurator;
-import etm.core.configuration.EtmManager;
-import etm.core.monitor.EtmMonitor;
-import etm.core.renderer.SimpleTextRenderer;
-import etm.core.timer.Java15NanoTimer;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.red5.server.adapter.ApplicationAdapter;
 import org.red5.server.api.IConnection;
 import org.red5.server.api.Red5;
@@ -23,10 +19,7 @@ public class Application extends ApplicationAdapter implements FlashClientInterf
     public static final String SESSION_ID_PARAMETER = "sessionId";
     public static final String WATCHER_ID_PARAMETER = "watcherId";
     public static final String CAMERA_ID_PARAMETER = "cameraId";
-    private VideoTranscoder resampler;
-    private EtmMonitor profiler = EtmManager.getEtmMonitor();
-    private Timer profilerRenderer = new Timer("profilerRenderer", true);
-    private int mProfilerFrequency = 0;
+
     private UserConnectionInterface userConnectionQueue;
     private FrontendServerInterface frontendServerQueue;
     private Map<String, IConnection> watchers = Collections.synchronizedMap(new HashMap<String, IConnection>());
@@ -51,33 +44,10 @@ public class Application extends ApplicationAdapter implements FlashClientInterf
         this.userConnectionQueue = userConnectionQueue;
     }
 
-    public void setResampler(VideoTranscoder resampler) {
-        this.resampler = resampler;
-    }
-
     @Override
     public boolean appStart(IScope app) {
         try {
             log.info("appStart");
-            log.info("appStart");
-            log.info("XUGGLE_HOME = " + System.getenv().get("XUGGLE_HOME"));
-            log.info("LD_LIBRARY_PATH = " + System.getenv().get("LD_LIBRARY_PATH"));
-            log.info("DYLD_LIBRARY_PATH = " + System.getenv().get("DYLD_LIBRARY_PATH"));
-            IContainer.make();
-            BasicEtmConfigurator.configure(true, new Java15NanoTimer());
-            profiler.start();
-            // very simple timer here that spits out profiling data every 5 seconds
-            if (mProfilerFrequency > 0) {
-                profilerRenderer.schedule(new TimerTask() {
-
-                    @Override
-                    public void run() {
-                        log.debug("Printing Statistics for: " + this.getClass().getName());
-                        profiler.render(new SimpleTextRenderer());
-                    }
-                }, mProfilerFrequency * 1000, mProfilerFrequency * 1000);
-            }
-
             return super.appStart(app);
         } catch (Exception e) {
             log.error("Got error while started application", e);
@@ -240,7 +210,6 @@ public class Application extends ApplicationAdapter implements FlashClientInterf
             String sessionId = sessionIdByConnectionMap.get(Red5.getConnectionLocal());
             userConnectionQueue.broadcastingStarted(sessionId);
             super.streamPublishStart(stream);
-            resampler.startTranscodingStream(stream, Red5.getConnectionLocal().getScope());
         } catch (Exception e) {
             log.error("Got error during streamPublishStart", e);
         }
@@ -252,7 +221,6 @@ public class Application extends ApplicationAdapter implements FlashClientInterf
             log.info("streamBroadcastClose: {}; {}", stream, stream.getPublishedName());
             String sessionId = sessionIdByConnectionMap.get(Red5.getConnectionLocal());
             userConnectionQueue.broadcastingStoped(sessionId);
-            resampler.stopTranscodingStream(stream, Red5.getConnectionLocal().getScope());
             super.streamBroadcastClose(stream);
         } catch (Exception e) {
             log.error("Got error during streamBroadcastClose", e);

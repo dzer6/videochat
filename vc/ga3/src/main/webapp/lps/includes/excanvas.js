@@ -1,4 +1,5 @@
-var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $swf8=false;var $svg=false;var $profile=false;if(!document.createElement("canvas").getContext){
+var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $swf11=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $svg=false;var $swf8=false;var $mobile=false;var $profile=false;(function(){
+if(!document.createElement("canvas").getContext){
 (function(){
 var getContext;var bind;var addDeclarations;var onPropertyChange;var onResize;var createMatrixIdentity;var matrixMultiply;var copyState;var processStyle;var processLineCap;var CanvasRenderingContext2D_;var bezierCurveTo;var CanvasGradient_;var CanvasPattern_;getContext=function(){
 return this.context_||(this.context_=new CanvasRenderingContext2D_(this))
@@ -192,4 +193,4 @@ return new CanvasPattern_()
 $1=processStyle($1);this.colors_.push({offset:$0,color:$1.color,alpha:$1.alpha})
 };G_vmlCanvasManager=$0;CanvasRenderingContext2D=CanvasRenderingContext2D_;CanvasGradient=CanvasGradient_;CanvasPattern=CanvasPattern_
 })()
-}
+}})();

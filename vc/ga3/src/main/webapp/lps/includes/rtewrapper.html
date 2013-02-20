@@ -7,11 +7,29 @@
   </style>
 
   <script src="./rtemanager.js" type="text/javascript"></script>
+
+  <script type="text/javascript">
+      lz.rtewrapper = {
+
+          // rte_before_ready fires after dojo is loaded but before the rte
+          // is instantiated. You can load custom components here.
+          // If rte_before_ready() is defined, you must call
+          // lz.rte.manager.editor_initialized() when init is complete.
+          //rte_before_ready: function () {
+          //}
+
+          rte_ready: function () {
+              // This method fires when the rte editor is loaded.
+              // Do any post initialization here.
+          }
+      }
+  </script>
+
 </head>
 <body onload="lz.rte.manager.rte_loaded();">
 <div id="rte_all">
-<div id="rte_div" dojoType="dijit.layout.BorderContainer" design="headline">
-  <div id="rte_buttons" dojoType="dijit.layout.ContentPane" region="top" style="margin: 0px; padding: 0px; border: 0px;"></div>
+<div id="rte_div" dojoType="dijit.layout.BorderContainer" design="headline" gutters="false" splitter="false">
+  <div id="rte_buttons" dojoType="dijit.layout.ContentPane" region="top" style="margin: 0px; padding: 0px; border: 0px; display:none;"></div>
   <div id="rte_container" dojoType="dijit.layout.ContentPane" region="center">
     <div id="rte"><p></p></div>
   </div>
@@ -21,6 +39,6 @@
 </body>
 </html>
 <!-- * X_LZ_COPYRIGHT_BEGIN ***************************************************
-* Copyright 2010 Laszlo Systems, Inc.  All Rights Reserved.                   *
+* Copyright 2010-2011 Laszlo Systems, Inc.  All Rights Reserved.              *
 * Use is subject to license terms.                                            *
 * X_LZ_COPYRIGHT_END ****************************************************** -->

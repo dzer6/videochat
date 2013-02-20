@@ -11,15 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface UserRepository extends CrudRepository<User, String> {
     
-    @Query("select u from User u where u <> :user and " + 
-           "u.playing = true and " + // camera turned on 
-           "u.broadcasting = true") // broadcasting 
+    @Query("select u from User u " +
+           "where u <> :user and " + // not me
+           "u.playing = true and " + // camera turned on
+           "u.broadcasting = true") // broadcasting
     List<User> findAnyBroadcastingUserNotMe(@Param("user") User user);
   
     @Query("select u from User u where " + 
            "u <> :user and " +  // not me
-           "u.playing = true and " + // camera turned on 
-           "u.broadcasting = true and " +  // broadcasting 
+           "u.playing = true and " + // camera turned on
+           "u.broadcasting = true and " +  // broadcasting
            "u.id not in " +  
                "(select po.opponent.id from PreviousOpponent po where " + 
                "po.user = :user and " + 

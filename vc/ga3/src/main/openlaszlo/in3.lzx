@@ -1,92 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <canvas width="320" height="240" proxied="false">
-  <rtmpconnection name="auxRtmpConnection" 
-                  autoconnect="true"
-                  src="$once{lz.Browser.getInitArg('rtmpServerUrl')}"
-                  connectionparams="{watcherId: lz.Browser.getInitArg('watcherId')}">
-    <passthrough>
-      import flash.external.ExternalInterface;
-    </passthrough>
-    <method name="init"><![CDATA[
-      super.init();
+    <rtmpconnection name="auxRtmpConnection" 
+                    autoconnect="true"
+                    src="$once{lz.Browser.getInitArg('rtmpServerUrl')}"
+                    connectionparams="{watcherId: lz.Browser.getInitArg('watcherId')}">
+        <passthrough>
+            import flash.external.ExternalInterface;
+        </passthrough>
+        <method name="init"><![CDATA[
+            super.init();
 
-      _nc.client = this;
+            _nc.client = this;
 
-      var rtmpConn = canvas.rtmpConnection;
+            var rtmpConn = canvas.rtmpConnection;
 
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection initialization");
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpServerUrl = " + lz.Browser.getInitArg('rtmpServerUrl'));
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection initialization");
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpServerUrl = " + lz.Browser.getInitArg('rtmpServerUrl'));
 
-      this.playStream = function(rtmpServerUrl, stream) {
-        flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] playStream");
-        rtmpConn.setAttribute("autoconnect", false);
-        rtmpConn._nc.close();
-        rtmpConn.setAttribute("src", rtmpServerUrl);
-        rtmpConn.connect();
-        rtmpConn.setAttribute("autoconnect", true);
-	    
-	    
-        spinner.setAttribute("visible", false);
-        videoView.setAttribute("visible", true);
-        videoView.stream.setAttribute("url", "xuggle_" + stream);
-        videoView.stream.stop();
-        videoView.stream.play();
-      };
+            this.playStream = function(rtmpServerUrl, stream) {
+                flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] playStream");
+                rtmpConn.setAttribute("autoconnect", false);
+                rtmpConn._nc.close();
+                rtmpConn.setAttribute("src", rtmpServerUrl);
+                rtmpConn.connect();
+                rtmpConn.setAttribute("autoconnect", true);
 
-      this.stopStream = function() {
-        flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] stopStream");
-        videoView.stream.stop();
-        videoView.setAttribute("visible", false);
-        spinner.setAttribute("visible", true);
-      };      
-    ]]>
-    </method>
-    <method name="_onSecurityError" args="value"><![CDATA[
-      super._onSecurityError(value);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _onSecurityError value = " + value);
-    ]]>
-    </method>
-    <method name="_onStatus" args="value"><![CDATA[
-      super._onStatus(value);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _onStatus value = " + value);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _onStatus value.info.description = " + value.info.description);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _onStatus value.info.code = " + value.info.code);
-    ]]>
-    </method>
-    <method name="_handleConnectionFailure" args="value"><![CDATA[
-      super._onSecurityError(value);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _handleConnectionFailure value = " + value);
-    ]]>
-    </method>
-  </rtmpconnection>
+
+                spinner.setAttribute("visible", false);
+                videoView.setAttribute("visible", true);
+                videoView.stream.setAttribute("url", stream);
+                videoView.stream.stop();
+                videoView.stream.play();
+            };
+
+            this.stopStream = function() {
+                flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] stopStream");
+                videoView.stream.stop();
+                videoView.setAttribute("visible", false);
+                spinner.setAttribute("visible", true);
+            };      
+            ]]>
+        </method>
+        <method name="_onSecurityError" args="value"><![CDATA[
+            super._onSecurityError(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _onSecurityError value = " + value);
+            ]]>
+        </method>
+        <method name="_onStatus" args="value"><![CDATA[
+            super._onStatus(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _onStatus value = " + value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _onStatus value.info.description = " + value.info.description);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _onStatus value.info.code = " + value.info.code);
+            ]]>
+        </method>
+        <method name="_handleConnectionFailure" args="value"><![CDATA[
+            super._onSecurityError(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] auxRtmpConnection _handleConnectionFailure value = " + value);
+            ]]>
+        </method>
+    </rtmpconnection>
  
-  <view id="spinner" width="16" height="16" align="center" valign="middle" resource="spinner.swf"/>
+    <view id="spinner" width="16" height="16" align="center" valign="middle" resource="spinner.swf"/>
 
-  <rtmpconnection name="rtmpConnection"
-                  autoconnect="true"
-                  src="$once{lz.Browser.getInitArg('rtmpServerUrl')}">
-    <passthrough>
-      import flash.external.ExternalInterface;
-    </passthrough>
-    <method name="_onSecurityError" args="value"><![CDATA[
-      super._onSecurityError(value);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _onSecurityError value = " + value);
-    ]]>
-    </method>
-    <method name="_onStatus" args="value"><![CDATA[
-      super._onStatus(value);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _onStatus value = " + value);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _onStatus value.info.description = " + value.info.description);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _onStatus value.info.code = " + value.info.code);
-    ]]>
-    </method>
-    <method name="_handleConnectionFailure" args="value"><![CDATA[
-      super._onSecurityError(value);
-      flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _handleConnectionFailure value = " + value);
-    ]]>
-    </method>
-  </rtmpconnection>
+    <rtmpconnection name="rtmpConnection"
+                    autoconnect="true"
+                    src="$once{lz.Browser.getInitArg('rtmpServerUrl')}">
+        <passthrough>
+            import flash.external.ExternalInterface;
+        </passthrough>
+        <method name="_onSecurityError" args="value"><![CDATA[
+            super._onSecurityError(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _onSecurityError value = " + value);
+            ]]>
+        </method>
+        <method name="_onStatus" args="value"><![CDATA[
+            super._onStatus(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _onStatus value = " + value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _onStatus value.info.description = " + value.info.description);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _onStatus value.info.code = " + value.info.code);
+            ]]>
+        </method>
+        <method name="_handleConnectionFailure" args="value"><![CDATA[
+            super._onSecurityError(value);
+            flash.external.ExternalInterface.call("console.log", "[openlaszlo-console][in3.lzx] rtmpConnection _handleConnectionFailure value = " + value);
+            ]]>
+        </method>
+    </rtmpconnection>
     
-  <videoview id="videoView" width="320" height="240" type="rtmp"/>
+    <videoview id="videoView" width="320" height="240" type="rtmp"/>
 
 </canvas>

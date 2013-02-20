@@ -23,33 +23,15 @@
     <dependencies>
         
         <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        
+        <dependency>
             <groupId>com.dzer6.vc</groupId>
             <artifactId>foundation</artifactId>
             <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
-            <version>${org.apache.activemq.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-context</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-pool</artifactId>
-            <version>${org.apache.activemq.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-camel</artifactId>
-            <version>${org.apache.activemq.version}</version>
         </dependency>
     
         <!-- Camel -->
@@ -113,90 +95,54 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
-      
-        <dependency>
-            <groupId>xuggle-xuggler</groupId>
-            <artifactId>xuggle-xuggler</artifactId>
-            <version>4.0.896</version>
-        </dependency>
-
-        <dependency>
-            <groupId>jetm</groupId>
-            <artifactId>jetm</artifactId>
-            <version>1.2.3</version>
-        </dependency>
         
         <dependency>
             <groupId>org.red5</groupId>
             <artifactId>red5-server</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
         </dependency>
         
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20090211</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
         </dependency>
         
         <dependency>
-            <groupId>xuggle</groupId>
-            <artifactId>xuggle-utils</artifactId>
-            <version>1.22</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-asm</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
         </dependency>
         
         <dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-core</artifactId>
-            <version>${mina.version}</version>
-            <type>jar</type>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
         </dependency>
+        
         <dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-integration-beans</artifactId>
-            <version>${mina.version}</version>
-            <type>jar</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.mina</groupId>
-                    <artifactId>mina-core</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
         </dependency>
+        
         <dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-integration-ognl</artifactId>
-            <version>${mina.version}</version>
-            <type>jar</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.mina</groupId>
-                    <artifactId>mina-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.mina</groupId>
-                    <artifactId>mina-integration-beans</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
         </dependency>
+        
         <dependency>
-            <groupId>org.apache.mina</groupId>
-            <artifactId>mina-integration-jmx</artifactId>
-            <version>${mina.version}</version>
-            <type>jar</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.mina</groupId>
-                    <artifactId>mina-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.mina</groupId>
-                    <artifactId>mina-integration-beans</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.mina</groupId>
-                    <artifactId>mina-integration-ognl</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
         </dependency>
         
         <dependency>
@@ -211,6 +157,52 @@
             <version>${spring.version}</version>
         </dependency>
     
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+            <version>${mina.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.6</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hornetq</groupId>
+            <artifactId>hornetq-jms</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hornetq</groupId>
+            <artifactId>hornetq-core</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hornetq</groupId>
+            <artifactId>hornetq-logging</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.jboss.netty</groupId>
+            <artifactId>netty</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jms_1.1_spec</artifactId>
+        </dependency>
+            
     </dependencies>
 
     <build>

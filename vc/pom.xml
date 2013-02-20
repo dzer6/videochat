@@ -20,9 +20,9 @@
         <jpa.version>2.0.0</jpa.version>
         <hibernate.version>4.1.2</hibernate.version>
         <slf4j.version>1.6.1</slf4j.version>
-        <org.apache.activemq.version>5.7.0</org.apache.activemq.version>
         <org.apache.camel.version>2.10.3</org.apache.camel.version>
         <mina.version>2.0.7</mina.version>
+        <hornetq.version>2.2.21.Final</hornetq.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
   
@@ -42,12 +42,7 @@
             <name>SpringSource Repository</name>
             <url>http://repo.springsource.org/release</url>
         </repository>
-        
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-        
+             
         <repository>
             <id>dzer6-releases-repo</id>
             <url>https://bitbucket.org/dzer6/mvn-repo/raw/master/releases</url>
@@ -56,12 +51,6 @@
         <repository>
             <id>dzer6-snapshotss-repo</id>
             <url>https://bitbucket.org/dzer6/mvn-repo/raw/master/snapshots</url>
-        </repository>
-        
-        <repository>
-            <id>xuggleRepository</id>
-            <name>Xuggle Repository</name>
-            <url>http://xuggle.googlecode.com/svn/trunk/repo/share/java</url>
         </repository>
   
     </repositories>
@@ -82,4 +71,34 @@
         <module>foundation</module>
         <module>ga3</module>
     </modules>
+   
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.hornetq</groupId>
+                <artifactId>hornetq-jms</artifactId>
+                <version>${hornetq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hornetq</groupId>
+                <artifactId>hornetq-core</artifactId>
+                <version>${hornetq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hornetq</groupId>
+                <artifactId>hornetq-logging</artifactId>
+                <version>${hornetq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.netty</groupId>
+                <artifactId>netty</artifactId>
+                <version>3.2.9.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-jms_1.1_spec</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

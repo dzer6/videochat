@@ -54,14 +54,131 @@
   
     <bean id="applicationContextProvider" class="com.dzer6.ga3.ApplicationContextProvider"/>
 
-    <bean id="jms" class="org.apache.activemq.camel.component.ActiveMQComponent">
-        <property name="brokerURL" value="${MQ_ADDRESS}"/>
+    <bean name="nettyInternalConnector" class="org.hornetq.api.core.TransportConfiguration">
+        <constructor-arg value="org.hornetq.core.remoting.impl.netty.NettyConnectorFactory" />
+        <constructor-arg>
+            <map>
+                <entry key="host" value="${HORNETQ_CONNECTOR_INTERNAL_HOST:localhost}"/>
+                <entry key="port" value="${HORNETQ_CONNECTOR_INTERNAL_PORT:5446}"/>
+                <entry key="use-nio" value="${HORNETQ_CONNECTOR_INTERNAL_USE_NIO:true}"/>
+            </map>
+        </constructor-arg>
+    </bean>
+    
+    <bean name="nettyInternalAcceptor" class="org.hornetq.api.core.TransportConfiguration">
+        <constructor-arg value="org.hornetq.core.remoting.impl.netty.NettyAcceptorFactory" />
+        <constructor-arg>
+            <map>
+                <entry key="host" value="${HORNETQ_ACCEPTOR_INTERNAL_HOST:localhost}"/>
+                <entry key="port" value="${HORNETQ_ACCEPTOR_INTERNAL_PORT:5446}"/>
+                <entry key="use-nio" value="${HORNETQ_ACCEPTOR_INTERNAL_USE_NIO:true}"/>
+                <entry key="direct-deliver" value="${HORNETQ_ACCEPTOR_INTERNAL_DIRECT_DELIVER:false}" />
+            </map>
+        </constructor-arg>
+        <!-- Name -->
+        <constructor-arg value="netty-internal" />
+    </bean>
+    
+    <bean id="hornetQServer" class="org.hornetq.core.server.impl.HornetQServerImpl">
+        <constructor-arg type="org.hornetq.core.config.Configuration">
+            <bean class="org.hornetq.core.config.impl.ConfigurationImpl">
+                <property name="acceptorConfigurations">
+                    <set>
+                        <ref bean="nettyInternalAcceptor"/>
+                    </set>
+                </property>
+                <property name="persistenceEnabled" value="false"/>
+                <property name="securityEnabled" value="false"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <bean id="hornetQJmsConfig" class="org.hornetq.jms.server.config.impl.JMSConfigurationImpl">
+        <constructor-arg index="0">
+            <list/>
+        </constructor-arg>
+        <!-- Queues -->
+        <constructor-arg index="1">
+            <list>
+                <bean class="org.hornetq.jms.server.config.impl.JMSQueueConfigurationImpl">
+                    <!-- Name -->
+                    <constructor-arg index="0" value="com.dzer6.vc.ga.FrontendServer"/>
+                    <!-- Selector -->
+                    <constructor-arg index="1">
+                        <null/>
+                    </constructor-arg>
+                    <!-- Durable queue -->
+                    <constructor-arg index="2" value="false"/>
+                    <!-- JNDI bindings, empty list for none -->
+                    <constructor-arg index="3">
+                        <list/>
+                    </constructor-arg>
+                </bean>
+                <bean class="org.hornetq.jms.server.config.impl.JMSQueueConfigurationImpl">
+                    <!-- Name -->
+                    <constructor-arg index="0" value="com.dzer6.vc.ga.UserConnection"/>
+                    <!-- Selector -->
+                    <constructor-arg index="1">
+                        <null/>
+                    </constructor-arg>
+                    <!-- Durable queue -->
+                    <constructor-arg index="2" value="false"/>
+                    <!-- JNDI bindings, empty list for none -->
+                    <constructor-arg index="3">
+                        <list/>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+        <!-- Topics -->
+        <constructor-arg index="2">
+            <list>
+                <bean class="org.hornetq.jms.server.config.impl.TopicConfigurationImpl">
+                    <!-- Name -->
+                    <constructor-arg index="0" value="com.dzer6.vc.ga.FlashClient"/>
+                    <constructor-arg index="1">
+                        <list/>
+                    </constructor-arg>
+                </bean>
+                <bean class="org.hornetq.jms.server.config.impl.TopicConfigurationImpl">
+                    <!-- Name -->
+                    <constructor-arg index="0" value="com.dzer6.vc.ga.Bayeux"/>
+                    <constructor-arg index="1">
+                        <list/>
+                    </constructor-arg>
+                </bean>
+                <bean class="org.hornetq.jms.server.config.impl.TopicConfigurationImpl">
+                    <!-- Name -->
+                    <constructor-arg index="0" value="com.dzer6.vc.ga.RtmpServerInterface"/>
+                    <constructor-arg index="1">
+                        <list/>
+                    </constructor-arg>
+                </bean>
+            </list>
+        </constructor-arg>
+        <constructor-arg index="3">
+            <null/>
+        </constructor-arg>
+    </bean>
+
+    <bean name="hornetQJmsServer" class="org.hornetq.jms.server.impl.JMSServerManagerImpl" init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="hornetQServer"/>
+        <constructor-arg index="1" ref="hornetQJmsConfig"/>
+    </bean>
+    
+    <bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+        <property name="connectionFactory">
+            <bean class="org.hornetq.jms.client.HornetQJMSConnectionFactory">
+                <constructor-arg value="false" />
+                <constructor-arg ref="nettyInternalConnector"/>
+            </bean>
+        </property>
     </bean>
 
     <camel:camelContext id="camel" />
   
     <camel:export id="frontendServerQueueExport"
-                  uri="jms:queue:com.dzer6.vc.ga.FrontendServer?exchangePattern=InOnly"
+                  uri="jms:queue:com.dzer6.vc.ga.FrontendServer"
                   serviceRef="rtmpServerEventsListener"
                   serviceInterface="com.dzer6.vc.ga.FrontendServerInterface"/>
   
@@ -80,6 +197,6 @@
 
     <camel:proxy id="rtmpServerTopic"
                  serviceInterface="com.dzer6.vc.ga.RtmpServerInterface"
-                 serviceUrl="jms:topic:com.dzer6.vc.ga.RtmpServerInterface?exchangePattern=InOnly"/>
+                 serviceUrl="jms:topic:com.dzer6.vc.ga.RtmpServerInterface"/>
 
 </beans>

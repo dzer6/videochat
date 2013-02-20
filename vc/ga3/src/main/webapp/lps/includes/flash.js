@@ -1,4 +1,4 @@
-var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $swf8=false;var $svg=false;var $profile=false;lz.embed.dojo=function(){};lz.embed.dojo={defaults:{flash8:null,ready:false,visible:true,width:500,height:400,bgcolor:"#ffffff",allowfullscreen:false,wmode:"window",flashvars:"",minimumVersion:8,id:"flashObject",appenddiv:null},obj:{},comm:{},_loadedListeners:[],_loadedListenerScopes:[],_installingListeners:[],_installingListenerScopes:[],setSwf:function($0,$1){
+var $runtime="dhtml";var $dhtml=true;var $as3=false;var $as2=false;var $swf10=false;var $swf11=false;var $j2me=false;var $debug=false;var $js1=true;var $backtrace=false;var $swf7=false;var $swf9=false;var $svg=false;var $swf8=false;var $mobile=false;var $profile=false;lz.embed.dojo=function(){};lz.embed.dojo={defaults:{flash8:null,ready:false,visible:true,width:500,height:400,bgcolor:"#ffffff",allowfullscreen:false,wmode:"window",flashvars:"",minimumVersion:8,id:"flashObject",appenddiv:null},obj:{},comm:{},_loadedListeners:[],_loadedListenerScopes:[],_installingListeners:[],_installingListenerScopes:[],setSwf:function($0,$1){
 if($0==null){
 return
 };var $2={};for(var $3 in this.defaults){
@@ -20,7 +20,9 @@ top.location=top.location+""
 for(var $2=0;$2<$1._loadedListeners.length;$2++){
 var $3=$1._loadedListenerScopes[$2];if($0!=$3._id)continue;lz.embed.dojo._loadedListeners[$2].apply($3,[$3._id])
 }}},installing:function(){
-var $0=lz.embed.dojo;if($0._installingListeners.length>0){
+var $0=lz.embed.dojo;if(typeof flashUpgradeRequired!="undefined"){
+flashUpgradeRequired()
+};if($0._installingListeners.length>0){
 for(var $1=0;$1<$0._installingListeners.length;$1++){
 var $2=$0._installingListenerScopes[$1];$0._installingListeners[$1].apply($2,[$2._id])
 }}},_initialize:function($0){
@@ -103,9 +105,9 @@ $2+="position: absolute; ";$2+="z-index: 10000; ";$2+="top: -1000px; ";$2+="left
 };var $3;var $4;var $5=lz.embed;if($0>$5.dojo.version)$1=true;$4=this.properties.flash8;var $6=this.properties.flashvars;var $7=this.properties.flashvars;if($1){
 var $8=escape(window.location);document.title=document.title.slice(0,47)+" - Flash Player Installation";var $9=escape(document.title);$6+="&MMredirectURL="+$8+"&MMplayerType=ActiveX"+"&MMdoctitle="+$9;$7+="&MMredirectURL="+$8+"&MMplayerType=PlugIn"
 };if($5.browser.isIE){
-$3='<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" '+'codebase="'+this.protocol()+"://fpdownload.macromedia.com/pub/shockwave/cabs/flash/"+'swflash.cab#version=8,0,0,0" '+'width="'+this.properties.width+'" '+'height="'+this.properties.height+'" '+'id="'+this.properties.id+'" '+'align="middle"> '+'<param name="allowScriptAccess" value="sameDomain" /> '+'<param name="movie" value="'+$4+'" /> '+'<param name="quality" value="high" /> '+'<param name="FlashVars" value="'+$6+'" /> '+'<param name="bgcolor" value="'+this.properties.bgcolor+'" /> '+'<param name="wmode" value="'+this.properties.wmode+'" /> '+'<param name="allowFullScreen" value="'+this.properties.allowfullscreen+'" /> '+"</object>"
+$3='<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" '+'codebase="'+this.protocol()+"://fpdownload.macromedia.com/pub/shockwave/cabs/flash/"+'swflash.cab#version=8,0,0,0" '+'width="'+this.properties.width+'" '+'height="'+this.properties.height+'" '+'id="'+this.properties.id+'" '+'align="middle" tabindex="0"> '+'<param name="allowScriptAccess" value="sameDomain" /> '+'<param name="movie" value="'+$4+'" /> '+'<param name="quality" value="high" /> '+'<param name="FlashVars" value="'+$6+'" /> '+'<param name="bgcolor" value="'+this.properties.bgcolor+'" /> '+'<param name="wmode" value="'+this.properties.wmode+'" /> '+'<param name="allowFullScreen" value="'+this.properties.allowfullscreen+'" /> '+"</object>"
 }else{
-$3='<embed src="'+$4+'" '+'quality="high" '+'bgcolor="'+this.properties.bgcolor+'" '+'wmode="'+this.properties.wmode+'" '+'allowFullScreen="'+this.properties.allowfullscreen+'" '+'width="'+this.properties.width+'" '+'height="'+this.properties.height+'" '+'id="'+this.properties.id+'" '+'name="'+this.properties.id+'" '+'FlashVars="'+$7+'" '+'swLiveConnect="true" '+'align="middle" '+'allowScriptAccess="sameDomain" '+'type="application/x-shockwave-flash" '+'pluginspage="'+this.protocol()+'://www.macromedia.com/go/getflashplayer" />'
+$3='<embed src="'+$4+'" '+'quality="high" '+'bgcolor="'+this.properties.bgcolor+'" '+'wmode="'+this.properties.wmode+'" '+'allowFullScreen="'+this.properties.allowfullscreen+'" '+'width="'+this.properties.width+'" '+'height="'+this.properties.height+'" '+'id="'+this.properties.id+'" '+'name="'+this.properties.id+'" '+'FlashVars="'+$7+'" '+'swLiveConnect="true" '+'align="middle" tabindex="0" '+'allowScriptAccess="sameDomain" '+'type="application/x-shockwave-flash" '+'pluginspage="'+this.protocol()+'://www.macromedia.com/go/getflashplayer" />'
 };var $a=this.properties.id+"Container";var $b=this.properties.appenddiv;if($b){
 $b.innerHTML=$3;$b.setAttribute("style",$2)
 }else{
@@ -116,12 +118,12 @@ var $0=document.getElementById(this.properties.id+"")
 }
 catch($1){};return $0
 },setVisible:function($0){
-var $1=document.getElementById(this.properties.id+"Container");if($0==true){
-$1.style.visibility="visible"
+var $1=this.properties.appenddiv;var $2=$1?$1:document.getElementById(this.properties.id+"Container");if($0==true){
+$2.style.visibility="visible"
 }else{
-$1.style.position="absolute";$1.style.x="-1000px";$1.style.y="-1000px";$1.style.visibility="hidden"
+$2.style.position="absolute";$2.style.x="-1000px";$2.style.y="-1000px";$2.style.visibility="hidden"
 }},center:function(){
-var $0=this.properties.width;var $1=this.properties.height;var $2=0;var $3=0;var $4=document.getElementById(this.properties.id+"Container");$4.style.top=$3+"px";$4.style.left=$2+"px"
+var $0=this.properties.width;var $1=this.properties.height;var $2=0;var $3=0;var $4=this.properties.appenddiv;var $5=$4?$4:document.getElementById(this.properties.id+"Container");$5.style.top=$3+"px";$5.style.left=$2+"px"
 }};lz.embed.dojo.Communicator=function($0){
 this._id=$0
 };lz.embed.dojo.Communicator.prototype={_addExternalInterfaceCallback:function(methodName,id){
@@ -166,10 +168,16 @@ return true
 return true
 };return false
 },install:function(){
-var $0=lz.embed.dojo;$0.info.installing=true;$0.installing();var $1=$0.obj[this._id].properties;var $2=$1.flash8;var $3=$2.indexOf("swf7");if($3!=-1){
-$0._tempurl=$2;$2=$2.substring(0,$3+3)+"8"+$2.substring($3+4,$2.length);$1.flash8=$2
-};var $3=$2.indexOf("swf9");if($3!=-1){
-$0._tempurl=$2;$2=$2.substring(0,$3+3)+"8"+$2.substring($3+4,$2.length);$1.flash8=$2
+var $0=lz.embed.dojo;$0.info.installing=true;$0.installing();var $1=$0.obj[this._id].properties;var $2=$1.flash8;var $3=false;if($2.indexOf("swf7")!=-1){
+$3=true
+}else if($2.indexOf("swf9")!=-1){
+$3=true
+}else if($2.indexOf("swf10")!=-1){
+$3=true
+}else{
+$3=true
+};if($3){
+$0._tempurl=$2;$1.flash8=lz.embed.__serverroot+"swf8updater.lzx.swf8.swf"
 };$0.ready=false;if($0.info.capable==false){
 $0._isinstaller=true;var $4=new ($0.Embed)($1);$4.write($0.minimumVersion)
 }else if($0.info.isVersionOrAbove(6,0,65)){
@@ -201,6 +209,10 @@ return null
 var $2=lz.embed.regex;var $3=$2.unmask($1).match($2.cache[$0]);return $3?$2.maskArr($3):null
 },replace:function($0,$1,$2){
 var $3=lz.embed.regex;return $3.mask($3.unmask($1).replace($3.cache[$0],$3.unmask($2)))
+},replace2:function($0,$1){
+var o=lz.embed.regex;var a=[];o.unmask($1).replace(o.cache[$0],function(){
+a.push(o.maskArr([].slice.call(arguments)))
+});return a
 },search:function($0,$1){
 var $2=lz.embed.regex;return $2.unmask($1).search($2.cache[$0])
 },split:function($0,$1,$2){

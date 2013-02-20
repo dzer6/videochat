@@ -1,4 +1,4 @@
-var $runtime = "dhtml";
+var $runtime = "mobile";
 var $dhtml = true;
 var $as3 = false;
 var $as2 = false;
@@ -12,7 +12,7 @@ var $swf7 = false;
 var $swf9 = false;
 var $svg = false;
 var $swf8 = false;
-var $mobile = false;
+var $mobile = true;
 var $profile = true;
 var _Copyright = "Portions of this file are copyright (c) 2001-2010 by Laszlo Systems, Inc.  All rights reserved.";
 var $lzprofiler = null;
