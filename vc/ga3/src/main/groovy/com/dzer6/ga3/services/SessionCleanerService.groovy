@@ -36,33 +36,38 @@ class SessionCleanerService {
     @Autowired
     @Qualifier("config")
     def config
-
-    private Thread sweeperThread
+    
     private volatile boolean sweeperOn = false
-    // thread semaphore
+    
     private static final Object semaphore = new Object()
+    
+    private long sweeperInterval
+    
+    private long sessionTimeout
+
+    private Thread sweeperThread = new Thread({
+        log.info("started")
+        while (sweeperOn) {
+            try {
+                synchronized (semaphore) {
+                    semaphore.wait(sweeperInterval)
+                }
+                Date date = new Date(System.currentTimeMillis() - sessionTimeout)
+                def oldSessions = sessionRepository.findAllByLastUserDisconnectionLessThan(date)
+                oldSessions.each({
+                    deleteSession(it.id)
+                })
+            } catch (Throwable t) {
+                log.error("Sweeper error.", t)
+            }
+        }
+        log.info("stopped")
+    } as Runnable, "SessionCleanerService")
 
     @PostConstruct
     def init() {
-        long sweeperInterval = config.SWEEPER_INTERVAL as long
-        long sessionTimeout = config.SESSION_TIMEOUT as long
-        sweeperThread = new Thread({
-                log.info("started")
-                while (sweeperOn) {
-                    try {
-                        synchronized (semaphore) {
-                            semaphore.wait(sweeperInterval)
-                        }
-                        def oldSessions = sessionRepository.findAllByLastUserDisconnectionLessThan(new Date(System.currentTimeMillis() - sessionTimeout))
-                        oldSessions.each({
-                            deleteSession(it.id)
-                        })
-                    } catch (Throwable t) {
-                        log.error("Sweeper error.", t)
-                    }
-                }
-                log.info("stopped")
-            } as Runnable, "SessionCleanerService")
+        sweeperInterval = config.SWEEPER_INTERVAL as long
+        sessionTimeout = config.SESSION_TIMEOUT as long
         sweeperThread.daemon = true
         sweeperOn = true
         sweeperThread.start()
