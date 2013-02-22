@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional(readOnly = true)
 public interface UserBanRepository extends CrudRepository<UserBan, Long> {
 
     @Query("select count (ub) from UserBan ub where ub.user = :user and ub.dateCreated > :start and ub.dateCreated < :end")

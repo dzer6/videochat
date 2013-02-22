@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional(readOnly = true)
 public interface RtmpServerRepository extends CrudRepository<RtmpServer, Long> {
 
     RtmpServer findByUrl(String url);

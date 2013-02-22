@@ -8,11 +8,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
+@Transactional(readOnly = true)
 public interface PreviousOpponentRepository extends CrudRepository<PreviousOpponent, Long> {
 
     List<PreviousOpponent> findByUserAndOpponent(User user, User opponent);
 
     @Query("select count (ub) from UserBan ub where ub.user = :user")
     long countByUser(@Param("user") User user);
+    
 }
