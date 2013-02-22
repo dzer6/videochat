@@ -13,11 +13,11 @@ class ApplicationContextWrapper implements ApplicationContextAware {
     
     private final static Object semaphore = new Object()
   
-    private static boolean isInitialized
+    private static volatile boolean isInitialized
   
     private static ApplicationContextWrapper instance
   
-    private ApplicationContext ctx = null
+    private ApplicationContext ctx
   
     private ApplicationContextWrapper() { }
     
