@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.dzer6.ga3.domain.*
 import com.dzer6.ga3.repository.*
+
+import org.springframework.transaction.annotation.Transactional
   
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -51,7 +53,6 @@ class SessionCleanerService {
                         synchronized (semaphore) {
                             semaphore.wait(sweeperInterval)
                         }
-                        // Do work
                         def oldSessions = sessionRepository.findAllByLastUserDisconnectionLessThan(new Date(System.currentTimeMillis() - sessionTimeout))
                         oldSessions.each({
                             deleteSession(it.id)
@@ -75,7 +76,8 @@ class SessionCleanerService {
         log.info("destroy()")
     }
 
-    private void deleteSession(String sessionId) {
+    @Transactional
+    void deleteSession(String sessionId) {
         log.info("deleteSession() " + sessionId)
 
         def myId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
