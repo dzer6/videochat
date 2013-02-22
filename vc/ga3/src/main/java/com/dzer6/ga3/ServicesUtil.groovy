@@ -19,9 +19,9 @@ class ServicesUtil {
             JpaTransactionManager tm = ApplicationContextWrapper.instance.transactionManager
             TransactionTemplate tt = new TransactionTemplate(tm)
             tt.execute({status ->
-                    log.info("Execute closure in transaction. TransactionManager = ${tm}. TransactionTemplate = ${tt}.")
-                    return c.call(status)
-                } as TransactionCallback)
+                log.info("Execute closure in transaction. TransactionManager = ${tm}. TransactionTemplate = ${tt}.")
+                return c.call(status)
+            } as TransactionCallback)
         } catch(OptimisticLockingFailureException e) {
             log.info("OptimisticLockingFailureException: ${message}, try again")
             return invokeAgainIfOptimisticLockingFailureCatched(message, c)
