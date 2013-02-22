@@ -47,7 +47,7 @@ class RtmpService {
             RtmpServer rtmpServer = rtmpServerRepository.findByUrl(url)
       
             if (rtmpServer == null) {
-                throw new RuntimeException("There is now rtmp server with url = $url")
+                throw new RuntimeException("There is no rtmp server with url = $url")
             }
       
             rtmpServer.freeStreamsNumber = freeStreamsNumber
