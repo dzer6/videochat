@@ -1,15 +1,16 @@
 import com.dzer6.ga3.*
 import com.dzer6.ga3.domain.*
 import com.dzer6.ga3.services.*
-import com.dzer6.vc.session.storage.SessionNotFoundException
+import com.dzer6.vc.ga.*
+import com.dzer6.vc.session.storage.*
 
 log.info("ec() // find evercookeied user or create new")
 
-def config = applicationContext.config
-def sessionStorageService = applicationContext.sessionStorageService
-def webToolService = applicationContext.webToolService
-def userService = applicationContext.userService
-def flashClient = applicationContext.flashClient
+PropertyPlaceholderConfigurer config = applicationContext.config
+SessionStorage sessionStorageService = applicationContext.sessionStorageService
+WebToolService webToolService = applicationContext.webToolService
+BayeuxWrapperService userService = applicationContext.userService
+FlashClientInterface flashClient = applicationContext.flashClient
 
 def chatWithMe = { String myId, String opponentId ->
     log.info("chatWithMe()")
@@ -63,7 +64,7 @@ def chatWithMe = { String myId, String opponentId ->
 String sessionId = webToolService.getSessionId(request)
 log.info("ec() sessionId = $sessionId")
     
-def myId
+String myId
     
 try {
     myId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
@@ -75,9 +76,9 @@ try {
     
 User me
         
-def ecuid = request.ecuid
+String ecuid = request.ecuid
 log.info("ec() ecuid = $ecuid")
-        
+
 if (myId == null && ecuid == null) {
     me = userService.createUser()
     myId = me.id

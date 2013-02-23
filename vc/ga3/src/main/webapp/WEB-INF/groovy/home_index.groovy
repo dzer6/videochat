@@ -1,13 +1,16 @@
+import com.dzer6.ga3.*
 import com.dzer6.ga3.domain.*
 import com.dzer6.ga3.services.*
+import com.dzer6.vc.ga.*
+import com.dzer6.vc.session.storage.*
 
 log.info("index() ip = ${request.remoteAddr}")
 log.info("index() id = ${request.id}")
 
-def config = applicationContext.config
-def sessionStorageService = applicationContext.sessionStorageService
-def webToolService = applicationContext.webToolService
-def rtmpService = applicationContext.rtmpService
+PropertyPlaceholderConfigurer config = applicationContext.config
+SessionStorage sessionStorageService = applicationContext.sessionStorageService
+WebToolService webToolService = applicationContext.webToolService
+RtmpService rtmpService = applicationContext.rtmpService
 
 if (rtmpService.isThereRemainsFreeRtmpServers()) {
     String sessionId = webToolService.getSessionId(request)
