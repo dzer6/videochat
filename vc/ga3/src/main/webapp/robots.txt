@@ -7,4 +7,3 @@ Disallow: /images/
 Disallow: /js/
 Disallow: /lps/
 Disallow: /lzx/
-Disallow: /msdropdown/
