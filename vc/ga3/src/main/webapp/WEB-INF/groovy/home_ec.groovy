@@ -113,11 +113,11 @@ if (request.id != null) {
 }
 
 webToolService.renderJson(response, [
-        ecuid: myId,
-        rtmpServerUrl: me.rtmpServer.url,
-        playing: me.playing,
-        bannedTill: me.bannedTill == null || me.bannedTill <= new Date() ? 0 : me.bannedTill.time,
-        conversationInProcess: webToolService.isConversationInProcess(me),
-        chatWithMeURL: webToolService.getChatWithMeURL(request, myId),
-        sessionId: sessionId
-    ])
+    ecuid: myId,
+    rtmpServerUrl: me.rtmpServer.url,
+    playing: me.playing,
+    bannedTill: me.bannedTill == null || me.bannedTill <= new Date() ? 0 : me.bannedTill.time,
+    conversationInProcess: webToolService.isConversationInProcess(me),
+    chatWithMeURL: webToolService.getChatWithMeURL(request, myId),
+    sessionId: sessionId
+])
