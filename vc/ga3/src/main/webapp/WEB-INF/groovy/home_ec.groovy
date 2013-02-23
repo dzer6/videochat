@@ -9,7 +9,7 @@ log.info("ec() // find evercookeied user or create new")
 PropertyPlaceholderConfigurer config = applicationContext.config
 SessionStorage sessionStorageService = applicationContext.sessionStorageService
 WebToolService webToolService = applicationContext.webToolService
-BayeuxWrapperService userService = applicationContext.userService
+UserService userService = applicationContext.userService
 FlashClientInterface flashClient = applicationContext.flashClient
 
 def chatWithMe = { String myId, String opponentId ->
