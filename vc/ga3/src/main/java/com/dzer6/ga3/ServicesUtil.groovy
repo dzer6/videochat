@@ -4,6 +4,9 @@ import org.springframework.dao.OptimisticLockingFailureException
 
 import org.springframework.transaction.support.TransactionTemplate
 import org.springframework.transaction.support.TransactionCallback
+import org.springframework.transaction.support.DefaultTransactionDefinition
+import org.springframework.transaction.TransactionDefinition
+import org.springframework.transaction.TransactionStatus
 
 import org.springframework.orm.jpa.JpaTransactionManager
 
@@ -17,11 +20,15 @@ class ServicesUtil {
     public Object invokeAgainIfOptimisticLockingFailureCatched(String message, Closure c) {
         try {
             JpaTransactionManager tm = ApplicationContextWrapper.instance.transactionManager
-            TransactionTemplate tt = new TransactionTemplate(tm)
-            tt.execute({status ->
-                log.info("Execute closure in transaction. TransactionManager = ${tm}. TransactionTemplate = ${tt}.")
-                return c.call(status)
-            } as TransactionCallback)
+            TransactionDefinition td = new DefaultTransactionDefinition()
+            td.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW)
+            TransactionTemplate tt = new TransactionTemplate(tm, td)
+            tt.execute(new TransactionCallback() {
+                public Object doInTransaction(TransactionStatus status) {        
+                    log.info("Execute closure in transaction. TransactionManager = ${tm}. TransactionTemplate = ${tt}.")
+                    return c.call(status)
+                }
+            })
         } catch(OptimisticLockingFailureException e) {
             log.info("OptimisticLockingFailureException: ${message}, try again")
             return invokeAgainIfOptimisticLockingFailureCatched(message, c)
