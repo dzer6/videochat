@@ -51,14 +51,14 @@ def chatWithMe = { String myId, String opponentId ->
     flashClient.stopStream(myId)
     flashClient.stopStream(opponentId)
 
-    userService.releaseUser(me)
-    userService.changeUser(me, [playing: false])
-    userService.changeUser(opponent, [playing: false])
+    userService.releaseUser(myId)
+    userService.changeUser(myId, [playing: false])
+    userService.changeUser(opponentId, [playing: false])
 
     userService.setOpponent(myId, opponentId)
 
-    userService.changeUser(me, [playing: true])
-    userService.changeUser(opponent, [playing: true])
+    userService.changeUser(myId, [playing: true])
+    userService.changeUser(opponentId, [playing: true])
 }
 
 String sessionId = webToolService.getSessionId(request)

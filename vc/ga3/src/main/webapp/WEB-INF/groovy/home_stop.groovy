@@ -29,7 +29,7 @@ if (opponent != null) {
     flashClient.stopStream(opponent.id)
     bayeuxWrapperService.turnOffChat(opponent)
     bayeuxWrapperService.turnOffBlocking(opponent)
-    userService.releaseUser(me)
+    userService.releaseUser(me.id)
 }
   
 log.info("stop() me.playing = ${me.playing}")
@@ -39,7 +39,7 @@ if (me.playing) {
     bayeuxWrapperService.turnOffChat(me)
 }
 
-userService.changeUser(me, [playing: false])
+userService.changeUser(me.id, [playing: false])
   
 log.info("stop() me.playing = ${me.playing}")
       

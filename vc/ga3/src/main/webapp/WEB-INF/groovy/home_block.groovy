@@ -30,8 +30,8 @@ if (opponent != null) {
     flashClient.cameraOff(opponent.id)
     bayeuxWrapperService.turnOffChat(opponent)
     bayeuxWrapperService.turnOffBlocking(opponent)
-    userService.releaseUser(me)
-    int code = userService.blockUser(opponent)
+    userService.releaseUser(me.id)
+    int code = userService.blockUser(opponent.id)
     Map blockingParams = [:]
     blockingParams.message = config["BLOCK_USER_MESSAGE_${code}"]
     if (code == 0) {

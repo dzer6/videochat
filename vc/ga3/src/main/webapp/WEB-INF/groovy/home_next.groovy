@@ -25,7 +25,7 @@ bayeuxWrapperService.turnOffBlocking(me)
 log.info("next() me.playing = ${me.playing}")
 // if user already exists but not playing then turn on camera
 if (!me.playing) {
-    userService.changeUser(me, [playing: true])
+    userService.changeUser(me.id, [playing: true])
     flashClient.cameraOn(me.id)
 }
   
@@ -41,9 +41,9 @@ if (opponent != null) {
     bayeuxWrapperService.turnOffBlocking(opponent)
 }
       
-userService.releaseUser(me)
+userService.releaseUser(me.id)
 // choose new opponent
-userService.chooseOpponent(me)
+userService.chooseOpponent(me.id)
       
 opponent = me.opponent
   

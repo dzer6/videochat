@@ -18,7 +18,7 @@ if (me == null) {
 
 log.info("play() me = $me")
   
-userService.changeUser(me, [playing: true])
+userService.changeUser(me.id, [playing: true])
 flashClient.cameraOn(me.id)
 
 webToolService.renderJson(response, [playing: true])
