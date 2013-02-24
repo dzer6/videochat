@@ -41,19 +41,20 @@ class UserConnectionService implements UserConnectionInterface {
     void connectionClosed(String sessionId) {
         log.info("connectionClosed($sessionId)")
     
-        User me = getUser(sessionId)
+        String userId = getUserId(sessionId)
         
-        if (me != null) {
-            log.info("user id = ${me.id}")
+        if (userId != null) {
+            log.info("user id = ${userId}")
             
-            userService.changeUser(me, [broadcasting: false])
+            userService.changeUser(userId, [broadcasting: false])
             
+            User me = userService.getUser(userId)
             User opponent = me.opponent
 
             if (opponent != null) {
                 flashClient.stopStream(opponent.id)
                 bayeuxWrapperService.turnOffChat(opponent)
-                userService.addPreviousOpponent(me.id, opponent.id)
+                userService.addPreviousOpponent(userId, opponent.id)
             }
     
             bayeuxWrapperService.turnOffChat(me)
@@ -65,20 +66,22 @@ class UserConnectionService implements UserConnectionInterface {
     void connectionStarted(String sessionId) {
         log.info("connectionStarted($sessionId)")
         
-        User me = getUser(sessionId)
+        String userId = getUserId(sessionId)
         
-        if (me != null) {
-            log.info("user id = ${me.id}")
+        if (userId != null) {
+            log.info("user id = ${userId}")
+            
+            User me = userService.getUser(userId)
             User opponent = me.opponent
             
             if (opponent != null && me.playing) {
-                flashClient.playStream(me.id, me.rtmpServer.url + config.R5WA_APPLICATION_NAME_POSTFIX, opponent.id)
-                flashClient.playStream(opponent.id, opponent.rtmpServer.url + config.R5WA_APPLICATION_NAME_POSTFIX, me.id)
+                flashClient.playStream(userId, me.rtmpServer.url + config.R5WA_APPLICATION_NAME_POSTFIX, opponent.id)
+                flashClient.playStream(opponent.id, opponent.rtmpServer.url + config.R5WA_APPLICATION_NAME_POSTFIX, userId)
                 
                 bayeuxWrapperService.turnOnChat(me)
                 bayeuxWrapperService.turnOnChat(opponent)
                 
-                userService.removePreviousOpponent(me.id, opponent.id)
+                userService.removePreviousOpponent(userId, opponent.id)
             }
             
             sessionStorageService.connectionStarted(sessionId)
@@ -88,40 +91,36 @@ class UserConnectionService implements UserConnectionInterface {
     void broadcastingStoped(String sessionId) {
         log.info("broadcastingStoped($sessionId)")
         
-        User me = getUser(sessionId)
+        String userId = getUserId(sessionId)
         
-        if (me != null) {
-            log.info("user id = ${me.id}")
-            userService.changeUser(me, [broadcasting: false])
+        if (userId != null) {
+            log.info("user id = ${userId}")
+            userService.changeUser(userId, [broadcasting: false])
         }
     }
   
     void broadcastingStarted(String sessionId) {
         log.info("broadcastingStarted($sessionId)")
         
-        User me = getUser(sessionId)
+        String userId = getUserId(sessionId)
         
-        if (me != null) {
-            log.info("user id = ${me.id}")
-            userService.changeUser(me, [broadcasting: true])
+        if (userId != null) {
+            log.info("user id = ${userId}")
+            userService.changeUser(userId, [broadcasting: true])
         }
     }
     
-    private User getUser(String sessionId) {
+    private String getUserId(String sessionId) {
         if (sessionId == null) {
             log.warn("sessionId is null")
             return null
         }
-        
-        String myId
       
         try {
-            myId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
+            return sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
         } catch(SessionNotFoundException e) {
             log.warn(e.message)
             return null
         }
-    
-        return userService.getUser(myId)
     }
 }

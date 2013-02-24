@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Propagation
 
 @Service("userService")
 @Scope("singleton")
-@Transactional
 class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class)
@@ -47,52 +46,55 @@ class UserService {
      *
      * Returned codes: 0, 1, 2, 3, 4
      */
-    int blockUser(User user) {
-        UserBan ban = new UserBan(user: user)
-        userBanRepository.save(ban)
+    int blockUser(String userId) {
+        log.info("blockUser(userId: ${userId})")
+        return invokeAgainIfOptimisticLockingFailureCatched("UserService.blockUser") { status ->
+            User user = userRepository.findOne(userId)
+            UserBan ban = new UserBan(user: user)
+            userBanRepository.save(ban)
 
-        long nowInMills = System.currentTimeMillis()
+            long nowInMills = System.currentTimeMillis()
 
-        long hour = config.ONE_HOUR_IN_MILLS as long
-        long halfHour = config.HALF_HOUR_IN_MILLS as long
-        long tenMinutes = config.TEN_MINUTES_IN_MILLS as long
-    
-        Date hourAgo = new Date(nowInMills - hour)
-        Date tenMinutesAgo = new Date(nowInMills - tenMinutes)
-        Date now = new Date()
+            long hour = config.ONE_HOUR_IN_MILLS as long
+            long halfHour = config.HALF_HOUR_IN_MILLS as long
+            long tenMinutes = config.TEN_MINUTES_IN_MILLS as long
 
-        int numberOfBansDuringHour = userBanRepository.countByUserAndDateCreatedBetween(user, hourAgo, now)
-        int numberOfBansDuringTenMinutes = userBanRepository.countByUserAndDateCreatedBetween(user, tenMinutesAgo, now)
+            Date hourAgo = new Date(nowInMills - hour)
+            Date tenMinutesAgo = new Date(nowInMills - tenMinutes)
+            Date now = new Date()
 
-        int code
+            int numberOfBansDuringHour = userBanRepository.countByUserAndDateCreatedBetween(user, hourAgo, now)
+            int numberOfBansDuringTenMinutes = userBanRepository.countByUserAndDateCreatedBetween(user, tenMinutesAgo, now)
 
-        if (numberOfBansDuringHour >= 5) {
-            code = 0
-        } else {
-            code = numberOfBansDuringTenMinutes // 0 or 1 or 2 or 3 or 4
-        }
+            int code
 
-        invokeAgainIfOptimisticLockingFailureCatched("UserService.blockUser set bannedTill and playing") { status ->
+            if (numberOfBansDuringHour >= 5) {
+                code = 0
+            } else {
+                code = numberOfBansDuringTenMinutes // 0 or 1 or 2 or 3 or 4
+            }
+
             if (code == 0) { // number of bans during ten minutes
                 user.bannedTill = new Date(nowInMills + halfHour)
             } else if (code == 4) { // number of bans during ten minutes
                 user.bannedTill = new Date(nowInMills + tenMinutes)
             }
+            
             user.playing = false
             userRepository.save(user)
-        }
 
-        invokeAgainIfOptimisticLockingFailureCatched("UserService.blockUser delete bans older than one hour") { status ->
             userBanRepository.deleteBansOlderThanDate(user, hourAgo)
+        
+            return code // 0 or 1 or 2 or 3 or 4
         }
-
-        return code // 0 or 1 or 2 or 3 or 4
     }
   
-    void changeUser(User user, Map fields) {
-        log.info("changeUser(user: ${user}, fields: ${fields})")
+    void changeUser(String userId, Map fields) {
+        log.info("changeUser(user id: ${userId}, fields: ${fields})")
         invokeAgainIfOptimisticLockingFailureCatched("UserService.changeUser") { status ->
-            if (userRepository.findOne(user.id) == null) {
+            User user = userRepository.findOne(userId)
+            
+            if (user == null) {
                 log.info("There is no user with id = ${user.id}")
                 //status.setRollbackOnly()
                 return
@@ -180,11 +182,13 @@ class UserService {
         }
     }
 
-    void releaseUser(User user) {
-        log.info("releaseUser(user: ${user})")
+    void releaseUser(String userId) {
+        log.info("releaseUser(user id: ${userId})")
         invokeAgainIfOptimisticLockingFailureCatched("UserService.releaseUser") { status ->
-            if (userRepository.findOne(user.id) == null) {
-                log.info("There is no user with id = ${user.id}")
+            User user = userRepository.findOne(userId)
+            
+            if (user == null) {
+                log.info("There is no user with id = ${userId}")
                 //status.setRollbackOnly()
                 return
             }
@@ -208,6 +212,7 @@ class UserService {
         }
     }
 
+    @Transactional
     User getUser(String userId) {
         log.info("getUser(userId: ${userId})")
         if (userId == null || userId == "") {
@@ -219,7 +224,6 @@ class UserService {
 
     User createUser() {
         log.info("createUser()")
-    
         return invokeAgainIfOptimisticLockingFailureCatched("UserService.createUser") { status ->
             User user = new User()
       
@@ -271,17 +275,19 @@ class UserService {
         }
     }
 
-    void chooseOpponent(User me) {
-        log.info("chooseOpponent(user.id: ${me.id}")
+    void chooseOpponent(String userId) {
+        log.info("chooseOpponent(user id: ${userId}")
         invokeAgainIfOptimisticLockingFailureCatched("UserService.chooseOpponent") { status ->
-            if (userRepository.findOne(me.id) == null) {
-                log.info("There is no user with id = ${user.id}")
+            User me = userRepository.findOne(userId)
+            
+            if (me == null) {
+                log.info("There is no user with id = ${userId}")
                 //status.setRollbackOnly()
                 return
             }
 
             if (me.opponent != null) {
-                log.info("opponent already choosed, user.id = ${user.id}, opponent.id = ${me.opponent.id}")
+                log.info("opponent already choosed, user.id = ${userId}, opponent.id = ${me.opponent.id}")
                 //status.setRollbackOnly()
                 return
             }

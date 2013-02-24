@@ -86,14 +86,10 @@ class SessionCleanerService {
         log.info("deleteSession() " + sessionId)
 
         def myId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
-    
-        User me = userService.getUser(myId)
 
-        if (me != null) {
-            userService.changeUser(me, [playing: false])
-            userService.releaseUser(me)
-        }
-    
+        userService.changeUser(myId, [playing: false])
+        userService.releaseUser(myId)
+        
         sessionStorageService.disposeSession(sessionId)
     }
 }
