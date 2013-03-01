@@ -41,11 +41,9 @@ class UserConnectionService implements UserConnectionInterface {
     void connectionClosed(String sessionId) {
         log.info("connectionClosed($sessionId)")
     
-        String userId = getUserId(sessionId)
+        try {
+            String userId = getUserId(sessionId)
         
-        if (userId != null) {
-            log.info("user id = ${userId}")
-            
             userService.changeUser(userId, [broadcasting: false])
             
             User me = userService.getUser(userId)
@@ -60,16 +58,16 @@ class UserConnectionService implements UserConnectionInterface {
             bayeuxWrapperService.turnOffChat(me)
 
             sessionStorageService.connectionLost(sessionId)  
+        } catch(e) {
+            log.error("Unable to handle connection closed event", e)
         }
     }
 
     void connectionStarted(String sessionId) {
         log.info("connectionStarted($sessionId)")
         
-        String userId = getUserId(sessionId)
-        
-        if (userId != null) {
-            log.info("user id = ${userId}")
+        try {
+            String userId = getUserId(sessionId)
             
             User me = userService.getUser(userId)
             User opponent = me.opponent
@@ -85,42 +83,36 @@ class UserConnectionService implements UserConnectionInterface {
             }
             
             sessionStorageService.connectionStarted(sessionId)
+        } catch(e) {
+            log.error("Unable to handle connection started event", e)
         }
     }
   
     void broadcastingStoped(String sessionId) {
         log.info("broadcastingStoped($sessionId)")
         
-        String userId = getUserId(sessionId)
-        
-        if (userId != null) {
-            log.info("user id = ${userId}")
+        try {
+            String userId = getUserId(sessionId)
             userService.changeUser(userId, [broadcasting: false])
+        } catch(e) {
+            log.error("Unable to set broadcasting false for user", e)
         }
     }
   
     void broadcastingStarted(String sessionId) {
         log.info("broadcastingStarted($sessionId)")
         
-        String userId = getUserId(sessionId)
-        
-        if (userId != null) {
-            log.info("user id = ${userId}")
+        try {
+            String userId = getUserId(sessionId)
             userService.changeUser(userId, [broadcasting: true])
+        } catch(e) {
+            log.error("Unable to set broadcasting true for user", e)
         }
     }
     
     private String getUserId(String sessionId) {
-        if (sessionId == null) {
-            log.warn("sessionId is null")
-            return null
-        }
-      
-        try {
-            return sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
-        } catch(SessionNotFoundException e) {
-            log.warn(e.message)
-            return null
-        }
+        String userId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
+        log.info("user id = ${userId}")
+        return userId
     }
 }

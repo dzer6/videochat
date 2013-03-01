@@ -11,11 +11,7 @@ UserService userService =  applicationContext.userService
 BayeuxWrapperService bayeuxWrapperService =  applicationContext.bayeuxWrapperService
 FlashClientInterface flashClient =  applicationContext.flashClient
   
-User me = webToolService.getUser(request, forward)
-
-if (me == null) {
-    return
-}
+User me = webToolService.getUser(request)
 
 log.info("next() me = $me")
       
@@ -68,7 +64,6 @@ if (opponent != null) {
 
     result.success = true
 } else {
-    // TODO: show message to user "there is no free users at the moment"
     result.error = true
     result.message = "There is no free users at the moment. Please, try later."
 }

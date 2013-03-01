@@ -7,8 +7,8 @@ import com.dzer6.ga3.domain.*
 
 import com.dzer6.vc.session.storage.SessionNotFoundException
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Service
 
 import groovy.json.JsonBuilder
+import com.dzer6.ga3.exception.UserBannedException
 
 @Service("webToolService")
 @Scope("singleton")
@@ -49,7 +50,9 @@ class WebToolService {
     }
 
     String getSessionId(HttpServletRequest request) {
-        return request.cookies.find({ it.name == config.SESSION_ID_COOKIE_NAME })?.value
+        String sessionId = request.cookies.find({ it.name == config.SESSION_ID_COOKIE_NAME })?.value
+        log.info("sessionId = $sessionId")
+        return sessionId
     }
   
     boolean isConversationInProcess(User me) {
@@ -72,54 +75,19 @@ class WebToolService {
         response.addCookie(cookie)
     }
   
-    void redirectToIndexPage(String logMessage, Closure forward) {
-        log.info(logMessage)
-        //forward "/WEB-INF/pages/index.gtpl"
-        forward "/home_index.groovy"
-    }
-  
-    void redirectToIndexPage(String logMessage, Throwable t, Closure forward) {
-        log.info(logMessage, t)
-        //forward "/WEB-INF/pages/index.gtpl"
-        forward "/home_index.groovy"
-    }
-  
-    User getUser(HttpServletRequest request, Closure forward) {
+    User getUser(HttpServletRequest request) {
         String sessionId = getSessionId(request)
-
-        log.info("sessionId = $sessionId")
-
-        def myId
-    
-        try {
-            myId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
-        } catch(SessionNotFoundException e) {
-            redirectToIndexPage("Session with sessionId = ${sessionId} is not found", forward)
-            return null
-        }
-  
-        log.info("myId = $myId")
-  
+        String myId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
         User me = userService.getUser(myId)
-  
-        log.info("me = $me")
-
-        if (me == null) {
-            sessionStorageService.disposeSession(sessionId)
-            redirectToIndexPage("There is no user for current session, sessionId = ${sessionId}, userId = ${myId}", forward)
-            return null
-        }
     
         Date now = new Date()
     
         if (me.bannedTill != null && me.bannedTill > now) {
             request.bannedTillDelta = me.bannedTill.time - now.time
-            forward "/WEB-INF/pages/userBanned.gtpl"
-            return null
+            throw new UserBannedException(me.id)
         }
     
         return me
     }
-	
 }
 

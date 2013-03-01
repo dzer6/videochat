@@ -81,14 +81,13 @@ class SessionCleanerService {
         log.info("destroy()")
     }
 
-    @Transactional
     void deleteSession(String sessionId) {
-        log.info("deleteSession() " + sessionId)
+        log.info("deleteSession() sessionId = " + sessionId)
 
-        def myId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
+        String userId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
 
-        userService.changeUser(myId, [playing: false])
-        userService.releaseUser(myId)
+        userService.changeUser(userId, [playing: false])
+        userService.releaseUser(userId)
         
         sessionStorageService.disposeSession(sessionId)
     }

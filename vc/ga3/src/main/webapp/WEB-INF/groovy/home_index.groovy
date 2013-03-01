@@ -18,10 +18,7 @@ if (rtmpService.isThereRemainsFreeRtmpServers()) {
     log.info("index() sessionId = $sessionId")  
   
     if (sessionStorageService.sessionExists(sessionId)) {
-        User me = webToolService.getUser(request, forward)
-        if (me == null) {
-            return
-        }
+        User me = webToolService.getUser(request)
     } else {
         sessionId = sessionStorageService.createSession()
         log.info("index() create new session, sessionId = $sessionId")

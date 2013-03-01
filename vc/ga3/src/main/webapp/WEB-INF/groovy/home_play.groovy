@@ -5,17 +5,11 @@ import com.dzer6.vc.ga.*
 
 log.info("play()")
 
-PropertyPlaceholderConfigurer config = applicationContext.config
 WebToolService webToolService =  applicationContext.webToolService
 UserService userService =  applicationContext.userService
 FlashClientInterface flashClient =  applicationContext.flashClient
 
-User me = webToolService.getUser(request, forward)
-
-if (me == null) {
-    return
-}
-
+User me = webToolService.getUser(request)
 log.info("play() me = $me")
   
 userService.changeUser(me.id, [playing: true])

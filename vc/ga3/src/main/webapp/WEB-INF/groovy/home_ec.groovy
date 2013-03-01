@@ -31,17 +31,6 @@ def chatWithMe = { String myId, String opponentId ->
     User me = userService.getUser(myId)
     User opponent = userService.getUser(opponentId)
 
-    if (me == null) {
-        log.warn("There is no user with such id = " + myId)
-        return
-    }
-
-    if (opponent == null) {
-        log.warn("There is no opponent with such id = " + opponentId)
-        //TODO show message to user that there is no opponent with such id
-        return
-    }
-
     if (!opponent.playing) {
         log.warn("Opponent is not playing at the moment.")
         //TODO show message to user that opponent should push "play" button
@@ -64,16 +53,9 @@ def chatWithMe = { String myId, String opponentId ->
 String sessionId = webToolService.getSessionId(request)
 log.info("ec() sessionId = $sessionId")
     
-String myId
-    
-try {
-    myId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
-    log.info("ec() myId = $myId")
-} catch(SessionNotFoundException e) {
-    webToolService.redirectToIndexPage("Session with sessionId = ${sessionId} is not found", forward)
-    return
-}
-    
+String myId = sessionStorageService.get(sessionId, config.SESSION_PARAMETER_USER_ID)
+log.info("ec() myId = $myId")
+
 User me
         
 String ecuid = request.ecuid
@@ -84,25 +66,24 @@ if (myId == null && ecuid == null) {
     myId = me.id
     log.info("ec() after creation myId = " + myId)
     sessionStorageService.put(sessionId, config.SESSION_PARAMETER_USER_ID, me.id)
-} else if (myId != ecuid) {
+} else if (myId != ecuid && ecuid != null) {
     me = userService.getUser(ecuid)
     log.info("ec() me = $me")
-    if (me != null) {
-        log.info("We have find evercookeied user and replace it in session.")
-        sessionStorageService.put(sessionId, config.SESSION_PARAMETER_USER_ID, ecuid)
-        myId = ecuid
+    
+    log.info("We have find evercookeied user and replace it in session.")
+    sessionStorageService.put(sessionId, config.SESSION_PARAMETER_USER_ID, ecuid)
+    myId = ecuid 
+} else if (myId != ecuid && ecuid == null) {
+    me = userService.getUser(myId)
+    log.info("ec() me = $me")
+    if (me == null) {
+        me = userService.createUser()
+        myId = me.id
+        log.info("ec() after creation myId = " + myId)
+        sessionStorageService.put(sessionId, config.SESSION_PARAMETER_USER_ID, me.id)
     } else {
-        me = userService.getUser(myId)
-        log.info("ec() me = $me")
-        if (me == null) {
-            me = userService.createUser()
-            myId = me.id
-            log.info("ec() after creation myId = " + myId)
-            sessionStorageService.put(sessionId, config.SESSION_PARAMETER_USER_ID, me.id)
-        } else {
-            //TODO what should we do if there is user in session and in DB with different id from evercookie id?
-            log.warning("There was user in session with different id from evercookie id!")
-        }
+        //TODO what should we do if there is user in session and in DB with different id from evercookie id?
+        log.warning("There was user in session with different id from evercookie id!")
     }
 } else {
     me = userService.getUser(myId)

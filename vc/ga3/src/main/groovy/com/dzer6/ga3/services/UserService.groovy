@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service
 
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.annotation.Propagation
+import com.dzer6.ga3.exception.UserNotFoundException
+import com.dzer6.ga3.exception.NoFreeRtmpServersException
 
 @Service("userService")
 @Scope("singleton")
@@ -49,7 +51,7 @@ class UserService {
     int blockUser(String userId) {
         log.info("blockUser(userId: ${userId})")
         return invokeAgainIfOptimisticLockingFailureCatched("UserService.blockUser") { status ->
-            User user = userRepository.findOne(userId)
+            User user = getUser(userId)
             UserBan ban = new UserBan(user: user)
             userBanRepository.save(ban)
 
@@ -92,13 +94,7 @@ class UserService {
     void changeUser(String userId, Map fields) {
         log.info("changeUser(user id: ${userId}, fields: ${fields})")
         invokeAgainIfOptimisticLockingFailureCatched("UserService.changeUser") { status ->
-            User user = userRepository.findOne(userId)
-            
-            if (user == null) {
-                log.info("There is no user with id = ${user.id}")
-                //status.setRollbackOnly()
-                return
-            }
+            User user = getUser(userId)
 
             fields.each() { key, value ->
                 user.setProperty(key, value)
@@ -111,21 +107,9 @@ class UserService {
     void addPreviousOpponent(String userId, String opponentId) {
         log.info("addPreviousOpponent(userId: ${userId}, opponentId: ${opponentId})")
         invokeAgainIfOptimisticLockingFailureCatched("UserService.addPreviousOpponentToUser") { status ->
-            User user = userRepository.findOne(userId)
-
-            if (user == null) {
-                log.info("There is no user with id = ${userId}")
-                //status.setRollbackOnly()
-                return
-            }
-      
-            User opponent = userRepository.findOne(opponentId)
-            if(opponent == null) {
-                log.info("There is no user with id = ${opponentId}")
-                //status.setRollbackOnly()
-                return
-            }
-
+            User user = getUser(userId)
+            User opponent = getUser(opponentId)
+            
             List<PreviousOpponent> result = previousOpponentRepository.findByUserAndOpponent(user, opponent)
                                                 
             log.info("previous opponents number = ${result != null ? result.size() : 0}")
@@ -151,21 +135,9 @@ class UserService {
     void removePreviousOpponent(String userId, String opponentId) {
         log.info("removePreviousOpponent(userId: ${userId}, opponentId: ${opponentId})")
         invokeAgainIfOptimisticLockingFailureCatched("UserService.removePreviousOpponent") { status ->
-            User user = userRepository.findOne(userId)
-
-            if (user == null) {
-                log.info("There is no user with id = ${userId}")
-                //status.setRollbackOnly()
-                return
-            }
-      
-            User opponent = userRepository.findOne(opponentId)
-            if(opponent == null) {
-                log.info("There is no user with id = ${opponentId}")
-                //status.setRollbackOnly()
-                return
-            }
-      
+            User user = getUser(userId)
+            User opponent = getUser(opponentId)
+            
             List<PreviousOpponent> result = previousOpponentRepository.findByUserAndOpponent(user, opponent)
                                     
             PreviousOpponent previousOpponent = result!= null && result.size() > 0 ? result[0] : null;
@@ -185,14 +157,7 @@ class UserService {
     void releaseUser(String userId) {
         log.info("releaseUser(user id: ${userId})")
         invokeAgainIfOptimisticLockingFailureCatched("UserService.releaseUser") { status ->
-            User user = userRepository.findOne(userId)
-            
-            if (user == null) {
-                log.info("There is no user with id = ${userId}")
-                //status.setRollbackOnly()
-                return
-            }
-      
+            User user = getUser(userId)
             User opponent = user.opponent 
 
             if (opponent == null) {
@@ -215,11 +180,11 @@ class UserService {
     @Transactional
     User getUser(String userId) {
         log.info("getUser(userId: ${userId})")
-        if (userId == null || userId == "") {
-            log.info("There is no user with id = ${userId}")
-            return null;
+        User user = userRepository.findOne(userId)
+        if (user == null) {
+            throw new UserNotFoundException("There is no user with id = ${userId}", userId);
         }
-        return userRepository.findOne(userId)
+        return user
     }
 
     User createUser() {
@@ -231,8 +196,8 @@ class UserService {
       
             log.info("rtmpServers = ${rtmpServers}")
       
-            if (rtmpServers == null || rtmpServers.size() == 0 || rtmpServers[0] == null) {
-                new RuntimeException("There is no free rtmp servers.")
+            if (rtmpServers == null || rtmpServers.isEmpty()) {
+                throw new NoFreeRtmpServersException("There is no free rtmp servers.")
             }
       
             RtmpServer rtmpServer = rtmpServers[0]
@@ -241,7 +206,8 @@ class UserService {
 
             user.rtmpServer = rtmpServer
             user.playing = false
-      
+            user.broadcasting = false
+            
             userRepository.save(user)
 
             return user
@@ -251,21 +217,8 @@ class UserService {
     void setOpponent(String myId, String opponentId) {
         log.info("setOpponent(userId: ${userId}, opponentId: ${opponentId})")
         invokeAgainIfOptimisticLockingFailureCatched("UserService.setOpponent") { status ->
-            User me = userRepository.findOne(myId)
-
-            if (me == null) {
-                log.info("There is no user with id = ${myId}")
-                //status.setRollbackOnly()
-                return
-            }
-
-            User you = userRepository.findOne(opponentId)
-
-            if (you == null) {
-                log.info("There is no user with id = ${opponentId}")
-                //status.setRollbackOnly()
-                return
-            }
+            User me = getUser(myId)
+            User you = getUser(opponentId)
 
             me.opponent = you
             userRepository.save(me)
@@ -278,14 +231,8 @@ class UserService {
     void chooseOpponent(String userId) {
         log.info("chooseOpponent(user id: ${userId}")
         invokeAgainIfOptimisticLockingFailureCatched("UserService.chooseOpponent") { status ->
-            User me = userRepository.findOne(userId)
+            User me = getUser(userId)
             
-            if (me == null) {
-                log.info("There is no user with id = ${userId}")
-                //status.setRollbackOnly()
-                return
-            }
-
             if (me.opponent != null) {
                 log.info("opponent already choosed, user.id = ${userId}, opponent.id = ${me.opponent.id}")
                 //status.setRollbackOnly()

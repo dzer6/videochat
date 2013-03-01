@@ -11,12 +11,7 @@ UserService userService =  applicationContext.userService
 BayeuxWrapperService bayeuxWrapperService =  applicationContext.bayeuxWrapperService
 FlashClientInterface flashClient =  applicationContext.flashClient
 
-User me = webToolService.getUser(request, forward)
-
-if (me == null) {
-    return
-}
-  
+User me = webToolService.getUser(request)
 log.info("block() me = $me")
       
 bayeuxWrapperService.turnOffBlocking(me)
