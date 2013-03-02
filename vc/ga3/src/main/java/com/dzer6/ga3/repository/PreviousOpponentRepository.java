@@ -13,7 +13,7 @@ public interface PreviousOpponentRepository extends CrudRepository<PreviousOppon
 
     List<PreviousOpponent> findByUserAndOpponent(User user, User opponent);
 
-    @Query("select count (ub) from UserBan ub where ub.user = :user")
+    @Query("select count (po) from PreviousOpponent po where po.user = :user")
     long countByUser(@Param("user") User user);
     
 }

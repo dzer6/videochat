@@ -17,7 +17,7 @@
                            http://camel.apache.org/schema/spring/camel-spring-2.4.0.xsd">
            
     <bean id="config" class="com.dzer6.ga3.PropertyPlaceholderConfigurer">
-        <property name="location" value="/WEB-INF/classes/config.properties"/>
+        <property name="location" value="classpath:config.properties"/>
     </bean>
   
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
