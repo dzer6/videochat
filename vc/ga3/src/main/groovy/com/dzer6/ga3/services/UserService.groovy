@@ -114,12 +114,13 @@ class UserService {
                                                 
             log.info("previous opponents number = ${result != null ? result.size() : 0}")
                                     
-            PreviousOpponent previousOpponent = result != null && result.size() > 0 ? result[0] : null;
+            PreviousOpponent previousOpponent
       
-            if (previousOpponent == null) {
+            if (result == null || result.isEmpty()) {
                 previousOpponent = new PreviousOpponent([user: user, opponent: opponent])
                 log.info("previousOpponent is null, create new one")
             } else {
+                previousOpponent = result[0]
                 log.info("previousOpponent already existing = " + previousOpponent)
                 previousOpponent.deleted = false
             }
@@ -142,9 +143,8 @@ class UserService {
                                     
             PreviousOpponent previousOpponent = result!= null && result.size() > 0 ? result[0] : null;
       
-            if(previousOpponent == null) {
+            if (previousOpponent == null) {
                 log.info("There is no previousOpponent with userId = ${userId} and opponentId = ${opponentId}")
-                //status.setRollbackOnly()
                 return
             }
             previousOpponent.deleted = true
@@ -162,7 +162,6 @@ class UserService {
 
             if (opponent == null) {
                 log.info("There is no opponent of user with id = ${user.id}")
-                //status.setRollbackOnly()
                 return
             }
       
@@ -213,6 +212,24 @@ class UserService {
             return user
         }
     }
+    
+    void deleteUser(String userId) {
+        log.info("deleteUser()")
+        invokeAgainIfOptimisticLockingFailureCatched("UserService.deleteUser") { status ->
+            User user = getUser(userId)
+            
+            if (user.opponent != null) {
+                User opponent = user.opponent
+                opponent.opponent = null
+                user.opponent = null
+            }
+            
+            previousOpponentRepository.deleteByUser(user)
+            previousOpponentRepository.deleteByOpponent(user)
+            userBanRepository.deleteByUser(user)
+            userRepository.delete(user)
+        }
+    }
 
     void setOpponent(String myId, String opponentId) {
         log.info("setOpponent(userId: ${userId}, opponentId: ${opponentId})")
@@ -235,7 +252,6 @@ class UserService {
             
             if (me.opponent != null) {
                 log.info("opponent already choosed, user.id = ${userId}, opponent.id = ${me.opponent.id}")
-                //status.setRollbackOnly()
                 return
             }
       
@@ -244,7 +260,7 @@ class UserService {
             long numberOfPreviousOpponents = previousOpponentRepository.countByUser(me)
             log.info("numberOfPreviousOpponents = ${numberOfPreviousOpponents}")
       
-            if (numberOfPreviousOpponents == 0) {    
+            if (numberOfPreviousOpponents == 0) {
                 you = findAnyBroadcastingUserNotMe(me)
                 log.info("findAnyBroadcastingUserNotMe you = ${you}")
             } else {
