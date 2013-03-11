@@ -19,6 +19,21 @@
     <bean id="config" class="com.dzer6.ga3.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:test-config.properties"/>
     </bean>
+    
+    <!--bean id="org.h2.tools.Server" 
+          class="org.h2.tools.Server" 
+          factory-method="createTcpServer"
+          init-method="start" 
+          depends-on="org.h2.tools.Server-WebServer">
+        <constructor-arg value="-tcp,-tcpAllowOthers,true,-tcpPort,9092"/>
+    </bean>
+
+    <bean id="org.h2.tools.Server-WebServer" 
+          class="org.h2.tools.Server" 
+          factory-method="createWebServer" 
+          init-method="start">
+        <constructor-arg value="-web,-webAllowOthers,true,-webPort,8082"/>
+    </bean-->
   
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -57,25 +72,25 @@
     <camel:camelContext id="camel" />
   
     <camel:export id="frontendServerQueueExport"
-                  uri="direct:rtmpServerEventsListener"
+                  uri="bean:rtmpServerEventsListener"
                   serviceRef="rtmpServerEventsListener"
                   serviceInterface="com.dzer6.vc.ga.FrontendServerInterface"/>
   
     <camel:export id="userConnectionQueueExport"
-                  uri="direct:userConnectionService"
+                  uri="bean:userConnectionService"
                   serviceRef="userConnectionService"
                   serviceInterface="com.dzer6.vc.ga.UserConnectionInterface"/>
                 
     <camel:proxy id="flashClient"
                  serviceInterface="com.dzer6.vc.ga.FlashClientInterface"
-                 serviceUrl="direct:flashClient"/>
+                 serviceUrl="bean:flashClientMock"/>
                
     <camel:proxy id="bayeux"
                  serviceInterface="com.dzer6.vc.ga.BayeuxInterface"
-                 serviceUrl="direct:bayeuxMock"/>
+                 serviceUrl="bean:bayeuxMock"/>
 
     <camel:proxy id="rtmpServerTopic"
                  serviceInterface="com.dzer6.vc.ga.RtmpServerInterface"
-                 serviceUrl="direct:rtmpServerMock"/>
+                 serviceUrl="bean:rtmpServerMock"/>
     
 </beans>
