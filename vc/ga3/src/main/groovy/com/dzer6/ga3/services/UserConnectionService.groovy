@@ -44,19 +44,13 @@ class UserConnectionService implements UserConnectionInterface {
         try {
             String userId = getUserId(sessionId)
         
-            userService.changeUser(userId, [broadcasting: false])
-            
             User me = userService.getUser(userId)
             User opponent = me.opponent
 
             if (opponent != null) {
-                flashClient.stopStream(opponent.id)
-                bayeuxWrapperService.turnOffChat(opponent)
                 userService.addPreviousOpponent(userId, opponent.id)
             }
-    
-            bayeuxWrapperService.turnOffChat(me)
-
+            
             sessionStorageService.connectionLost(sessionId)  
         } catch(e) {
             log.error("Unable to handle connection closed event", e)
@@ -72,13 +66,11 @@ class UserConnectionService implements UserConnectionInterface {
             User me = userService.getUser(userId)
             User opponent = me.opponent
             
+            if (me.playing) {
+                flashClient.cameraOn(me.id)
+            }
+            
             if (opponent != null && me.playing) {
-                flashClient.playStream(userId, me.rtmpServer.url + config.R5WA_APPLICATION_NAME_POSTFIX, opponent.id)
-                flashClient.playStream(opponent.id, opponent.rtmpServer.url + config.R5WA_APPLICATION_NAME_POSTFIX, userId)
-                
-                bayeuxWrapperService.turnOnChat(me)
-                bayeuxWrapperService.turnOnChat(opponent)
-                
                 userService.removePreviousOpponent(userId, opponent.id)
             }
             
@@ -94,6 +86,17 @@ class UserConnectionService implements UserConnectionInterface {
         try {
             String userId = getUserId(sessionId)
             userService.changeUser(userId, [broadcasting: false])
+            
+            User me = userService.getUser(userId)
+            User opponent = me.opponent
+            
+            if (opponent != null) {
+                flashClient.stopStream(opponent.id)
+                bayeuxWrapperService.turnOffChat(opponent)
+                bayeuxWrapperService.turnOffBlocking(opponent)
+            }
+            
+            bayeuxWrapperService.turnOffChat(me)
         } catch(e) {
             log.error("Unable to set broadcasting false for user", e)
         }
@@ -105,6 +108,20 @@ class UserConnectionService implements UserConnectionInterface {
         try {
             String userId = getUserId(sessionId)
             userService.changeUser(userId, [broadcasting: true])
+            
+            User me = userService.getUser(userId)
+            User opponent = me.opponent
+            
+            if (opponent != null) {
+                flashClient.playStream(userId, me.rtmpServer.url + config.R5WA_APPLICATION_NAME_POSTFIX, opponent.id)
+                flashClient.playStream(opponent.id, opponent.rtmpServer.url + config.R5WA_APPLICATION_NAME_POSTFIX, userId)
+                
+                bayeuxWrapperService.turnOnChat(me)
+                bayeuxWrapperService.turnOnChat(opponent)
+                
+                bayeuxWrapperService.turnOnBlocking(me)
+                bayeuxWrapperService.turnOnBlocking(opponent)
+            }
         } catch(e) {
             log.error("Unable to set broadcasting true for user", e)
         }
