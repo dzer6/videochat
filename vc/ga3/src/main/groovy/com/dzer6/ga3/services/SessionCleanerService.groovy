@@ -49,14 +49,14 @@ class SessionCleanerService {
         log.info("started")
         while (sweeperOn) {
             try {
-                synchronized (semaphore) {
-                    semaphore.wait(sweeperInterval)
-                }
                 Date date = new Date(System.currentTimeMillis() - sessionTimeout)
                 def oldSessions = sessionRepository.findAllByLastUserDisconnectionLessThan(date)
                 oldSessions.each({
                     deleteSession(it.id)
                 })
+                synchronized (semaphore) {
+                    semaphore.wait(sweeperInterval)
+                }
             } catch (Throwable t) {
                 log.error("Sweeper error.", t)
             }
@@ -77,7 +77,9 @@ class SessionCleanerService {
     @PreDestroy
     def destroy() {
         sweeperOn = false
-        semaphore.notify()
+        synchronized (semaphore) {
+            semaphore.notify()
+        }
         log.info("destroy()")
     }
 
