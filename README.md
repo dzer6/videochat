@@ -30,7 +30,7 @@ Default video chat architecture on diagram below:
 
 9) Client -- end user machine.
 
-# Installation
+# Installation [IN PROGRESS]
 
 1) Install Ubuntu Lucid 64bit on machine with not less than 2Gb RAM. This machine should have open ports: 8080 and 1935.
 
@@ -44,30 +44,6 @@ $ sudo apt-get install git-core
 $ mkdir /tmp/bbb
 $ cd /tmp/bbb
 $ git clone https://github.com/dzer6/videochat.git
-```
-
-4) Run xuggler installer under root: 
-```bash
-$ cd /tmp/bbb/videochat/distr
-$ sudo ./xuggle-xuggler.4.0.1049-x86_64-unknown-linux-gnu.sh
-```
-
-5) Follow xuggler installer instructions (agree license terms, select directory to install by default)
-
-6) Copy and paste these lines into end of /etc/bash.bashrc:
-```bash
-export XUGGLE_HOME=/usr/local/xuggler
-export LD_LIBRARY_PATH=$XUGGLE_HOME/lib:$LD_LIBRARY_PATH
-export PATH=$XUGGLE_HOME/bin:$PATH
-```
-
-7) For checking that installation is correct, you should logout, login and invoke: 
-```bash
-$ ffmpeg
-```
-You should see: 
-```bash
-FFmpeg version SVN-r25113-xuggle-4.0.896...
 ```
 
 8) [Install Oracle JDK6](http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html): 
@@ -99,15 +75,6 @@ $ sudo apt-get install oracle-java6-installer
 9) Copy and paste these lines into end of /etc/bash.bashrc:
 ```bash
 export JAVA_HOME=/usr/lib/jvm/java-6-oracle
-```
-
-10) Change line in /etc/bash.bashrc file 
-```bash
-export PATH=$XUGGLE_HOME/bin:$PATH
-```
-to
-```bash
-export PATH=$XUGGLE_HOME/bin:$JAVA_HOME/bin:$PATH
 ```
 
 11) Install Apache Tomcat: 
@@ -148,9 +115,6 @@ Now paste in the following:
 # pidfile: /var/run/tomcat.pid
 
 export JAVA_HOME=/usr/lib/jvm/java-6-oracle
-export XUGGLE_HOME=/usr/local/xuggler
-export LD_LIBRARY_PATH=$XUGGLE_HOME/lib:$LD_LIBRARY_PATH
-export PATH=$XUGGLE_HOME/bin:$JAVA_HOME/bin:$PATH
 
 case $1 in
 start)
@@ -187,68 +151,6 @@ You should see similar output:
 ```bash
   935 ?        Sl     0:06 /usr/lib/jvm/java-6-oracle/bin/java -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/usr/local/tomcat/endorsed -classpath /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar -Dcatalina.base=/usr/local/tomcat -Dcatalina.home=/usr/local/tomcat -Djava.io.tmpdir=/usr/local/tomcat/temp org.apache.catalina.startup.Bootstrap start
  1061 pts/0    S+     0:00 grep --color=auto tomcat
-```
-
-17) Install Apache ActiveMQ:
-```bash
-$ mkdir /tmp/bbb
-$ cd /tmp/bbb
-$ wget http://www.us.apache.org/dist/activemq/apache-activemq/5.7.0/apache-activemq-5.7.0-bin.tar.gz
-$ tar xvzf apache-activemq-5.7.0-bin.tar.gz
-$ sudo mv apache-activemq-5.7.0 /usr/local/activemq
-```
-
-18) For automatic ActiveMQ starting 
-```bash
-$ sudo nano /etc/init.d/activemq
-```
-
-Now paste in the following:
-
-```bash
-# ActiveMQ auto-start
-#
-# description: Auto-starts activemq
-# processname: activemq
-# pidfile: /var/run/activemq.pid
-
-export JAVA_HOME=/usr/lib/jvm/java-6-oracle
-
-case $1 in
-start)
-        sh /usr/local/activemq/bin/activemq start
-        ;; 
-stop)   
-        sh /usr/local/activemq/bin/activemq stop
-        ;; 
-restart)
-        sh /usr/local/activemq/bin/activemq start
-        sh /usr/local/activemq/bin/activemq stop
-        ;; 
-esac    
-exit 0
-```
-
-19) You’ll need to make the script executable by running the chmod command:
-```bash
-$ sudo chmod 755 /etc/init.d/activemq
-```
-
-20) The last step is actually linking this script to the startup folders with a symbolic link. Execute these two commands and we should be on our way.
-```bash
-sudo ln -s /etc/init.d/activemq /etc/rc1.d/K99activemq
-sudo ln -s /etc/init.d/activemq /etc/rc2.d/S99activemq
-```
-
-21) For checking that activemq setup is correct reboot your ubuntu machine, login and invoke
-```bash
-$ ps ax | grep activemq
-```
-
-You should see similar output:
-```bash
-  835 ?        Sl     0:08 /usr/lib/jvm/java-6-oracle/bin/java -Xms1G -Xmx1G -Djava.util.logging.config.file=logging.properties -Dcom.sun.management.jmxremote -Djava.io.tmpdir=/usr/local/activemq/tmp -Dactivemq.classpath=/usr/local/activemq/conf; -Dactivemq.home=/usr/local/activemq -Dactivemq.base=/usr/local/activemq -Dactivemq.conf=/usr/local/activemq/conf -Dactivemq.data=/usr/local/activemq/data -jar /usr/local/activemq/bin/run.jar start
- 1063 pts/0    S+     0:00 grep --color=auto activemq
 ```
 
 22) Download video chat WAR files:
