@@ -33,3 +33,7 @@ Default video chat architecture on diagram below:
 # Installation [IN PROGRESS]
 
 TODO
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/dzer6/videochat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
